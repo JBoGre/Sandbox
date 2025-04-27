@@ -242,9 +242,9 @@ GameOverSound: "SoundEfects/Game OverSMB1.mp3"
 },
 {
 Name:"Mario Maker characters of SMB1" ,
-Img :["characters/Toadet-sprite.png","characters/KingDeDeDe.png"],
+Img :["characters/Toadet-sprite.png","characters/KingDeDeDe.png","characters/SMB1Bowser-Sprite.png"],
 Grid:[/*width*/ 64,/*height*/64,/*static*/0,/*walk*/3,/*run*/0,/*brek*/4,
-/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3 ],
+/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/6 ],
 width:32,
 height:64,
 WNEGA:-16,
@@ -273,7 +273,7 @@ GameOverSound: "SoundEfects/Game OverSMB3.mp3"
 {
 Name:"Sonic the hedghog" ,
 Img :["characters/SonicSprite.png"],
-Grid:[59,59,/*static*/1,/*walk*/8,/*run*/3,/*brek*/17,/*jumpUP*/5,/*jumpDOWN*/0,/*jump+run*/0,/*escaled*/0,/*down*/1,/*up*/1,/*simw*/4 ],
+Grid:[59,59,/*static*/1,/*walk*/8,/*run*/3,/*brek*/17,/*jumpUP*/5,/*jumpDOWN*/0,/*jump+run*/0,/*simw*/4 ],
 width:24,
 height:40,
 WNEGA:-18,
@@ -648,7 +648,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
 ScripsCords = [1]
 }
 Xsize = document.getElementById("Xsize")
-Ysize = document.getElementById("Xsize")
+Ysize = document.getElementById("Ysize")
 
 function change_Size(X,Y){
 	SAVE.X = X*1
@@ -673,7 +673,7 @@ DrawGirdSprites(GridSprites)
 }
 function Save_Level_NoTiles(){
 	const {tiles, ... SAVEcopy} = SAVE
-	SAVEcopy.backgroundMusic = [backgroundMusic.src]
+	SAVEcopy.backgroundMusic =[ backgroundMusicSrc]
 	SAVEcopy.StartX = startX
 	SAVEcopy.StartY = startY
 	SAVEcopy.totalPrizes = totalprizes
@@ -983,7 +983,7 @@ for(let i = 0; i < Number ; i++){
 for(let i = 0; i < 2 ; i++){
 X = RandomNumber(Xcoordinate,x)
 Y = RandomNumber(Ycoordinate,y)
- result = LC.find(LC => LC.X == X && LC.Y == Y );
+ result = LC.find(LC => LC.X == X && LC.Y == Y -1  );
 	   if(result == undefined){
 		    No_a_block = true
 			i = 12
@@ -1774,6 +1774,7 @@ let audioContext;
 let star = true
 var PositionX = 0
 var PositionY = 0
+var backgroundMusicSrc = SAVE.backgroundMusic[0]
 var backgroundMusic = backgroundMusicCollection[backgroundMusicTrack]
 backgroundMusic.loop = true; // Activar reproducción en bucle
 
@@ -2309,32 +2310,32 @@ X: function X (Sprites,A) {
 	}
 },
 },{/*Go to p1 (2)*/
-Y: function Y (Sprites,A) {
-if(Sprites.y +(Sprites.height /2) > (A.y + A.heightHalf)){
+Y: function Y (Sprites,player) {
+if(Sprites.y +(Sprites.height /2) > (player.y + player.heightHalf)){
 	Sprites.MoveY = Sprites.Yvelocity*-1
-	if((Sprites.y +(Sprites.height /2)+Sprites.MoveY) < (A.y + A.heightHalf)){
-		Sprites.MoveY = ((Sprites.height /2) + (Sprites.y+Sprites.MoveY)) - (A.y + A.heightHalf)
+	if((Sprites.y +(Sprites.height /2)+Sprites.MoveY) < (player.y + player.heightHplayerlf)){
+		Sprites.MoveY = ((Sprites.height /2) + (Sprites.y+Sprites.MoveY)) - (player.y + player.heightHalf)
 		}
 }else{
 	Sprites.MoveY = Sprites.Yvelocity
-	if((Sprites.y+Sprites.MoveY) > (A.y + A.heightHalf) ){
-	Sprites.MoveY = (Sprites.y+Sprites.MoveY) - (A.y + A.heightHalf)
+	if((Sprites.y+Sprites.MoveY) > (player.y + player.heightHalf) ){
+	Sprites.MoveY = (Sprites.y+Sprites.MoveY) - (player.y + player.heightHalf)
 	}}
 },
-X: function X (Sprites,A) {
-if(Sprites.x+(Sprites.width /2) >  (A.x + A.widthHalf)){
+X: function X (Sprites,player) {
+if(Sprites.x+(Sprites.width /2) >  (player.x + player.widthHalf)){
 	Sprites.MoveX = Sprites.Xvelocity*-1;
-	if((Sprites.x+(Sprites.width /2)+Sprites.MoveX) < (A.x + A.widthHalf)){
-		Sprites.MoveX = ((Sprites.x+Sprites.MoveX)+(Sprites.width /2)) - (A.x + A.widthHalf)
+	if((Sprites.x+(Sprites.width /2)+Sprites.MoveX) < (player.x + player.widthHalf)){
+		Sprites.MoveX = ((Sprites.x+Sprites.MoveX)+(Sprites.width /2)) - (player.x + player.widthHalf)
 		}
 }else{
 Sprites.MoveX = Sprites.Xvelocity;
-if((Sprites.x+Sprites.MoveX) > (A.x + A.widthHalf)){
-	Sprites.MoveX = (Sprites.x+Sprites.MoveX) - (A.x + A.widthHalf)
+if((Sprites.x+Sprites.MoveX) > (player.x + player.widthHplayerlf)){
+	Sprites.MoveX = (Sprites.x+Sprites.MoveX) - (player.x + player.widthHalf)
 	}}
 },
 },{ /*Gravity (3)*/
-Y: function Y (Sprites,A) {
+Y: function Y (Sprites,player) {
 	if(tick){
 	if(Sprites.sideY){
 	Sprites.MoveY += 1
@@ -2343,7 +2344,7 @@ Y: function Y (Sprites,A) {
 	}
 	}
 },
-X: function X (Sprites,A) {
+X: function X (Sprites,player) {
 		if(tick){
 	if(Sprites.sideX){
 	Sprites.MoveX += 1
@@ -2354,7 +2355,7 @@ X: function X (Sprites,A) {
 },
 },
 { /*circle (4)*/
-Y: function Y (Sprites,A) {
+Y: function Y (Sprites,player) {
 	let radian = Sprites.angleY * (Math.PI / 180);
 	Sprites.MoveY =  Sprites.Yvelocity * Math.cos(radian)
 	if(Sprites.sideY){
@@ -2363,7 +2364,7 @@ Y: function Y (Sprites,A) {
 	Sprites.angleY = (Sprites.angleY - 1) % 360;	
 	}
 },
-X: function X (Sprites,A) {
+X: function X (Sprites,player) {
 	let radian = Sprites.angleX * (Math.PI / 180);
 	Sprites.MoveX =  Sprites.Xvelocity * Math.sin(radian)
 	if(Sprites.sideX){
@@ -2374,7 +2375,7 @@ X: function X (Sprites,A) {
 },
 },
 { /*cube (5)*/
-Y: function Y (Sprite,A) {
+Y: function Y (Sprite,player) {
 	if(Clock(Sprite,Sprite.Yvelocity*32)){
 		Sprite.sideY = !Sprite.sideY
 	}
@@ -2384,7 +2385,7 @@ Y: function Y (Sprite,A) {
 	Sprite.MoveY = -1
 	}
 },
-X: function X (Sprite,A) {
+X: function X (Sprite,player) {
 	if(Clock(Sprite,Sprite.Xvelocity*32)){
 		Sprite.sideX = !Sprite.sideX
 	}
@@ -2436,44 +2437,44 @@ if((Sprite.x+Sprite.MoveX) > (Player.x + Player.widthHalf)){
     }
 },
 },{/*enboscade (7)*/
-Y: function Y (Sprites,A) {
-	let Y = A.y
-	if(Math.abs(A.y - Sprites.y) >= 64){
-	if(A.sideY){
+Y: function Y (Sprites,player) {
+	let Y = player.y
+	if(Math.abs(player.y - Sprites.y) >= 64){
+	if(player.sideY){
 		Y -= 64
 	}else{
 		Y += 64
 	}
 	}
-if(Sprites.y +(Sprites.height /2) > (Y + A.heightHalf)){
+if(Sprites.y +(Sprites.height /2) > (Y + player.heightHalf)){
 	Sprites.MoveY = Sprites.Yvelocity*-1
-	if((Sprites.y +(Sprites.height /2)+Sprites.MoveY) < (Y + A.heightHalf)){
-		Sprites.MoveY = ((Sprites.height /2) + (Sprites.y+Sprites.MoveY)) - (Y + A.heightHalf)
+	if((Sprites.y +(Sprites.height /2)+Sprites.MoveY) < (Y + player.heightHalf)){
+		Sprites.MoveY = ((Sprites.height /2) + (Sprites.y+Sprites.MoveY)) - (Y + player.heightHalf)
 		}
 }else{
 	Sprites.MoveY = Sprites.Yvelocity
-	if((Sprites.y+Sprites.MoveY) > (Y + A.heightHalf) ){
-	Sprites.MoveY = (Sprites.y+Sprites.MoveY) - (Y + A.heightHalf)
+	if((Sprites.y+Sprites.MoveY) > (Y + player.heightHalf) ){
+	Sprites.MoveY = (Sprites.y+Sprites.MoveY) - (Y + player.heightHalf)
 	}}
 },
-X: function X (Sprites,A) {
-	let X = A.x 
-	if(Math.abs(A.y - Sprites.y) >= 64){
-	if(A.sideX){
+X: function X (Sprites,player) {
+	let X = player.x 
+	if(Math.abs(player.y - Sprites.y) >= 64){
+	if(player.sideX){
 		X -= 64
 	}else{
 		X += 64
 	}
 	}
-if(Sprites.x+(Sprites.width /2) >  (X + A.widthHalf)){
+if(Sprites.x+(Sprites.width /2) >  (X + player.widthHalf)){
 	Sprites.MoveX = Sprites.Xvelocity*-1;
-	if((Sprites.x+(Sprites.width /2)+Sprites.MoveX) < (X + A.widthHalf)){
-		Sprites.MoveX = ((Sprites.x+Sprites.MoveX)+(Sprites.width /2)) - (X + A.widthHalf)
+	if((Sprites.x+(Sprites.width /2)+Sprites.MoveX) < (X + player.widthHalf)){
+		Sprites.MoveX = ((Sprites.x+Sprites.MoveX)+(Sprites.width /2)) - (X + player.widthHalf)
 		}
 }else{
 Sprites.MoveX = Sprites.Xvelocity;
-if((Sprites.x+Sprites.MoveX) > (X + A.widthHalf)){
-	Sprites.MoveX = (Sprites.x+Sprites.MoveX) - (X + A.widthHalf)
+if((Sprites.x+Sprites.MoveX) > (X + player.widthHalf)){
+	Sprites.MoveX = (Sprites.x+Sprites.MoveX) - (X + player.widthHalf)
 	}}
 },
 }
@@ -3267,10 +3268,11 @@ if(player.lives > 0 ){
     const audioPlayer = document.getElementById("audioPlayer");
 
     songSelector.addEventListener("change", function() {
-      const selectedSong = this.value;
+      let selectedSong = this.value;
       if (selectedSong) {
        audioPlayer.src = selectedSong;
 	   backgroundMusic.src = selectedSong;
+	   backgroundMusicSrc = selectedSong
       } else {
         audioPlayer.pause();
         audioPlayer.src = "";
