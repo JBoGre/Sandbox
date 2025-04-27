@@ -5073,10 +5073,13 @@ function Boregito(Value){
 			   shoterMode = 2
 			   break ;
                case "ENEMIES":
-			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,"#","661122103",1,"09100", -1,8)
-	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,"#","661122200",1,"09000", -1,1)
-	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,"#","661122503",1,"09200", -2,1)
-	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,"#","661120201",1,"09300", 0,-8)
+			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,0,"661122103",1,"09100", -1,8)
+	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,0,"661122200",1,"09000", -1,1)
+	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,0,"661122503",1,"09200", -2,1)
+	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,0,"661120201",1,"09300", 0,-8)
+			   break
+			   case "FLY":
+			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,11,"661120201",2,"01500", 0,0)
 			   break
 			    case "BACKGROUND":
 			   BGC.push(new Background("Backgrounds/onlyClouds.png",1024,864,0.5,1,0,0,true,false,0,0))
