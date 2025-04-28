@@ -1999,9 +1999,11 @@ function deleted_sprites(Sprite_Collection,sprites,cordX,cordY) {
 }
 function Sprite(X,Y,width,height,script,comportament,img,RenderMode,Xvelocity,Yvelocity,SAVE) {
 this.InScreen = true
+this.prin = true
 this.x = X; this.y = Y;
 this.stx = X; this.sty = Y;
 this.Yplayertouch = false; this.Xplayertouch = false
+this.BulletTouch = false
 this.live = 1
 if(SAVE == undefined){
     this.SAVE = true
@@ -2041,6 +2043,7 @@ this.fotogram = 0
 }
 function sprite_colision(X,Y,width,height,script,comportament,img,RenderMode,Xvelocity,Yvelocity,SAVE) {
 this.InScreen = true
+this.prin = true
 this.FristTouch = false
 this.x = X; this.y = Y;
 this.stx = X; this.sty = Y;
@@ -2050,6 +2053,7 @@ this.BX = 0 ; this.BY = 0
 this.MoveYLimit = 0 ;this.MoveXLimit = 0
 this.sideX = true ;this.sideY = true
 this.Yplayertouch = false; this.Xplayertouch = false
+this.BulletTouch = false
 this.Ytouch = false;this.Xtouch = false
 this.Xdiference_Print = 0;this.Ydiference_Print = 0;
 this.widthGrid = width; this.heightGrid = height;
@@ -2271,6 +2275,9 @@ Sprite.x += Sprite.xP
 
 Sprite.sideUX = Sprite.sideX
 Sprite.UPX = Sprite.x
+
+MiniSpriteColision(Sprite,myMiniSprites)
+
 }else{
 	Sprite.InScreen = false
 }
@@ -3614,6 +3621,7 @@ if(MiniSprites[i].type > 0){
 let MiniSprite = MiniSprites[i]
 	if((Sprite.x < MiniSprite.x + MiniSprite.width && (Sprite.x + (Sprite.width)) > MiniSprite.x) && (Sprite.y < MiniSprite.y + (MiniSprite.height))  && Sprite.y + (Sprite.height) > MiniSprite.y){
 		   MiniSprites.splice(i, 1); 
+		   Sprite.BulletTouch = true
 		   Sprite.live --
 	}
  }
@@ -4925,7 +4933,9 @@ if(inputX < 0 || inputX > 32){
 /*All sprites scpripts*/
 for(let i = 0; i < sprites.length ;i++){
 	if(sprites[i].InScreen){
+		sprites[i].prin = true
 	Scrips_collection[sprites[i].script].Loop(sprites[i],p1,p2,tiles)
+	sprites[i].BulletTouch = false
 	sprites[i].Yplayertouch = false
     sprites[i].Xplayertouch = false
 	if(Ax3 == 2){
@@ -4934,6 +4944,8 @@ for(let i = 0; i < sprites.length ;i++){
 	if(sprites[i].live < 0){
 		sprites.splice(i,1)
 	}
+	}else{
+	sprites[i].prin  = false	
 	}
 }
 
@@ -5002,7 +5014,9 @@ functions_collection[tiles[i].script].Loop(tiles[i])
 if(DrawShadow){drawLight(game,p1,sprites)}
 PrinAllTiles(game)
 for(let i = 0; i < sprites.length ;i++){
+	if(sprites[i].prin){
 draw_sprite[sprites[i].Mode](sprites[i],game)
+	}
 }
 for(let i = 0; i < mini_sprites.length ;i++){
 drawMinisprite(mini_sprites[i],game)
@@ -5079,7 +5093,7 @@ function Boregito(Value){
 	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,0,"661120201",1,"09300", 0,-8)
 			   break
 			   case "FLY":
-			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,11,"661120201",2,"01500", 0,0)
+			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,11,"661120201",2,"01400", 0,0)
 			   break
 			    case "BACKGROUND":
 			   BGC.push(new Background("Backgrounds/onlyClouds.png",1024,864,0.5,1,0,0,true,false,0,0))

@@ -158,12 +158,13 @@ objects:[
 ["Object",42,42,0,"661132103",2,"22300", -1,8],["Object",84,84,1,"661132103",2,"21100", -1,8],
 ["Object",42,42,2,"661122103",2,"22300", -1,8],
 ["Object",32,32,7,"661132103",5,"2A200", -2,8],
-["Object",32,32,0,"661132103",1,"08200", 0,8],
+["Object",32,32,"#","661132103",1,"08200", 0,8],
 ["Object",32,32,"#","111132103",1,"03200", 0,8],
 ["Object",32,64,8,"661110000",2,"03343", 0,0],
 ["Object",16,32,9,"661121163",2,"00823", 1,2],
 ["Object",64,32,"#","101122200",2,"02200", -2,0],
 ["Object",64,32,"#","101122200",2,"02200", 0,2],
+["Object",32,32,10,"661120201",2,"01500", 0,0],
 ],
 TileScripts:[
 {
@@ -719,6 +720,55 @@ RenderMode: function RenderMode (ctx,Sprite) {
      PreRenderMode(ctx,Sprite)
  },
 },
+{
+Action: function Action(Sprite) {
+Sprite.Xvelocity = 0
+Sprite.Yvelocity = 0
+Sprite.type = 3
+Sprite.width = 18
+Sprite.height = 22
+Sprite.Xdiference_Print = -8
+Sprite.Ydiference_Print = -10
+Sprite.live = 0
+	},
+Loop: function Loop (Sprite,player) {
+	if(tick){
+		Sprite.YG = 128
+	}else{
+		Sprite.YG = 160
+	}
+	if(Ax16 == 15){
+if(Sprite.x +(Sprite.width /2) > (player.x + player.widthHalf)){
+	Sprite.Xvelocity --
+	Sprite.Mode = 0
+}else{
+	Sprite.Xvelocity ++
+	Sprite.Mode = 3
+}
+if(Sprite.y +(Sprite.height /2) > (player.y + player.heightHalf)){
+	Sprite.Yvelocity --
+}else{
+	Sprite.Yvelocity ++
+}
+
+	}
+if(Sprite.Ytouch){
+	Sprite.Yvelocity = Sprite.Yvelocity *-1
+}
+if(Sprite.Xtouch){
+	Sprite.Xvelocity = Sprite.Xvelocity *-1
+}
+Sprite.MoveX = Sprite.Xvelocity
+Sprite.MoveY = Sprite.Yvelocity
+if(Sprite.live < 0){
+	myMiniSprites.push(new Mini_sprite(Sprite.x,Sprite.y,Sprite.imgN,1,32,192,0,1,Sprite.Xvelocity,-10,32,32,0))
+		Kills ++
+	}
+},
+RenderMode: function RenderMode (ctx,Sprite) {
+     PreRenderMode(ctx,Sprite)
+ },
+},
 ],
 },
 
@@ -763,6 +813,16 @@ SpriteScripts:[
 		}else{
 			Sprite.Mode = 0
 		}
+		if(Sprite.BulletTouch){
+			Sprite.XG = 64
+			Sprite.FramesIntervalds = 1
+			Sprite.LoopFotogram = 0
+			SoundEffectsCollection[4].play()
+			Sprite.live = 0
+			Sprite.Xvelocity = 0
+			Sprite.Up = 0
+			Sprite.Left = 0
+		}	
 		Gravedad(Sprite,1)
 		if(Sprite.live < 1 ){
 			if(Clock(Sprite,32)){
