@@ -106,16 +106,18 @@ let archivo = Archivo
                 alert("Selecciona un archivo primero.");
             }
 }
-function cargarJSON(JSON) {
-      fetch(JSON)
+function cargarJSON(Json) {
+      fetch(Json)
         .then(response => {
           if (!response.ok) throw new Error("No se pudo cargar el archivo JSON");
           return response.json();
         })
         .then(data => {
-			SAVE = JSON.parse(data);
+			SAVE = data
 			chargeLevelNoTiles()
-			Level_name.value  = data.name.slice(0,-5)
+			let Name  = Json.slice(0,-5)
+			Name = Name.slice(13)
+			Level_name.value  = Name
 		})
 }
 function textToBinaryNumbers(text) {
