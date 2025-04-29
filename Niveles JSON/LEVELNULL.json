@@ -1,0 +1,47 @@
+{
+  "X": 150,
+  "Y": 150,
+  "scroll_configuration": 0,
+  "Margin": 0,
+  "CameraX_frese": 0,
+  "CameraY_frese": 0,
+  "limit_left": 0,
+  "limit_rigth": 256,
+  "limit_up": 256,
+  "limit_down": 0,
+  "StyleBackground": "",
+  "backgroundMusic": [
+    "file:///C:/Users/JULIO_CASA/OneDrive/Desktop/PROJECT/Music/smooth%20jazz.mp3"
+  ],
+  "backgroundMusicTrack": 0,
+  "backgroundImages": [],
+  "LevelTiles": "GetContext",
+  "LevelCol": [
+    {
+      "X": 8,
+      "Y": 7,
+      "col": "11111100",
+      "color": "#FF0",
+      "IN": 1
+    },
+    {
+      "X": 19,
+      "Y": 7,
+      "col": "11111100",
+      "color": "#FF0",
+      "IN": 1
+    },
+    {
+      "X": 19,
+      "Y": 8,
+      "col": "88883500",
+      "color": "rgba(0,0,0,0)",
+      "IN": 2,
+      "script": 1
+    }
+  ],
+  "Levelsprites": [],
+  "StartX": 8,
+  "StartY": 8,
+  "totalPrizes": 0
+}
