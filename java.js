@@ -106,6 +106,18 @@ let archivo = Archivo
                 alert("Selecciona un archivo primero.");
             }
 }
+function cargarJSON(JSON) {
+      fetch(JSON)
+        .then(response => {
+          if (!response.ok) throw new Error("No se pudo cargar el archivo JSON");
+          return response.json();
+        })
+        .then(data => {
+			SAVE = JSON.parse(data);
+			chargeLevelNoTiles()
+			Level_name.value  = data.name.slice(0,-5)
+		})
+}
 function textToBinaryNumbers(text) {
     return Array.from(text).map(char => {
         let binary = char.charCodeAt(0).toString(2); // Convierte a binario
