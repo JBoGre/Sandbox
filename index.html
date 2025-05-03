@@ -159,32 +159,32 @@
 	background-size: cover;
 	float:left;
 	margin:10em  2em ;
-    width: 16em;              
-    height: 16em;
-    background-image: url('texturas/HudTextures.png');
-    background-size: 128em, 128em;     /* O ajusta si necesitas escalar la imagen */
+    width: 8em;              
+    height: 8em;
+    background-image: url('Texturas/HudTextures.png');
+    background-size: 64em, 64em;     /* O ajusta si necesitas escalar la imagen */
     background-repeat: no-repeat;
 	}
 	.PLUS:hover{
 	background-color:#F44;
 	}
 	#PLUSRight{
-	   background-position: -160px -32px;  /* Coordenadas del recorte dentro de la imagen */ 
+	   background-position: -80px -16px;  /* Coordenadas del recorte dentro de la imagen */ 
 	}
 	#PLUSLeft{
-	background-position: -192px -32px;  /* Coordenadas del recorte dentro de la imagen */
+	background-position: -96px -16px;  /* Coordenadas del recorte dentro de la imagen */
 	}
 	#Lupa{
 	background-color:#FFF;
 	background-size: cover;
 	float:left;
 	margin:0em  0em ;
-    width: 32em;              
-    height: 32em;
+    width: 24em;              
+    height: 24em;
 	border: 2em outset rgb(0,0,0);
-    background-image: url('texturas/HudTextures.png');
-    background-size: 256em, 256em;     /* O ajusta si necesitas escalar la imagen */
-	background-position: -320px 0px;  /* Coordenadas del recorte dentro de la imagen */
+    background-image: url('Texturas/HudTextures.png');
+    background-size: 192em, 192em;     /* O ajusta si necesitas escalar la imagen */
+	background-position: -240px 0px;  /* Coordenadas del recorte dentro de la imagen */
 	
     background-repeat: no-repeat;
 	}
@@ -213,7 +213,7 @@
 	}
 	#hand{
 	float:left;
-	background: rgb(0,0,0) url("Hand.png") no-repeat left bottom;
+	background: rgb(0,0,0) url("hand.png") no-repeat left bottom;
 	background-size: cover;
 	}
 	#gotita{
@@ -421,6 +421,7 @@
 	 </div>
      <div id="screen">
      </div>
+
 	 <div id ="controladores2">
 	 <div class="Text"  style=" width:256px;  " >Change the Background</div>
 	  <div id="Backgorund-selector" style="
@@ -475,15 +476,26 @@
 	<input type="button" class="Text"  style=" width:256px;  " value="change" onclick="change_Size(Xsize.value,Ysize.value)">
 		</div> 
 			<div id="BlockResolution_Selector" style="
-	 width:128em;  
-	 height:36em; 
+	 width:52em;  
+	 height:64em;
+     margin: 0em 0em;	 
 	 float:left; 
 	">
+	
 	<div class="PLUS" id="PLUSRight"></div>
 		 <canvas  id="Lupa"  ></canvas>
 		 	 <div class="PLUS" id="PLUSLeft"></div>
+	<div style="  text-align: center; font-size:16px;   "  >Zoom</div>
 	</div>
+	
 	<a class="Text"  href="Sandbox Widescreen.html">Widescreen</a>
+	 <select id="LevelSelector" class="Text" style=" width:150px;  ">
+	 <option class="Text" value='Niveles JSON/LEVELNULL.json.json'>Level Null</option>
+    <option class="Text" value='Niveles JSON/Level 1.json'>Level 1</option>
+	<option class="Text" value='Niveles JSON/Level 2.json'>Level 2</option>
+	<option class="Text" value='Niveles JSON/Level 3.json'>Level 3</option>
+  </select>
+  <input type="button" class="Text"  style=" width:150px;  " value="change" onclick="cargarJSON(LevelSelected)">
 	
 		</div>
 		

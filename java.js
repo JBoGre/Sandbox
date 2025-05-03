@@ -120,6 +120,10 @@ function cargarJSON(Json) {
 			Level_name.value  = Name
 		})
 }
+ window.addEventListener("beforeunload", function (e) {
+    e.preventDefault(); // Requerido para algunos navegadores
+    e.returnValue = ""; // Necesario para que aparezca el diálogo en otros
+  });
 function textToBinaryNumbers(text) {
     return Array.from(text).map(char => {
         let binary = char.charCodeAt(0).toString(2); // Convierte a binario
@@ -439,28 +443,28 @@ PLUSLeft.addEventListener("click", () => {
 
 var BlockResolutionStates = [
 function (){
-	PLUSRight.style.backgroundPosition = "-128px -32px"
-	PLUSLeft.style.backgroundPosition = "-192px -32px"
+	PLUSRight.style.backgroundPosition = "-64px -16px"
+	PLUSLeft.style.backgroundPosition = "-96px -16px"
 	change_BlockResolution(8)
 },
 function (){
-	PLUSRight.style.backgroundPosition = "-160px -32px"
-	PLUSLeft.style.backgroundPosition = "-192px -32px"
+	PLUSRight.style.backgroundPosition = "-80px -16px"
+	PLUSLeft.style.backgroundPosition = "-96px -16px"
 	change_BlockResolution(12)
 },
 function (){
-	PLUSRight.style.backgroundPosition = "-160px -32px"
-	PLUSLeft.style.backgroundPosition = "-192px -32px"
+	PLUSRight.style.backgroundPosition = "-80px -16px"
+	PLUSLeft.style.backgroundPosition = "-96px -16px"
 	change_BlockResolution(16)
 },
 function (){
-	PLUSRight.style.backgroundPosition = "-160px -32px"
-	PLUSLeft.style.backgroundPosition = "-192px -32px"
+	PLUSRight.style.backgroundPosition = "-80px -16px"
+	PLUSLeft.style.backgroundPosition = "-96px -16px"
 	change_BlockResolution(24)
 },
 function (){
-	PLUSRight.style.backgroundPosition = "-160px -32px"
-	PLUSLeft.style.backgroundPosition = "-128px -32px"
+	PLUSRight.style.backgroundPosition = "-80px -16px"
+	PLUSLeft.style.backgroundPosition = "-64px -16px"
 	change_BlockResolution(32)
 },
 ]
@@ -3288,6 +3292,7 @@ if(player.lives > 0 ){
         });
     const audioPlayer = document.getElementById("audioPlayer");
 
+var LevelSelected = 'Niveles JSON/LEVELNULL.json'
     songSelector.addEventListener("change", function() {
       let selectedSong = this.value;
       if (selectedSong) {
@@ -3300,6 +3305,11 @@ if(player.lives > 0 ){
 		backgroundMusic.src = ""
       }
     });
+	
+	const LevelSelector = document.getElementById("LevelSelector");
+	LevelSelector.addEventListener("change", function() {
+		let LevelSelected = this.value;
+	})
 
 
 const controlls =[{up:38,down:40,left:37,right:39,Jump:90,Run:88 },{up:87,down:83,left:65,right:68,Jump:32,Run:18 },{up:38,down:40,left:37,right:39,Jump:17,Run:40 },]
