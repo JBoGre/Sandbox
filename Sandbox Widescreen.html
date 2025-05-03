@@ -31,7 +31,7 @@
 	display: grid;
     grid-template-columns: repeat(auto-fill, 32px);
     grid-template-rows: repeat(auto-fill, 32px);
-    background-image: url('texturas/Mising.png');
+     background-image: url('texturas/Mising.png');
 	background-size: cover;
 	float:left;
     }
@@ -515,6 +515,21 @@
 		
 		</div>
 		<a class="Text"  href="index.html">Editor</a>
+				<div id="BlockResolution_Selector" style="
+	 width:52em;  
+	 height:64em;
+     margin: 0em 0em;	 
+	 float:left; 
+	">
+		
+		<select id="LevelSelector" class="Text" style=" width:150px;  ">
+	 <option class="Text" value='Niveles JSON/LEVELNULL.json.json'>Level Null</option>
+    <option class="Text" value='Niveles JSON/Level 1.json'>Level 1</option>
+	<option class="Text" value='Niveles JSON/Level 2.json'>Level 2</option>
+	<option class="Text" value='Niveles JSON/Level 3.json'>Level 3</option>
+	 </select>
+  <input type="button" class="Text"  style=" width:150px;  " value="change" onclick="cargarJSON(LevelSelected)">
+  </div>
 </div>
 		
 	 
