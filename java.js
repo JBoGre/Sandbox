@@ -3308,7 +3308,7 @@ var LevelSelected = 'Niveles JSON/LEVELNULL.json'
 	
 	const LevelSelector = document.getElementById("LevelSelector");
 	LevelSelector.addEventListener("change", function() {
-		let LevelSelected = this.value;
+		 LevelSelected = this.value;
 	})
 
 
