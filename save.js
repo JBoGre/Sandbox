@@ -59,7 +59,7 @@ tiles:[
 {
 Name:"Tiles & Objects",
 Images:["texturas/ASCII.png","texturas/GradientTexture.png","texturas/Sprites.png","texturas/decoraciones.png",
-"texturas/Monkey.png","texturas/BigMonkey.png"],
+"texturas/Monkey.png","texturas/BigMonkey.png","texturas/Goomba.png","texturas/shy guy.png"],
 SoundEffects:["SoundEfects/Checkpoint.wav","SoundEfects/Collect.wav","SoundEfects/Boing.mp3","SoundEfects/Boing.mp3","SoundEfects/Jump Attack.mp3"],
 objects:[
 // Print Blocks 
@@ -130,8 +130,12 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"11111B00"],["Tile","rgba(0,0,0,0)",1,"11111B10"],["Tile","rgba(0,0,0,0)",1,"11111B20"],
 ["Tile","rgba(0,0,0,0)",1,"00000C00"],["Tile","rgba(0,0,0,0)",1,"00000C10"],["Tile","rgba(0,0,0,0)",1,"00000C20"],
 ["Tile","rgba(0,0,0,0)",1,"11111B30"],
-// special Blocks
+// Signals
 ["Tile","rgba(0,0,0,0)",1,"00000D00"],
+["Tile","rgba(0,0,0,0)",1,"00000D10"],
+["Tile","rgba(0,0,0,0)",1,"00000E00"],
+["Tile","rgba(0,0,0,0)",1,"00000E10"],
+// special Blocks
 ["Tile","rgba(0,0,0,0)",2,"40002808"],["Tile","rgba(0,0,0,0)",2,"50002908"],
 ["Tile","rgba(0,0,0,0)",1,"61111A00"],["Tile","rgba(0,0,0,0)",1,"11611A10"],["Tile","rgba(0,0,0,0)",1,"11161A20"],["Tile","rgba(0,0,0,0)",1,"16111A30"],["Tile","rgba(0,0,0,0)",1,"66661A40"],
 ["Tile","rgba(0,0,0,0)",2,"99993400",0],["Tile","rgba(0,0,0,0)",2,"88883500",0],
@@ -142,6 +146,8 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"10002430",5],
 ["Tile","#000",2,"15141050",6],["Tile","#000",2,"14151060",6],
 ["Tile","rgba(0,0,0,0)",1,"11111830",7],
+["Tile","rgba(0,0,0,0)",1,"61111A50",7],
+["Tile","rgba(0,0,0,0)",1,"11611A60",7],
 
 ["Object",128,128,"#","000000000",3,"10000", 0,0],["Object",128,128,"#","000000000",3,"11000", 0,0],
 ["Object",128,128,"#","000000000",3,"12000", 0,0],["Object",128,128,"#","000000000",3,"13000", 0,0],
@@ -149,12 +155,7 @@ objects:[
 ["Object",64,32,4,"660030300",4,"00100", 0,0],
 ["Object",64,32,5,"161120005",4,"01223", 0,4],
 ["Object",96,64,6,"161120005",5,"00045", 0,0],
-/*
-["Object",32,32,"#","661122200",1,"09000", -1,1],["Object",32,32,"#","161122103",1,"09100", 1,8],
-["Object",32,32,"#","661122503",1,"09200", -2,1],["Object",32,32,"#","101120201",1,"09300", 0,-8],
-["Object",32,32,"#","101120201",1,"09000", 0,8],["Object",32,32,"#","661130022",1,"09100", 1,1],
-["Object",32,32,"#","661130077",1,"09100", 1,1],
-["Object",32,32,"#","101122603",1,"09200", 2,12],["Object",32,32,"#","101122244",1,"09300", 1,1],*/
+
 ["Object",42,42,0,"661132103",2,"22300", -1,8],["Object",84,84,1,"661132103",2,"21100", -1,8],
 ["Object",42,42,2,"661122103",2,"22300", -1,8],
 ["Object",32,32,7,"661132103",5,"2A200", -2,8],
@@ -165,6 +166,8 @@ objects:[
 ["Object",64,32,"#","101122200",2,"02200", -2,0],
 ["Object",64,32,"#","101122200",2,"02200", 0,2],
 ["Object",32,32,10,"661120201",2,"01500", 0,0],
+["Object",32,48,11,"160030000",6,"00023",-1,0],
+["Object",32,32,12,"160030000",7,"00023",-1,0],
 ],
 TileScripts:[
 {
@@ -256,9 +259,9 @@ Action: function Action(Tile,p1,side) {
 	Tile.action = true
 },
 Loop: function Loop (Tile) {
-	if(Clock(Tile,5)){
-	myMiniSprites.push(new Mini_sprite(Tile.x+16,Tile.y,1,1,128,96,RandomNumber(1,16),5,0,0,16,16))
-	myMiniSprites.push(new Mini_sprite(Tile.x,Tile.y,1,1,128+16,96,RandomNumber(1,16),5,0,0,16,16))
+	if(Clock(Tile,10)){
+	myMiniSprites.push(new Mini_sprite(Tile.x+16,Tile.y,1,1,128,96,RandomNumber(1,16),5,0,0,16,16,0))
+	myMiniSprites.push(new Mini_sprite(Tile.x,Tile.y,1,1,128+16,96,RandomNumber(1,16),5,0,0,16,16,0))
 	Tile.action = false
 	Tile.type = 0
 	Tile.imgN = 0
@@ -769,31 +772,6 @@ RenderMode: function RenderMode (ctx,Sprite) {
      PreRenderMode(ctx,Sprite)
  },
 },
-],
-},
-
-{
-Name:"Gombas ",
-Images:["texturas/Goomba.png"],
-objects:[
-["Object",32,48,0,"160030000",0,"00023",-1,0],
-["Object",32,48,0,"160030000",0,"00123",-1,0],
-["Object",32,48,0,"160030000",0,"00223",-1,0],
-["Object",32,48,0,"160030000",0,"00323",-1,0],
-["Object",32,48,0,"160030000",0,"00423",-1,0],
-["Object",32,48,0,"660030000",0,"00523",-1,0],
-["Object",32,48,0,"160030000",0,"00623",-1,0],
-["Object",32,48,0,"160030000",0,"00723",-8,0],
-["Object",32,48,0,"160030000",0,"00823",-1,0],
-["Object",32,48,0,"160030000",0,"30923",-1,0],
-["Object",32,48,0,"160030000",0,"30A23",-1,0],
-["Object",32,48,0,"160030000",0,"30B23",-1,0],
-["Object",16,24,0,"160030000",0,"00023",-1,0],
-["Object",64,96,0,"160030000",0,"00023",-1,0],
-["Object",128,192,0,"160030000",0,"00023",-1,0],
-["Object",256,384,0,"160030000",0,"00023",-1,0],
-],
-SpriteScripts:[
 	{
 	Action: function Action(Sprite) {
 		 Sprite.height = Math.round(0.66 * Sprite.heightPrint)
@@ -868,21 +846,13 @@ RenderMode: function RenderMode (ctx,Sprite) {
 	ctx.globalCompositeOperation = 'source-over';
 	ctx.globalAlpha = 1
  },
-},
-],
-},
-{
-Name:"Wallkers ",
-Images:["texturas/shy guy.png"],
-objects:[
-["Object",32,32,0,"160030000",0,"00023",-1,0],
-["Object",32,32,0,"160030000",0,"00542",-1,0],
-["Object",48,48,0,"160030000",0,"00443",-1,0],
-],
-SpriteScripts:[
+	},
 {
 Action: function Action(Sprite) {
-	 let num = Math.round(0.25 * Sprite.widthPrint)
+	let num = Math.round(0.125 * Sprite.heightPrint)
+	 Sprite.height = Sprite.heightPrint - num
+	 Sprite.Ydiference_Print = num *-1
+	  num = Math.round(0.25 * Sprite.widthPrint)
 	 Sprite.width = Sprite.widthPrint - num
 	 Sprite.Xdiference_Print = num * -0.5
 	},
@@ -901,17 +871,16 @@ Loop: function Loop (Sprite,p1) {
 			Sprite.XG = 256
 			Sprite.YG = 0
 		}
-	}else{
-	}
+}
 },
 RenderMode: function RenderMode (ctx,Sprite) {
-    PreRenderMode(ctx,Sprite);
+        PreRenderMode(ctx,Sprite)
  },
 },
-],
+]
 }
-
 ],
+
 LevelTiles:"GetContext",
 Inicial_Script:function InicialCharge(){
 	//createBlocksLinear(100,true,3,8,3,16,128+64,128+64,80,0,1,"#FFF","10002220",0,1,0,0)
