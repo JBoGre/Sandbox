@@ -605,6 +605,7 @@ function chargeLevelNoTiles(){
 	for(let i = 0; i < SAVE.backgroundMusic.length ; i++){
 	backgroundMusicCollection.push(new Audio(SAVE.backgroundMusic[i]))
 	}
+	backgroundMusicSrc = SAVE.backgroundMusic[0]
 	backgroundMusic = backgroundMusicCollection[backgroundMusicTrack]
     backgroundMusic.loop = true; // Activar reproducción en bucle
 	for(let i = 0; i < SAVE.backgroundImages.length ; i++){
@@ -2131,9 +2132,6 @@ function PreProgramedMode (sprite,player1){
 	Movement[sprite.col[7]].X(sprite,player1)
 	if(sprite.Ytouch){auto_com[sprite.col[6]].Y(sprite)}
     Movement[sprite.col[8]].Y(sprite,player1)
-	if((sprite.Yplayertouch || sprite.Xplayertouch )&& player1.invecybility){
-		sprite.live --
-	}
 	if(sprite.live < 0){
 		explosions32[0](sprite)
 		Kills ++
@@ -2850,9 +2848,9 @@ function(object){
 	myMiniSprites.push(new Mini_sprite(object.x+16,object.y+16,object.imgN,1,object.XG+16,object.YG+16,RandomNumber(1,16),5,0,0,16,16,0))
 },
 ]
-function Margin_MS(Player){
-var crash = true
-    if((Player.x < 512 && (Player.x + (Player.width)) > 0) && (Player.y <  512  && Player.y + (Player.height) > 0)){
+function Margin_MS(Sprite){
+var crash = false
+    if((Sprite.x < screenWidth && (Sprite.x + (Sprite.width)) > 0) && (Sprite.y <  screenHeigth  && Sprite.y + (Sprite.height) > 0)){
 	crash =  true  }
 return crash
 }
@@ -2978,8 +2976,13 @@ function charge (b,SX,SY,x,y,XL,YL) {
 	Q+=1;
 	}
     let ctxZ = b.getContext("2d");
-	b.width = screenWidth
+	if(TESTSCREEN){
+	b.width = screenWidth*2
+	b.height = screenHeigth*2
+	}else{
+    b.width = screenWidth
 	b.height = screenHeigth
+	}
     ctxZ.clearRect(0, 0, b.width, b.height);
     for(let i = 0; i <  limitY + Yplus	; i++){		
     charge()
@@ -3104,6 +3107,9 @@ let ctxZ = b.getContext("2d");
 ctxZ.restore()
 ctxZ.clearRect(0, 0, b.width, b.height)
 ctxZ.save();
+if(TESTSCREEN){
+ctxZ.translate(screenWidthHalf,screenHeigthHalf)
+}
 ctxZ.globalAlpha = Alpha
 //ctxZ.translate(256,256);
 /* LCD
@@ -5093,6 +5099,7 @@ return on_game;
 var Stelar = false
 var invecybility = false
 var UpSide = false
+var TESTSCREEN = false
 function Boregito(Value){
 		   switch(Value){
 			   case "WATER":
@@ -5139,6 +5146,9 @@ function Boregito(Value){
 			   break 
 			   case "SAVEIMAGE":
 			   Grid.style.zIndex = 20
+			   break 
+			   case "TESTSCREEN":
+			   TESTSCREEN = true
 			   break 
 			   default:
 			   console.log("No code")
