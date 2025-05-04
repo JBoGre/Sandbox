@@ -20728,22 +20728,6 @@
       "YV": 2
     },
     {
-      "X": 8112,
-      "Y": -2242,
-      "xPrint": 4056,
-      "yPrint": 2719,
-      "width": 64,
-      "height": 96,
-      "widthPrint": 32,
-      "heightPrint": 48,
-      "script": 11,
-      "col": "160030000",
-      "img": 6,
-      "IN": "00623",
-      "XV": -1,
-      "YV": 0
-    },
-    {
       "X": 8078,
       "Y": -2336,
       "xPrint": 4039,
@@ -20792,7 +20776,7 @@
       "YV": 0
     }
   ],
-  "StartX": 2,
+  "StartX": 1,
   "StartY": 6,
   "totalPrizes": 5
 }
