@@ -4077,7 +4077,7 @@ if(crash){
 	}
 	if(!frisFotogram){
 		p1.x += GoTo - p1.xP
-		}//else{ p1.x += GoTo + p1.xP}
+	}//else{ p1.x += GoTo + p1.xP}
 	cameraX += GoTo
 	cordX += GoTo;
 	p1.modeX = 1;
@@ -4088,12 +4088,12 @@ if(crash){
 const cameraModeX = [
 function(Player) {
 	if(((Player.x + Player.width) < (screenWidthHalf + Player.widthHalf)) && SAVE.CameraX_frese == 0){
-	Player.modeX = 0;corection = -1;cameraX += 0 ;Player.x = (screenWidthHalf - Player.widthHalf) + Player.xP
+	Player.modeX = 0;corection = -1;cameraX += 0 ;Player.x = (screenWidthHalf - Player.widthHalf) 
 	}
 },
 function(Player) {
 	if((Player.x > (screenWidthHalf - Player.widthHalf)) && SAVE.CameraX_frese == 0 ){
-	Player.modeX = 0;corection = -1;cameraX += 0 ;Player.x = (screenWidthHalf - Player.widthHalf) + Player.xP
+	Player.modeX = 0;corection = -1;cameraX += 0 ;Player.x = (screenWidthHalf - Player.widthHalf) 
 	}
 },
 ]
@@ -4119,7 +4119,9 @@ if(crash){
 	for (i = 0; i < tiles.length; i += 1){
 		tiles[i].y += GoTo
 	} 
-    if(!frisFotogram){p1.y += GoTo - p1.yP}
+    if(!frisFotogram){
+		p1.y += GoTo - p1.yP
+		}//else{ p1.y += GoTo + p1.yP}
 	cameraY += GoTo
 	cordY += GoTo;
 	p1.modeY = 1;
@@ -4131,13 +4133,13 @@ const cameraModeY = [
 function(Player,tiles) {
 	if(((Player.y + Player.height) < (screenHeigthHalf + Player.heightHalf)) && SAVE.CameraY_frese == 0 ){
 		console.log("up")
-	Player.modeY = 0;corection = -1;cameraY = 0;Player.y = (screenHeigthHalf - Player.heightHalf) + Player.yP
+	Player.modeY = 0;corection = -1;cameraY = 0;Player.y = (screenHeigthHalf - Player.heightHalf) 
     }
 },
 function(Player,tiles) {
 	if((Player.y > (screenHeigthHalf - Player.heightHalf)) && SAVE.CameraY_frese == 0 ){
 		console.log("down")
-	Player.modeY = 0;corection = -1;cameraY = 0;Player.y = (screenHeigthHalf - Player.heightHalf) + Player.yP
+	Player.modeY = 0;corection = -1;cameraY = 0;Player.y = (screenHeigthHalf - Player.heightHalf) 
 	}
 	},
 ]
@@ -5111,6 +5113,13 @@ function Boregito(Value){
 			   case "SHADOW":
 			   effects_in_game.push(new effect(3,NoTexture,32,32,true,0,false,0,0,0))
 			   break
+			   case "BEACH":
+			   cargarJSON("Niveles JSON/BeachLevel.json")
+			   effects_in_game.push(new effect(1,WaterTexture,512,512,true,0,true,512,0,0))
+			   break
+			   case "WELLCOME":
+			   cargarJSON("Niveles JSON/WELLCOME.json")
+			   break 
 			   case "SHOTERMODE ":
 			   shoterMode = 1
 			   break ;
