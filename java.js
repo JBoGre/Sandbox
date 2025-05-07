@@ -632,7 +632,7 @@ if(SAVE.Limit_Up*32 < screenHeigth ){
 	SAVE.CameraY_frese = 1
 	Limit_Up = (32 * limitYGird)
 }else{
-	Limit_Up =  SAVE.Limit_Up*32
+	Limit_Up =  SAVE.limit_up*32
 }
 }
 if(SAVE.X == undefined || SAVE.X == 0 ){
