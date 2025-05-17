@@ -487,8 +487,8 @@ function CreateHeight(){
 	}
 	return screenView;
 }
- const screenWidth =  CreateWidth()
- const screenHeigth =  CreateHeight()
+ var screenWidth =  CreateWidth()
+ var screenHeigth =  CreateHeight()
 var GridWidth = (SAVE.X * BlockResolution) 
 var GridHeight = (SAVE.Y * BlockResolution) 
 const screenWidthHalf = Math.round(screenWidth/2)
@@ -600,7 +600,6 @@ function chargeLevelNoTiles(){
 	SpritesInGrid = []
 	createSpritesInGrid ()
 	BGC = []
-	limits_and_alture()
     backgroundMusicCollection = []
 	for(let i = 0; i < SAVE.backgroundMusic.length ; i++){
 	backgroundMusicCollection.push(new Audio(SAVE.backgroundMusic[i]))
@@ -613,6 +612,7 @@ function chargeLevelNoTiles(){
 	BGC.push(new Background(BCC[0],BCC[1],BCC[2],BCC[3],BCC[4],BCC[5],BCC[6],BCC[7],BCC[8],BCC[9],BCC[10]))
 	}
 	change_BlockResolution(BlockResolution)
+	limits_and_alture()
 	buton[1](0)
 }
 function limits_and_alture(){
@@ -625,15 +625,15 @@ if(SAVE.limit_rigth*-32 > screenWidth*-1 ){
 }else{
 	Limit_Rigth =  SAVE.limit_rigth*-32
 }
-if(SAVE.Limit_Up == false){
-Limit_Up = (32 * limitYGird)
-}else{
-if(SAVE.Limit_Up*32 < screenHeigth ){
-	SAVE.CameraY_frese = 1
+if(SAVE.limit_up == false){
 	Limit_Up = (32 * limitYGird)
-}else{
-	Limit_Up =  SAVE.limit_up*32
-}
+	}else{
+		if(SAVE.limit_up*32 < screenHeigth ){
+			SAVE.CameraY_frese = 1
+			Limit_Up = (32 * limitYGird)
+		}else{
+			Limit_Up =  SAVE.limit_up*32
+		}
 }
 if(SAVE.X == undefined || SAVE.X == 0 ){
 SAVE.X = limitXGird
@@ -2072,6 +2072,8 @@ this.BX = 0 ; this.BY = 0
 this.MoveYLimit = 0 ;this.MoveXLimit = 0
 this.sideX = true ;this.sideY = true
 this.Yplayertouch = false; this.Xplayertouch = false
+this.Ytouches = 0
+this.Xtouches = 0
 this.BulletTouch = false
 this.Ytouch = false;this.Xtouch = false
 this.Xdiference_Print = 0;this.Ydiference_Print = 0;
@@ -2189,7 +2191,9 @@ Sprite.yP = Sprite.MoveY;
 Sprite.y += Sprite.yP;
 
 Sprite.Ytouch = false
-
+if(!tick){
+Sprite.Ytouches = 0	
+}
 for (i = 0; i < tiles.length; i += 1){
 	var TL = tiles[i]
 	if(TL.type != 0 ){
@@ -2209,6 +2213,7 @@ for (i = 0; i < tiles.length; i += 1){
 			Sprite.y += Sprite.yP*-1;
 			Sprite.yP = Sprite.MoveY + Sprite.yP*-1
 			Sprite.Ytouch = true
+			Sprite.Ytouches ++
 			//}
 		}
 	}
@@ -2222,7 +2227,8 @@ Sprite.xP = Sprite.MoveX;
 	if(Sprite.xP < negativeLimit){Sprite.xP = negativeLimit}
 Sprite.x += Sprite.xP;
 
-Sprite.Xtouch = false	
+Sprite.Xtouch = false
+Sprite.Xtouches = 0	
 for (i = 0; i < tiles.length; i += 1){
 	var TL = tiles[i]
 	if(TL.type != 0 /*&& TL.type != 2*/){
@@ -2235,6 +2241,7 @@ for (i = 0; i < tiles.length; i += 1){
 			Sprite.x += Sprite.xP*-1;
 			Sprite.xP = Sprite.MoveX + Sprite.xP*-1
 			Sprite.Xtouch = true
+			Sprite.Xtouches ++
 		}
 	}
 }
@@ -2263,6 +2270,9 @@ Sprite.MoveYLimit = MoveY
 Sprite.yP = Sprite.MoveYLimit
 
 Sprite.Ytouch = false
+if(!tick){
+Sprite.Ytouches = 0	
+}
 if(CompleteTilesColisionY(Sprite,tiles)){
 	Sprite.yP = Sprite.MoveYLimit + Sprite.yP*-1
 }
@@ -2284,6 +2294,7 @@ Sprite.MoveXLimit = MoveX
 Sprite.xP =  Sprite.MoveXLimit
 
 Sprite.Xtouch = false	
+Sprite.Xtouches = 0	
 if(CompleteTilesColisionX(Sprite,tiles)){
 	Sprite.xP = Sprite.MoveXLimit + Sprite.xP*-1
 }
@@ -2661,13 +2672,11 @@ ctx.globalCompositeOperation = 'source-over';
 },
 function(Sprite,canvas){
 ctx = canvas.getContext("2d");
-//ctx.fillStyle = "#f00"
-//ctx.fillRect(Sprite.x,Sprite.y,Sprite.width,Sprite.height)
 ctx.save();
 ctx.translate(
 (Sprite.x + Sprite.Xdiference_Print/2) -Sprite.widthPrint / -2,
  (Sprite.y + Sprite.Ydiference_Print/2) - Sprite.heightPrint / -2);
-ctx.rotate(Sprite.angle * Math.PI / 180);
+ctx.rotate(Sprite.angle*Math.PI / 180  );
 ctx.drawImage(
 image_collection[Sprite.imgN], 
 Sprite.XG ,
@@ -3229,6 +3238,7 @@ let include = fotograms.indexOf(Fotograms)
 function player(width, height,color,Gird, X, Y,comportament,Movement,Xnegative,Ynegative,DeathSound) {
 this.width = width; this.height = height;
 this.widthHalf = width/2; this.heightHalf = height/2;
+this.InMove = true
 this.XG = 0; this.YG = 0; 
 this.side = false; 
 this.sideX = true;
@@ -3271,13 +3281,20 @@ this.songEnd = false
 }
 function PlayerAction (player,controls,chocolate){
 if(player.lives > 0 ){
-	  plataformer_Easy(controls,player)
+	 if(!player.InMove){
+		 player.keys = null
+	 }
+		 plataformer_Easy(controls,player)
+		 
          }else{
-			 if(chocolate == false){
-			backgroundMusic.pause();       // Pausa el audio
-            backgroundMusic.currentTime = 0;  // Reinicia al inicio
-		     }
-			if(player.songEnd == false){player.deathMusic.play()}		
+			if(chocolate == false){
+				backgroundMusic.pause();       // Pausa el audio
+					backgroundMusic.currentTime = 0;  // Reinicia al inicio
+					
+				}
+			if(player.songEnd == false){
+				player.deathMusic.play()
+				}		
         player.lives = 0;if(death[2](player) && player.songEnd){
 	   if(chocolate){player.y = 240;player.x = 240;player.lives = 1;player.MoveY = -8
 	   player.songEnd = false
@@ -3715,6 +3732,7 @@ if((PL.x < (object.x + 32) - PL.MoveXLimit && (PL.x + (PL.width)) > (object.x - 
 			}
 			PL.xP = PL.x - ((object.x + 32) - PL.MoveXLimit) // aplica una operacion para sacar al jugador de ahi
 			}
+			PL.Xtouches ++
 			crash = true
 		} // todo lo demas funciona igual solo que en lo otro
 	}
@@ -3726,6 +3744,7 @@ if((PL.x < (object.x + 32) - PL.MoveXLimit && (PL.x + (PL.width)) > (object.x - 
 			}
 			PL.xP = (PL.x + PL.width) - (object.x  - PL.MoveXLimit)
 			}
+			PL.Xtouches ++
 			crash = true
 		}
 	}
@@ -3743,7 +3762,9 @@ if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (objec
 			    }
 			   PL.yP = PL.y - ((object.y + 32) - PL.MoveYLimit)
 				}
+				PL.Ytouches ++
 			   crash = true
+			   
 		    }
 	    
 		}
@@ -3752,9 +3773,11 @@ if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (objec
 			   if(PL.FristTouch){
 			   if(col[( "0x" + object.col[0])*1].UP(PL,object)){
 				PL.Ytouch = true
+			
 			    }
 			PL.yP = (PL.y + PL.height) - (object.y  - PL.MoveYLimit)
 			   }
+			   PL.Ytouches ++
 			crash = true
 		   }
 	    }
@@ -3773,6 +3796,7 @@ if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (objec
 			    }
 			PL.yP = (PL.y + PL.height) - ((object.y +1)  - tileVy)
 				}
+				PL.Ytouches ++
 			crash = true
 			}
 	    }
@@ -4054,8 +4078,8 @@ Y: function Y (PL,B) {if(PL.invecybility != true){PL.lives --;}},
 X: function X (PL) {if(PL.invecybility != true){PL.lives += 1;PL.invecybility = true}},
 Y: function Y (PL) {if(PL.invecybility != true){PL.lives += 1;PL.invecybility = true}},
 },{ /*8 Win */
-X: function X (PL,B) {PL.Win = true;B.col = "00000000"},
-Y: function Y (PL,B) {PL.Win = true;B.col = "00000000"},
+X: function X (PL,B) {PL.Win = true;B.col = "00000000";PL.InMove = false},
+Y: function Y (PL,B) {PL.Win = true;B.col = "00000000";PL.InMove = false},
 },{ /*9 checkpoint */
 X: function X (PL,B) {establecing_starcords(B.iA,B.iL,PL);B.col = "00000000"},
 Y: function Y (PL,B) {establecing_starcords(B.iA,B.iL,PL);B.col = "00000000"},
@@ -4750,6 +4774,15 @@ var song_end = false
 var frisFotogram = true
 var effects_in_game = []//[new effect(2,LavaTexture,32,32,true,512,true,512,0,0)]
 var Kills = 0
+function keyHandler(e) {
+  e.preventDefault();
+  console.log(e.key.charCodeAt(0))
+  let Key = e.key.charCodeAt(0).toString(16).split('').reverse().join('')
+  console.log(Key)
+  DrawMode = 2
+ Tileselect =  ['Tile', 'rgba(0,0,0,0)', 0, '00000'+Key+'0']
+ 
+}
 /*activa todo el juego*/
 
 function gametest (game,all_frames,p1,p2,tiles,sprites,mini_sprites,Hits){
@@ -4835,8 +4868,10 @@ function Frames(){
         if(Frame(p1,p2,tiles,sprites,mini_sprites,Hits)){
 				requestAnimationFrame(Frames)
         }else{
-		   backgroundMusic.pause();       // Pausa el audio
-           backgroundMusic.currentTime = 0; // Reinicia al inicio
+		   if(!reset_game){
+		    backgroundMusic.pause();  // Pausa el audio
+			backgroundMusic.currentTime = 0; // Reinicia al inicio
+		   }
 	       if(reset_game){
 	       buton[2](0)
 	       }else{
@@ -5047,6 +5082,10 @@ if(DrawShadow){drawLight(game,p1,sprites)}
 PrinAllTiles(game)
 for(let i = 0; i < sprites.length ;i++){
 	if(sprites[i].prin){
+	//	ctx.fillStyle = "#FF0"
+	//	ctx.fillRect(sprites[i].x+sprites[i].Xdiference_Print,sprites[i].y+sprites[i].Ydiference_Print,sprites[i].widthPrint,sprites[i].heightPrint)
+	//	ctx.fillStyle = "#F00"
+	//	ctx.fillRect(sprites[i].x,sprites[i].y,sprites[i].width,sprites[i].height)
 draw_sprite[sprites[i].Mode](sprites[i],game)
 	}
 }
