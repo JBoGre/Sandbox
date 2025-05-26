@@ -1000,8 +1000,8 @@ let No_a_block = false
 for(let i = 0; i < Number ; i++){
 	 No_a_block = false
 for(let i = 0; i < 2 ; i++){
-X = RandomNumber(Xcoordinate,x)
-Y = RandomNumber(Ycoordinate,y)
+X = RandomNumber(Xcoordinate,Xcoordinate+x)
+Y = RandomNumber(Ycoordinate,Ycoordinate+y)
  result = LC.find(LC => LC.X == X && LC.Y == Y -1  );
 	   if(result == undefined){
 		    No_a_block = true
@@ -1122,7 +1122,7 @@ for(let i = 0; i < Number ; i++){
 }
 }
 function Create_Level_random(){
-createSprites(100,32,32,6,"360020000",6,"00013",1,0); Goombas
+createSprites(100,32,32,6,"360020000",6,"00013",1,0);// Goombas
 createSprites(100,32,32,4,"360010000",10,"00000",-2,0,256,512,32,0);
 createSprites(100,32,32,4,"360010000",10,"00100",2,0,256,512,32,0);
 createSprites(100,32,32,3,"160010000",10,"11200",2,2,256,512,32,0);
@@ -2026,9 +2026,9 @@ this.BulletTouch = false
 this.live = 1
 if(SAVE == undefined){
     this.SAVE = true
-}else{
-	this.SAVE = SAVE
-}
+	}else{
+		this.SAVE = SAVE
+	}
 this.MoveX = 0 ;this.MoveY = 0
 this.xP = 0 ;this.yP = 0
 this.Xdiference_Print = 0;this.Ydiference_Print = 0;
@@ -2036,25 +2036,34 @@ this.widthGrid = width; this.heightGrid = height;
 this.widthPrint = width; this.heightPrint = height;
 this.width = width; this.height = height;	
 this.script = script 
-this.type = ( "0x" + comportament[4])*1
-this.col = comportament
-this.Up = ( "0x"+ comportament[0])*1;this.Left = ( "0x"+ comportament[1])*1;
-this.Down = ( "0x"+ comportament[2])*1;this.Rigth = ( "0x"+ comportament[3])*1;
+if(comportament != undefined){
+	this.col = comportament
+	this.type = ( "0x" + comportament[4])*1
+	this.typeColision = this.type
+	this.Up = ( "0x"+ comportament[0])*1;this.Left = ( "0x"+ comportament[1])*1;
+	this.Down = ( "0x"+ comportament[2])*1;this.Rigth = ( "0x"+ comportament[3])*1;
+	}else{
+		this.Up = 0;this.Left = 0;
+		this.Down = 0;this.Rigth = 0;
+		this.col = "000000000"
+		this.type = 0
+		this.typeColision = this.type
+	}
 this.Xvelocity = Xvelocity ;this.Yvelocity = Yvelocity  ;
 this.IXR = Xvelocity ;this.IYR = Yvelocity ;
 if(RenderMode != undefined){
-this.XG = ("0x"+ RenderMode[1])*width; this.YG = ( "0x"+ RenderMode[2])*height
-this.RenderMode = RenderMode
-this.Mode = RenderMode[0]
-this.LoopFotogram = ("0x"+ RenderMode[3])*1
-this.FramesIntervalds = ("0x"+ RenderMode[4])*1
-}else{
-this.XG = 0 ;this.YG = 0 
-this.RenderMode = "000000"
-this.Mode = 0
-this.FramesIntervalds = 0
-this.LoopFotogram = 0
-}
+	this.XG = ("0x"+ RenderMode[1])*width; this.YG = ( "0x"+ RenderMode[2])*height
+	this.RenderMode = RenderMode
+	this.Mode = RenderMode[0]
+	this.LoopFotogram = ("0x"+ RenderMode[3])*1
+	this.FramesIntervalds = ("0x"+ RenderMode[4])*1
+	}else{
+		this.XG = 0 ;this.YG = 0 
+		this.RenderMode = "000000"
+		this.Mode = 0
+		this.FramesIntervalds = 0
+		this.LoopFotogram = 0
+		}
 this.intervald_frame = 0
 this.intervaled_time = 0
 this.imgN = img
@@ -2090,39 +2099,49 @@ this.State = 0
 this.water = false
 this.script = script 
 if(comportament != undefined){
-this.col = comportament
-this.type = ( "0x" + comportament[4])*1
-this.Up = ( "0x"+ comportament[0])*1;this.Left = ( "0x"+ comportament[1])*1;
-this.Down = ( "0x"+ comportament[2])*1;this.Rigth = ( "0x"+ comportament[3])*1;
-}else{
-this.Up = 0;this.Left = 0;
-this.Down = 0;this.Rigth = 0;
-this.col = "000000000"
-this.type = 0
-}
+	this.col = comportament
+	this.type = ( "0x" + comportament[4])*1
+	this.typeColision = this.type
+	this.Up = ( "0x"+ comportament[0])*1;this.Left = ( "0x"+ comportament[1])*1;
+	this.Down = ( "0x"+ comportament[2])*1;this.Rigth = ( "0x"+ comportament[3])*1;
+	}else{
+		this.Up = 0;this.Left = 0;
+		this.Down = 0;this.Rigth = 0;
+		this.col = "000000000"
+		this.type = 0
+		this.typeColision = this.type
+	}
 if(RenderMode != undefined){
-this.XG = ("0x"+ RenderMode[1])*width; this.YG = ( "0x"+ RenderMode[2])*height
-this.RenderMode = RenderMode
-this.Mode = RenderMode[0]
-this.LoopFotogram = ("0x"+ RenderMode[3])*1
-this.FramesIntervalds = ("0x"+ RenderMode[4])*1
-}else{
-this.XG = 0 ;this.YG = 0 
-this.RenderMode = "000000"
-this.Mode = 0
-this.FramesIntervalds = 0
-this.LoopFotogram = 0
-}
+	this.XG = ("0x"+ RenderMode[1])*width; this.YG = ( "0x"+ RenderMode[2])*height
+	this.RenderMode = RenderMode
+	this.Mode = RenderMode[0]
+	this.LoopFotogram = ("0x"+ RenderMode[3])*1
+	this.FramesIntervalds = ("0x"+ RenderMode[4])*1
+	}else{
+		this.XG = 0 ;this.YG = 0 
+		this.RenderMode = "000000"
+		this.Mode = 0
+		this.FramesIntervalds = 0
+		this.LoopFotogram = 0
+	}
 this.angle = 0
 this.fotogram = 0
 this.sideX = true ;this.sideY = true
 if(Xvelocity != undefined){
 	this.Xvelocity = Xvelocity;if(Xvelocity < 0){this.sideX = false}
-	}else{this.Xvelocity = 0}
+	}else{
+		this.Xvelocity = 0
+		}
 if(Yvelocity != undefined){
 	this.Yvelocity = Yvelocity;if(Yvelocity < 0){this.sideY = false}
-	}else{this.Yvelocity = 0}
-if(img){this.imgN = img}else{this.imgN = 0}
+	}else{
+		this.Yvelocity = 0
+	}
+if(img){
+	this.imgN = img
+	}else{
+		this.imgN = 0
+		}
 this.IXR = this.Xvelocity ;this.IYR = this.Yvelocity ;
 this.intervald_frame = 0
 this.intervald_time = 0
@@ -2167,18 +2186,18 @@ function(Sprite,player1,player2,tiles){
 /*nothing*/
 },
 function(Sprite,player1,player2,tiles){
-//if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
-//(0  < (Sprite.y + (Sprite.height)) && screenHeigth  > (Sprite.y))){
+if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
+(0  < (Sprite.y + (Sprite.height)) && screenHeigth  > (Sprite.y))){
 	Sprite.InScreen = true
 	Sprite.yP = Sprite.MoveY;
 	Sprite.y += Sprite.yP;
 	Sprite.xP = Sprite.MoveX;
 	Sprite.x += Sprite.xP;
 	MiniSpriteColision(Sprite,myMiniSprites)
-/*	}else{
+	}else{
 	Sprite.InScreen = false
 	
-}*/
+}
 },
 function(Sprite,player1,player2,tiles){
 if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
@@ -2644,9 +2663,10 @@ P.intervald_frame += 1
     }
 }
 const draw_sprite = [
-function(Sprite,canvas){
+function(Sprite,canvas){ // 0 Normal
 ctx = canvas.getContext("2d");
-ctx.drawImage(image_collection[Sprite.imgN], 
+ctx.drawImage(
+			  image_collection[Sprite.imgN], 
               Sprite.XG + Sprite.fotogram*Sprite.widthGrid,
 			  Sprite.YG , 
 			  Sprite.widthGrid, 
@@ -2656,7 +2676,7 @@ ctx.drawImage(image_collection[Sprite.imgN],
 			  Sprite.widthPrint, 
 			  Sprite.heightPrint)
 },
-function(Sprite,canvas){
+function(Sprite,canvas){ // 1 background
 ctx = canvas.getContext("2d");
 ctx.globalCompositeOperation = 'destination-over';
 ctx.drawImage(image_collection[Sprite.imgN], 
@@ -2670,7 +2690,7 @@ ctx.drawImage(image_collection[Sprite.imgN],
 			  Sprite.heightPrint)
 ctx.globalCompositeOperation = 'source-over';
 },
-function(Sprite,canvas){
+function(Sprite,canvas){ // 2 Angle
 ctx = canvas.getContext("2d");
 ctx.save();
 ctx.translate(
@@ -2689,7 +2709,7 @@ Sprite.heightGrid,
  Sprite.heightPrint)
 ctx.restore();
 },
-function(Sprite,canvas){
+function(Sprite,canvas){ // 3 Fliped
 ctx = canvas.getContext("2d");
 ctx.save();
 ctx.translate(Sprite.widthPrint+ Sprite.x + Sprite.Xdiference_Print, 
@@ -2706,7 +2726,7 @@ ctx.drawImage(image_collection[Sprite.imgN],
 			  Sprite.heightPrint)
 ctx.restore();
 },
-function(Sprite,canvas){
+function(Sprite,canvas){ // 4 Patron (Experimental)
 	Sprite.XG += Sprite.xP;
 	Sprite.YG += Sprite.yP;
 	PrinT(game,Sprite.x,Sprite.y,32,32,"#FFF")
@@ -2725,13 +2745,40 @@ ctx.drawImage(image_collection[Sprite.imgN],
 			  Sprite.widthPrint, 
 			  Sprite.heightPrint)
 },
-function(Sprite,canvas){
+function(Sprite,canvas){ // 5 Outside Down 
 ctx = canvas.getContext("2d");
 ctx.save();
-ctx.translate(Sprite.x , Sprite.y );
+ctx.translate(
+	Sprite.x + Sprite.Xdiference_Print, 
+	Sprite.y + Sprite.Ydiference_Print,
+);
 ctx.transform(1, 0, 0, -1, 0, 32);
-ctx.drawImage(image_collection[Sprite.imgN], 0, 0, Sprite.width, Sprite.height,0, 0, Sprite.width , Sprite.height )
+ctx.drawImage(
+	image_collection[Sprite.imgN], 
+    Sprite.XG + Sprite.fotogram*Sprite.widthGrid,
+	Sprite.YG , 
+	Sprite.widthGrid, 
+	Sprite.heightGrid, 
+	0, 
+	0,
+    Sprite.widthPrint, 
+	Sprite.heightPrint
+	)
 ctx.restore();
+},
+function(Sprite,canvas){ // 6 Animation On Y 
+ctx = canvas.getContext("2d");
+ctx.drawImage(
+	image_collection[Sprite.imgN], 
+    Sprite.XG ,
+	Sprite.YG + Sprite.fotogram*Sprite.heightGrid, 
+	Sprite.widthGrid, 
+	Sprite.heightGrid, 
+	Sprite.x + Sprite.Xdiference_Print, 
+	Sprite.y + Sprite.Ydiference_Print,
+    Sprite.widthPrint, 
+	Sprite.heightPrint
+	)
 },
 ]
 const Xmargin = [
@@ -3272,6 +3319,8 @@ this.shotdelay = 0
 this.Win = false 
 this.priority = true
 this.deathMusic = DeathSound
+this.Up = false
+this.Down = false
 if(this.deathMusic == undefined){
 this.deathMusic = new Audio("SoundEfects/DeathSound.mp3")
 }else{
@@ -3495,6 +3544,14 @@ if (Player.keys && Player.keys[controlls[ctr].right]) {
 	}
 }
 }
+}
+Player.Up = false
+if (Player.keys && Player.keys[controlls[ctr].up]) {
+	Player.Up = true
+}
+Player.Down = false
+if (Player.keys && Player.keys[controlls[ctr].down]) {
+	Player.Down = true
 }
 /*En agua*/
 if(Player.water ){
@@ -3846,7 +3903,7 @@ crash = true};return crash},
 },		
 ]
 const calculate_M =[
-{ /*no moving*/
+{ /*no moving  0 */
 X :	function cube (PL,B) {let crash = false
 let tileVx = (PL.MoveX + PL.BX) 
 if((PL.x < (B.x + B.width) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx)) && (PL.y < (B.y + B.height))  && PL.y + (PL.height) > B.y){
@@ -3898,7 +3955,7 @@ if((PL.x < B.x + (B.width) && (PL.x + (PL.width)) > B.x) && (PL.y <  (B.y + B.he
 };return crash},
 },{ 
 
-    /*moving havent colision*/	
+    /*moving havent colision  1 */	
 	
 X :	function cubeMoving (PL,B) {let crash = false
 let tileVx =  (PL.MoveX + PL.BX) 
@@ -3915,7 +3972,7 @@ Y :	function cubeMoving (PL,B) {
 	if(SemiSolidMovingColision(PL,B)){return true}
 },
 
-},{ /*moving have colision*/
+},{ /*moving have colision   2 */
 	
 X :	function cubeMoving (PL,B) {let crash = false
 let tileVx = (PL.MoveX + PL.BX) 
@@ -3930,7 +3987,7 @@ if((PL.x < (B.x + B.width ) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx)) &&
 Y :	function cubeMoving (PL,B) {
 if(SemiSolidMovingColision(PL,B)){return true}
 },
-},{ /*moving have colision*/
+},{ /*moving have colision  3*/
 	
 X :	function cubeMoving (PL,B) {let crash = false
 let tileVx = (PL.MoveX + PL.BX) 
@@ -3946,6 +4003,26 @@ if((PL.x < (B.x + B.width +1) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx -1
 Y :	function cubeMoving (PL,B) {
 if(SemiSolidMovingColision(PL,B)){return true}
 },
+},{ /*moving efect  4 */
+	
+X :	function cubeMoving (PL,B) {let crash = false
+let tileVx = (PL.MoveX + PL.BX) 
+if((PL.x < (B.x + B.width +1) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx -1)) && (PL.y < (B.y + B.height ))  && PL.y + (PL.height) > (B.y  )){
+	if((PL.y + (PL.height)) > (B.y + 16)){
+		
+  colM[B.Left].X(PL,B)
+      B.Xplayertouch = true
+	}
+  }
+},
+
+Y :	function cubeMoving (PL,B) {
+	let tileVy = (PL.MoveY + PL.BY) 
+if((PL.x < (B.x + B.width) && (PL.x + PL.width) > B.x) && (PL.y < (B.y + B.height - tileVy ))  && PL.y + (PL.height) > (B.y - tileVy )){
+  colM[B.Up].Y(PL,B)
+      B.Yplayertouch = true
+	}
+  }
 },{ /*Experiment*/
 X :	function cube (PL,B) {let crash = false
 let tileVx = (PL.MoveX + PL.BX) 
@@ -4078,8 +4155,8 @@ Y: function Y (PL,B) {if(PL.invecybility != true){PL.lives --;}},
 X: function X (PL) {if(PL.invecybility != true){PL.lives += 1;PL.invecybility = true}},
 Y: function Y (PL) {if(PL.invecybility != true){PL.lives += 1;PL.invecybility = true}},
 },{ /*8 Win */
-X: function X (PL,B) {PL.Win = true;B.col = "00000000";PL.InMove = false},
-Y: function Y (PL,B) {PL.Win = true;B.col = "00000000";PL.InMove = false},
+X: function X (PL,B) {PL.Win = true;PL.InMove = false},
+Y: function Y (PL,B) {PL.Win = true;PL.InMove = false},
 },{ /*9 checkpoint */
 X: function X (PL,B) {establecing_starcords(B.iA,B.iL,PL);B.col = "00000000"},
 Y: function Y (PL,B) {establecing_starcords(B.iA,B.iL,PL);B.col = "00000000"},
@@ -4128,7 +4205,7 @@ let line_position = 0
 let SaveCordY = cordY
 cordY += cameraY 
 let SaveMovement = cameraY
-if(SAVE.Limit_Up !== false){
+if(Limit_Up !== false){
     if(Limit_Up < (cordY + screenHeigth)){
 		console.log("stopUp")
 	GoTo =  Limit_Up - (cordY + screenHeigth) ;crash = true;p1.camY =1;
@@ -4185,7 +4262,7 @@ cameraX = Player.xP
 
 for (i = 0; i < mysprites.length; i += 1){
 	
-    if(calculate_M[mysprites[i].type].X(Player,mysprites[i])){
+    if(calculate_M[mysprites[i].typeColision].X(Player,mysprites[i])){
 		mysprites[i].Xplayertouch = true
         crash = true; i = 1000;
 	}
@@ -4216,7 +4293,7 @@ if(Player.BX >= 1){Player.BX += -1}
 }
 for (i = 0; i < mysprites.length; i += 1){
 	
-	if(calculate_M[mysprites[i].type].X(Player,mysprites[i])){
+	if(calculate_M[mysprites[i].typeColision].X(Player,mysprites[i])){
 		mysprites[i].Xplayertouch = true
 		crash = true
 	}
@@ -4251,7 +4328,7 @@ function(Player,tiles,sprites){
 /*calculate sprites*/
 for (i = 0; i < sprites.length; i += 1){
 	
-     if(calculate_M[sprites[i].type].Y(Player,sprites[i],MoveY)){
+     if(calculate_M[sprites[i].typeColision].Y(Player,sprites[i],MoveY)){
 		 mysprites[i].Yplayertouch = true
          crash = true;i = 1000
 		 }
@@ -4293,7 +4370,7 @@ Player.Hy = 0;Player.Hx = 0;
 
 for (i = 0; i < sprites.length; i += 1){
 	
-    if(calculate_M[sprites[i].type].Y(Player,sprites[i],MoveY)){
+    if(calculate_M[sprites[i].typeColision].Y(Player,sprites[i],MoveY)){
 		mysprites[i].Yplayertouch = true
 		crash = true
     }
@@ -4868,23 +4945,27 @@ function Frames(){
         if(Frame(p1,p2,tiles,sprites,mini_sprites,Hits)){
 				requestAnimationFrame(Frames)
         }else{
-		   if(!reset_game){
-		    backgroundMusic.pause();  // Pausa el audio
-			backgroundMusic.currentTime = 0; // Reinicia al inicio
-		   }
 	       if(reset_game){
 	       buton[2](0)
 	       }else{
-			  if(Win_or_lose){
-				  TextFinishGame.push(new Text("Tanks for playing",'#8F8','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
-                  TextFinishGame.push(new Text("Stars "+ prizes+"/"+SAVE.totalPrizes,'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/2,0.2))
-				  if(prizes == SAVE.totalPrizes){
-				  TextFinishGame.push(new Text("Perfect",'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,screenHeigth,screenHeigth/2+screenHeigth/4,0.05))  
+			backgroundMusic.pause();  // Pausa el audio
+			backgroundMusic.currentTime = 0; // Reinicia al inicio
+				  if(Win_or_lose){
+					  TextFinishGame.push(new Text("Tanks for playing",'#8F8','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
+					  TextFinishGame.push(new Text("Stars "+ prizes+"/"+SAVE.totalPrizes,'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/2,0.2))
+					  if(prizes == SAVE.totalPrizes){
+					  TextFinishGame.push(new Text("Perfect",'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,screenHeigth,screenHeigth/2+screenHeigth/4,0.05))  
+					  }
+					  AZAR = false
+				  }else{
+					   if(AZAR){
+						Boregito("AZAR")
+						buton[1](0) 
+					   }else{
+					  TextFinishGame.push(new Text("GameOver",'#F00','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
+					  TextFinishGame.push(new Text("Kills/"+Kills,'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/2,0.2))
+					   }
 				  }
-			  }else{
-				  TextFinishGame.push(new Text("GameOver",'#F00','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
-                  TextFinishGame.push(new Text("Kills/"+Kills,'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/2,0.2))
-			  }
 			Textdraw()
 		   }
 		}
@@ -4939,7 +5020,7 @@ cameraX = 0;cameraY = 0;
 Player_Effects(p1)
 if(PlayerAction(p1,0,false)){
 	pre_finish = true
-	reset_game = true
+	if(!AZAR){reset_game = true}
 
 }
 if(p1.Win || p2.Win){
@@ -5039,18 +5120,20 @@ if(Pre_star){
 }
 if(pre_finish && Pre_star == false){
 	             if(reset_game == false){
-			     backgroundMusic.pause();       // Pausa el audio
-                 backgroundMusic.currentTime = 0;  // Reinicia al inicio
-				 if(Win_or_lose){
-                 finishMusic.play()
-				 }else{
-				 GameOverMusic.play()	 
-				 }					 
+					 backgroundMusic.pause();       // Pausa el audio
+					 backgroundMusic.currentTime = 0;  // Reinicia al inicio
+					 if(Win_or_lose){
+					 finishMusic.play()
+					 }else{
+						 if(!AZAR){
+					 GameOverMusic.play()	
+						 }						 
+					 }					 
 				 }				 
 				 InShadow = false
 				 Alpha -= 0.02
 		         if(Alpha <= 0){
-			     on_game = false;
+					on_game = false;
 		         }
 }
 if(!frisFotogram){
@@ -5141,6 +5224,7 @@ var Stelar = false
 var invecybility = false
 var UpSide = false
 var TESTSCREEN = false
+var AZAR = false
 function Boregito(Value){
 		   switch(Value){
 			   case "WATER":
@@ -5170,6 +5254,45 @@ function Boregito(Value){
 	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,0,"661122200",1,"09000", -1,1)
 	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,0,"661122503",1,"09200", -2,1)
 	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,0,"661120201",1,"09300", 0,-8)
+			   break
+			   case "BULLETBILLS":
+			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,16,"160010000",2,"23900",-2,0)
+	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,16,"160010000",2,"24900",2,0)
+	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,17,"160010000",2,"25800",2,2)
+			   break
+			   case "LEVELRANDOM":
+			    LC = []
+				SAVE.Levelsprites = []
+				Sprite_Collection = []
+				SpritesInGrid = []
+				startX  = 8
+				startY  = 3
+				fillblockImg_3x3(1,16,3,0,2,"#FFF","11111200",0,1,0,0)
+				createBlocks(150,true,3,8,3,16,SAVE.X,SAVE.Y,16,0,1,"#FFF","10002220",0,1,0,0);
+				createBlocks(150,true,3,8,3,16,SAVE.X,SAVE.Y,16,0,1,"#FFF","11111200",0,1,0,0);
+				change_BlockResolution(BlockResolution);
+			   break
+			   case "AZAR":
+			   AZAR = true
+			    LC = []
+				SAVE.Levelsprites = []
+				Sprite_Collection = []
+				SpritesInGrid = []
+				startX  = 8
+				startY  = 3
+				SAVE.X = 128
+				SAVE.Y = 256
+				Limit_Up = false
+				Limit_Rigth = 128 * -32
+				fillblockImg_3x3(1,16,3,0,2,"#FFF","11111200",0,1,0,0)
+				createBlocks(300,true,3,8,3,16,SAVE.X,SAVE.Y-4,16,0,1,"#FFF","10002220",0,1,0,0);
+				createBlocks(200,true,3,8,3,16,SAVE.X,SAVE.Y-4,16,0,1,"#FFF","11111200",0,1,0,0);
+			   createSprites_No_in_solid(50,SAVE.X-16,SAVE.Y,16,0,32,32,16,"160010000",2,"23900",-2,0)
+	           createSprites_No_in_solid(50,SAVE.X-16,SAVE.Y,16,0,32,32,16,"160010000",2,"24900",2,0)
+	           createSprites_No_in_solid(50,SAVE.X-16,SAVE.Y,16,0,32,32,17,"160010000",2,"25800",2,2)
+			   createSprites_No_in_solid(10,SAVE.X-16,3,16,SAVE.Y-2,32,32,18,"110020011",2,"67062",4,1)
+			   effects_in_game.push(new effect(2,LavaTexture,32,32,true,0,true,-32,0,-1))
+				change_BlockResolution(BlockResolution);
 			   break
 			   case "FLY":
 			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,11,"661120201",2,"01400", 0,0)

@@ -24,6 +24,7 @@ backgroundImages:[["Backgrounds/Desert.png",512,512,0.5,0.5,0,0,true,false,0,0],
 
 StyleBackground:'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))',
 backgroundImages:[
+//["Backgrounds/HD Background.jpg",4717,2984,1,1,0,0,true,true,0,0],
 //["Backgrounds/onlyClouds.png",1024,864,0.5,1,0,0,true,false,0,0],
 //["Backgrounds/mountains3_noClouds.png",1024,864,0.3,1,0,0,true,false,0,0],
 //["Backgrounds/backMountains.png",1024,864,0.1,1,0,0,true,false,0,0],
@@ -58,7 +59,7 @@ backgroundImages:[["Backgrounds/Fire.png",512,512,0.5,0.5,0,0,true,false,0,0],
 tiles:[
 {
 Name:"Tiles & Objects",
-Images:["texturas/ASCII.png","texturas/GradientTexture.png","texturas/Sprites.png","texturas/decoraciones.png",
+Images:["texturas/Texturas ASCII_DIY.png","texturas/GradientTexture.png","texturas/Sprites.png","texturas/decoraciones.png",
 "texturas/Monkey.png","texturas/BigMonkey.png","texturas/Goomba.png","texturas/shy guy.png"],
 SoundEffects:["SoundEfects/Checkpoint.wav","SoundEfects/Collect.wav","SoundEfects/Boing.mp3","SoundEfects/Boing.mp3","SoundEfects/Jump Attack.mp3"],
 objects:[
@@ -135,6 +136,10 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"00000D10"],
 ["Tile","rgba(0,0,0,0)",1,"00000E00"],
 ["Tile","rgba(0,0,0,0)",1,"00000E10"],
+// Super Mario 
+["Tile","rgba(0,0,0,0)",1,"11111280"],
+["Tile","rgba(0,0,0,0)",1,"11111380"],
+["Tile","rgba(0,0,0,0)",1,"11111480"],
 // special Blocks
 ["Tile","rgba(0,0,0,0)",2,"40002808"],["Tile","rgba(0,0,0,0)",2,"50002908"],
 ["Tile","rgba(0,0,0,0)",1,"61111A00"],["Tile","rgba(0,0,0,0)",1,"11611A10"],["Tile","rgba(0,0,0,0)",1,"11161A20"],["Tile","rgba(0,0,0,0)",1,"16111A30"],["Tile","rgba(0,0,0,0)",1,"66661A40"],
@@ -148,15 +153,20 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"11111830",7],
 ["Tile","rgba(0,0,0,0)",1,"61111A50",7],
 ["Tile","rgba(0,0,0,0)",1,"11611A60",7],
+["Tile","rgba(0,0,0,0)",1,"11111D20",8],
+["Tile","rgba(0,0,0,0)",1,"11112D20",8],
+["Tile","rgba(0,0,0,0)",1,"11111420",9],
 
 ["Object",128,128,"#","000000000",3,"10000", 0,0],["Object",128,128,"#","000000000",3,"11000", 0,0],
 ["Object",128,128,"#","000000000",3,"12000", 0,0],["Object",128,128,"#","000000000",3,"13000", 0,0],
 ["Object",128,256,"#","000000000",3,"10100", 0,0],
+
 ["Object",64,32,4,"660030300",4,"00100", 0,0],
 ["Object",64,32,5,"161120005",4,"01223", 0,4],
 ["Object",96,64,6,"161120005",5,"00045", 0,0],
 
-["Object",42,42,0,"661132103",2,"22300", -1,8],["Object",84,84,1,"661132103",2,"21100", -1,8],
+["Object",42,42,0,"661132103",2,"22300", -1,8],
+["Object",84,84,1,"661132103",2,"21100", -1,8],
 ["Object",42,42,2,"661122103",2,"22300", -1,8],
 ["Object",32,32,7,"661132103",5,"2A200", -2,8],
 ["Object",32,32,"#","661132103",1,"08200", 0,8],
@@ -168,12 +178,22 @@ objects:[
 ["Object",32,32,10,"661120201",2,"01500", 0,0],
 ["Object",32,48,11,"160030000",6,"00023",-1,0],
 ["Object",32,32,12,"160030000",7,"00023",-1,0],
+["Object",32,32,13,"6600100000",2,"23800", 1,1],
+["Object",42,42,14,"661132103",2,"22300", -1,8],
+["Object",32,32,15,"160010000",2,"23900",-4,0],
+["Object",32,32,15,"160010000",2,"24900",4,0],
+["Object",32,32,16,"160010000",2,"25800",2,2],
+["Object",32,32,17,"110020011",2,"67062",4,1]
 ],
 TileScripts:[
 {
 Action: function Action(Tile,p1,side) {
     Tile.action = true
 	SoundEffectsCollection[0].play()
+	Tile.Up = 0
+	Tile.Down = 0
+	Tile.Left = 0
+	Tile.Right  = 0
 },
 Loop: function Loop (Tile) {
 	if(Tile.heg >= 64){
@@ -186,9 +206,9 @@ Loop: function Loop (Tile) {
 },
 {
 Action: function Action(Tile,p1,side) {
-	console.log("yes")
 	SoundEffectsCollection[1].play()
-	TransfromTile(Tile,Tile.BC,0,"00000000",0)
+	Tile.prin = 0
+	Tile.type = 0
 },
 Loop: function Loop (Tile) {},
 },
@@ -242,7 +262,6 @@ Action: function Action(Tile,p1,side) {
 	}
 },
 Loop: function Loop (Tile) {
-	
 	if(Clock(Tile,5)){
 	Tile.YG = 128
 	Tile.Wid = 32
@@ -255,7 +274,6 @@ Loop: function Loop (Tile) {
 },
 {
 Action: function Action(Tile,p1,side) {
-	//myMiniSprites.push(new Mini_sprite(Tile.x-16,Tile.y-16,2,1,0,64,5,4,0,0,64,64))
 	Tile.action = true
 },
 Loop: function Loop (Tile) {
@@ -264,7 +282,7 @@ Loop: function Loop (Tile) {
 	myMiniSprites.push(new Mini_sprite(Tile.x,Tile.y,1,1,128+16,96,RandomNumber(1,16),5,0,0,16,16,0))
 	Tile.action = false
 	Tile.type = 0
-	Tile.imgN = 0
+    Tile.prin = 0
 	}
 },
 },
@@ -305,40 +323,69 @@ Loop: function Loop (Tile) {
 	Tile.action = false
 	Tile.type = 0
 	Tile.imgN = 0
+	Tile.XG = 0
+	Tile.YG = 0
 	}
+},
+},
+{
+Action: function Action(Tile,p1,side) {
+	if(side && p1.Down ) {
+	p1.InMove = false
+	establecing_starcords(Tile.iA+8,Tile.iL+8,p1)
+reset_game = true
+pre_finish = true
+	}
+},
+Loop: function Loop (Tile) {
+
+},
+},
+{
+Action: function Action(Tile,p1,side) {
+	if(side) {
+		console.log(Tile.col)
+	p1.InMove = false
+	establecing_starcords(Tile.iA+8,Tile.iL+8,p1)
+reset_game = true
+pre_finish = true
+	}
+},
+Loop: function Loop (Tile) {
+
 },
 },
 ],
 SpriteScripts:[
 {
 Action: function Action(Sprite) {
-     Sprite.width = 32
-	 Sprite.height = 32
-	 Sprite.widthPrint = 42
-	 Sprite.heightPrint = 42
-	 Sprite.Xdiference_Print = -10
-	 Sprite.Ydiference_Print = -10
-	 Sprite.XG = 64
-	 Sprite.YG = 96
-	 Sprite.widthGrid = 84
-	 Sprite.heightGrid = 84
+		 Sprite.width = 32
+		 Sprite.height = 32
+		 Sprite.widthPrint = 42
+		 Sprite.heightPrint = 42
+		 Sprite.Xdiference_Print = -10
+		 Sprite.Ydiference_Print = -10
+		 Sprite.XG = 64
+		 Sprite.YG = 96
+		 Sprite.widthGrid = 84
+		 Sprite.heightGrid = 84
 	},
 Loop: function Loop (sprite,player1) {
-	PreProgramedMode (sprite,player1)
-	sprite.angle += sprite.MoveX*2 
+		PreProgramedMode (sprite,player1)
+		sprite.angle += sprite.MoveX*2 
     },
 RenderMode: function RenderMode (ctx,Sprite) {
-	ctx.drawImage(
-	image_collection[Sprite.img],
-	64,
-	96,
-	84,
-	84, 
-	Sprite.xPrint - (10/scale_sprites),
-	Sprite.yPrint - (10/scale_sprites),
-	Sprite.widthPrint,
-	Sprite.heightPrint,
-	)
+		ctx.drawImage(
+		image_collection[Sprite.img],
+		64,
+		96,
+		84,
+		84, 
+		Sprite.xPrint - (10/scale_sprites),
+		Sprite.yPrint - (10/scale_sprites),
+		Sprite.widthPrint,
+		Sprite.heightPrint,
+		)
  },
 },
 {
@@ -379,7 +426,7 @@ Action: function Action(Sprite) {
 	 Sprite.height = 16
 	 Sprite.widthPrint = 42
 	 Sprite.heightPrint = 42
-	 Sprite.Xdiference_Print = -10
+	 Sprite.Xdiference_Print = -5
 	 Sprite.Ydiference_Print = -10
 	 Sprite.XG = 64
 	 Sprite.YG = 96
@@ -853,12 +900,22 @@ Action: function Action(Sprite) {
 	 Sprite.height = Sprite.heightPrint - num
 	 Sprite.Ydiference_Print = num *-1
 	  num = Math.round(0.25 * Sprite.widthPrint)
-	 Sprite.width = Sprite.widthPrint - num
+	 Sprite.width = 33//Sprite.widthPrint - num
 	 Sprite.Xdiference_Print = num * -0.5
 	},
 Loop: function Loop (Sprite,p1) {
 	Sprite.MoveX = Sprite.Xvelocity
 	turn_if_obstacle_X(Sprite)
+	if(Sprite.Ytouches == 1 && Sprite.State == 0){
+		 Sprite.sideX = !Sprite.sideX
+			Sprite.Xvelocity = Sprite.Xvelocity*-1
+			Sprite.State = 1
+		}
+		if(Sprite.State == 1 ){
+			if(Clock(Sprite,10)){
+				Sprite.State = 0
+			}
+		}
 	if(Sprite.sideX){
 		Sprite.Mode = 3
 	}else{
@@ -877,14 +934,154 @@ RenderMode: function RenderMode (ctx,Sprite) {
         PreRenderMode(ctx,Sprite)
  },
 },
+{
+Action: function Action(Sprite) {
+    Sprite.angle = 0
+	Sprite.XG = 100
+	Sprite.YG = 260
+	Sprite.widthGrid = 24
+	Sprite.heightGrid = 24
+	Sprite.width = 24
+	Sprite.height = 24
+	Sprite.widthPrint= 24
+	Sprite.heightPrint = 24
+	Sprite.Mode = 2
+	},
+Loop: function Loop (Sprite,p1) {
+	if(Colision(Sprite,p1,-132,-132,288,288)){
+		Sprite.XG = 132
+	Sprite.angle = Math.atan2(p1.y - Sprite.y,p1.x - Sprite.x ) + Math.tan(1)
+	Sprite.MoveX = Sprite.Xvelocity * Math.sin(Sprite.angle)
+	Sprite.MoveY = (Sprite.Yvelocity * Math.cos(Sprite.angle))*-1
+	Sprite.angle = (Sprite.angle / Math.PI * 180)
+	}else{
+		Sprite.angle = 0
+		Sprite.XG = 100
+		Sprite.MoveX = 0
+		Sprite.MoveY = 0
+	}
+},
+RenderMode: function RenderMode (ctx,Sprite) {
+        PreRenderMode(ctx,Sprite)
+ },
+},
+{
+Action: function Action(Sprite) {
+		 Sprite.width = 33
+		 Sprite.height = 32
+		 Sprite.widthPrint = 42
+		 Sprite.heightPrint = 42
+		 Sprite.Xdiference_Print = -10
+		 Sprite.Ydiference_Print = -10
+		 Sprite.XG = 64
+		 Sprite.YG = 96
+		 Sprite.widthGrid = 84
+		 Sprite.heightGrid = 84
+		 Sprite.State = 0
+	},
+Loop: function Loop (sprite,player1) {
+		PreProgramedMode (sprite,player1)
+		sprite.angle += sprite.MoveX*2 
+		if(sprite.Ytouches == 1 && sprite.State == 0){
+			sprite.Xvelocity = sprite.Xvelocity*-1
+			sprite.State = 1
+		}
+		if(sprite.State == 1 ){
+			if(Clock(sprite,10)){
+				sprite.State = 0
+			}
+		}
+    },
+RenderMode: function RenderMode (ctx,Sprite) {
+		ctx.drawImage(
+		image_collection[Sprite.img],
+		64,
+		96,
+		84,
+		84, 
+		Sprite.xPrint - (10/scale_sprites),
+		Sprite.yPrint - (10/scale_sprites),
+		Sprite.widthPrint,
+		Sprite.heightPrint,
+		)
+ },
+},
+{
+Action: function Action(Sprite) {
+	
+	},
+Loop: function Loop (Sprite,p1) {
+	if(Sprite.Yplayertouch){
+		SoundEffectsCollection[4].play()
+		Sprite.live = 0
+		p1.MoveY = -8;p1.BY = 0
+	}
+	if(Sprite.live < 1 ){
+		Sprite.type = 1
+		Sprite.Up = 0
+		Sprite.Left = 0
+		Gravedad(Sprite,1,16)
+	}else{
+		PreProgramedMode(Sprite,p1)
+	}
+    },
+ RenderMode: function RenderMode (ctx,Sprite) {
+        PreRenderMode(ctx,Sprite)
+ },
+},
+{
+Action: function Action(Sprite) {
+	Sprite.angle = 0
+	},
+Loop: function Loop (Sprite,p1) {
+	if(Sprite.Yplayertouch){
+		SoundEffectsCollection[4].play()
+		Sprite.live = 0
+		p1.MoveY = -8;p1.BY = 0
+	}
+	if(Sprite.live < 1 ){
+		Sprite.type = 1
+		Sprite.Up = 0
+		Sprite.Left = 0
+		Gravedad(Sprite,1,16)
+		Sprite.angle += Sprite.Xvelocity * Math.PI / 180;  
+	}else{
+	Sprite.angle = Math.atan2(p1.y - Sprite.y,p1.x - Sprite.x ) + Math.tan(1)
+	Sprite.MoveX = Sprite.Xvelocity * Math.sin(Sprite.angle)
+	Sprite.MoveY = (Sprite.Yvelocity * Math.cos(Sprite.angle))*-1
+	Sprite.angle = (Sprite.angle / Math.PI * 180)
+	}
+    },
+ RenderMode: function RenderMode (ctx,Sprite) {
+        PreRenderMode(ctx,Sprite)
+ },
+},
+{
+Action: function Action(Sprite) {
+	Sprite.typeColision = 3
+	},
+Loop: function Loop (Sprite,p1) {
+	PreProgramedMode(Sprite,p1)
+	if(Sprite.Xplayertouch || Sprite.Yplayertouch){
+		Sprite.Up = 0
+		Sprite.Left = 0
+		Sprite.live = -1
+		SoundEffectsCollection[0].play()
+		p1.Win = true
+	}
+    },
+ RenderMode: function RenderMode (ctx,Sprite) {
+     PreRenderMode(ctx,Sprite)
+ },
+},
 ]
 }
 ],
 
 LevelTiles:"GetContext",
 Inicial_Script:function InicialCharge(){
-	//createBlocksLinear(100,true,3,8,3,16,128+64,128+64,80,0,1,"#FFF","10002220",0,1,0,0)
-	//createBlocksLinear(100,true,3,8,3,8,128+64,128+64,80,0,1,"#FFF","11111200",0,1,0,0)
+	//createBlocksLinear(100,true,3,8,3,16,128+64,128+64,16,0,1,"#FFF","10002220",0,1,0,0)
+	//createBlocksLinear(100,true,3,8,3,8,128+64,128+64,16,0,1,"#FFF","11111200",0,1,0,0)
 	
 	//shoterr
 	//createSprites_No_in_solid(1000,SAVE.X-16,SAVE.Y,16,0,32,32,0,"661110022",1,"09100",2,2)
