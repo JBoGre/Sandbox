@@ -153,6 +153,9 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"11111830",7],
 ["Tile","rgba(0,0,0,0)",1,"61111A50",7],
 ["Tile","rgba(0,0,0,0)",1,"11611A60",7],
+["Tile","rgba(0,0,0,0)",1,"11111D20",8],
+["Tile","rgba(0,0,0,0)",1,"11112D20",8],
+["Tile","rgba(0,0,0,0)",1,"11111420",9],
 
 ["Object",128,128,"#","000000000",3,"10000", 0,0],["Object",128,128,"#","000000000",3,"11000", 0,0],
 ["Object",128,128,"#","000000000",3,"12000", 0,0],["Object",128,128,"#","000000000",3,"13000", 0,0],
@@ -165,8 +168,6 @@ objects:[
 ["Object",42,42,0,"661132103",2,"22300", -1,8],
 ["Object",84,84,1,"661132103",2,"21100", -1,8],
 ["Object",42,42,2,"661122103",2,"22300", -1,8],
-["Object",42,42,14,"661132103",2,"22300", -1,8],
-	
 ["Object",32,32,7,"661132103",5,"2A200", -2,8],
 ["Object",32,32,"#","661132103",1,"08200", 0,8],
 ["Object",32,32,"#","111132103",1,"03200", 0,8],
@@ -178,6 +179,7 @@ objects:[
 ["Object",32,48,11,"160030000",6,"00023",-1,0],
 ["Object",32,32,12,"160030000",7,"00023",-1,0],
 ["Object",32,32,13,"6600100000",2,"23800", 1,1],
+["Object",42,42,14,"661132103",2,"22300", -1,8],
 ["Object",32,32,15,"160010000",2,"23900",-4,0],
 ["Object",32,32,15,"160010000",2,"24900",4,0],
 ["Object",32,32,16,"160010000",2,"25800",2,2],
@@ -187,6 +189,7 @@ TileScripts:[
 {
 Action: function Action(Tile,p1,side) {
     Tile.action = true
+	SoundEffectsCollection[0].currentTime = 0;
 	SoundEffectsCollection[0].play()
 	Tile.Up = 0
 	Tile.Down = 0
@@ -204,6 +207,7 @@ Loop: function Loop (Tile) {
 },
 {
 Action: function Action(Tile,p1,side) {
+	SoundEffectsCollection[1].currentTime = 0;
 	SoundEffectsCollection[1].play()
 	Tile.prin = 0
 	Tile.type = 0
@@ -213,6 +217,7 @@ Loop: function Loop (Tile) {},
 {
 Action: function Action(Tile,p1,side) {
 	if(side && p1.FristTouch){
+		SoundEffectsCollection[2].currentTime = 0;
 		SoundEffectsCollection[2].play()
 	Tile.XG = 96
 	Tile.heg = 48
@@ -234,6 +239,7 @@ Loop: function Loop (Tile) {
 {
 Action: function Action(Tile,p1,side) {
 	if(side == false && p1.FristTouch){
+		SoundEffectsCollection[3].currentTime = 0;
 		SoundEffectsCollection[3].play()
 	Tile.YG = 64
 	Tile.Wid = 48
@@ -255,6 +261,7 @@ Loop: function Loop (Tile) {
 {
 Action: function Action(Tile,p1,side) {
 	if(p1.FristTouch){
+	SoundEffectsCollection[3].currentTime = 0;
 	SoundEffectsCollection[3].play()
 	myMiniSprites.push(new Mini_sprite(Tile.x-16,Tile.y-16,2,1,0,64,5,4,0,0,64,64))
 	}
@@ -840,6 +847,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
 			Sprite.XG = 64
 			Sprite.FramesIntervalds = 1
 			Sprite.LoopFotogram = 0
+			SoundEffectsCollection[4].currentTime = 0;
 			SoundEffectsCollection[4].play()
 			Sprite.live = 0
 			Sprite.Xvelocity = 0
@@ -860,6 +868,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
 			Sprite.FramesIntervalds = 1
 			Sprite.LoopFotogram = 0
 			p1.MoveY = -8;p1.BY = 0
+			SoundEffectsCollection[4].currentTime = 0;
 			SoundEffectsCollection[4].play()
 			Sprite.live = 0
 			Sprite.Xvelocity = 0
@@ -1010,6 +1019,7 @@ Action: function Action(Sprite) {
 	},
 Loop: function Loop (Sprite,p1) {
 	if(Sprite.Yplayertouch){
+		SoundEffectsCollection[4].currentTime = 0;
 		SoundEffectsCollection[4].play()
 		Sprite.live = 0
 		p1.MoveY = -8;p1.BY = 0
@@ -1033,6 +1043,7 @@ Action: function Action(Sprite) {
 	},
 Loop: function Loop (Sprite,p1) {
 	if(Sprite.Yplayertouch){
+		SoundEffectsCollection[4].currentTime = 0;
 		SoundEffectsCollection[4].play()
 		Sprite.live = 0
 		p1.MoveY = -8;p1.BY = 0

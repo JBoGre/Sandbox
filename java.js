@@ -673,7 +673,9 @@ function change_Size(X,Y){
 	SAVE.X = X*1
 	SAVE.Y = Y*1
 	SAVE.limit_rigth = X *1;
-	SAVE.Limit_Up = Y *1;
+	SAVE.limit_up = Y *1;
+	Limit_Up = Y *32
+	Limit_Rigth = X*32
 	limits_and_alture()
 	change_BlockResolution(BlockResolution)
 }
@@ -820,6 +822,27 @@ function CreateTiles (){
 	}
     });
 } 
+const Skins_3x3 = 
+[
+	{
+		X_Grid:0,
+		Y_Grid:1,
+		Grid:
+        [		
+		[1,"rgba(0,0,0,0)","11111200",0,0],
+		[1,"rgba(0,0,0,0)","11111210",0,0],
+		]
+	},
+	{
+		X_Grid:0,
+		Y_Grid:1,
+		Grid:
+        [		
+		[1,"rgba(0,0,0,0)","10002220",0,0],
+		[1,"rgba(0,0,0,0)","00000230",0,0],
+		]
+	}
+]
 function Randomblocks(X,Y,N,Xcoordinate,Ycoordinate) {
 	let Xp = Xcoordinate
 	if(Xp == undefined){Xp = 0}
@@ -836,8 +859,9 @@ function Randomblocks(X,Y,N,Xcoordinate,Ycoordinate) {
 }
 function fillblock(X,Y,Xcoordinate,Ycoordinate,color,colision,ImageNumber,Script) {
 	let Xp = Xcoordinate
+	let InicialXp = Xcoordinate
 	if(Xp == undefined){Xp = 0}
-	let Yp = (Ycoordinate -15)*-1
+	let Yp = Ycoordinate 
 	if(Yp == undefined){Yp = 0}
 	let col = "#fff"
 	let colisione = "11111000"
@@ -853,17 +877,20 @@ function fillblock(X,Y,Xcoordinate,Ycoordinate,color,colision,ImageNumber,Script
 		 script = Script
 	}
 	for(let iy = 0; iy < Y ; iy++){
-	for(let ix = 0; ix < X ; ix++){
-    if(color == undefined){
-	col = "rgb("+Math.round((Math.random())*255)+","+Math.round((Math.random())*255)+","+Math.round((Math.random())*255)+")"
-		}else{
-	col = color		
-		}
-	replaceTilePriority(ix + Xp,iy + Yp,true,iy + Yp,colisione,col,ImgN,script)
-	}
+		for(let ix = 0; ix < X ; ix++){
+			if(color == undefined){
+			col = "rgb("+Math.round((Math.random())*255)+","+Math.round((Math.random())*255)+","+Math.round((Math.random())*255)+")"
+				}else{
+			col = color		
+				}
+			replaceTilePriority(Xp,Yp,true,Yp,colisione,col,ImgN,0)
+			Xp ++
+			}
+		Yp--
+		Xp = InicialXp
 	}
 }
-function fillblockImg_3x3(Img,X,Y,Xcoordinate,Ycoordinate,color,colision,XGirdLimit,YGirdLimit,animation,Script) {
+function fillblockImg_3x3(X,Y,Xcoordinate,Ycoordinate,Img,color,colision,XGirdLimit,YGirdLimit,animation,Script) {
 	let Xp = Xcoordinate
 	let Yp = Ycoordinate
 	let StarYp = Yp
@@ -911,7 +938,7 @@ function fillblockImg_3x3(Img,X,Y,Xcoordinate,Ycoordinate,color,colision,XGirdLi
 	   Yblocks()
 	
 }
-function createBlocks(Number,Gplus,minX,maxX,minY,maxY,x,y,Xcoordinate,Ycoordinate,Img,color,colision,XG,YG,animation,Script){
+function createBlocks(Number,Gplus,minX,maxX,minY,maxY,x,y,Xcoordinate,Ycoordinate,Img,color,colision,XGirdLimit,YGirdLimit,animation,Script){
 	let Xp = Xcoordinate
 	if(Xp == undefined){Xp = 0}
 	let Yp = Ycoordinate
@@ -921,14 +948,32 @@ function createBlocks(Number,Gplus,minX,maxX,minY,maxY,x,y,Xcoordinate,Ycoordina
 	let Ymult = y
 	if(Ymult == undefined || Ymult == false ){Ymult = limitYGird}
 	for(let i = 0; i < Number ; i++){
-	let X = Math.round(Math.random()*maxX)
-	if(minX > X ){X = minX}
-	let Y = Math.round(Math.random()*maxY)
-	if(minY > Y ){Y = minY}
+	let X = RandomNumber(minX,maxX)
+	let Y = RandomNumber(minY,maxY)
 	if(Gplus == undefined || Gplus ){
-	fillblockImg_3x3(Img,X,Y,(Math.round(Math.random()*Xmult)) + Xp,(Math.round(Math.random()*Ymult)) + Yp,color,colision,XG,YG,animation,Script)
+	fillblockImg_3x3(X,Y,(Math.round(Math.random()*Xmult)) + Xp,(Math.round(Math.random()*Ymult)) + Yp,Img,color,colision,XGirdLimit,YGirdLimit,animation,Script)
 	}else{
-	fillblock(X,Y,(Math.round(Math.random()*Xmult)) + Xp,(Math.round(Math.random()*Ymult)) + Yp,color,colision + XG + YG + animation,Img,Script)
+	fillblock(X,Y,(Math.round(Math.random()*Xmult)) + Xp,(Math.round(Math.random()*Ymult)) + Yp,color,colision,animation,Img,Script)
+	}
+	}
+}
+function createBlocksPerlin(Number,Gplus,minX,maxX,minY,maxY,x,y,Xcoordinate,Ycoordinate,Img,color,colision,XG,YG,animation,Script){
+	let Xp = Xcoordinate
+	if(Xp == undefined){Xp = 0}
+	let Yp = Ycoordinate
+	if(Yp == undefined){Yp = 0}
+	let Xmult = x
+	if(Xmult == undefined || Xmult == false ){Xmult = limitXGird}
+	let Ymult = y
+	if(Ymult == undefined || Ymult == false ){Ymult = limitYGird}
+	var List = Random_Perlin(Number,Xmult)
+	for(let i = 0; i < List.length ; i++){
+	let X = 1
+	let Y = 1
+	if(Gplus == undefined || Gplus ){
+	fillblockImg_3x3(X,Y,List[i][0] + Xp,List[i][1] + Yp,Img,color,colision,XG,YG,animation,Script)
+	}else{
+	fillblock(X,Y,List[i][0] + Xp,List[i][1] + Yp,color,colision + XG + YG + animation,Img,Script)
 	}
 	}
 }
@@ -949,7 +994,7 @@ function createBlocksLinear(Number,Gplus,minX,maxX,minY,maxY,x,y,Xcoordinate,Yco
     X = RandomNumber(minX,maxX)
     Y =  RandomNumber(minX,maxX)
 	if(Gplus == undefined || Gplus ){
-	fillblockImg_3x3(Img,X,Y,Xposition,Y + Yp,color,colision,XG,YG,animation,Script)
+	fillblockImg_3x3(X,Y,Xposition,Y + Yp,Img,color,colision,XG,YG,animation,Script)
 	}else{
 	fillblock(X,Y,Xposition,Y + Yp,color,colision + XG + YG + animation,Img,Script)
 	}
@@ -1121,20 +1166,193 @@ for(let i = 0; i < Number ; i++){
  }
 }
 }
-function Create_Level_random(){
-createSprites(100,32,32,6,"360020000",6,"00013",1,0);// Goombas
-createSprites(100,32,32,4,"360010000",10,"00000",-2,0,256,512,32,0);
-createSprites(100,32,32,4,"360010000",10,"00100",2,0,256,512,32,0);
-createSprites(100,32,32,3,"160010000",10,"11200",2,2,256,512,32,0);
-createSprites(10,32,32,7,"000010044",13,"00013",4,1,256,1,0,512 );
-createBlocks(200,true,3,16,3,16,12,"#FFF","11111",0,0,0,0,256,512,32,0)
-createBlocks(200,true,3,16,3,16,12,"#FFF","11111",0,0,0,0,256,512,32,0)
-createBlocks(200,true,3,16,3,16,12,"#FFF","11112",3,0,0,0,256,512,32,0)
-createBlocks(200,true,3,16,3,16,12,"#FFF","11112",6,0,0,0,256,512,32,0)
-createBlocks(200,true,3,16,3,16,12,"#FFF","11112",3,3,0,0,256,512,32,0)
-createBlocks(200,true,3,16,3,16,12,"#FFF","11112",6,3,0,0,256,512,32,0)
-}
 
+class SmoothNoise1D {
+  constructor(seed = Math.random()) {
+    this.gradients = {};
+    this.seed = seed;
+  }
+
+  randomGradient(x) {
+    const key = Math.floor(x);
+    if (!(key in this.gradients)) {
+      // Pseudo-random con base en la semilla y posición
+      const angle = this.hash(key) * 2 * Math.PI;
+      this.gradients[key] = Math.cos(angle); // 1D: usar sólo x
+    }
+    return this.gradients[key];
+  }
+
+  hash(n) {
+    // Simple función hash determinista
+    let x = Math.sin(n * 9999 + this.seed * 10000) * 43758.5453;
+    return x - Math.floor(x);
+  }
+
+  fade(t) {
+    // Curva suave tipo Perlin
+    return t * t * t * (t * (t * 6 - 15) + 10);
+  }
+
+  lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+
+  get(x) {
+    const x0 = Math.floor(x);
+    const x1 = x0 + 1;
+
+    const t = x - x0;
+
+    const g0 = this.randomGradient(x0);
+    const g1 = this.randomGradient(x1);
+
+    const d0 = g0 * (x - x0);
+    const d1 = g1 * (x - x1);
+
+    const smoothT = this.fade(t);
+    return this.lerp(d0, d1, smoothT); // Resultado entre -1 y 1
+  }
+}
+const A_noise = new SmoothNoise1D();
+const B_noise = new SmoothNoise1D();
+function Random_Perlin(Count,Max){
+	var A_val = 0
+	var A_inVal = 0
+	var B_val = 0
+	var B_inVal = 0
+	var List = []
+for (let i = 0; i < Count; i++) {
+  var x = i * 0.2;
+  var y = i * 0.2;
+   A_val = A_noise.get(x); // entre -1 y 1
+   A_inVal = Math.floor((A_val + 1) / 2 * Max); 
+   B_val = B_noise.get(y); // entre -1 y 1
+   B_inVal = Math.floor((B_val + 1) / 2 * Max); 
+  List.push([A_inVal,B_inVal])
+}
+return List
+}
+const RandomLevelConfiguration = [
+	function(){ //Normal  0
+	Solids_in_Level = 100	
+	S_MN_MX = [3,8,3,16]
+	SemiSolids_in_Level = 300
+	SS_MN_MX = [3,8,3,16]
+	Azar_Level_width = 128
+	Azar_Enemies_Multiplicater = 1
+	},
+	function(){ // Big Level 1
+	Solids_in_Level = 200	
+	S_MN_MX = [3,16,3,16]
+	SemiSolids_in_Level = 300
+	SS_MN_MX = [3,16,3,16]
+	Azar_Level_width = 256
+	Azar_Enemies_Multiplicater = 2
+	},
+	function(){ // Big Solids 2
+	Solids_in_Level = 10	
+	S_MN_MX = [50,100,50,100]
+	SemiSolids_in_Level = 300
+	SS_MN_MX = [3,16,3,16]
+	Azar_Level_width = 256
+	Azar_Enemies_Multiplicater = 2
+	},
+	function(){ //Only Semi Solids 3
+	Solids_in_Level = 0 
+	S_MN_MX = [3,8,3,16]
+	SemiSolids_in_Level = 500
+	SS_MN_MX = [1,8,1,16]
+	Azar_Level_height = 128
+	Azar_Enemies_Multiplicater = 1
+	Azar_Stars = 10
+	},
+	function(){ //Only Solids 4
+	Solids_in_Level = 300
+	S_MN_MX = [2,8,2,8]
+	SemiSolids_in_Level = 0
+	SS_MN_MX = [3,16,3,16]
+	Azar_Level_width = 128
+	Azar_Enemies_Multiplicater = 1
+	Azar_Stars = 10
+	},
+	function(){ //Points 5
+	Solids_in_Level = 500
+	S_MN_MX = [1,1,1,1]
+	SemiSolids_in_Level = 500
+	SS_MN_MX = [1,1,1,1]
+	Azar_Level_width = 128
+	Azar_Enemies_Multiplicater = 1
+	Azar_Stars = 10
+	},
+]
+const Azar_Level_dificult = [
+	function(){ // 0 
+	Azar_Level_height = 128
+	Azar_Enemies = 150
+	},
+	function(){ // 1
+	Azar_Level_height = 192
+	Azar_Enemies = 200
+	},
+	function(){ // 2
+	Azar_Level_height = 256
+	Azar_Enemies = 250
+	},
+	function(){ // 3
+	Azar_Level_height = 320
+	Azar_Enemies = 300
+	},
+]
+var Solids_in_Level = 100
+var S_MN_MX = [3,8,3,16] // solid MinX MaxX MinY MaxY
+var SemiSolids_in_Level = 300
+var SS_MN_MX = [3,8,3,16] // Semisolid MinX MaxX MinY MaxY
+var Azar_Level_width = 128
+var Azar_Level_height = 128
+var Azar_Stars = 10
+var Azar_Enemies = 200
+var Azar_Enemies_Multiplicater = 1
+var LavaVelocity = -1
+function Azar_Level(){
+	AZAR = true
+	RandomLevelConfiguration[5]()
+	LC = []
+	SAVE.Levelsprites = []
+	Sprite_Collection = []
+	SpritesInGrid = []
+	startX  = 8
+	startY  = 3
+	SAVE.X = Azar_Level_width
+	SAVE.Y = Azar_Level_height
+	Limit_Up = false
+	Limit_Rigth = Azar_Level_width * -32
+	fillblockImg_3x3(16,3,0,2,1,"#FFF","11111200",0,1,0,0)
+	fillblockImg_3x3(3,4,13,6,1,"#FFF","10002220",0,1,0,0)
+	fillblockImg_3x3(3,3,13,9,1,"#FFF","10002220",0,1,0,0)
+	createBlocks(SemiSolids_in_Level,true,SS_MN_MX[0],SS_MN_MX[1],SS_MN_MX[2],SS_MN_MX[3],SAVE.X,SAVE.Y-4,16,0,1,"#FFF","10002220",0,1,0,0);
+	createBlocks(Solids_in_Level,true,S_MN_MX[0],S_MN_MX[1],S_MN_MX[2],S_MN_MX[3],SAVE.X,SAVE.Y-4,16,0,1,"#FFF","11111200",0,1,0,0);
+	//createBlocks(Solids_in_Level,false,S_MN_MX[0],S_MN_MX[1],S_MN_MX[2],S_MN_MX[3],SAVE.X,SAVE.Y-4,16,0,1,undefined,undefined,0,1,0,0);
+	Azar_Create_Sprites()
+	createSprites_No_in_solid(Azar_Stars,SAVE.X-16,3,16,SAVE.Y-2,32,32,18,"110020011",2,"67062",4,1)
+	effects_in_game = []
+	effects_in_game.push(new effect(2,LavaTexture,32,32,true,0,true,LavaVelocity*32,0,LavaVelocity))
+	change_BlockResolution(BlockResolution);
+}			
+var Azar_Sprites =
+[
+	[32,32,16,"160010000",2,"23900",-2,0],
+	[32,32,16,"160010000",2,"24900",2,0],
+	[32,32,17,"160010000",2,"25800",2,2]
+]
+function Azar_Create_Sprites(){
+	let count = Math.round(Azar_Enemies*Azar_Enemies_Multiplicater  / Azar_Sprites.length)
+	let Sprite = []
+	for(let i = 0; i < Azar_Sprites.length ; i++){
+		Sprite = Azar_Sprites[i]
+		createSprites_No_in_solid(count,SAVE.X-16,SAVE.Y,16,0,Sprite[0],Sprite[1],Sprite[2],Sprite[3],Sprite[4],Sprite[5],Sprite[6],Sprite[7])
+	}
+}
  var Grid = null
  var GridSprites = null
  var Pounter = null
@@ -1843,7 +2061,6 @@ gametest(game,10000,p1,p2,myObstacles,mysprites,myMiniSprites,myHits)
 type_but = 1
 },
 function(b) {
-
 	audioPlayer.muted = false
 on_game = false
 finish_game = true
@@ -1863,7 +2080,6 @@ DrawGirdSprites(GridSprites)
 but4.innerText = "start"
 time.innerText = "TIME"
 type_but = 0
-
 	
 },
 function(b) { 
@@ -4529,10 +4745,13 @@ let Tile;
 for (i = (myObstacles.length -1); i > -1; i += -1) {
 	if(myObstacles[i].prin != 0){
 	Tile = myObstacles[i]
-	ctx.globalCompositeOperation = 'destination-over';
-    ctx.fillStyle = Tile.BC
+	ctx.fillStyle = Tile.BC
     ctx.fillRect(Tile.x,Tile.y,32,32)
-	ctx.globalCompositeOperation = 'source-over';
+	}
+}
+for (i = (myObstacles.length -1); i > -1; i += -1) {
+	if(myObstacles[i].prin != 0){
+	Tile = myObstacles[i]
      ctx.drawImage(
 	image_collection[Tile.imgN],
 	Tile.XG, 
@@ -4941,7 +5160,7 @@ inputY = 0
 backgroundMusic.play();
 /*de aqui para abajo todo lo de esto corchetes se va Player hacer cada frame*/
 function Frames(){
-	if(on_game == false){document.removeEventListener('keydown', keydownHandler);}
+	if(!on_game){document.removeEventListener('keydown', keydownHandler);}
         if(Frame(p1,p2,tiles,sprites,mini_sprites,Hits)){
 				requestAnimationFrame(Frames)
         }else{
@@ -4955,6 +5174,10 @@ function Frames(){
 					  TextFinishGame.push(new Text("Stars "+ prizes+"/"+SAVE.totalPrizes,'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/2,0.2))
 					  if(prizes == SAVE.totalPrizes){
 					  TextFinishGame.push(new Text("Perfect",'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,screenHeigth,screenHeigth/2+screenHeigth/4,0.05))  
+					  }
+					  if(AZAR){
+						   Azar_Level_height += 64
+                           Azar_Enemies += 50
 					  }
 					  AZAR = false
 				  }else{
@@ -4973,7 +5196,7 @@ function Frames(){
 
 Frames()
  
-function Textdraw(){
+function Textdraw(){	
   let ctx = game.getContext('2d');
   ctx.restore()
   ctx.clearRect(0, 0, game.width, game.height)
@@ -4982,7 +5205,7 @@ function Textdraw(){
   ProcessText(TextFinishGame[i])
   DrawText(TextFinishGame[i],ctx)
   }
-  requestAnimationFrame(Textdraw)
+	requestAnimationFrame(Textdraw)
 }
 
 }
@@ -5267,32 +5490,14 @@ function Boregito(Value){
 				SpritesInGrid = []
 				startX  = 8
 				startY  = 3
-				fillblockImg_3x3(1,16,3,0,2,"#FFF","11111200",0,1,0,0)
+				fillblockImg_3x3(16,3,0,2,1,"#FFF","11111200",0,1,0,0)
 				createBlocks(150,true,3,8,3,16,SAVE.X,SAVE.Y,16,0,1,"#FFF","10002220",0,1,0,0);
 				createBlocks(150,true,3,8,3,16,SAVE.X,SAVE.Y,16,0,1,"#FFF","11111200",0,1,0,0);
 				change_BlockResolution(BlockResolution);
 			   break
 			   case "AZAR":
 			   AZAR = true
-			    LC = []
-				SAVE.Levelsprites = []
-				Sprite_Collection = []
-				SpritesInGrid = []
-				startX  = 8
-				startY  = 3
-				SAVE.X = 128
-				SAVE.Y = 256
-				Limit_Up = false
-				Limit_Rigth = 128 * -32
-				fillblockImg_3x3(1,16,3,0,2,"#FFF","11111200",0,1,0,0)
-				createBlocks(300,true,3,8,3,16,SAVE.X,SAVE.Y-4,16,0,1,"#FFF","10002220",0,1,0,0);
-				createBlocks(200,true,3,8,3,16,SAVE.X,SAVE.Y-4,16,0,1,"#FFF","11111200",0,1,0,0);
-			   createSprites_No_in_solid(50,SAVE.X-16,SAVE.Y,16,0,32,32,16,"160010000",2,"23900",-2,0)
-	           createSprites_No_in_solid(50,SAVE.X-16,SAVE.Y,16,0,32,32,16,"160010000",2,"24900",2,0)
-	           createSprites_No_in_solid(50,SAVE.X-16,SAVE.Y,16,0,32,32,17,"160010000",2,"25800",2,2)
-			   createSprites_No_in_solid(10,SAVE.X-16,3,16,SAVE.Y-2,32,32,18,"110020011",2,"67062",4,1)
-			   effects_in_game.push(new effect(2,LavaTexture,32,32,true,0,true,-32,0,-1))
-				change_BlockResolution(BlockResolution);
+			   Azar_Level()
 			   break
 			   case "FLY":
 			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,11,"661120201",2,"01400", 0,0)
