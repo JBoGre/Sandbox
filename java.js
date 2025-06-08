@@ -383,6 +383,36 @@ x.addEventListener("click", () =>{
 }
 DRAWS[0](PT)
 
+ const songSelector = document.getElementById("songSelector");
+		 
+        MusicList.forEach(opcion => {
+          let opt = document.createElement("option");
+		  opt.className = "Text"
+          opt.value = opcion.Crs;
+          opt.textContent = opcion.Name;
+          songSelector.appendChild(opt);
+        });
+    const audioPlayer = document.getElementById("audioPlayer");
+
+var LevelSelected = 'Niveles JSON/LEVELNULL.json'
+    songSelector.addEventListener("change", function() {
+      let selectedSong = this.value;
+      if (selectedSong) {
+       audioPlayer.src = selectedSong;
+	   backgroundMusic.src = selectedSong;
+	   backgroundMusicSrc = selectedSong
+      } else {
+        audioPlayer.pause();
+        audioPlayer.src = "";
+		backgroundMusic.src = ""
+      }
+    });
+	
+	const LevelSelector = document.getElementById("LevelSelector");
+	LevelSelector.addEventListener("change", function() {
+		 LevelSelected = this.value;
+	})
+
 function test (A){
 var fileName = "myfile.txt";
 js = JSON.stringify(A)
@@ -895,10 +925,10 @@ function fillblockImg_3x3(X,Y,Xcoordinate,Ycoordinate,Img,color,colision,XGirdLi
 	let Yp = Ycoordinate
 	let StarYp = Yp
 	
-	var XG = (colision[5])*1
+	var XG = parseInt(colision[5], 32)
 	let XLimit = XGirdLimit + XG
 	
-	var YG = (colision[6])*1
+	var YG = parseInt(colision[6], 32)
 	let YLimit = YGirdLimit + YG
 	let starYG = YG
 	
@@ -914,17 +944,17 @@ function fillblockImg_3x3(X,Y,Xcoordinate,Ycoordinate,Img,color,colision,XGirdLi
 	function Yblocks(){
 		Yp = StarYp
 		YG = starYG
-		replaceTilePriority(Xp,Yp,type,alture,col + XG +YG+animation,color,Img,Script)
+		replaceTilePriority(Xp,Yp,type,alture,col + XG.toString(32) +YG.toString(32)+animation,color,Img,Script)
 		Yp--
 		YG++
 		if(YG > YLimit){YG = YLimit}
 		for(let i = 0; i < Y-1 ; i++){
-		    replaceTilePriority(Xp,Yp,type,alture,downCol + XG +YG+animation,color,Img,Script)
+		    replaceTilePriority(Xp,Yp,type,alture,downCol + XG.toString(32) +YG.toString(32)+animation,color,Img,Script)
 		    Yp --
 		}
 		YG ++
 		if(YG > YLimit){YG = YLimit}
-		replaceTilePriority(Xp,Yp,type,alture,downCol + XG +YG+animation,color,Img,Script)
+		replaceTilePriority(Xp,Yp,type,alture,downCol + XG.toString(32) +YG.toString(32)+animation,color,Img,Script)
 		Xp ++
 	}
 		Yblocks()
@@ -1133,6 +1163,7 @@ function replaceTilePriority(lastXcord,lastYcord,type,maxALture,col,color,IN,scr
           result.script = script
 		  result.col =  col
 		  result.IN = IN
+		  result.color = color
 		  result.alt = maxALture
 				}					
 		   }else{
@@ -1140,6 +1171,7 @@ function replaceTilePriority(lastXcord,lastYcord,type,maxALture,col,color,IN,scr
           result.script = script
 		  result.col =  col
 		  result.IN = IN
+		  result.color = color
 		  result.alt = maxALture
 		   }
 	   }  
@@ -1251,8 +1283,8 @@ const RandomLevelConfiguration = [
 	Azar_Enemies_Multiplicater = 2
 	},
 	function(){ // Big Solids 2
-	Solids_in_Level = 10	
-	S_MN_MX = [50,100,50,100]
+	Solids_in_Level = 20	
+	S_MN_MX = [32,64,32,64]
 	SemiSolids_in_Level = 300
 	SS_MN_MX = [3,16,3,16]
 	Azar_Level_width = 256
@@ -1265,7 +1297,6 @@ const RandomLevelConfiguration = [
 	SS_MN_MX = [1,8,1,16]
 	Azar_Level_height = 128
 	Azar_Enemies_Multiplicater = 1
-	Azar_Stars = 10
 	},
 	function(){ //Only Solids 4
 	Solids_in_Level = 300
@@ -1274,7 +1305,6 @@ const RandomLevelConfiguration = [
 	SS_MN_MX = [3,16,3,16]
 	Azar_Level_width = 128
 	Azar_Enemies_Multiplicater = 1
-	Azar_Stars = 10
 	},
 	function(){ //Points 5
 	Solids_in_Level = 500
@@ -1283,7 +1313,48 @@ const RandomLevelConfiguration = [
 	SS_MN_MX = [1,1,1,1]
 	Azar_Level_width = 128
 	Azar_Enemies_Multiplicater = 1
-	Azar_Stars = 10
+	},
+	function(){ //Line 6
+	Solids_in_Level = 100
+	S_MN_MX = [1,1,3,16]
+	SemiSolids_in_Level = 300
+	SS_MN_MX = [3,16,1,1]
+	Azar_Level_width = 128
+	Azar_Enemies_Multiplicater = 1
+	},
+	function(){ //Line and points 7
+	Solids_in_Level = 300
+	S_MN_MX = [1,1,3,16]
+	SemiSolids_in_Level = 300
+	SS_MN_MX = [1,1,1,1]
+	Azar_Level_width = 128
+	Azar_Enemies_Multiplicater = 1
+	},
+	function(){ //Points and Lines 8 
+	Solids_in_Level = 300
+	S_MN_MX = [1,1,1,1]
+	SemiSolids_in_Level = 100
+	SS_MN_MX = [32,32,1,1]
+	Azar_Level_width = 128
+	Azar_Enemies_Multiplicater = 1
+	},
+	function(){ //Only Points 9
+	Solids_in_Level = 0
+	S_MN_MX = [1,1,1,1]
+	SemiSolids_in_Level = 1000
+	SS_MN_MX = [1,1,1,1]
+	Azar_Level_width = 128
+	Azar_Enemies_Multiplicater = 1
+	},
+	function(){ //Random
+	let Solid = RandomNumber(1,16)
+	let SemiSolid = RandomNumber(1,16)
+	Solids_in_Level = 100
+	S_MN_MX = [Solid,Solid,Solid,Solid]
+	SemiSolids_in_Level =  100
+	SS_MN_MX = [SemiSolid,SemiSolid,SemiSolid,SemiSolid]
+	Azar_Level_width = 128
+	Azar_Enemies_Multiplicater = 1
 	},
 ]
 const Azar_Level_dificult = [
@@ -1310,14 +1381,28 @@ var SemiSolids_in_Level = 300
 var SS_MN_MX = [3,8,3,16] // Semisolid MinX MaxX MinY MaxY
 var Azar_Level_width = 128
 var Azar_Level_height = 128
+var Azar_floor = 1
 var Azar_Stars = 10
 var Azar_Enemies = 200
 var Azar_Enemies_Multiplicater = 1
 var LavaVelocity = -1
+var SkinLevel = 0
+var SkinS = SkinLevel
+var SkinSS = SkinLevel
+var LevelType = undefined
+var SkinLevel = 0
+var Skins_S =
+[
+	[1,"#FFF","11111200",0,1,0,0],
+]
+var Skins_SS =
+[
+	[1,"#FFF","10002220",0,1,0,0],
+]
 function Azar_Level(){
 	AZAR = true
-	RandomLevelConfiguration[5]()
 	LC = []
+	 Avoid_undefined_in_Azar()
 	SAVE.Levelsprites = []
 	Sprite_Collection = []
 	SpritesInGrid = []
@@ -1327,24 +1412,31 @@ function Azar_Level(){
 	SAVE.Y = Azar_Level_height
 	Limit_Up = false
 	Limit_Rigth = Azar_Level_width * -32
-	fillblockImg_3x3(16,3,0,2,1,"#FFF","11111200",0,1,0,0)
-	fillblockImg_3x3(3,4,13,6,1,"#FFF","10002220",0,1,0,0)
-	fillblockImg_3x3(3,3,13,9,1,"#FFF","10002220",0,1,0,0)
-	createBlocks(SemiSolids_in_Level,true,SS_MN_MX[0],SS_MN_MX[1],SS_MN_MX[2],SS_MN_MX[3],SAVE.X,SAVE.Y-4,16,0,1,"#FFF","10002220",0,1,0,0);
-	createBlocks(Solids_in_Level,true,S_MN_MX[0],S_MN_MX[1],S_MN_MX[2],S_MN_MX[3],SAVE.X,SAVE.Y-4,16,0,1,"#FFF","11111200",0,1,0,0);
-	//createBlocks(Solids_in_Level,false,S_MN_MX[0],S_MN_MX[1],S_MN_MX[2],S_MN_MX[3],SAVE.X,SAVE.Y-4,16,0,1,undefined,undefined,0,1,0,0);
+	let S_kin = Skins_S[SkinS]
+	let SS_kin = Skins_SS[SkinSS]
+	Azar_Create_Solid_SemiSolid()
+	
 	Azar_Create_Sprites()
 	createSprites_No_in_solid(Azar_Stars,SAVE.X-16,3,16,SAVE.Y-2,32,32,18,"110020011",2,"67062",4,1)
 	effects_in_game = []
 	effects_in_game.push(new effect(2,LavaTexture,32,32,true,0,true,LavaVelocity*32,0,LavaVelocity))
 	change_BlockResolution(BlockResolution);
-}			
-var Azar_Sprites =
-[
-	[32,32,16,"160010000",2,"23900",-2,0],
-	[32,32,16,"160010000",2,"24900",2,0],
-	[32,32,17,"160010000",2,"25800",2,2]
-]
+}	
+function Avoid_undefined_in_Azar(){
+	if(LevelType == undefined){
+		RandomLevelConfiguration[ RandomNumber(0,RandomLevelConfiguration.length -1 )]()
+	}else{
+		RandomLevelConfiguration[LevelType]()
+	}
+	if(SkinLevel == undefined){
+		let Skin = RandomNumber(1,7)
+		SkinS = Skin
+		SkinSS = Skin
+	}else{
+		SkinS = SkinLevel
+		SkinSS = SkinLevel
+	}
+}	
 function Azar_Create_Sprites(){
 	let count = Math.round(Azar_Enemies*Azar_Enemies_Multiplicater  / Azar_Sprites.length)
 	let Sprite = []
@@ -1353,6 +1445,148 @@ function Azar_Create_Sprites(){
 		createSprites_No_in_solid(count,SAVE.X-16,SAVE.Y,16,0,Sprite[0],Sprite[1],Sprite[2],Sprite[3],Sprite[4],Sprite[5],Sprite[6],Sprite[7])
 	}
 }
+var Azar_Sprites =
+[
+	[32,32,16,"160010000",2,"23900",-2,0],
+	[32,32,16,"160010000",2,"24900",2,0],
+	[32,32,17,"160010000",2,"25800",2,2]
+]
+function Azar_Create_Solid_SemiSolid(){
+	let count = Math.round((SemiSolids_in_Level / Azar_SemiSolids.length)+0.4)
+	let Solid = []
+	for(let i = 0; i < Azar_SemiSolids.length ; i++){
+		Solid = Azar_SemiSolids[i]
+		createBlocks(
+			count,true,
+			SS_MN_MX[0],SS_MN_MX[1],SS_MN_MX[2],SS_MN_MX[3],
+			SAVE.X,SAVE.Y-4,16,0,
+			Solid[0],Solid[1],Solid[2],Solid[3],Solid[4],Solid[5],Solid[6]
+		);
+	}
+	
+	fillblockImg_3x3(3,4,13,6,Solid[0],Solid[1],Solid[2],Solid[3],Solid[4],Solid[5],Solid[6])
+	fillblockImg_3x3(3,3,13,9,Solid[0],Solid[1],Solid[2],Solid[3],Solid[4],Solid[5],Solid[6])
+	
+	count = Math.round((Solids_in_Level / Azar_Solids.length)+0.4)
+	Solid = []
+	for(let i = 0; i < Azar_Solids.length ; i++){
+		Solid = Azar_Solids[i]
+		createBlocks(
+			count,true,
+			S_MN_MX[0],S_MN_MX[1],S_MN_MX[2],S_MN_MX[3],
+			SAVE.X,SAVE.Y-4,16,0,
+			Solid[0],Solid[1],Solid[2],Solid[3],Solid[4],Solid[5],Solid[6]
+		);
+	}
+	fillblockImg_3x3(16,3,0,2,Solid[0],Solid[1],Solid[2],Solid[3],Solid[4],Solid[5],Solid[6])
+}
+var Azar_Solids =
+[
+	[1,"#FFF","10002220",0,1,0,0],
+]
+var Azar_SemiSolids =
+[
+   [1,"#FFF","10002220",0,1,0,0],
+];
+
+const Azar_Blocks_Skins = [
+	function(){ // Minimalist 0 
+	Azar_Solids =[
+		[1,"#FFF","11111200",0,1,0,0],
+    ]
+	Azar_SemiSolids =[
+		[1,"#FFF","10002220",0,1,0,0],
+    ]
+	},
+	function(){ // Clasic  1
+	Azar_Solids =[
+		[8,"rgb(176,96,32)","11111030",2,2,0,0],
+    ]
+	Azar_SemiSolids =[
+		[8,"rgb(88,200,248)","10002630",2,2,0,0], // Block Blue Smb3
+		[8,"rgb(248,144,72)","10002930",2,2,0,0], // Block Orange Smb3
+		[8,"rgb(224,224,224)","10002C30",2,2,0,0], // Block White Smb3
+		[8,"rgb(128,184,80)","10002F30",2,2,0,0], // Block Green Smb3
+    ]
+    },
+		function(){ // Grass  2
+	Azar_Solids =[
+		[8,"rgb(112,208,80)","11111330",2,2,0,0], // Grass Smb3
+    ]
+	Azar_SemiSolids =[
+		[8,"rgb(88,200,248)","10002630",2,2,0,0], // Block Blue Smb3
+		[8,"rgb(248,144,72)","10002930",2,2,0,0], // Block Orange Smb3
+		[8,"rgb(224,224,224)","10002C30",2,2,0,0], // Block White Smb3
+    ]
+    },
+	function(){ // UnderGround  3
+	Azar_Solids =[
+		[8,"rgb(8,57,123)","11111300",2,2,0,0],// UnderGround Smb1
+    ]
+	Azar_SemiSolids =[
+		[8,"rgba(0,0,0,0)","10002F00",2,2,0,0], // Bones Smb1
+    ]
+    },
+	function(){ // Castle  4
+	Azar_Solids =[
+		[8,"rgb(0,0,0)","11111CF0",2,2,0,0], // Castle SMM
+    ]
+	Azar_SemiSolids =[
+		[8,"rgba(0,0,0,0)","10002FF0",2,2,0,0], // Castle SMM
+		[8,"rgba(0,0,0,0)","100029F0",2,2,0,0], // Bones SMM
+    ]
+    },
+	function(){ // All_in_one
+	Azar_Solids =[
+	[1,"#FFF","11111200",0,1,0,0], //Minimalist Sandbox
+	
+	[8,"rgb(192,112,32)","11111000",2,2,0,0], // Ground Smb1
+	[8,"rgb(8,57,123)","11111300",2,2,0,0],// UnderGround Smb1
+	[8,"rgb(239,115,74)","11111000",2,2,0,0], // IceGround Smb1
+	[8,"rgb(132,140,123)","11111900",2,2,0,0], // Castle Smb1
+	
+	[8,"rgb(200,120,48)","11111090",2,2,0,0], // Ground Smb2
+	[8,"rgb(200,120,48)","11111690",2,2,0,0], // UnderGround Smb2
+	[8,"rgb(144,208,232)","11111990",2,2,0,0], // Ice Smb2
+	
+	[8,"rgb(176,96,32)","11111030",2,2,0,0], //Ground Smb3
+	[8,"rgb(112,208,80)","11111330",2,2,0,0], // Grass Smb3
+	
+	[8,"rgb(200,152,88)","11111060",2,2,0,0], // Ground SmW
+	[8,"rgb(88,112,112)","11111960",2,2,0,0], // UnderGround SmW
+	[8,"rgb(120,104,24)","11111C60",2,2,0,0], // Forrest SmW
+	[8,"rgb(144,168,176)","11111360",2,2,0,0], // Castel Rock SmW
+	[8,"rgb(144,168,176)","11111660",2,2,0,0], // Castel SmW
+	[8,"rgb(128,128,200)","11111F60",2,2,0,0], // Special SmW
+	
+	[8,"rgb(180,106,48)","111110C0",2,2,0,0], // Ground N-Smb1
+	
+	[8,"rgb(0,0,0)","111110F0",2,2,0,0], // Ground SMM
+	[8,"rgb(0,0,0)","111116F0",2,2,0,0], // UnderGround SMM
+	[8,"rgb(0,0,0)","11111CF0",2,2,0,0], // Castle SMM
+    ]
+	Azar_SemiSolids =[
+	[1,"#FFF","10002220",0,1,0,0], //Minimalist Sandbox
+	
+	[8,"rgba(0,0,0,0)","10002C00",2,2,0,0], // Ground Smb1
+	[8,"rgba(0,0,0,0)","10002F00",2,2,0,0], // Bones Smb1
+	
+	[8,"rgb(68,140,8)","10002390",2,2,0,0], //  Ground Smb2
+	
+	[8,"rgb(88,200,248)","10002630",2,2,0,0], // Block Blue Smb3
+	[8,"rgb(248,144,72)","10002930",2,2,0,0], // Block Orange Smb3
+	[8,"rgb(224,224,224)","10002C30",2,2,0,0], // Block White Smb3
+	[8,"rgb(128,184,80)","10002F30",2,2,0,0], // Block Green Smb3
+	
+	[8,"rgb(99,43,0)","10002FC0",2,2,0,0], // Ground N-Smb1
+	
+	[8,"rgba(0,0,0,0)","100023F0",2,2,0,0], // Ground SMM
+	[8,"rgba(0,0,0,0)","100029F0",2,2,0,0], // Bones SMM
+	[8,"rgba(0,0,0,0)","10002FF0",2,2,0,0], // Castle SMM
+    ]
+	},
+]
+Azar_Blocks_Skins[1]()
  var Grid = null
  var GridSprites = null
  var Pounter = null
@@ -1533,10 +1767,11 @@ let diference = GridHeight - BlockResolution
 	GridSprites.height = GridHeight;GridSprites.width = GridWidth
 	Pounter.height = GridHeight;Pounter.width = GridWidth;
 	BackgroundGrid.height = GridHeight;BackgroundGrid.width = GridWidth;
+	BackgroundGrid.style.backgroundImage = backgroundBase
 ctx.clearRect(0,0,GridWidth,GridHeight)
 for(let i = 0; i < LC.length ; i++){
-	var XG = ( "0x"+ LC[i].col[5]) * 32
-	var YG = ( "0x"+ LC[i].col[6]) * 32
+	var XG = (parseInt(LC[i].col[5], 32))*32
+	var YG = (parseInt(LC[i].col[6], 32))*32
 	ctx.fillStyle = LC[i].color
 	ctx.fillRect(LC[i].X*BlockResolution,diference-(LC[i].Y*BlockResolution),BlockResolution,BlockResolution)
 	ctx.drawImage(image_collection[LC[i].IN],XG,YG,32,32, LC[i].X*BlockResolution,diference-(LC[i].Y*BlockResolution),BlockResolution,BlockResolution)
@@ -3153,8 +3388,8 @@ this.Xplus = 0
 this.Yplus = 0 
 this.Wid = 32
 this.heg = 32
-this.type = ( "0x"+ col[4])*1;
-this.XG = ( "0x"+ col[5])*32 ;this.YG = ( "0x"+ col[6])*32
+this.type = (parseInt(col[4], 32))
+this.XG = (parseInt(col[5], 32))*32; ;this.YG = (parseInt(col[6], 32))*32;
 this.script = script
 this.prin = 1
 this.x = X; this.y = Y;
@@ -3181,8 +3416,8 @@ function Swich_tile(Tile,iL,iA){
 	   }else{
 	   Tile.imgN = result.IN  ;Tile.col = result.col
 	   Tile.BC = result.color
-	   Tile.type = ( "0x"+ Tile.col[4])*1
-       Tile.XG = ( "0x"+ Tile.col[5])*32 ;Tile.YG = ( "0x"+ Tile.col[6])*32
+	   Tile.type = parseInt(Tile.col[4], 32);
+       Tile.XG = (parseInt(Tile.col[5], 32))*32 ;Tile.YG = (parseInt(Tile.col[6], 32))*32
        if(result.script == undefined){Tile.script = "0"}else{Tile.script = result.script}
 	   Tile.prin = 1
 	   Tile.intervald_time = 0
@@ -3516,6 +3751,7 @@ this.Xnegative = Xnegative ;this.Ynegative = Ynegative ;
 this.Hx = 0; this.Hy = 0;
 this.velocity = 1
 this.prin = 2
+this.hits = 0
 this.col = comportament
 this.xP = 0; this.yP = 0
 this.invecybility = true
@@ -3568,37 +3804,6 @@ if(player.lives > 0 ){
    }}
 }
 }
-
- const songSelector = document.getElementById("songSelector");
-		 
-        MusicList.forEach(opcion => {
-          let opt = document.createElement("option");
-		  opt.className = "Text"
-          opt.value = opcion.Crs;
-          opt.textContent = opcion.Name;
-          songSelector.appendChild(opt);
-        });
-    const audioPlayer = document.getElementById("audioPlayer");
-
-var LevelSelected = 'Niveles JSON/LEVELNULL.json'
-    songSelector.addEventListener("change", function() {
-      let selectedSong = this.value;
-      if (selectedSong) {
-       audioPlayer.src = selectedSong;
-	   backgroundMusic.src = selectedSong;
-	   backgroundMusicSrc = selectedSong
-      } else {
-        audioPlayer.pause();
-        audioPlayer.src = "";
-		backgroundMusic.src = ""
-      }
-    });
-	
-	const LevelSelector = document.getElementById("LevelSelector");
-	LevelSelector.addEventListener("change", function() {
-		 LevelSelected = this.value;
-	})
-
 
 const controlls =[{up:38,down:40,left:37,right:39,Jump:90,Run:88 },{up:87,down:83,left:65,right:68,Jump:32,Run:18 },{up:38,down:40,left:37,right:39,Jump:17,Run:40 },]
 function Player_Effects(Player){
@@ -3739,6 +3944,7 @@ function plataformer_Easy(ctr,Player,B,C){
 }
 if(Player.Ytouch){
 	auto_com[Player.Movement[2]].Y(Player);//auto comprotamiento del jugador
+	Player.hits = 0
 }
 
 if(Ax4 == 3){
@@ -3787,7 +3993,7 @@ Player.water = false
 Player.AnimationWater = true
 }else{
 	/*En tierra*/
-if(Player.Xtouch && Player.InFlor == false){
+if((Player.Xtouch && Player.InFlor == false) && !Player.Down){
 	if(tick){
 	Player.InFlor = false
 	Player.MoveY += 1;
@@ -3810,6 +4016,7 @@ if(Player.Xtouch && Player.InFlor == false){
 	if (Player.keys && Player.keys[controlls[ctr].Jump]) {Jump(Player,-8,10);}else{Player.jumped = false ;Player.jt = 0; } 
 	if(tick){Gravity(Player,16,1);Player.InFlor = false}
 }
+
 if (Player.keys && Player.keys[controlls[ctr].Run]){Player.velocity = 8;}
 if(Player.MoveX > Player.velocity){Player.MoveX = Player.velocity};
 if(Player.MoveX < Player.velocity*-1 ){Player.MoveX = Player.velocity*-1}
@@ -5170,16 +5377,21 @@ function Frames(){
 			backgroundMusic.pause();  // Pausa el audio
 			backgroundMusic.currentTime = 0; // Reinicia al inicio
 				  if(Win_or_lose){
-					  TextFinishGame.push(new Text("Tanks for playing",'#8F8','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
-					  TextFinishGame.push(new Text("Stars "+ prizes+"/"+SAVE.totalPrizes,'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/2,0.2))
-					  if(prizes == SAVE.totalPrizes){
-					  TextFinishGame.push(new Text("Perfect",'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,screenHeigth,screenHeigth/2+screenHeigth/4,0.05))  
-					  }
 					  if(AZAR){
-						   Azar_Level_height += 64
-                           Azar_Enemies += 50
+						  TextFinishGame.push(new Text("Passed level "+ Azar_floor,'#8F8','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
+						  TextFinishGame.push(new Text("If you wish to continue, insert the code again.",'white','24px Arial','center',screenWidth/2,screenWidth/2,0.1,screenHeigth,screenHeigth/2+screenHeigth/4,0.05))  
+						  Azar_floor++
+						  Azar_Level_height += 64
+                          Azar_Enemies += 50
+					  }else{
+						  TextFinishGame.push(new Text("Tanks for playing",'#8F8','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
+						  TextFinishGame.push(new Text("Stars "+ prizes+"/"+SAVE.totalPrizes,'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/2,0.2))
+						if(prizes == SAVE.totalPrizes){
+							TextFinishGame.push(new Text("Perfect",'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,screenHeigth,screenHeigth/2+screenHeigth/4,0.05))  
+						}
 					  }
 					  AZAR = false
+					  
 				  }else{
 					   if(AZAR){
 						Boregito("AZAR")
@@ -5497,6 +5709,24 @@ function Boregito(Value){
 			   break
 			   case "AZAR":
 			   AZAR = true
+			   Azar_Blocks_Skins[1]()
+			   Azar_Sprites =
+				[
+					[32,32,17,"160010000",2,"25800",2,2]
+				]
+			   Azar_Level()
+			   break
+			   case "AZARHARD":
+			   AZAR = true
+			   Azar_Blocks_Skins[4]()
+			   audioPlayer.src = 'Music/Super Mario World Fortress.mp3';
+			   backgroundMusic.src = 'Music/Super Mario World Fortress.mp3';
+			   backgroundMusicSrc = 'Music/Super Mario World Fortress.mp3'
+			   backgroundBase = 'linear-gradient(rgb(0, 0, 0), rgb(168, 0, 0))'
+			   Azar_Sprites =
+				[
+					[32,32,17,"160010000",2,"25800",2,2]
+				]
 			   Azar_Level()
 			   break
 			   case "FLY":
