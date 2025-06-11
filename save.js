@@ -30,37 +30,12 @@ backgroundImages:[
 //["Backgrounds/backMountains.png",1024,864,0.1,1,0,0,true,false,0,0],
 ],
 
-//["Backgrounds/Jungle.png",900,600,0.5,0.5,0,0,true,false,0,0],
-//["Backgrounds/ocean.png",512,512,0.2,0.5,0,0,true,false,0,64],
-
-
-/*
-StyleBackground:'linear-gradient( rgb(8, 16, 88),rgb(8, 16, 88))',
-backgroundImages:[["Backgrounds/sky.png",512,512,0.5,0.5,0,0,true,false,0,0],
-],
-*/
-/*
-StyleBackground:'linear-gradient( rgb(192, 192, 192),rgb(192, 192, 192))',
-backgroundImages:[["Backgrounds/DarkForest.png",512,512,0.5,0.5,0,0,true,false,0,0],
-],
-*/
-/*
-StyleBackground:'linear-gradient( rgb(0, 0, 0),rgb(0, 0, 0))',
-backgroundImages:[["Backgrounds/Cave.png",512,512,0.5,0.5,0,0,true,true,0,0],
-],
-*/
-/*
-StyleBackground:'linear-gradient(45deg, rgb(255, 255, 255), rgb(209, 0, 0))',
-backgroundImages:[["Backgrounds/Fire.png",512,512,0.5,0.5,0,0,true,false,0,0],
-],
-*/
-
 
 tiles:[
 {
 Name:"Tiles & Objects",
 Images:["texturas/Texturas ASCII_DIY.png","texturas/GradientTexture.png","texturas/Sprites.png","texturas/decoraciones.png",
-"texturas/Monkey.png","texturas/BigMonkey.png","texturas/Goomba.png","texturas/shy guy.png"],
+"texturas/Monkey.png","texturas/BigMonkey.png","texturas/Goomba.png","texturas/shy guy.png","texturas/3x3 Textures.png"],
 SoundEffects:["SoundEfects/Checkpoint.wav","SoundEfects/Collect.wav","SoundEfects/Boing.mp3","SoundEfects/Boing.mp3","SoundEfects/Jump Attack.mp3"],
 objects:[
 // Print Blocks 
@@ -153,9 +128,9 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"11111830",7],
 ["Tile","rgba(0,0,0,0)",1,"61111A50",7],
 ["Tile","rgba(0,0,0,0)",1,"11611A60",7],
-["Tile","rgba(0,0,0,0)",1,"11111D20",8],
-["Tile","rgba(0,0,0,0)",1,"11112D20",8],
-["Tile","rgba(0,0,0,0)",1,"11111420",9],
+//["Tile","rgba(0,0,0,0)",1,"11111D20",8],
+//["Tile","rgba(0,0,0,0)",1,"11112D20",8],
+//["Tile","rgba(0,0,0,0)",1,"11111420",9],
 
 ["Object",128,128,"#","000000000",3,"10000", 0,0],["Object",128,128,"#","000000000",3,"11000", 0,0],
 ["Object",128,128,"#","000000000",3,"12000", 0,0],["Object",128,128,"#","000000000",3,"13000", 0,0],
@@ -168,6 +143,7 @@ objects:[
 ["Object",42,42,0,"661132103",2,"22300", -1,8],
 ["Object",84,84,1,"661132103",2,"21100", -1,8],
 ["Object",42,42,2,"661122103",2,"22300", -1,8],
+["Object",42,42,14,"661132103",2,"22300", -1,8],
 ["Object",32,32,7,"661132103",5,"2A200", -2,8],
 ["Object",32,32,"#","661132103",1,"08200", 0,8],
 ["Object",32,32,"#","111132103",1,"03200", 0,8],
@@ -179,9 +155,9 @@ objects:[
 ["Object",32,48,11,"160030000",6,"00023",-1,0],
 ["Object",32,32,12,"160030000",7,"00023",-1,0],
 ["Object",32,32,13,"6600100000",2,"23800", 1,1],
-["Object",42,42,14,"661132103",2,"22300", -1,8],
-["Object",32,32,15,"160010000",2,"23900",-4,0],
-["Object",32,32,15,"160010000",2,"24900",4,0],
+["Object",32,32,15,"160010000",2,"23900",-2,0],
+["Object",32,32,15,"160010000",2,"24900",2,0],
+["Object",128,128,15,"160010000",2,"23000",-2,0],
 ["Object",32,32,16,"160010000",2,"25800",2,2],
 ["Object",32,32,17,"110020011",2,"67062",4,1]
 ],
@@ -189,7 +165,6 @@ TileScripts:[
 {
 Action: function Action(Tile,p1,side) {
     Tile.action = true
-	SoundEffectsCollection[0].currentTime = 0;
 	SoundEffectsCollection[0].play()
 	Tile.Up = 0
 	Tile.Down = 0
@@ -1015,7 +990,8 @@ RenderMode: function RenderMode (ctx,Sprite) {
 },
 {
 Action: function Action(Sprite) {
-	
+	Sprite.Ydiference_Print = -4
+	 Sprite.height -= 8
 	},
 Loop: function Loop (Sprite,p1) {
 	if(Sprite.Yplayertouch){
@@ -1023,6 +999,7 @@ Loop: function Loop (Sprite,p1) {
 		SoundEffectsCollection[4].play()
 		Sprite.live = 0
 		p1.MoveY = -8;p1.BY = 0
+		p1.hits++
 	}
 	if(Sprite.live < 1 ){
 		Sprite.type = 1
@@ -1039,6 +1016,8 @@ Loop: function Loop (Sprite,p1) {
 },
 {
 Action: function Action(Sprite) {
+	Sprite.Ydiference_Print = -4
+	 Sprite.height -= 8
 	Sprite.angle = 0
 	},
 Loop: function Loop (Sprite,p1) {
@@ -1047,6 +1026,7 @@ Loop: function Loop (Sprite,p1) {
 		SoundEffectsCollection[4].play()
 		Sprite.live = 0
 		p1.MoveY = -8;p1.BY = 0
+		p1.hits++
 	}
 	if(Sprite.live < 1 ){
 		Sprite.type = 1
@@ -1055,10 +1035,10 @@ Loop: function Loop (Sprite,p1) {
 		Gravedad(Sprite,1,16)
 		Sprite.angle += Sprite.Xvelocity * Math.PI / 180;  
 	}else{
-	Sprite.angle = Math.atan2(p1.y - Sprite.y,p1.x - Sprite.x ) + Math.tan(1)
-	Sprite.MoveX = Sprite.Xvelocity * Math.sin(Sprite.angle)
-	Sprite.MoveY = (Sprite.Yvelocity * Math.cos(Sprite.angle))*-1
-	Sprite.angle = (Sprite.angle / Math.PI * 180)
+		Sprite.angle = Math.atan2(p1.y - Sprite.y,p1.x - Sprite.x ) + Math.tan(1)
+		Sprite.MoveX = Sprite.Xvelocity * Math.sin(Sprite.angle)
+		Sprite.MoveY = (Sprite.Yvelocity * Math.cos(Sprite.angle))*-1
+		Sprite.angle = (Sprite.angle / Math.PI * 180)
 	}
     },
  RenderMode: function RenderMode (ctx,Sprite) {
@@ -1077,6 +1057,7 @@ Loop: function Loop (Sprite,p1) {
 		Sprite.live = -1
 		SoundEffectsCollection[0].play()
 		p1.Win = true
+		p1.InMove = false
 	}
     },
  RenderMode: function RenderMode (ctx,Sprite) {
