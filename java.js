@@ -235,7 +235,7 @@ const characters = [
 Name:"Mario of SMB1" ,
 Img :["characters/Mario-sprite.png","characters/Luigi-sprite.png","characters/GoldMario-sprite.png","characters/GreenLuigi-sprite.png"],
 Grid:[/*width*/ 32,/*height*/32,/*static*/0,/*walk*/3,/*run*/0,/*brek*/4,
-/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3 ],
+/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3,/*death*/0 ],
 width:24,
 height:32,
 WNEGA:-4,
@@ -249,7 +249,7 @@ GameOverSound: "SoundEfects/Game OverSMB1.mp3"
 Name:"Super Mario of SMB1" ,
 Img :["characters/BigMario-sprite.png","characters/MarioFlaco-sprite.png","characters/BigToad-sprite.png","characters/Peach-sprite.png"],
 Grid:[/*width*/ 32,/*height*/64,/*static*/0,/*walk*/3,/*run*/0,/*brek*/4,
-/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3 ],
+/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3,/*death*/0 ],
 width:32,
 height:64,
 WNEGA:0,
@@ -262,7 +262,7 @@ GameOverSound: "SoundEfects/Game OverSMB1.mp3"
 Name:"Mario Maker characters of SMB1" ,
 Img :["characters/Toadet-sprite.png","characters/KingDeDeDe.png","characters/SMB1Bowser-Sprite.png"],
 Grid:[/*width*/ 64,/*height*/64,/*static*/0,/*walk*/3,/*run*/0,/*brek*/4,
-/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/6 ],
+/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/6,/*death*/0 ],
 width:32,
 height:64,
 WNEGA:-16,
@@ -272,7 +272,7 @@ HNEGA:0,
 Name:"Mario Maker costumes of SMB1" ,
 Img :["characters/BabyMario-sprite.png","characters/Bowser-sprites.png"],
 Grid:[/*width*/ 48,/*height*/48,/*static*/0,/*walk*/3,/*run*/3,/*brek*/7,
-/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3 ],
+/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3,/*death*/0 ],
 width:32,
 height:32,
 WNEGA:-8,
@@ -281,7 +281,7 @@ HNEGA:-16,
 {
 Name:"Mario of SMB3" ,
 Img :["characters/Mario3.png","characters/Luigi3.png"],
-Grid:[64,64,/*static*/0,/*walk*/2,/*run*/3,/*brek*/6,/*jumpUP*/1,/*jumpDOWN*/0,/*jump+run*/1,/*escaled*/4,/*down*/0,/*up*/0,/*simw*/0 ],
+Grid:[64,64,/*static*/0,/*walk*/2,/*run*/3,/*brek*/6,/*jumpUP*/1,/*jumpDOWN*/0,/*jump+run*/1,/*swim*/4,/*death*/0],
 width:32,
 height:54,
 WNEGA:-16,
@@ -289,9 +289,29 @@ HNEGA:-10,
 GameOverSound: "SoundEfects/Game OverSMB3.mp3"
 },
 {
+Name:"Mario of SMW" ,
+Img :["characters/Mario-SMW.png"],
+Grid:[32,48,/*static*/0,/*walk*/1,/*run*/2,/*brek*/4,/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/2,/*swim*/3,/*death*/1],
+width:24,
+height:32,
+WNEGA:-4,
+HNEGA:-14,
+GameOverSound: "SoundEfects/Game OverSMB3.mp3"
+},
+{
+Name:"JUMP-MAN" ,
+Img :["characters/Jump_Man.png"],
+Grid:[32,32,/*static*/0,/*walk*/2,/*run*/0,/*brek*/3,/*jumpUP*/1,/*jumpDOWN*/0,/*jump+run*/0,/*swim*/6,/*death*/3],
+width:24,
+height:32,
+WNEGA:-4,
+HNEGA:0,
+GameOverSound: "SoundEfects/Game OverSMB3.mp3"
+},
+{
 Name:"Sonic the hedghog" ,
 Img :["characters/SonicSprite.png"],
-Grid:[59,59,/*static*/1,/*walk*/8,/*run*/3,/*brek*/17,/*jumpUP*/5,/*jumpDOWN*/0,/*jump+run*/0,/*simw*/4 ],
+Grid:[59,59,/*static*/1,/*walk*/8,/*run*/3,/*brek*/17,/*jumpUP*/5,/*jumpDOWN*/0,/*jump+run*/0,/*simw*/4,/*death*/0 ],
 width:24,
 height:40,
 WNEGA:-18,
@@ -558,7 +578,7 @@ var Limit_Rigth = (32 * limitXGird)*-1
 var Limit_Up = (32 * limitYGird)
 var Limit_Left = 0
 var Limit_Down = 0
-var totalprizes = 0
+var totalprizes = SAVE.totalPrizes
 var startX = SAVE.StartX
 var startY = SAVE.StartY
 
@@ -596,6 +616,7 @@ function chargeLevel(){
 	SAVE.Inicial_Script()
 }
 function chargeLevelNoTiles(){
+	AZAR = false
 	backgroundMusic.pause();       // Pausa el audio
     backgroundMusic.currentTime = 0; // Reinicia al inicio
 	 audioPlayer.pause();
@@ -1357,24 +1378,11 @@ const RandomLevelConfiguration = [
 	Azar_Enemies_Multiplicater = 1
 	},
 ]
-const Azar_Level_dificult = [
-	function(){ // 0 
-	Azar_Level_height = 128
-	Azar_Enemies = 150
-	},
-	function(){ // 1
-	Azar_Level_height = 192
-	Azar_Enemies = 200
-	},
-	function(){ // 2
-	Azar_Level_height = 256
-	Azar_Enemies = 250
-	},
-	function(){ // 3
-	Azar_Level_height = 320
-	Azar_Enemies = 300
-	},
-]
+function Azar_floor_dificult (floor) {
+	Azar_Level_height = 128 + floor * 64
+	Azar_Enemies = 150 + floor* 50
+    Azar_floor = floor
+}
 var Solids_in_Level = 100
 var S_MN_MX = [3,8,3,16] // solid MinX MaxX MinY MaxY
 var SemiSolids_in_Level = 300
@@ -1389,7 +1397,7 @@ var LavaVelocity = -1
 var SkinLevel = 0
 var SkinS = SkinLevel
 var SkinSS = SkinLevel
-var LevelType = undefined
+var LevelType = 2
 var SkinLevel = 0
 var Skins_S =
 [
@@ -1482,7 +1490,7 @@ function Azar_Create_Solid_SemiSolid(){
 }
 var Azar_Solids =
 [
-	[1,"#FFF","10002220",0,1,0,0],
+	[1,"#FFF","11111200",0,1,0,0],
 ]
 var Azar_SemiSolids =
 [
@@ -1586,7 +1594,6 @@ const Azar_Blocks_Skins = [
     ]
 	},
 ]
-Azar_Blocks_Skins[1]()
  var Grid = null
  var GridSprites = null
  var Pounter = null
@@ -1718,7 +1725,7 @@ function Create_images() {
 	}
 	HudTEXTURES = new Image()
 	HudTEXTURES.src = "texturas/HudTextures.png"
-HudTEXTURES.addEventListener("load", (e) => {
+image_collection[image_collection.length -1].addEventListener("load", (e) => {
 DrawGirdTiles(Grid)
 DrawGirdSprites(GridSprites)
   CreateTiles()
@@ -2200,21 +2207,7 @@ function fillcolor(){
 
 
 
-let audioBuffer;
 
-
-async function loadSound(url) {
-    let response = await fetch(url);
-    let arrayBuffer = await response.arrayBuffer();
-    audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-}
-
-function playSound() {
-    let source = audioContext.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(audioContext.destination);
-    source.start(0);
-}
 
 let lastX = 0
 let lastY = 0
@@ -2242,7 +2235,6 @@ let myHits = [];
 var Sprite_Collection = [];
 var game_area = ""
 var prizes = 0
-let audioContext;
 let star = true
 var PositionX = 0
 var PositionY = 0
@@ -2265,20 +2257,64 @@ GameOverMusic = new Audio("SoundEfects/GameOverSound.mp3")
 GameOverMusic = new Audio(Player.GameOverSound)
 }
 }
+var audio;
+ let audioContext, analyser, source, dataArray, bufferLength;
+function ChangeMusic (Crs){
+ audioPlayer.src = Crs;
+ backgroundMusic.src = Crs;
+ backgroundMusicSrc = Crs
+}
+function AnalizerAudio(audio){
+
+  audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      source = audioContext.createMediaElementSource(audio);
+      analyser = audioContext.createAnalyser();
+
+      source.connect(analyser);
+      analyser.connect(audioContext.destination);
+
+      analyser.fftSize = 256;
+      bufferLength = analyser.frequencyBinCount;
+      dataArray = new Uint8Array(bufferLength);
+};
+    
+	function drawSong(canvas) {
+      analyser.getByteFrequencyData(dataArray);
+
+      let barWidth = (canvas.width / bufferLength) * 2.5;
+      let x = 0;
+	  let barHeight = 0;
+	  let r = 0
+	  let g = 0
+	  let b = 0
+      for (let i = 0; i < bufferLength; i++) {
+		  console.log(dataArray[i])
+         barHeight = dataArray[i];
+         r = barHeight ;
+         g = barHeight -256;
+         b = barHeight -256;
+
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+		ctx.fillRect(10,10,barWidth,10)
+
+        x += barWidth + 1;
+      }
+    }
 table.style.overflow = "auto"
 const buton = [
 function(b) {
-	
-	but4.innerText = "edit"
-	audioPlayer.pause();
-	audioPlayer.muted = true
-	prizes = 0
+Selection.classList.toggle('active');
+
+but4.innerText = "edit"
+audioPlayer.pause();
+audioPlayer.muted = true
+prizes = 0
 
 let p1InF = characters[characterSelect]
 let p2InF = characters[characterSelect]
 activate_custom_songs(p1InF)
 establecing_starcords(startX,startY,p1InF)
-audioContext = new AudioContext() 
 TilesCollection = structuredClone(LC);
 CreateSpritesTolevel()
 table.innerHTML = "<canvas id=game></canvas>";
@@ -2312,6 +2348,9 @@ myMiniSprites = [];
   CreatreGrid()
 DrawGirdTiles(Grid)
 DrawGirdSprites(GridSprites)
+if(AZAR){
+	GridSprites.style.zIndex = 20
+}
 but4.innerText = "start"
 time.innerText = "TIME"
 type_but = 0
@@ -3234,9 +3273,16 @@ ctx.drawImage(
 ]
 const Xmargin = [
 function MarginTeleport (p1) {
-	var XREST = p1.width ;
-       if(p1.x < 0 ){p1.x = 0;auto_com[p1.Movement[3]].X(p1)}
-       if(p1.x >  (screenWidth  - XREST)){p1.x = (screenWidth  - XREST);auto_com[p1.Movement[3]].X(p1)}	
+       if(p1.x + p1.MoveXLimit < 0  ){
+		   p1.xP = p1.x  +  p1.MoveXLimit - 0  ;
+		
+		   return true
+		}
+       if((p1.x + p1.width)  + p1.MoveXLimit >  screenWidth  ){
+		   p1.xP = (p1.x + p1.width) +  p1.MoveXLimit - screenWidth;
+		  
+		   return true
+		}	
 },
 function MarginTeleport (p1) {
 	var XREST = p1.width /2;
@@ -3251,14 +3297,17 @@ function MarginTeleport (p1) {
 ]
 const Ymargin = [
 function MarginTeleport (p1) {
-	var YREST = p1.height ;
-       if(p1.y < 0 ){p1.y = 0;auto_com[p1.Movement[2]].Y(p1);}
-       if(p1.y >  (screenHeigth  - YREST)){
-		   p1.y = (screenHeigth  - YREST) 
-        if(!p1.invecybility){p1.lives = -1	}	   
-		auto_com[p1.Movement[2]].Y(p1)
-	  
-	   }	
+       if(p1.y + p1.MoveYLimit < 0  ){
+		   p1.yP = p1.y  +  p1.MoveYLimit - 0  ;
+		   p1.Ytouch = true
+		   return true
+		}
+	   if((p1.y + p1.height)  + p1.MoveYLimit >  screenHeigth  ){
+		   p1.yP = (p1.y + p1.height) +  p1.MoveYLimit - screenHeigth;
+		   p1.Ytouch = true
+		   if(!p1.invecybility){p1.lives  -- }	
+		   return true
+		}	   	
 },
 function MarginTeleport (p1) {
     var YREST = p1.height/2;
@@ -3370,15 +3419,6 @@ function HitBox(X,Y,XU,YU,MoveX,MoveY,Time){
 function DL_Hitbox(H){
 H.Time += -1 ;if(H.Time < 0){return true}  
 }
-function SAVEPOSITION (p1) {
-	p1.utx = p1.x;
-    p1.uty = p1.y;
-}
-function GO_TO (p1,x,y) {
-	p1.x +=  x;
-    p1.y +=  y;
-}
-
 function tile(imgn,color, X, Y,i,I,col,script) {
 this.imgN = imgn; this.BC = color ;
 this.iA  = I;this.iL = i
@@ -3610,19 +3650,20 @@ if(Player.x < -32){
 },
 ]
 function clear (b) {
-let ctxZ = b.getContext("2d");
-ctxZ.restore()
-ctxZ.clearRect(0, 0, b.width, b.height)
-ctxZ.save();
+ctx.restore()
+ctx.imageSmoothingEnabled = false;
+//LCD
+//ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+//ctx.fillRect(0, 0, b.width, b.height);
+ctx.clearRect(0, 0, b.width, b.height)
+ctx.save();
 if(TESTSCREEN){
-ctxZ.translate(screenWidthHalf,screenHeigthHalf)
+ctx.translate(screenWidthHalf,screenHeigthHalf)
 }
-ctxZ.globalAlpha = Alpha
-//ctxZ.translate(256,256);
-/* LCD
-ctxZ.fillStyle = "rgba(255, 255, 255, 0.3)";
-ctxZ.fillRect(0, 0, b.width, b.height);
-*/
+ctx.globalAlpha = Alpha
+ //LCD
+
+
 }
 function rotate (b,Player) {
 ctx = b.getContext("2d");
@@ -3667,61 +3708,6 @@ function Gird_animation(P,array){
 }
 function ejecuted(P,Cord){
 	if(Ax3 == 2){P.XG += 1};if(P.XG >= Cord[2]){P.XG = 0};
-}
-function animation(P,Con){
-	/*comprobar si no esta en el aire*/
-	if(P.InFlor){
-		/*comprobra si esta corriendo o no*/
-	if((P.MoveX + P.BX) > 6  || (P.MoveX + P.BX) < -6){P.run = true}else{P.run = false}
-	   /*da el lado en el que voltea*/
-	if(P.MoveX < 0){P.Jside = true};if(P.MoveX > 0){P.Jside = false};
-	/*corriendo*/
-	P.YG = 0
-	if(P.run){
-	if(tick){
-		P.XG += 1;
-		if(P.XG < Con[3]+Con[2] && Con[4] != 0){
-			P.XG = Con[3]+Con[2];
-		}
-		if(P.XG > (Con[3]+Con[4]+Con[2])){
-			if(Con[4] == 0){
-				P.XG = 0
-				}else{
-		P.XG = Con[3]+Con[2];
-		if(Con[2] == 0){
-			P.XG += 1
-			}
-	}}} 
-	}else{
-		/*caminando*/
-	if(P.MoveX  != 0){if(Ax3 == 2){P.XG += 1;if(P.XG > Con[3]){P.XG = Con[2]}}}else{P.XG = 0}}
-	    /*derrape*/
-	if(P.MoveX  > 0 && P.side){P.XG = Con[5];};if(P.MoveX  < 0 && P.side == false){P.XG =  Con[5];}
-	}else{
-		/*comprobra si esta en agua o no*/
-	if(P.AnimationWater ){
-		/*En agua*/
-	P.YG = 5;
- 	if(P.MoveY < 1){if(Ax8 == 7){P.XG += 1};if(P.XG >= Con[9]){P.XG = 0};}else{
-	if(Ax8 == 7){if(P.XG == 0){P.XG = 1}else{P.XG = 0}};
-	}
-	P.AnimationWater = false
-	}else{
-		/*saltando*/
-	let maxin  = Con[6]
-	P.YG = 2;
-	if(P.MoveY > 1){maxin += Con[7] ;if(P.XG < Con[6]){P.XG += Con[7]}}
-	if(P.run){
-		/*saltando y  corriendo*/
-		if(P.XG < Con[8]){P.XG += Con[8]}
-		maxin += Con[8];if(tick){P.XG += 1}; if(P.XG >= maxin){P.XG = maxin -Con[6]  }; 
-	}else{
-	if(tick){P.XG += 1};if(P.XG >= maxin){P.XG = maxin -Con[6]  }}
-	}	
-	}
-	if(P.side){P.YG += 1}
-	if(P.lives <= 0){P.YG = 4;P.XG = 0}
-	
 }
 function Tiles_animation(P,Fotograms){
 let include = fotograms.indexOf(Fotograms)
@@ -3773,6 +3759,7 @@ this.priority = true
 this.deathMusic = DeathSound
 this.Up = false
 this.Down = false
+this.PlayerJumps = 0
 if(this.deathMusic == undefined){
 this.deathMusic = new Audio("SoundEfects/DeathSound.mp3")
 }else{
@@ -3878,8 +3865,6 @@ const effectAction =  [
 ]
 function PacMan(ctr,Player,B,C){
 	if(frisFotogram){
-	Player.MovementArray = [0,0]
-	Player.MovementUltimateArray = [2,0]
 	CameraX_frese = 1
 	CameraY_frese = 1
 	Player.width = 32
@@ -3912,29 +3897,109 @@ function PacMan(ctr,Player,B,C){
 	}
 	if(Player.MoveX != 0){Player.InFlor = true}
 	if(Player.MoveY != 0){Player.InFlor = false}
+}
+function Kart(ctr,Player,B,C){
 	/*
-	if (Player.keys && Player.keys[controlls[ctr].left]) {
-			Player.MovementArray = [-2,0]
-		Player.side = true
-	}
-	if (Player.keys && Player.keys[controlls[ctr].right]) {
-		Player.MovementArray = [2,0]
-		Player.side = false
-	}
-	if (Player.keys && Player.keys[controlls[ctr].up]) {
-		Player.MovementArray = [0,-2]
-	}
-	if (Player.keys && Player.keys[controlls[ctr].down]) {
-		Player.MovementArray = [0,2]
-	}
-	if(Ax16 == 15){
-		Player.MoveX = Player.MovementArray[0]
-		if(Player.MoveX != 0){Player.InFlor = true}
-		Player.MoveY = Player.MovementArray[1]
-		if(Player.MoveY != 0){Player.InFlor = false}
+	if(frisFotogram){
+		Player.velocity = 8
 	}
 	*/
+	 if(Player.Xtouch){
+		 Player.MoveX = 0
+		 Player.delay ++
+     }
+	 if(Player.Ytouch){
+		 Player.MoveY = 0
+		 Player.delay ++
+	 }
+	
+	Player.InFlor = true
+	if(Player.delay > 0 ){
+		Player.delay += 1;
+			if(Player.delay > 8){
+				Player.delay = 0
+			}
+	}
+	//if(Player.delay == 0){	
+		if (Player.keys && Player.keys[controlls[ctr].left]) {
+			Player.angle -= (4) * Math.PI / 180;    
+		}else{
+		if (Player.keys && Player.keys[controlls[ctr].right]) {
+			Player.angle += (4)  * Math.PI / 180;    
+		}
+		}
+		
+		if(Player.keys && Player.keys[controlls[ctr].up]){
+			Player.velocity ++
+			if(Player.velocity > 8){Player.velocity = 8};
+		}
+		if(Player.keys && Player.keys[controlls[ctr].down]){
+			Player.velocity --
+			if(Player.velocity < -8){Player.velocity = -8};
+		}
+		Player.MoveX = Player.velocity * Math.sin(Player.angle)
+		Player.MoveY = (Player.velocity * Math.cos(Player.angle))*-1
+		if(Player.velocity >= 0.5){Player.velocity -= 0.5}
+		if(Player.velocity <= -0.5){Player.velocity += 0.5}
+	//}
+		
 }
+function Fly(ctr,Player,B,C){
+	if(frisFotogram){
+		Player.velocity = 8
+	}
+	 if(Player.Xtouch){
+		 Player.MoveX = Player.MoveX*-1
+		 Player.delay ++
+     }
+	 if(Player.Ytouch){
+		 Player.MoveY = Player.MoveY*-1
+		 Player.delay ++
+	 }
+	Player.InFlor = true
+	if(Player.delay > 0 ){
+		Player.delay += 1;
+			if(Player.delay > 8){
+				Player.delay = 0
+			}
+	}
+	if(Player.delay == 0){
+		if (Player.keys && Player.keys[controlls[ctr].left]) {
+			Player.MoveX --
+			Player.side = true
+			Player.sideX = true; 
+		}
+		if (Player.keys && Player.keys[controlls[ctr].right]) {
+			Player.MoveX ++
+			Player.side = false
+			Player.sideX = false; 
+		}
+		if (Player.keys && Player.keys[controlls[ctr].up]) {
+			Player.MoveY --
+			Player.sideY = true; 
+		}
+		if (Player.keys && Player.keys[controlls[ctr].down]) {
+			Player.MoveY ++
+			Player.sideY = false; 
+		}
+	}
+	if (Player.keys && Player.keys[controlls[ctr].Run]){
+		if(tick){Player.velocity  ++}
+		if(Player.velocity > 16){Player.velocity = 16};
+	}
+	if(Player.velocity > 8 && tick){Player.velocity -= 0.5}
+	if(Player.MoveX <= -0.5){Player.MoveX += 0.5}
+	if(Player.MoveX >= 0.5){Player.MoveX -= 0.5}
+	if(Player.MoveY <= -0.5){Player.MoveY += 0.5}
+    if(Player.MoveY >= 0.5){Player.MoveY -= 0.5}
+	
+	if(Player.MoveX > Player.velocity){Player.MoveX = Player.velocity};
+    if(Player.MoveX < Player.velocity*-1 ){Player.MoveX = Player.velocity*-1}
+	if(Player.MoveY > Player.velocity){Player.MoveY = Player.velocity};
+    if(Player.MoveY < Player.velocity*-1 ){Player.MoveY = Player.velocity*-1}
+}
+// Player Var
+var jump_force = -8
 function plataformer_Easy(ctr,Player,B,C){
 //if(Player.invecybility){Player.Time += 1;Player.prin = 4;if(Player.Time==20){Player.invecybility = false;Player.Time = 0;}}
 /*comprobar si esta en el suelo*/
@@ -3978,14 +4043,15 @@ if (Player.keys && Player.keys[controlls[ctr].down]) {
 /*En agua*/
 if(Player.water ){
 	Player.jumped = true;Player.jt = 0;
-if (Player.keys && Player.keys[controlls[ctr].Jump]){Jump(Player,-3,1)}
+if (Player.keys && Player.keys[controlls[ctr].Jump]){Jump(Player,-3,1,1)}
 if (Player.keys && Player.keys[controlls[ctr].Run]){Player.velocity = 4;}
-if(tick){
+
 Player.InFlor = false
-Player.MoveY += 1
+Player.MoveY += 0.5
 if(Player.MoveY == 3){Player.MoveY = 2}
 if(Player.MoveY > 3){Player.MoveY -= 2}
-}
+
+
 if(Player.MoveX > Player.velocity){Player.MoveX = Player.velocity};
 if(Player.MoveX < Player.velocity*-1 ){Player.MoveX = Player.velocity*-1}
 Player.velocity = 2;
@@ -4003,7 +4069,7 @@ if((Player.Xtouch && Player.InFlor == false) && !Player.Down){
 	if(Player.MoveX < 0){Player.side = false}
 	if(Player.delay == 0){
 	if (Player.keys && Player.keys[controlls[ctr].Jump]) {
-		Player.jumped = true;Player.jt = 0;Jump(Player,-1,1);
+		Player.jumped = true;Player.jt = 0;Jump(Player,-1,1,1);
 		Player.delay += 1
 		if(Player.side){
 			Player.MoveX = -4; 
@@ -4013,8 +4079,14 @@ if((Player.Xtouch && Player.InFlor == false) && !Player.Down){
 		}
 	}
 }else{
-	if (Player.keys && Player.keys[controlls[ctr].Jump]) {Jump(Player,-8,10);}else{Player.jumped = false ;Player.jt = 0; } 
-	if(tick){Gravity(Player,16,1);Player.InFlor = false}
+	if (Player.keys && Player.keys[controlls[ctr].Jump]) {
+		Jump(Player,jump_force,10,2);
+		}else{
+		Player.jumped = false
+		Player.jt = 0
+		}
+	Gravity(Player,16,0.5);
+	Player.InFlor = false	
 }
 
 if (Player.keys && Player.keys[controlls[ctr].Run]){Player.velocity = 8;}
@@ -4025,6 +4097,16 @@ Player.velocity = 4;
 ShoterType[shoterMode](ctr,Player)
 
  
+}
+function Jump (Player,Number,JumpsIntervals,PlayerJump) {
+	//Player.jumped = true // Fly
+	 if(Player.jumped && Player.jt <= JumpsIntervals){
+     Player.jt += 1
+	 Player.MoveY = Number
+	}else{
+		Player.jumped = false
+		Player.jt = 0
+	}
 }
 var shoterMode = 0
 const ShoterType = [
@@ -4094,6 +4176,112 @@ if (player.keys && player.keys[controlls[ctr].Run]){
   }
 }
 ]
+function animation(P,Con){
+	/*comprobar si no esta en el aire*/
+	if(P.lives <= 0 ){
+		P.YG = 4
+		if(Ax4 == 3){
+			P.XG += 1;
+			if(P.XG > Con[10]){
+			P.XG = 0
+			}
+		}
+		if(P.XG > Con[10]){
+			P.XG = 0
+		}
+		return;
+	}
+	if(P.InFlor ){
+		/*comprobra si esta corriendo o no*/
+		if((P.MoveX + P.BX) > 6  || (P.MoveX + P.BX) < -6){
+			P.run = true
+		}else{
+			P.run = false
+		}
+		/*corriendo*/
+		P.YG = 0
+		if(P.run){
+			if(Ax3 == 2){
+				P.XG += 1;
+				if(P.XG < Con[3]+Con[2] && Con[4] != 0){
+					P.XG = Con[3]+Con[2];
+				}
+				if(P.XG > (Con[3]+Con[4]+Con[2])){
+					if(Con[4] == 0){
+						P.XG = 0
+					}else{
+					P.XG = Con[3]+Con[2];
+						if(Con[2] == 0){
+						P.XG += 1
+						}
+					}
+				}
+			} 
+		}else{
+				/*caminando*/
+			if(P.MoveX  != 0){
+				if(Ax4 == 3){
+				P.XG += 1;
+					if(P.XG > Con[3]){
+					P.XG = Con[2]}
+					}
+			}else{
+				P.XG = 0
+			}
+		}
+	    /*derrape*/
+		if(P.MoveX  > 0 && P.side){
+			P.XG = Con[5];
+			};
+		if(P.MoveX  < 0 && !P.side){
+			P.XG =  Con[5];
+			}
+	}else{
+			/*comprobra si esta en agua o no*/
+		if(P.AnimationWater ){
+				/*En agua*/
+			P.YG = 5;
+			if(P.MoveY < 1){if(Ax8 == 7){P.XG += 1};if(P.XG >= Con[9]){P.XG = 0};}else{
+			if(Ax8 == 7){if(P.XG == 0){P.XG = 1}else{P.XG = 0}};
+			}
+		P.AnimationWater = false
+		}else{
+				/*saltando*/
+			let maxin  = Con[6]
+			P.YG = 2;
+				if(P.MoveY > 1){
+				maxin += Con[7] ;
+				    if(P.XG < Con[6]){
+						P.XG += Con[7]
+					}
+				}
+				if(P.run){
+				/*saltando y  corriendo*/
+					if(P.XG < Con[8]){
+						P.XG += Con[8]
+						}
+				maxin += Con[8];
+					if(tick){
+						P.XG += 1
+						}; 
+					if(P.XG >= maxin){
+						P.XG = maxin -Con[6]  
+						}; 
+			}else{
+				if(tick){
+					P.XG += 1
+					};
+				if(P.XG >= maxin){
+					P.XG = maxin -Con[6]  
+				}
+			}
+		}	
+	}
+	if(P.side){
+		P.YG += 1
+	}
+	
+}
 function MouseBlock(){
 	if(mouse){
 	sprites.push(new Sprite((Xmouse - 8) - cordX,(Ymouse - 8) - cordY,16,16,0,"111100000",1,"0000",2,2))
@@ -4101,47 +4289,11 @@ function MouseBlock(){
 			sprites[sprites.length -1].y += cordY
     }
 }
-function plataformer_automatic(ctr,p1,B,p2){
-if(p1.invecybility){p1.Time += 1;if(p1.Time==20){p1.invecybility = false;p1.Time = 0;}}
-if(tick){
-	p1.InFlor = false
-if(p1.MoveX <= -1){p1.MoveX += 1}
-if(p1.MoveX >= 1){p1.MoveX += -1}
-}
-if((p1.x < p2.x + (p2.width) && (p1.x + (p1.width)) > p2.x) == false){
-if (p1.x > p2.x ) {if(p1.jumped){p1.MoveX += -2;p1.side = true}else{if(p1.Jside){p1.MoveX += -2}else{p1.MoveX += -1}}} 
-if (p1.x < p2.x) {if(p1.jumped){p1.MoveX += 2;p1.side = false}else{if(p1.Jside==false){p1.MoveX += 2}else{p1.MoveX += 1}}}
-
-}
-
-if(p1.water ){
-p1.jumped = true;p1.jt = 0;
-if((p1.y +(p1.height) > p2.y +(p2.height) || (p1.Action && (p1.y +(p1.height) > p2.y +(p2.height)))) && tick) {Jump(p1,-2,1);p1.Action = false}
-if(tick){Gravity(p1,4,0.5)}
-if(p1.MoveX > p1.velocity * 2 ){p1.MoveX = p1.velocity * 2};if(p1.MoveX < (p1.velocity * 2)*-1 ){p1.MoveX = (p1.velocity * 2)*-1}
-p1.velocity = 1;
-p1.water = false
-}else{
-if (p1.y +(p1.height) > p2.y +(p2.height) || p1.Action){Jump(p1,-8,10);p1.Action = false}else{p1.jumped = false ;p1.jt = 0; } 
-if (p2.run){p1.velocity = 2;}
-if(tick){Gravity(p1,16,1);p1.atackY = false}
-if(p1.MoveX > p1.velocity * 3 ){p1.MoveX = p1.velocity * 3};if(p1.MoveX < (p1.velocity * 3)*-1 ){p1.MoveX = (p1.velocity * 3)*-1}
-p1.velocity = 1;
-}
-if(p1.MoveY < 0){p1.atackY = true}else{p1.atackY = false}
-}
 
 function Gravity (P,N,G) {
     P.MoveY += G;
   }
-function Jump (P,N,jt) {
-	 if(P.jumped){
-     P.jt += 1
-	 P.MoveY = N
-	 if(P.jt > jt){
-		 P.jumped = false
-		 P.jt = 0
-}}}
+
 function MiniSpriteColision(Sprite,MiniSprites){
 for (i = 0; i < MiniSprites.length; i += 1){
 if(MiniSprites[i].type > 0){
@@ -4331,8 +4483,8 @@ X :	function cube (PL,B) {let crash = false
 let tileVx = (PL.MoveX + PL.BX) 
 if((PL.x < (B.x + B.width) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx)) && (PL.y < (B.y + B.height))  && PL.y + (PL.height) > B.y){
 	if( (PL.x + (PL.width)) > (B.x + B.width)){
-		if(B.col[3] != 0){
-			if(col[B.col[3]].RIGTH(PL,B)){
+		if(B.Rigth != 0){
+			if(col[B.Rigth].RIGTH(PL,B)){
 				auto_com[PL.Movement[3]].X(PL);
 				PL.touchX = true
 			}
@@ -4341,8 +4493,8 @@ if((PL.x < (B.x + B.width) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx)) && 
 		}
 	}
 	if( PL.x < B.x ){
-		if(B.col[1] != 0){
-			if(col[B.col[1]].LEFT(PL,B)){
+		if(B.Left != 0){
+			if(col[B.Left].LEFT(PL,B)){
 				auto_com[PL.Movement[3]].X(PL);
 				PL.touchX = true
 			}
@@ -4356,8 +4508,8 @@ Y :	function cube (PL,B) {let crash = false
 let tileVy = (PL.MoveY + PL.BY) 
 if((PL.x < B.x + (B.width) && (PL.x + (PL.width)) > B.x) && (PL.y <  (B.y + B.height) - tileVy)  && (PL.y + (PL.height) > ((B.y) - (tileVy)))){
 		if( (PL.y + (PL.height)) > (B.y + B.height)){
-			if(B.col[2] != 0){
-				if(col[B.col[2]].DOWN(PL,B)){
+			if(B.Down != 0){
+				if(col[B.Down].DOWN(PL,B)){
 				auto_com[PL.Movement[2]].Y(PL);
 				PL.touchY = true
 			    }
@@ -4366,8 +4518,8 @@ if((PL.x < B.x + (B.width) && (PL.x + (PL.width)) > B.x) && (PL.y <  (B.y + B.he
 		    }
 		}
 	   if( PL.y < B.y ){
-		   if(B.col[0] != 0){
-			   if(col[B.col[0]].UP(PL,B)){
+		   if(B.Up != 0){
+			   if(col[B.Up].UP(PL,B)){
 				auto_com[PL.Movement[2]].Y(PL);
 				PL.touchY = true
 			    }
@@ -4570,7 +4722,7 @@ X: function X (PL) {PL.water = true},
 Y: function Y (PL) {PL.water = true},
 },{    /* prizes (5)*/
 X: function X (PL,B) {prizes += 1;B.col = "00000000";},
-Y: function Y (PL,B) {prizes += 1;B.col = "00000000"; },
+Y: function Y (PL,B) {prizes += 1;B.col = "00000000";},
 },{  /* death (6)*/
 X: function X (PL,B) {if(PL.invecybility != true){PL.lives --;}},
 Y: function Y (PL,B) {if(PL.invecybility != true){PL.lives --;}},
@@ -4630,13 +4782,13 @@ cordY += cameraY
 let SaveMovement = cameraY
 if(Limit_Up !== false){
     if(Limit_Up < (cordY + screenHeigth)){
-		console.log("stopUp")
+		//console.log("stopUp")
 	GoTo =  Limit_Up - (cordY + screenHeigth) ;crash = true;p1.camY =1;
 	}
 	}
 if(Limit_Down !== false){
 	if(Limit_Down   > cordY ){
-		console.log("stopdown")
+		//console.log("stopdown")
 		GoTo = Limit_Down  - cordY ;crash = true;p1.camY =0;}
 		}
 if(crash){
@@ -4656,13 +4808,13 @@ if(crash){
 const cameraModeY = [
 function(Player,tiles) {
 	if(((Player.y + Player.height) < (screenHeigthHalf + Player.heightHalf)) && SAVE.CameraY_frese == 0 ){
-		console.log("up")
+		//console.log("up")
 	Player.modeY = 0;corection = -1;cameraY = 0;Player.y = (screenHeigthHalf - Player.heightHalf) 
     }
 },
 function(Player,tiles) {
 	if((Player.y > (screenHeigthHalf - Player.heightHalf)) && SAVE.CameraY_frese == 0 ){
-		console.log("down")
+		//console.log("down")
 	Player.modeY = 0;corection = -1;cameraY = 0;Player.y = (screenHeigthHalf - Player.heightHalf) 
 	}
 	},
@@ -4709,10 +4861,13 @@ let MoveX = Player.MoveX + Player.BX
 	Player.MoveXLimit = MoveX  + Player.Hx
 let XnextPosition = MoveX +  Player.Hx
 
-Xmargin[SAVE.Margin](Player)
 if(tick){
 if(Player.BX <= -1){Player.BX += 1}
 if(Player.BX >= 1){Player.BX += -1}
+}
+
+if(Xmargin[SAVE.Margin](Player)){
+	crash = true
 }
 for (i = 0; i < mysprites.length; i += 1){
 	
@@ -4786,8 +4941,12 @@ let MoveY = Player.MoveY + Player.BY
 let YnextPosition = MoveY  
 
 
-Ymargin[SAVE.Margin](Player)
-
+if(Ymargin[SAVE.Margin](Player)){
+	crash = true
+	if(Player.Ytouch && Player.MoveYLimit > 0 ){
+			 Player.InFlor = true
+		 }
+}
 Player.Hy = 0;Player.Hx = 0;
 
 
@@ -4810,8 +4969,6 @@ if(CompleteTilesColisionY(Player,tiles)){
 
 if(crash){YnextPosition += Player.yP *-1}
 Player.y += YnextPosition
-
-Ymargin[SAVE.Margin](Player)
 
 return 0;
 },
@@ -4908,9 +5065,8 @@ ctx = canvas.getContext("2d");
 ctx.save();
 ctx.translate(Player.x -32 / -2, Player.y - 32 / -2);
 ctx.rotate(Player.angle);
-ctx.drawImage(HudTEXTURES,X * 1,Y * 0 , X, Y,32 / -2, 32 / -2, X  , Y ,);
+ctx.drawImage(HudTEXTURES,0 ,0 , X, Y,32 / -2, 32 / -2, X  , Y ,);
 ctx.restore();
-ctx.drawImage(Player.imC,X * Player.XG,Y * Player.YG , X, Y,Player.Xnegative + Player.x  ,Player.Ynegative + Player.y , X  , Y ,);
 },
 function(Player,canvas,N){
 ctx = canvas.getContext("2d");
@@ -4947,7 +5103,6 @@ ctx.drawImage(image_collection[Tile.imgN[0]],Tile.XG, ((Tile.animation*32) + Til
 },
 ]
 function PrinAllTiles(canvas){
-ctx = canvas.getContext("2d");
 let Tile;
 for (i = (myObstacles.length -1); i > -1; i += -1) {
 	if(myObstacles[i].prin != 0){
@@ -4970,24 +5125,6 @@ for (i = (myObstacles.length -1); i > -1; i += -1) {
 	Tile.Wid, 
 	Tile.heg, 
 	)
-	}
-    }
-}
-function PrinAllTiles_only_color(canvas){
-ctx = canvas.getContext("2d");
-let Tile;
-for (i = (myObstacles.length -1); i > -1; i += -1) {
-	if(myObstacles[i].prin != 0){
-	Tile = myObstacles[i]
-	ctx.globalCompositeOperation = 'destination-over';
-    ctx.fillStyle = Tile.BC
-    ctx.fillRect(Tile.x,Tile.y,32,32)
-	ctx.globalCompositeOperation = 'source-over';
-	}else{
-	Tile = myObstacles[i]
-    ctx.fillStyle = "#fff"
-    ctx.fillRect(Tile.x,Tile.y,32,32)
-	ctx.globalCompositeOperation = 'source-over';	
 	}
     }
 }
@@ -5312,6 +5449,7 @@ InShadow = false
 DrawShadow = false
 song_end = false
 
+
 /*if(ct[3].SY == true && ct[3].SX == true){corection = 1}
 if(ct[0].scale == 2){p1.modeX = 0;p1.modeY = 0;p1.priority = true; corection = -1}*/
 for(let i = 0; i < BGC.length ;i++){
@@ -5383,18 +5521,18 @@ function Frames(){
 						  Azar_floor++
 						  Azar_Level_height += 64
                           Azar_Enemies += 50
+						  AZAR = false
 					  }else{
 						  TextFinishGame.push(new Text("Tanks for playing",'#8F8','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
-						  TextFinishGame.push(new Text("Stars "+ prizes+"/"+SAVE.totalPrizes,'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/2,0.2))
-						if(prizes == SAVE.totalPrizes){
+						  TextFinishGame.push(new Text("Stars "+ prizes+"/"+totalprizes,'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/2,0.2))
+						if(prizes == totalprizes){
 							TextFinishGame.push(new Text("Perfect",'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,screenHeigth,screenHeigth/2+screenHeigth/4,0.05))  
 						}
 					  }
-					  AZAR = false
 					  
 				  }else{
 					   if(AZAR){
-						Boregito("AZAR")
+						Azar_Level()
 						buton[1](0) 
 					   }else{
 					  TextFinishGame.push(new Text("GameOver",'#F00','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
@@ -5643,8 +5781,7 @@ DrawEfects(game)
 for(let i = 0; i < BGC.length ;i++){
 draw_background(BGC[i],game);
 }
-
-PrinT(game,Xmouse - 16,Ymouse - 16,16,16,"#F00")
+//PrinT(game,Xmouse - 16,Ymouse - 16,16,16,"#F00")
 
 if(frisFotogram){
 	if(!invecybility){
@@ -5710,6 +5847,9 @@ function Boregito(Value){
 			   case "AZAR":
 			   AZAR = true
 			   Azar_Blocks_Skins[1]()
+			   GridSprites.style.zIndex = 20
+			   ChangeMusic ("Music/Super Mario World Athletic.mp3")
+			   backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))'
 			   Azar_Sprites =
 				[
 					[32,32,16,"160010000",2,"23900",-2,0],
@@ -5721,9 +5861,8 @@ function Boregito(Value){
 			   case "AZARHARD":
 			   AZAR = true
 			   Azar_Blocks_Skins[4]()
-			   audioPlayer.src = 'Music/Super Mario World Fortress.mp3';
-			   backgroundMusic.src = 'Music/Super Mario World Fortress.mp3';
-			   backgroundMusicSrc = 'Music/Super Mario World Fortress.mp3'
+			   GridSprites.style.zIndex = 20
+			   ChangeMusic ("Music/Super Mario World Fortress.mp3")
 			   backgroundBase = 'linear-gradient(rgb(0, 0, 0), rgb(168, 0, 0))'
 			   Azar_Sprites =
 				[

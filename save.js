@@ -154,7 +154,7 @@ objects:[
 ["Object",32,32,10,"661120201",2,"01500", 0,0],
 ["Object",32,48,11,"160030000",6,"00023",-1,0],
 ["Object",32,32,12,"160030000",7,"00023",-1,0],
-["Object",32,32,13,"6600100000",2,"23800", 1,1],
+["Object",32,32,13,"6600100000",2,"23800", 2,2],
 ["Object",32,32,15,"160010000",2,"23900",-2,0],
 ["Object",32,32,15,"160010000",2,"24900",2,0],
 ["Object",128,128,15,"160010000",2,"23000",-2,0],
@@ -186,6 +186,7 @@ Action: function Action(Tile,p1,side) {
 	SoundEffectsCollection[1].play()
 	Tile.prin = 0
 	Tile.type = 0
+	TransfromTile(Tile,"rgba(0,0,0,0)",0,"00000000",0)
 },
 Loop: function Loop (Tile) {},
 },
@@ -290,6 +291,8 @@ Action: function Action(Tile,p1,side) {
 		explosions32[0](Tile)
 		Tile.type = 0
 	    Tile.imgN = 0
+		Tile.XG = 0
+		Tile.YG = 0
 	}else{
 	Tile.action = true
 	}
@@ -338,7 +341,7 @@ Loop: function Loop (Tile) {
 ],
 SpriteScripts:[
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 0
 		 Sprite.width = 32
 		 Sprite.height = 32
 		 Sprite.widthPrint = 42
@@ -369,7 +372,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 1
      Sprite.width = 64
 	 Sprite.height = 64
 	 Sprite.widthPrint = 84
@@ -400,7 +403,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 2
 	 Sprite.Mode = 1
      Sprite.width = 32
 	 Sprite.height = 16
@@ -437,7 +440,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 3
 
 	},
 Loop: function Loop (sprite,player1) {
@@ -472,8 +475,9 @@ if(Sprite.IN != undefined){
 },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 4
 	Sprite.Mode = 0
+	Sprite.Up = 1
      Sprite.width = 32
 	 Sprite.height = 32
 	 Sprite.widthPrint = 64
@@ -488,36 +492,58 @@ Action: function Action(Sprite) {
 	 Sprite.Xvelocity = -4
 	 Sprite.sideX = false
 	 Sprite.tick = 0
+	 Sprite.live = 1
 	},
 Loop: function Loop (sprite,player1) {
-    Gravedad_y_Brincar(sprite,1)
-	if(sprite.jumped){
-		sprite.XG = 0
-		sprite.LoopFotogram = 3
-	    sprite.FramesIntervalds = 2 
-	}else{
-		sprite.fotogram = 0
-		sprite.XG = 198
-		sprite.LoopFotogram = 0
-	    sprite.FramesIntervalds = 0 
-	}
-	turn_if_obstacle_X(sprite)
-	sprite.YG = 0
-	if(!sprite.sideX){
-		sprite.YG = 32
-	if(Colision(sprite,player1,-48,0,32,48)){
-		if(sprite.jumped){sprite.MoveY += -10
-		sprite.jumped = false;
+	if(sprite.Yplayertouch){
+		sprite.type = 1
+		sprite.typeColision = 1
+		sprite.Ytouch = false
+		 SoundEffectsCollection[4].currentTime = 0;
+		 SoundEffectsCollection[4].play()
+		 player1.MoveY = -8;player1.BY = 0
+		 sprite.MoveX = 0
+		 sprite.MoveY = -4
+		 sprite.sideY = true
+		 sprite.live = 0
+		 sprite.XG = 0
+		 sprite.YG = 128
+		 sprite.LoopFotogram = 2
+		 sprite.FramesIntervalds = 2 
+	 }
+	if(sprite.live > 0){
+		Gravedad_y_Brincar(sprite,1)
+		if(sprite.jumped){
+			sprite.XG = 0
+			sprite.LoopFotogram = 3
+			sprite.FramesIntervalds = 2 
+		}else{
+			sprite.fotogram = 0
+			sprite.XG = 198
+			sprite.LoopFotogram = 0
+			sprite.FramesIntervalds = 0 
 		}
-	}
+		turn_if_obstacle_X(sprite)
+		sprite.YG = 0
+		if(!sprite.sideX){
+			sprite.YG = 32
+		if(Colision(sprite,player1,-48,0,32,48)){
+			if(sprite.jumped){sprite.MoveY += -10
+			sprite.jumped = false;
+			}
+		}
+		}else{
+			if(Colision(sprite,player1,32,0,32,48)){
+			if(sprite.jumped){sprite.MoveY += -10
+			sprite.jumped = false;
+			}		
+		}
+		}
+		sprite.MoveX = sprite.Xvelocity
 	}else{
-		if(Colision(sprite,player1,32,0,32,48)){
-		if(sprite.jumped){sprite.MoveY += -10
-		sprite.jumped = false;
-		}		
+		Gravedad(sprite,1)
+		console.log(sprite.MoveY)
 	}
-	}
-	sprite.MoveX = sprite.Xvelocity
     },
 RenderMode: function RenderMode (ctx,Sprite) {
 ctx.drawImage(
@@ -534,7 +560,7 @@ ctx.drawImage(
 },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 5
 	Sprite.Mode = 0
      Sprite.width = 16
 	 Sprite.height = 32
@@ -543,18 +569,21 @@ Action: function Action(Sprite) {
 	 Sprite.Xdiference_Print = -16
 	 Sprite.widthGrid = 64
 	 Sprite.heightGrid = 32
-	 Sprite.col = "161120005"
+	 Sprite.col = "160020005"
+	 Sprite.type = 2
 	},
 Loop: function Loop (sprite,player1) {
 	 PreProgramedMode(sprite,player1)
 	 if(sprite.Yplayertouch){
-		 sprite.moveY = 0
+		 SoundEffectsCollection[4].currentTime = 0;
+		 SoundEffectsCollection[4].play()
+		 sprite.moveY = -4
 		 sprite.sideY = true
 		 sprite.col = "001110003"
 		 sprite.type = 1
 		 sprite.XG = 0
 		 sprite.YG = 128
-		  player1.MoveY = -8;player1.BY = 0
+		 player1.MoveY = -8;player1.BY = 0
 	 }
 },
 RenderMode: function RenderMode (ctx,Sprite) {
@@ -572,7 +601,7 @@ ctx.drawImage(
 },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 6
 	Sprite.Mode = 0
      Sprite.width = 64
 	 Sprite.height = 64
@@ -585,6 +614,8 @@ Action: function Action(Sprite) {
 Loop: function Loop (sprite,player1) {
 	 //PreProgramedMode(sprite,player1)
 	 if(sprite.Yplayertouch){
+		 SoundEffectsCollection[4].currentTime = 0;
+		 SoundEffectsCollection[4].play()
 		 player1.MoveY = -8;player1.BY = 0
 		 sprite.fotogram = 0
 		 sprite.State = -1
@@ -593,12 +624,12 @@ Loop: function Loop (sprite,player1) {
 	 }
 	 switch (sprite.State){
 	 case -1 : 
+	 	 sprite.YG = 128
+		 sprite.LoopFotogram = 3
 		 if(Clock(sprite,60)){
 			 sprite.fotogram = 0
 			sprite.State = 0
 		 }
-		 sprite.YG = 128
-		 sprite.LoopFotogram = 3
 	break;
 	case 0 :
 		 sprite.YG = 0
@@ -615,9 +646,10 @@ Loop: function Loop (sprite,player1) {
 		 sprite.YG = 64
 		 sprite.LoopFotogram = 3
 		 if(Clock(sprite,40)){
-			 sprite.intervald_frame = 0
-			 sprite.fotogram = 0
-				 sprite.State = 0
+			sprite.YG = 0
+			sprite.intervald_frame = 0
+			sprite.fotogram = 0
+			sprite.State = 0
 		 }
 		 if(sprite.intervald_time == 34){
 		 mysprites.push(new  sprite_colision(sprite.x+80,sprite.y+32+8,32,32,8,"661132103",5,"29200", 2,8,false))
@@ -625,6 +657,7 @@ Loop: function Loop (sprite,player1) {
 		 }
     break;
 	 }
+	console.log(sprite.fotogram)
 },
 RenderMode: function RenderMode (ctx,Sprite) {
 ctx.drawImage(
@@ -641,7 +674,7 @@ ctx.drawImage(
 },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 7
      Sprite.width = 24
 	 Sprite.height = 24
 	 Sprite.widthPrint = 32
@@ -672,7 +705,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 8
 	 Sprite.height = 32
 	 Sprite.Ydiference_Print = -32
 	 Sprite.heightPrint = 64
@@ -683,19 +716,19 @@ Action: function Action(Sprite) {
 	},
 Loop: function Loop (Sprite,player1) {
 	if(Sprite.State == 0){
-	Sprite.heightPrint -= 2
-	Sprite.height -= 1
-	Sprite.y += 1
-	Sprite.Ydiference_Print += 1
-	if(Sprite.height < 0){
-		Sprite.y -= 1
-		Sprite.Ydiference_Print = 0
-		Sprite.heightPrint = 0
-		Sprite.height = 0
-		if(Clock(Sprite,60)){
-		Sprite.State = 1
-		}
-	}
+		Sprite.heightPrint -= 2
+		Sprite.height -= 1
+		Sprite.y += 1
+		Sprite.Ydiference_Print += 1
+			if(Sprite.height < 0){
+				Sprite.y -= 1
+				Sprite.Ydiference_Print = 0
+				Sprite.heightPrint = 0
+				Sprite.height = 0
+				if(Clock(Sprite,60)){
+					Sprite.State = 1
+				}
+			}
 	}else{
 	Sprite.Ydiference_Print -= 1
 	Sprite.y -= 1
@@ -707,7 +740,7 @@ Loop: function Loop (Sprite,player1) {
 		Sprite.heightPrint = 64
 		Sprite.height = 32
 		if(Clock(Sprite,60)){
-		Sprite.State = 0
+			Sprite.State = 0
 		}
 	}	
 	}
@@ -727,7 +760,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 9
 
 	},
 Loop: function Loop (Sprite,player1) {
@@ -751,10 +784,11 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 10
 Sprite.Xvelocity = 0
 Sprite.Yvelocity = 0
 Sprite.type = 3
+Sprite.Up = 1
 Sprite.width = 18
 Sprite.height = 22
 Sprite.Xdiference_Print = -8
@@ -790,8 +824,16 @@ if(Sprite.Xtouch){
 }
 Sprite.MoveX = Sprite.Xvelocity
 Sprite.MoveY = Sprite.Yvelocity
+if(Sprite.Yplayertouch){
+		SoundEffectsCollection[4].currentTime = 0;
+		SoundEffectsCollection[4].play()
+		Sprite.live = -1
+		Sprite.Xvelocity = 0
+		p1.MoveY = -8;p1.BY = 0
+		p1.hits++
+	}
 if(Sprite.live < 0){
-	myMiniSprites.push(new Mini_sprite(Sprite.x,Sprite.y,Sprite.imgN,1,32,192,0,1,Sprite.Xvelocity,-10,32,32,0))
+	myMiniSprites.push(new Mini_sprite(Sprite.x - 8,Sprite.y - 10,Sprite.imgN,1,32,192,0,1,Sprite.Xvelocity,-4,32,32,0))
 		Kills ++
 	}
 },
@@ -800,7 +842,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 	{
-	Action: function Action(Sprite) {
+	Action: function Action(Sprite) { // 11
 		 Sprite.height = Math.round(0.66 * Sprite.heightPrint)
 		 Sprite.heightGrid = 48
 		 Sprite.widthGrid = 32
@@ -877,7 +919,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 	},
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 12
 	let num = Math.round(0.125 * Sprite.heightPrint)
 	 Sprite.height = Sprite.heightPrint - num
 	 Sprite.Ydiference_Print = num *-1
@@ -917,7 +959,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 13
     Sprite.angle = 0
 	Sprite.XG = 100
 	Sprite.YG = 260
@@ -948,7 +990,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 14
 		 Sprite.width = 33
 		 Sprite.height = 32
 		 Sprite.widthPrint = 42
