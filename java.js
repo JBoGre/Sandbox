@@ -53,15 +53,6 @@ const Selection = document.getElementById('selection')
 function toggleTopMenu() {
 	Selection.classList.toggle('active');
 }
-/*
-for(let i = 0; i < 256 ; i++){ 
-let Number = i
-let String = Number.toString(16)
-if(String.length == 1){
-	String =  "0" + String
-}
-SAVE.tiles[1].objects.push(["Tile","rgba(0,0,0,0)",0,"11111"+String+"0"],)
-}*/
 const Level_name = document.getElementById("Level_name");
 const inputArchivo = document.getElementById("archivoJson");
 const cargarJsonBtn = document.getElementById("cargarJson");
@@ -88,71 +79,6 @@ const cargarJsonBtn = document.getElementById("cargarJson");
         });
 
 var Target = ""
-function load (Archivo){
-let archivo = Archivo
-            if (archivo) {
-               let lector = new FileReader();
-                lector.onload = function(e) {
-                    try {
-                        // Parsear el contenido del archivo y reemplazar el array
-                        Target = e.target.result
-                        console.log("Después de cargar el archivo:" );
-                    } catch (error) {
-                        console.error("Error al cargar el archivo JSON:", error);
-                    }
-                };
-                lector.readAsText(archivo);
-            } else {
-                alert("Selecciona un archivo primero.");
-            }
-}
-function cargarJSON(Json) {
-      fetch(Json)
-        .then(response => {
-          if (!response.ok) throw new Error("No se pudo cargar el archivo JSON");
-          return response.json();
-        })
-        .then(data => {
-			SAVE = data
-			chargeLevelNoTiles()
-			let Name  = Json.slice(0,-5)
-			Name = Name.slice(13)
-			Level_name.value  = Name
-		})
-}
- window.addEventListener("beforeunload", function (e) {
-    e.preventDefault(); // Requerido para algunos navegadores
-    e.returnValue = ""; // Necesario para que aparezca el diálogo en otros
-  });
-function textToBinaryNumbers(text) {
-    return Array.from(text).map(char => {
-        let binary = char.charCodeAt(0).toString(2); // Convierte a binario
-        let number = parseInt(binary, 2); // Convierte de binario a número
-        return { char, binary, number }; // Retorna cada transformación
-    });
-}
-function PrintText(text,block){
-	S0.width = 256
-	let number = 48//  Math.round(text.length / (block*block))+1
-	console.log(number)
-	S0.height = 256* number
-    S0.style.height = (48* number)+"em"
-	CTX = S0.getContext("2d")
-	let X = 0
-	let Y = 0
-	let color = 0
-	let TranformingText = textToBinaryNumbers(text)
-	for(let i = 0; i < TranformingText.length ; i++ ){
-         color =  TranformingText[i].number
-		 CTX.fillStyle = Palete[color]
-		 CTX.fillRect(X,Y,block,block)
-		 X += block 
-		 if(X >= 256){
-			 X = 0
-			 Y += block
-		 }
-	}
-}
 
 var SkinSelector = document.getElementById("Skin-selector")
 var characterSelect = 0
@@ -206,118 +132,31 @@ document.getElementById("arrowLeft").addEventListener('click', function() {
 
 
 function PrinCharacter(Canva,Number,Character,){
-let Grid = characters[Number].Grid
-let ctx = Canva.getContext("2d");
-let image = new Image();
-   image.src = characters[Number].Img[Character];
-let Whit = Math.max(Grid[0],Grid[1])
-let X = (Whit - Grid[0]) * 0.5
-let Y = (Whit - Grid[1]) * 0.5
-Canva.width = Whit
-Canva.height = Whit
-image.addEventListener("load", (e) => {
-let ctx = Canva.getContext("2d")
-ctx.drawImage(
-image,
-0,
-0,
-Grid[0],
-Grid[1],
-X,
-Y,
-Grid[0],
-Grid[1],
-)
-})
+	let Grid = characters[Number].Grid
+	let ctx = Canva.getContext("2d");
+	let image = new Image();
+	image.src = characters[Number].Img[Character];
+	let Whit = Math.max(Grid[0],Grid[1])
+	let X = (Whit - Grid[0]) * 0.5
+	let Y = (Whit - Grid[1]) * 0.5
+	Canva.width = Whit
+	Canva.height = Whit
+	image.addEventListener("load", (e) => {
+		let ctx = Canva.getContext("2d")
+		ctx.drawImage(
+			image,
+			0,
+			0,
+			Grid[0],
+			Grid[1],
+			X,
+			Y,
+			Grid[0],
+			Grid[1],
+			)
+		}
+	)
 }
-const characters = [
-{
-Name:"Mario of SMB1" ,
-Img :["characters/Mario-sprite.png","characters/Luigi-sprite.png","characters/GoldMario-sprite.png","characters/GreenLuigi-sprite.png"],
-Grid:[/*width*/ 32,/*height*/32,/*static*/0,/*walk*/3,/*run*/0,/*brek*/4,
-/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3,/*death*/0 ],
-width:24,
-height:32,
-WNEGA:-4,
-HNEGA:0,
-WinSound: "SoundEfects/WinSMB1.mp3",
-DeathSound:"SoundEfects/DeathSMB1.mp3",
-GameOverSound: "SoundEfects/Game OverSMB1.mp3"
-
-},
-{
-Name:"Super Mario of SMB1" ,
-Img :["characters/BigMario-sprite.png","characters/MarioFlaco-sprite.png","characters/BigToad-sprite.png","characters/Peach-sprite.png"],
-Grid:[/*width*/ 32,/*height*/64,/*static*/0,/*walk*/3,/*run*/0,/*brek*/4,
-/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3,/*death*/0 ],
-width:32,
-height:64,
-WNEGA:0,
-HNEGA:0,
-WinSound: "SoundEfects/WinSMB1.mp3",
-DeathSound:"SoundEfects/DeathSMB1.mp3",
-GameOverSound: "SoundEfects/Game OverSMB1.mp3"
-},
-{
-Name:"Mario Maker characters of SMB1" ,
-Img :["characters/Toadet-sprite.png","characters/KingDeDeDe.png","characters/SMB1Bowser-Sprite.png"],
-Grid:[/*width*/ 64,/*height*/64,/*static*/0,/*walk*/3,/*run*/0,/*brek*/4,
-/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/6,/*death*/0 ],
-width:32,
-height:64,
-WNEGA:-16,
-HNEGA:0,
-},
-{
-Name:"Mario Maker costumes of SMB1" ,
-Img :["characters/BabyMario-sprite.png","characters/Bowser-sprites.png"],
-Grid:[/*width*/ 48,/*height*/48,/*static*/0,/*walk*/3,/*run*/3,/*brek*/7,
-/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3,/*death*/0 ],
-width:32,
-height:32,
-WNEGA:-8,
-HNEGA:-16,
-},
-{
-Name:"Mario of SMB3" ,
-Img :["characters/Mario3.png","characters/Luigi3.png"],
-Grid:[64,64,/*static*/0,/*walk*/2,/*run*/3,/*brek*/6,/*jumpUP*/1,/*jumpDOWN*/0,/*jump+run*/1,/*swim*/4,/*death*/0],
-width:32,
-height:54,
-WNEGA:-16,
-HNEGA:-10,
-GameOverSound: "SoundEfects/Game OverSMB3.mp3"
-},
-{
-Name:"Mario of SMW" ,
-Img :["characters/Mario-SMW.png"],
-Grid:[32,48,/*static*/0,/*walk*/1,/*run*/2,/*brek*/4,/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/2,/*swim*/3,/*death*/1],
-width:24,
-height:32,
-WNEGA:-4,
-HNEGA:-14,
-GameOverSound: "SoundEfects/Game OverSMB3.mp3"
-},
-{
-Name:"JUMP-MAN" ,
-Img :["characters/Jump_Man.png"],
-Grid:[32,32,/*static*/0,/*walk*/2,/*run*/0,/*brek*/3,/*jumpUP*/1,/*jumpDOWN*/0,/*jump+run*/0,/*swim*/6,/*death*/3],
-width:24,
-height:32,
-WNEGA:-4,
-HNEGA:0,
-GameOverSound: "SoundEfects/Game OverSMB3.mp3"
-},
-{
-Name:"Sonic the hedghog" ,
-Img :["characters/SonicSprite.png"],
-Grid:[59,59,/*static*/1,/*walk*/8,/*run*/3,/*brek*/17,/*jumpUP*/5,/*jumpDOWN*/0,/*jump+run*/0,/*simw*/4,/*death*/0 ],
-width:24,
-height:40,
-WNEGA:-18,
-HNEGA:-11,
-},
-]
 
 DrawSelectionsSkins()
 let margin_v = '0'
@@ -560,7 +399,7 @@ var color_palete = window.Palete
 var backgroundMusicTrack = SAVE.backgroundMusicTrack
 var LC = SAVE.LevelCol.slice()
 var Level_Sprites = SAVE.Levelsprites.slice()
-var BGC = []
+var BackgroundsInLevel = []
 var backgroundMusicCollection = []
 var TilesCollection = []
 var ColorSelected = "#FFF"
@@ -590,31 +429,6 @@ document.addEventListener('mousemove', (event) => {
   });
   
 reset_functions_and_scrips()
-function chargeLevel(){
-    backgroundBase = SAVE.StyleBackground
-    Tiles = SAVE.tiles
-    color_palete = window.Palete
-	backgroundMusicTrack = SAVE.backgroundMusicTrack
-    LC = SAVE.LevelCol.slice()
-    Level_Sprites = SAVE.Levelsprites.slice()
-	BGC = []
-    backgroundMusicCollection = []
- TilesCollection = []
- ColorSelected = "#FFF"
- Tileselect = 0
- image_collection = []
- imageCords = [0]
- SoundEffectsCollection = []
- SoundEffectsCords = []
- Tileset.innerHTML = ""
- palete.innerHTML = ""
-    reset_functions_and_scrips()
-    limits_and_alture()
-    Create_functions_and_Scrips()
-	Create_images()
-    create_palete()
-	SAVE.Inicial_Script()
-}
 function chargeLevelNoTiles(){
 	AZAR = false
 	backgroundMusic.pause();       // Pausa el audio
@@ -650,7 +464,7 @@ function chargeLevelNoTiles(){
     LC = SAVE.LevelCol.slice()
 	SpritesInGrid = []
 	createSpritesInGrid ()
-	BGC = []
+	BackgroundsInLevel = []
     backgroundMusicCollection = []
 	for(let i = 0; i < SAVE.backgroundMusic.length ; i++){
 	backgroundMusicCollection.push(new Audio(SAVE.backgroundMusic[i]))
@@ -660,39 +474,39 @@ function chargeLevelNoTiles(){
     backgroundMusic.loop = true; // Activar reproducción en bucle
 	for(let i = 0; i < SAVE.backgroundImages.length ; i++){
 	BCC = SAVE.backgroundImages[i]
-	BGC.push(new Background(BCC[0],BCC[1],BCC[2],BCC[3],BCC[4],BCC[5],BCC[6],BCC[7],BCC[8],BCC[9],BCC[10]))
+	BackgroundsInLevel.push(new Background(BCC[0],BCC[1],BCC[2],BCC[3],BCC[4],BCC[5],BCC[6],BCC[7],BCC[8],BCC[9],BCC[10]))
 	}
 	change_BlockResolution(BlockResolution)
 	limits_and_alture()
 	buton[1](0)
 }
 function limits_and_alture(){
-if(SAVE.limit_rigth == false){
-Limit_Rigth = (32 * limitXGird)*-1
-}else{
-if(SAVE.limit_rigth*-32 > screenWidth*-1 ){
-	SAVE.CameraX_frese = 1
+	if(SAVE.limit_rigth == false){
 	Limit_Rigth = (32 * limitXGird)*-1
-}else{
-	Limit_Rigth =  SAVE.limit_rigth*-32
-}
-if(SAVE.limit_up == false){
-	Limit_Up = (32 * limitYGird)
-	}else{
-		if(SAVE.limit_up*32 < screenHeigth ){
-			SAVE.CameraY_frese = 1
-			Limit_Up = (32 * limitYGird)
 		}else{
-			Limit_Up =  SAVE.limit_up*32
-		}
-}
-if(SAVE.X == undefined || SAVE.X == 0 ){
-SAVE.X = limitXGird
-}
-if(SAVE.Y == undefined || SAVE.Y == 0 ){
-SAVE.Y = limitYGird
-}	
-}
+			if(SAVE.limit_rigth*-32 > screenWidth*-1 ){
+				SAVE.CameraX_frese = 1
+				Limit_Rigth = (32 * limitXGird)*-1
+			}else{
+				Limit_Rigth =  SAVE.limit_rigth*-32
+			}
+	}
+	if(SAVE.limit_up == false){
+		Limit_Up = (32 * limitYGird)
+		}else{
+			if(SAVE.limit_up*32 < screenHeigth ){
+				SAVE.CameraY_frese = 1
+				Limit_Up = (32 * limitYGird)
+			}else{
+				Limit_Up =  SAVE.limit_up*32
+			}
+	}
+	if(SAVE.X == undefined || SAVE.X == 0 ){
+	SAVE.X = limitXGird
+	}
+	if(SAVE.Y == undefined || SAVE.Y == 0 ){
+	SAVE.Y = limitYGird
+	}	
 }
 function reset_functions_and_scrips(){
 functions_collection = [
@@ -1288,92 +1102,92 @@ return List
 }
 const RandomLevelConfiguration = [
 	function(){ //Normal  0
-	Solids_in_Level = 100	
-	S_MN_MX = [3,8,3,16]
-	SemiSolids_in_Level = 300
-	SS_MN_MX = [3,8,3,16]
+	Solids = 100	
+	SolidRange = [3,8,3,16]
+	SemiSolids = 300
+	SemiSolidRange = [3,8,3,16]
 	Azar_Level_width = 128
 	Azar_Enemies_Multiplicater = 1
 	},
 	function(){ // Big Level 1
-	Solids_in_Level = 200	
-	S_MN_MX = [3,16,3,16]
-	SemiSolids_in_Level = 300
-	SS_MN_MX = [3,16,3,16]
+	Solids = 200	
+	SolidRange = [3,16,3,16]
+	SemiSolids = 300
+	SemiSolidRange = [3,16,3,16]
 	Azar_Level_width = 256
 	Azar_Enemies_Multiplicater = 2
 	},
 	function(){ // Big Solids 2
-	Solids_in_Level = 20	
-	S_MN_MX = [32,64,32,64]
-	SemiSolids_in_Level = 300
-	SS_MN_MX = [3,16,3,16]
+	Solids = 20	
+	SolidRange = [32,64,32,64]
+	SemiSolids = 300
+	SemiSolidRange = [3,16,3,16]
 	Azar_Level_width = 256
 	Azar_Enemies_Multiplicater = 2
 	},
 	function(){ //Only Semi Solids 3
-	Solids_in_Level = 0 
-	S_MN_MX = [3,8,3,16]
-	SemiSolids_in_Level = 500
-	SS_MN_MX = [1,8,1,16]
+	Solids = 0 
+	SolidRange = [3,8,3,16]
+	SemiSolids = 500
+	SemiSolidRange = [1,8,1,16]
 	Azar_Level_height = 128
 	Azar_Enemies_Multiplicater = 1
 	},
 	function(){ //Only Solids 4
-	Solids_in_Level = 300
-	S_MN_MX = [2,8,2,8]
-	SemiSolids_in_Level = 0
-	SS_MN_MX = [3,16,3,16]
+	Solids = 300
+	SolidRange = [2,8,2,8]
+	SemiSolids = 0
+	SemiSolidRange = [3,16,3,16]
 	Azar_Level_width = 128
 	Azar_Enemies_Multiplicater = 1
 	},
 	function(){ //Points 5
-	Solids_in_Level = 500
-	S_MN_MX = [1,1,1,1]
-	SemiSolids_in_Level = 500
-	SS_MN_MX = [1,1,1,1]
+	Solids = 500
+	SolidRange = [1,1,1,1]
+	SemiSolids = 500
+	SemiSolidRange = [1,1,1,1]
 	Azar_Level_width = 128
 	Azar_Enemies_Multiplicater = 1
 	},
 	function(){ //Line 6
-	Solids_in_Level = 100
-	S_MN_MX = [1,1,3,16]
-	SemiSolids_in_Level = 300
-	SS_MN_MX = [3,16,1,1]
+	Solids = 100
+	SolidRange = [1,1,3,16]
+	SemiSolids = 300
+	SemiSolidRange = [3,16,1,1]
 	Azar_Level_width = 128
 	Azar_Enemies_Multiplicater = 1
 	},
 	function(){ //Line and points 7
-	Solids_in_Level = 300
-	S_MN_MX = [1,1,3,16]
-	SemiSolids_in_Level = 300
-	SS_MN_MX = [1,1,1,1]
+	Solids = 300
+	SolidRange = [1,1,3,16]
+	SemiSolids = 300
+	SemiSolidRange = [1,1,1,1]
 	Azar_Level_width = 128
 	Azar_Enemies_Multiplicater = 1
 	},
 	function(){ //Points and Lines 8 
-	Solids_in_Level = 300
-	S_MN_MX = [1,1,1,1]
-	SemiSolids_in_Level = 100
-	SS_MN_MX = [32,32,1,1]
+	Solids = 300
+	SolidRange = [1,1,1,1]
+	SemiSolids = 100
+	SemiSolidRange = [32,32,1,1]
 	Azar_Level_width = 128
 	Azar_Enemies_Multiplicater = 1
 	},
 	function(){ //Only Points 9
-	Solids_in_Level = 0
-	S_MN_MX = [1,1,1,1]
-	SemiSolids_in_Level = 1000
-	SS_MN_MX = [1,1,1,1]
+	Solids = 0
+	SolidRange = [1,1,1,1]
+	SemiSolids = 1000
+	SemiSolidRange = [1,1,1,1]
 	Azar_Level_width = 128
 	Azar_Enemies_Multiplicater = 1
 	},
 	function(){ //Random
 	let Solid = RandomNumber(1,16)
 	let SemiSolid = RandomNumber(1,16)
-	Solids_in_Level = 100
-	S_MN_MX = [Solid,Solid,Solid,Solid]
-	SemiSolids_in_Level =  100
-	SS_MN_MX = [SemiSolid,SemiSolid,SemiSolid,SemiSolid]
+	Solids = 100
+	SolidRange = [Solid,Solid,Solid,Solid]
+	SemiSolids =  100
+	SemiSolidRange = [SemiSolid,SemiSolid,SemiSolid,SemiSolid]
 	Azar_Level_width = 128
 	Azar_Enemies_Multiplicater = 1
 	},
@@ -1383,10 +1197,10 @@ function Azar_floor_dificult (floor) {
 	Azar_Enemies = 150 + floor* 50
     Azar_floor = floor
 }
-var Solids_in_Level = 100
-var S_MN_MX = [3,8,3,16] // solid MinX MaxX MinY MaxY
-var SemiSolids_in_Level = 300
-var SS_MN_MX = [3,8,3,16] // Semisolid MinX MaxX MinY MaxY
+var Solids = 100
+var SolidRange = [3,8,3,16] // solid MinX MaxX MinY MaxY
+var SemiSolids = 300
+var SemiSolidRange = [3,8,3,16] // Semisolid MinX MaxX MinY MaxY
 var Azar_Level_width = 128
 var Azar_Level_height = 128
 var Azar_floor = 1
@@ -1399,14 +1213,6 @@ var SkinS = SkinLevel
 var SkinSS = SkinLevel
 var LevelType = 2
 var SkinLevel = 0
-var Skins_S =
-[
-	[1,"#FFF","11111200",0,1,0,0],
-]
-var Skins_SS =
-[
-	[1,"#FFF","10002220",0,1,0,0],
-]
 function Azar_Level(){
 	AZAR = true
 	LC = []
@@ -1420,8 +1226,6 @@ function Azar_Level(){
 	SAVE.Y = Azar_Level_height
 	Limit_Up = false
 	Limit_Rigth = Azar_Level_width * -32
-	let S_kin = Skins_S[SkinS]
-	let SS_kin = Skins_SS[SkinSS]
 	Azar_Create_Solid_SemiSolid()
 	
 	Azar_Create_Sprites()
@@ -1460,13 +1264,13 @@ var Azar_Sprites =
 	[32,32,17,"160010000",2,"25800",2,2]
 ]
 function Azar_Create_Solid_SemiSolid(){
-	let count = Math.round((SemiSolids_in_Level / Azar_SemiSolids.length)+0.4)
+	let count = Math.round((SemiSolids / Azar_SemiSolids.length)+0.4)
 	let Solid = []
 	for(let i = 0; i < Azar_SemiSolids.length ; i++){
 		Solid = Azar_SemiSolids[i]
 		createBlocks(
 			count,true,
-			SS_MN_MX[0],SS_MN_MX[1],SS_MN_MX[2],SS_MN_MX[3],
+			SemiSolidRange[0],SemiSolidRange[1],SemiSolidRange[2],SemiSolidRange[3],
 			SAVE.X,SAVE.Y-4,16,0,
 			Solid[0],Solid[1],Solid[2],Solid[3],Solid[4],Solid[5],Solid[6]
 		);
@@ -1475,13 +1279,13 @@ function Azar_Create_Solid_SemiSolid(){
 	fillblockImg_3x3(3,4,13,6,Solid[0],Solid[1],Solid[2],Solid[3],Solid[4],Solid[5],Solid[6])
 	fillblockImg_3x3(3,3,13,9,Solid[0],Solid[1],Solid[2],Solid[3],Solid[4],Solid[5],Solid[6])
 	
-	count = Math.round((Solids_in_Level / Azar_Solids.length)+0.4)
+	count = Math.round((Solids / Azar_Solids.length)+0.4)
 	Solid = []
 	for(let i = 0; i < Azar_Solids.length ; i++){
 		Solid = Azar_Solids[i]
 		createBlocks(
 			count,true,
-			S_MN_MX[0],S_MN_MX[1],S_MN_MX[2],S_MN_MX[3],
+			SolidRange[0],SolidRange[1],SolidRange[2],SolidRange[3],
 			SAVE.X,SAVE.Y-4,16,0,
 			Solid[0],Solid[1],Solid[2],Solid[3],Solid[4],Solid[5],Solid[6]
 		);
@@ -1693,11 +1497,11 @@ for(let I = 0; I < SAVE.tiles.length ; I++){
 	}
 }
 function Create_images() {
-	BGC = []
+	BackgroundsInLevel = []
 	var BCC = []
 	for(let i = 0; i < SAVE.backgroundImages.length ; i++){
 	BCC = SAVE.backgroundImages[i]
-	BGC.push(new Background(BCC[0],BCC[1],BCC[2],BCC[3],BCC[4],BCC[5],BCC[6],BCC[7],BCC[8],BCC[9],BCC[10]))
+	BackgroundsInLevel.push(new Background(BCC[0],BCC[1],BCC[2],BCC[3],BCC[4],BCC[5],BCC[6],BCC[7],BCC[8],BCC[9],BCC[10]))
 	}
 	let Cords = 0
 	for(let I = 0; I < SAVE.tiles.length ; I++){
@@ -2332,7 +2136,7 @@ gametest(game,10000,p1,p2,myObstacles,mysprites,myMiniSprites,myHits)
 type_but = 1
 },
 function(b) {
-	audioPlayer.muted = false
+audioPlayer.muted = false
 on_game = false
 finish_game = true
 backgroundMusic.pause();       // Pausa el audio
@@ -2345,6 +2149,7 @@ table.style.overflow = "auto"
 myObstacles = [];
 mysprites = [];
 myMiniSprites = [];
+ctx = Grid.getContext("2d")
   CreatreGrid()
 DrawGirdTiles(Grid)
 DrawGirdSprites(GridSprites)
@@ -3419,21 +3224,102 @@ function HitBox(X,Y,XU,YU,MoveX,MoveY,Time){
 function DL_Hitbox(H){
 H.Time += -1 ;if(H.Time < 0){return true}  
 }
-function tile(imgn,color, X, Y,i,I,col,script) {
-this.imgN = imgn; this.BC = color ;
-this.iA  = I;this.iL = i
-this.col = col
-this.action = false
-this.Xplus = 0
-this.Yplus = 0 
-this.Wid = 32
-this.heg = 32
-this.type = (parseInt(col[4], 32))
-this.XG = (parseInt(col[5], 32))*32; ;this.YG = (parseInt(col[6], 32))*32;
-this.script = script
-this.prin = 1
-this.x = X; this.y = Y;
-this.animation = 0;
+class tile {
+	constructor (imgn,color, X, Y,Ycord,Xcord,col,script) {
+		this.imgN = imgn; this.BC = color ;
+		this.Xcord  = Xcord;this.Ycord = Ycord
+		this.col = col
+		this.action = false
+		this.Xplus = 0
+		this.Yplus = 0 
+		this.Wid = 32
+		this.heg = 32
+		this.type = (parseInt(col[4], 32))
+		this.XG = (parseInt(col[5], 32))*32; ;
+		this.YG = (parseInt(col[6], 32))*32;
+		this.fotograms = (parseInt(col[7], 32))
+		this.script = script
+		this.prin = 1
+		this.x = X; this.y = Y;
+		this.animation = 0;
+	}
+	Update_tile (){
+	    this.TileTeleport[0]();
+		if(Ax4 == 3){
+			this.Tiles_animation()
+			if(this.action){
+				functions_collection[this.script].Loop(this)
+			}
+		}
+	}
+	TileTeleport = [
+	() => {
+		let rX = limitX +Xplus
+		let rY = limitY +Yplus
+		let Xmargin = limitTilesX +XplusPixels ;
+		let Ymargin = limitTilesY +YplusPixels; 
+		if(this.y < YplusPixels *-1 ){
+			   this.Ycord += rY*-1
+			   this.Swich_tile()
+			   this.y += Ymargin 
+		}
+		if(this.y > limitTilesY){
+			this.Ycord += rY
+			this.Swich_tile()
+			this.y += Ymargin *-1
+		}
+		if(this.x > limitTilesX){
+			this.Xcord += rX*-1
+			this.Swich_tile()
+			this.x += Xmargin  *-1
+		}
+		if(this.x < XplusPixels *-1){
+			   this.Xcord += rX 
+			   this.Swich_tile()
+			   this.x += Xmargin 
+		}
+	},
+	]
+	Swich_tile (){
+	let result = TilesCollection.find(Tile => Tile.X == this.Xcord && Tile.Y == this.Ycord  );
+	   if(result == undefined){
+		   this.col = "00000000";
+		   this.script = 0  ;
+		   this.prin = 0 ;
+		   this.type = 0;
+		   this.BC = "rgba(0,0,0,0)";
+		   this.XG = 0 ; 
+		   this.YG = 0;
+		   this.imgN = 0;
+		   this.fotograms = 0;
+	   }else{
+		   this.imgN = result.IN  ;
+		   this.col = result.col
+		   this.BC = result.color
+		   this.type = parseInt(this.col[4], 32) || 0;
+		   this.XG = (parseInt(this.col[5], 32))*32 || 0;
+		   this.YG = (parseInt(this.col[6], 32))*32 || 0;
+		   this.fotograms = (parseInt(col[7], 32)) || 0; 
+		   this.script = result.script ?? 0;
+		   this.prin = 1
+	   }
+	  this.intervald_time = 0;
+	  this.Xplus = 0;
+	  this.Yplus = 0;
+	  this.action = false;
+	  this.heg = 32;
+	  this.Wid = 32;	   
+	}
+	Tiles_animation(){
+	let include = fotograms.indexOf(this.fotograms)
+	  if(include != -1){
+		this.animation = fG_action[include]
+	  }else{
+		  this.animation += 1;
+	  if(this.animation >= this.fotograms){this.animation = 0}
+	  }
+	}
+	
 }
 const Tile_Teleport_charge = [
 function(variable,valorMayor){
@@ -3443,45 +3329,17 @@ return 0;},
 function(variable,valorMayor){
 return valorMayor;},
 ]
-function Swich_tile(Tile,iL,iA){
-	   var result = TilesCollection.find(TilesCollection => TilesCollection.X == iA && TilesCollection.Y == iL  );
-	   if(result == undefined){
-	    Tile.col = "00000000";
-		Tile.script = 0  ;Tile.prin = "0" ;Tile.type = "0"
-		Tile.Xplus = 0; Tile.Yplus = 0 ; Tile.action = false
-		Tile.intervald_time = 0
-		Tile.BC = "rgba(0,0,0,0)"
-		Tile.XG = 0 ; Tile.YG = 0;Tile.imgN = 0;
-		Tile.heg = 32;Tile.Wid = 32
-	   }else{
-	   Tile.imgN = result.IN  ;Tile.col = result.col
-	   Tile.BC = result.color
-	   Tile.type = parseInt(Tile.col[4], 32);
-       Tile.XG = (parseInt(Tile.col[5], 32))*32 ;Tile.YG = (parseInt(Tile.col[6], 32))*32
-       if(result.script == undefined){Tile.script = "0"}else{Tile.script = result.script}
-	   Tile.prin = 1
-	   Tile.intervald_time = 0
-	   Tile.Xplus = 0; Tile.Yplus = 0 ; Tile.action = false
-	   Tile.heg = 32;Tile.Wid = 32
-	   }
-}
 function TransfromTile(Tile,color,ImageNumber,Colision,Script){
 	Tile.BC = color
 	Tile.imgN = ImageNumber
 	Tile.col = Colision
 	Tile.script = Script
 	Tile.XG = ( "0x"+ Tile.col[5])*32 ;Tile.YG = ( "0x"+ Tile.col[6])*32
-	var result = TilesCollection.find(TilesCollection => TilesCollection.X === Tile.iA && TilesCollection.Y === Tile.iL  );
+	var result = TilesCollection.find(TilesCollection => TilesCollection.X === Tile.Xcord && TilesCollection.Y === Tile.Ycord  );
 		result.color = color
 		result.col = Colision
 		result.IN = ImageNumber
 		result.script = Script
-}
-function Reset_tile(T){
-	T.iL = T.StiL
-	T.iA = T.StiA
-	Player.imC.src = celd[Player.iL][Player.iA].img;Player.col = celd[Player.iL][Player.iA].col;
-	Player.XG = Player.col[0] * 32 ;Player.YG = Player.col[1] * 32;Player.prin  = Player.col[7]
 }
 var Xplus = 2
 var Yplus = 2
@@ -3505,9 +3363,9 @@ function charge (b,SX,SY,x,y,XL,YL) {
 	
 	if(Q < 0){
 		
-		Swich_tile(myObstacles[myObstacles.length -1],0,G)
+		myObstacles[myObstacles.length -1].Swich_tile()
 		}else{
-	        Swich_tile(myObstacles[myObstacles.length -1],Q,G)
+	        myObstacles[myObstacles.length -1].Swich_tile()
 			
 			//Q = SAVE.Y;
 	}
@@ -3539,29 +3397,32 @@ function charge (b,SX,SY,x,y,XL,YL) {
     localisated_sprites(Sprite_Collection,mysprites,cordX,cordY)
 }
 const Tile_Teleport = [
-function(Player,f,Fa,g,Ga){
+function(Player){
 var rX = limitX +Xplus
 var rY = limitY +Yplus
 var Xmargin = limitTilesX +XplusPixels ;var Ymargin = limitTilesY +YplusPixels; 
 if(Player.y < YplusPixels *-1 ){
-        Player.iL += rY*-1
-	   Swich_tile(Player,Player.iL,Player.iA)
-       Player.y += g- ((Ymargin + 2)* Ga )}
+        Player.Ycord += rY*-1
+	   Swich_tile(Player,Player.Ycord,Player.Xcord)
+       Player.y += Ymargin 
+}
 if(Player.y > limitTilesY){
-	Player.iL += rY
-	Swich_tile(Player,Player.iL,Player.iA)
-    Player.y += g- ((Ymargin + 2)* Ga )}
+	Player.Ycord += rY
+	Swich_tile(Player,Player.Ycord,Player.Xcord)
+    Player.y += Ymargin *-1
+}
 if(Player.x > limitTilesX){
-	Player.iA += rX*-1
-	Swich_tile(Player,Player.iL,Player.iA)
-    Player.x += f - ((Xmargin +2) * Fa )
+	Player.Xcord += rX*-1
+	Swich_tile(Player,Player.Ycord,Player.Xcord)
+    Player.x += Xmargin  *-1
 }
 if(Player.x < XplusPixels *-1){
-	   Player.iA += rX 
-	   Swich_tile(Player,Player.iL,Player.iA,LC)
-       Player.x += f - ((Xmargin +2) * Fa )}
+	   Player.Xcord += rX 
+	   Swich_tile(Player,Player.Ycord,Player.Xcord,LC)
+       Player.x += Xmargin 
+}
 },
-function(Player,f,Fa,g,Ga){
+function(Player){
 var SX = SAVE.X;
 var SY = SAVE.Y;
 var rX = limitX +Xplus
@@ -3569,27 +3430,30 @@ if(limitX -2 >= SX ){rX = 1}
 var rY = limitY +Yplus
 if(limitY -2 >= SY ){rY = 1}
 var Xmargin = limitTilesX +XplusPixels;var Ymargin = limitTilesY +YplusPixels; 
-if(Player.y < -64 ){
-        Player.iL = (Player.iL - rY) % SY
-		if(Player.iL < 0 ){Player.iL = Player.iL + SY  }
-	   Swich_tile(Player,Player.iL,Player.iA)
-       Player.y += g- ((Ymargin + 2)* Ga )}
+if(Player.y < YplusPixels *-1  ){
+        Player.Ycord = (Player.Ycord - rY) % SY
+		if(Player.Ycord < 0 ){Player.Ycord = Player.Ycord + SY  }
+	   Swich_tile(Player,Player.Ycord,Player.Xcord)
+       Player.y += Ymargin 
+	   }
 if(Player.y > limitTilesY){
-	Player.iL = (Player.iL + rY) % SY ;
-	Swich_tile(Player,Player.iL,Player.iA)
-    Player.y += g- ((Ymargin + 2)* Ga )}
-if(Player.x > limitTilesX){
-	Player.iA = (Player.iA - rX) % SX ;
-	if(Player.iA < 0 ){Player.iA = Player.iA + SX  }
-	Swich_tile(Player,Player.iL,Player.iA)
-    Player.x += f - ((Xmargin +2) * Fa )
+	Player.Ycord = (Player.Ycord + rY) % SY ;
+	Swich_tile(Player,Player.Ycord,Player.Xcord)
+    Player.y += Ymargin *-1
 }
-if(Player.x < -64){
-	   Player.iA = (Player.iA + rX) % SX ;
-	   Swich_tile(Player,Player.iL,Player.iA)
-       Player.x += f - ((Xmargin +2) * Fa )}
+if(Player.x > limitTilesX){
+	Player.Xcord = (Player.Xcord - rX) % SX ;
+	if(Player.Xcord < 0 ){Player.Xcord = Player.Xcord + SX  }
+	Swich_tile(Player,Player.Ycord,Player.Xcord)
+    Player.x += Xmargin  *-1
+}
+if(Player.x < XplusPixels *-1){
+	   Player.Xcord = (Player.Xcord + rX) % SX ;
+	   Swich_tile(Player,Player.Ycord,Player.Xcord)
+       Player.x += Xmargin
+}
 },
-function(Player,f,Fa,g,Ga){
+function(Player){
 var SX = SAVE.X; 
 var SY = SAVE.Y
 var rX = limitX +Xplus
@@ -3597,56 +3461,33 @@ var rY = limitY +Yplus
 var Xmargin = limitTilesX +XplusPixels;var Ymargin = limitTilesY +YplusPixels; 
 let out = false
 if(Player.y < -64 ){
-        Player.iL += rY*-1 
+        Player.Ycord += rY*-1 
 		out = true
-       Player.y += g- ((Ymargin + 2)* Ga )}
+       Player.y += Ymargin 
+}
 if(Player.y > limitTilesY){
-	Player.iL += rY
+	Player.Ycord += rY
 	out = true
-    Player.y += g- ((Ymargin + 2)* Ga )}
+    Player.y +=  Ymargin *-1
+}
 if(Player.x > limitTilesX){
-	Player.iA += rX*-1
+	Player.Xcord += rX*-1
 	out = true
-    Player.x += f - ((Xmargin +2) * Fa )}
+    Player.x += Xmargin  *-1
+}
 if(Player.x < -64){
-	   Player.iA += rX 
+	   Player.Xcord += rX 
 	   out = true
-       Player.x += f - ((Xmargin +2) * Fa )}
+       Player.x += Xmargin
+}
 	   if(out){
-     let iA = Player.iA;let iL = Player.iL
+     let Xcord = Player.Xcord;let Ycord = Player.Ycord
 	 let overload = false
-     if(iA > SX){iA = SX;overload = true};if(iA < 0){iA = 0;overload = true};
-	 if(iL > SY){iL = SY;overload = true};if(iL < 0){iL = 0;overload = true};
-	   Swich_tile(Player,iL,iA)
+     if(Xcord > SX){Xcord = SX;overload = true};if(Xcord < 0){Xcord = 0;overload = true};
+	 if(Ycord > SY){Ycord = SY;overload = true};if(Ycord < 0){Ycord = 0;overload = true};
+	   Swich_tile(Player,Ycord,Xcord)
 	  if(overload){Player.col = "61111000",Player.type = "1"}
 	   }
-},
-function(Player,f,Fa,g,Ga){
-	/*Obsoleta*/
-var SX = SAVE.X;
-var SY = SAVE.Y;
-var Xmargin = 512 +32;var Ymargin = 512 +32; 
-if(Player.y < -32 ){
-        Player.iL += 1
-	   if(Player.iL >  SY){Player.iL = 0}
-	   Swich_tile(Player,Player.iL,Player.iA)
-       Player.y += g- ((Ymargin + 2)* Ga )}
-if(Player.y > 512){
-	Player.iL += -1
-    if(Player.iL <  0){Player.iL = SY}
-	Swich_tile(Player,Player.iL,Player.iA)
-    Player.y += g- ((Ymargin + 2)* Ga )}
-if(Player.x > 512){
-	Player.iA += -1
-    if(Player.iA <  0){Player.iA = SX}
-	Swich_tile(Player,Player.iL,Player.iA)
-    Player.x += f - ((Xmargin +2) * Fa )
-}
-if(Player.x < -32){
-	   Player.iA += 1
-	   if(Player.iA >  SX){Player.iA = 0}
-	   Swich_tile(Player,Player.iL,Player.iA)
-       Player.x += f - ((Xmargin +2) * Fa )}
 },
 ]
 function clear (b) {
@@ -3721,19 +3562,27 @@ let include = fotograms.indexOf(Fotograms)
 
 function player(width, height,color,Gird, X, Y,comportament,Movement,Xnegative,Ynegative,DeathSound) {
 this.width = width; this.height = height;
+this.INwidth = width; this.INheight = height;
+this.widthSave = width; this.heightSave = height;
 this.widthHalf = width/2; this.heightHalf = height/2;
+this.crouched = false
 this.InMove = true
 this.XG = 0; this.YG = 0; 
 this.side = false; 
 this.sideX = true;
 this.sideY = true;  
-this.Move = false;this.G = Gird;this.run = false
+this.Move = false;this.CameraY = Gird;this.run = false
 this.Movement = Movement; this.water = false; this.AnimationWater = false
+this.UpTouch = false;this.DownTouch = false
+this.LeftTouch = false;this.RightTouch = false
+this.ButonBTouch = false;this.ButonATouch = false
+this.Xteleport = 0; this.Yteleport = 0;
 this.InFlor = false
 this.Action = false
 this.angle = 0;
 this.FristTouch = false
 this.Xnegative = Xnegative ;this.Ynegative = Ynegative ;
+this.YnegativeSave =  Ynegative ;
 this.Hx = 0; this.Hy = 0;
 this.velocity = 1
 this.prin = 2
@@ -3767,10 +3616,49 @@ this.deathMusic = new Audio(DeathSound)
 }
 this.songEnd = false
 }
+function nullTrigers(player){
+	player.UpTouch = false;player.DownTouch = false
+	player.LeftTouch = false;player.RightTouch = false
+	player.ButonBTouch = false;player.ButonATouch = false
+}
+function PlayerTrigers(Player,ctr){
+	nullTrigers(Player)
+	if (Player.keys && Player.keys[controlls[ctr].Jump]) Player.ButonATouch = true;
+	if (Player.keys && Player.keys[controlls[ctr].Run]) Player.ButonBTouch = true;
+	if (Player.keys && Player.keys[controlls[ctr].left]) Player.LeftTouch = true;
+	if (Player.keys && Player.keys[controlls[ctr].right]) Player.RightTouch = true;
+	if (Player.keys && Player.keys[controlls[ctr].up]) Player.UpTouch = true;
+	if (Player.keys && Player.keys[controlls[ctr].down]) Player.DownTouch = true;
+	gp = gamepads[0];
+	if (gp) {
+		if(gp.buttons[0].pressed || gp.buttons[1].pressed){
+			Player.ButonATouch = true;
+		}
+		if(gp.buttons[2].pressed || gp.buttons[3].pressed){
+			Player.ButonBTouch = true;
+		}
+		let x = gp.axes[0];
+		let y = gp.axes[1];
+
+		if (x < -0.5) {
+			Player.LeftTouch = true;
+		} else if (x > 0.5) {
+			Player.RightTouch = true;
+		}
+
+		if (y < -0.5) {
+			Player.UpTouch = true;
+		} else if (y > 0.5) {
+			Player.DownTouch = true;
+		}
+    }
+}
 function PlayerAction (player,controls,chocolate){
 if(player.lives > 0 ){
 	 if(!player.InMove){
-		 player.keys = null
+		 nullTrigers(player)
+	 }else{
+		 PlayerTrigers(player,controls)
 	 }
 		 plataformer_Easy(controls,player)
 		 
@@ -4017,14 +3905,38 @@ if(Player.MoveX <= -1){Player.MoveX += 1}
 if(Player.MoveX >= 1){Player.MoveX += -1}}
 if(Player.delay > 0 ){Player.delay += 1;if(Player.delay > 8){Player.delay = 0}}
 /*inputs en el aire*/
-if(Player.delay == 0){
-if (Player.keys && Player.keys[controlls[ctr].left]) {
+Player.Up = false
+if (Player.UpTouch) {
+	Player.Up = true
+}
+Player.Down = false
+if (Player.DownTouch) {
+	Player.Down = true
+	/*if(!Player.crouched && Player.jumped ){
+	Player.height = Player.heightHalf
+	Player.Ynegative += Player.heightHalf*-1
+    Player.Yteleport = Player.heightHalf
+	Player.crouched = true
+	}*/
+}/*else{
+	/*
+	if(Player.crouched && Player.jumped){
+	Player.height = Player.heightSave
+	Player.Ynegative = Player.YnegativeSave
+	Player.Yteleport = Player.heightHalf*-1
+	Player.crouched = false	
+	}
+	
+}*/
+//console.log(Player.DownTouch +"/"+ Player.UpTouch)
+if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
+if (Player.LeftTouch) {
 	if(Player.jumped){Player.MoveX += -1;Player.side = true
 	}else{
 			Player.MoveX += -1
 	}
 }else{ 
-if (Player.keys && Player.keys[controlls[ctr].right]) {
+if (Player.RightTouch) {
 	if(Player.jumped){Player.MoveX += 1;Player.side = false
 	}else{
 			Player.MoveX += 1
@@ -4032,19 +3944,11 @@ if (Player.keys && Player.keys[controlls[ctr].right]) {
 }
 }
 }
-Player.Up = false
-if (Player.keys && Player.keys[controlls[ctr].up]) {
-	Player.Up = true
-}
-Player.Down = false
-if (Player.keys && Player.keys[controlls[ctr].down]) {
-	Player.Down = true
-}
 /*En agua*/
 if(Player.water ){
 	Player.jumped = true;Player.jt = 0;
-if (Player.keys && Player.keys[controlls[ctr].Jump]){Jump(Player,-3,1,1)}
-if (Player.keys && Player.keys[controlls[ctr].Run]){Player.velocity = 4;}
+if (Player.ButonATouch){Jump(Player,-3,1,1)}
+if (Player.ButonBTouch){Player.velocity = 4;}
 
 Player.InFlor = false
 Player.MoveY += 0.5
@@ -4068,7 +3972,7 @@ if((Player.Xtouch && Player.InFlor == false) && !Player.Down){
 	if(Player.MoveX > 0){Player.side = true}
 	if(Player.MoveX < 0){Player.side = false}
 	if(Player.delay == 0){
-	if (Player.keys && Player.keys[controlls[ctr].Jump]) {
+	if (Player.ButonATouch) {
 		Player.jumped = true;Player.jt = 0;Jump(Player,-1,1,1);
 		Player.delay += 1
 		if(Player.side){
@@ -4079,7 +3983,7 @@ if((Player.Xtouch && Player.InFlor == false) && !Player.Down){
 		}
 	}
 }else{
-	if (Player.keys && Player.keys[controlls[ctr].Jump]) {
+	if (Player.ButonATouch) {
 		Jump(Player,jump_force,10,2);
 		}else{
 		Player.jumped = false
@@ -4089,7 +3993,7 @@ if((Player.Xtouch && Player.InFlor == false) && !Player.Down){
 	Player.InFlor = false	
 }
 
-if (Player.keys && Player.keys[controlls[ctr].Run]){Player.velocity = 8;}
+if (Player.ButonBTouch && !Player.crouched){Player.velocity = 8;}
 if(Player.MoveX > Player.velocity){Player.MoveX = Player.velocity};
 if(Player.MoveX < Player.velocity*-1 ){Player.MoveX = Player.velocity*-1}
 Player.velocity = 4;
@@ -4108,6 +4012,9 @@ function Jump (Player,Number,JumpsIntervals,PlayerJump) {
 		Player.jt = 0
 	}
 }
+function ShootDelay(Player,Delay){
+	if(Player.shotdelay > 0 ){Player.shotdelay += 1;if(Player.shotdelay > Delay){Player.shotdelay = 0}}
+}
 var shoterMode = 0
 const ShoterType = [
 function (ctr,Player){
@@ -4115,7 +4022,7 @@ function (ctr,Player){
 },
 function ClasicShotter (ctr,Player){
 	//ClasicShotter
-	if(Player.shotdelay > 0 ){Player.shotdelay += 1;if(Player.shotdelay > 8){Player.shotdelay = 0}}
+	ShootDelay(Player,8)
 	Player.shotX = 0
         if(Player.side){
             Player.shotX = -8		
@@ -4123,9 +4030,9 @@ function ClasicShotter (ctr,Player){
 			Player.shotX = 8
         } 
 Player.shotY = 0
-if (Player.keys && Player.keys[controlls[ctr].up]) {Player.shotY = -8;if(Player.MoveX == 0){Player.shotX = 0}}
-if (Player.keys && Player.keys[controlls[ctr].down]) {Player.shotY = 8;if(Player.MoveX == 0){Player.shotX = 0}}
-if (Player.keys && Player.keys[controlls[ctr].Run]){
+if (Player.UpTouch) {Player.shotY = -8;if(Player.MoveX == 0){Player.shotX = 0}}
+if (Player.DownTouch) {Player.shotY = 8;if(Player.MoveX == 0){Player.shotX = 0}}
+if (Player.ButonBTouch){
  if(Player.shotdelay == 0){Player.shotdelay += 1
 	 myMiniSprites.push(new Mini_sprite(Player.x+(Player.widthHalf/2),Player.y+(Player.heightHalf/2),1,0,0,0,0,0,Player.shotX,Player.shotY))
 	 }
@@ -4142,34 +4049,34 @@ if (mouse){
   }
 },
 function TankShotter(ctr,player){
-if ((player.keys && player.keys[controlls[ctr].up])){
+if (player.UpTouch){
 	if(player.angle > -0.5* Math.PI ){player.angle -= 0.1}
      if(player.angle < -0.5* Math.PI ){player.angle += 0.1}
 }
- if ((player.keys && player.keys[controlls[ctr].down])){
+ if (player.DownTouch){
 	 if(player.angle > 0.5* Math.PI ){player.angle -= 0.1}
      if(player.angle < 0.5* Math.PI ){player.angle += 0.1}
 	 }
- if ((p1.keys && p1.keys[controlls[ctr].left])){ 
- if(p1.angle > -1* Math.PI ){
-  p1.angle -= 0.1
- if(p1.angle < -1* Math.PI ){p1.angle = -1* Math.PI }
+ if (player.LeftTouch){ 
+ if(player.angle > -1* Math.PI ){
+  player.angle -= 0.1
+ if(player.angle < -1* Math.PI ){player.angle = -1* Math.PI }
  }else{
-	 p1.angle += 0.1
- if(p1.angle > -1* Math.PI ){p1.angle = -1* Math.PI } 
+	 player.angle += 0.1
+ if(player.angle > -1* Math.PI ){player.angle = -1* Math.PI } 
  }
  }
-  if ((p1.keys && p1.keys[controlls[ctr].right])){ 
-  if(p1.angle > 0* Math.PI ){
-  p1.angle -= 0.1
- if(p1.angle < 0* Math.PI ){p1.angle = 0* Math.PI }
+  if (player.RightTouch){ 
+  if(player.angle > 0* Math.PI ){
+  player.angle -= 0.1
+ if(player.angle < 0* Math.PI ){player.angle = 0* Math.PI }
  }else{
-	 p1.angle += 0.1
- if(p1.angle > 0* Math.PI ){p1.angle = 0* Math.PI } 
+	 player.angle += 0.1
+ if(player.angle > 0* Math.PI ){player.angle = 0* Math.PI } 
  }
  }
 if(player.shotdelay > 0 ){player.shotdelay += 1;if(player.shotdelay > 8){player.shotdelay = 0}}
-if (player.keys && player.keys[controlls[ctr].Run]){
+if (player.ButonBTouch){
  if(player.shotdelay == 0){player.shotdelay += 1
 	 myMiniSprites.push(new Mini_sprite(player.x+(player.widthHalf/2),player.y+(player.heightHalf/2),1,0,0,0,0,0,Math.cos(player.angle) * 10,Math.sin(player.angle) * 10))
 	 }
@@ -4177,7 +4084,7 @@ if (player.keys && player.keys[controlls[ctr].Run]){
 }
 ]
 function animation(P,Con){
-	/*comprobar si no esta en el aire*/
+	/*Muerto*/
 	if(P.lives <= 0 ){
 		P.YG = 4
 		if(Ax4 == 3){
@@ -4191,6 +4098,15 @@ function animation(P,Con){
 		}
 		return;
 	}
+	if(P.crouched){
+		P.XG = 0
+		P.YG = 7
+		if(P.side){
+		P.YG += 1
+		}
+		return;
+	}
+	/*comprobar si no esta en el aire*/
 	if(P.InFlor ){
 		/*comprobra si esta corriendo o no*/
 		if((P.MoveX + P.BX) > 6  || (P.MoveX + P.BX) < -6){
@@ -4290,8 +4206,8 @@ function MouseBlock(){
     }
 }
 
-function Gravity (P,N,G) {
-    P.MoveY += G;
+function Gravity (P,N,CameraY) {
+    P.MoveY += CameraY;
   }
 
 function MiniSpriteColision(Sprite,MiniSprites){
@@ -4364,6 +4280,7 @@ if((PL.x < (object.x + 32) - PL.MoveXLimit && (PL.x + (PL.width)) > (object.x - 
 			}
 			PL.xP = PL.x - ((object.x + 32) - PL.MoveXLimit) // aplica una operacion para sacar al jugador de ahi
 			}
+			PL.RightTouch = true
 			PL.Xtouches ++
 			crash = true
 		} // todo lo demas funciona igual solo que en lo otro
@@ -4376,13 +4293,16 @@ if((PL.x < (object.x + 32) - PL.MoveXLimit && (PL.x + (PL.width)) > (object.x - 
 			}
 			PL.xP = (PL.x + PL.width) - (object.x  - PL.MoveXLimit)
 			}
+			PL.LeftTouch = true
 			PL.Xtouches ++
 			crash = true
 		}
 	}
 };return crash},
-Y :	function cube (PL,object) {let crash = false
+Y :	function cube (PL,object) {
+	let crash = false
 if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (object.y + 32) - PL.MoveYLimit)  && (PL.y + (PL.height) > ((object.y) - (PL.MoveYLimit)))){
+	if((PL.y <  (object.y + 32) - PL.MoveYLimit)){
 		if( (PL.y + (PL.height)) > (object.y + 32)){
 			if(object.col[2] != 0){
 				if(PL.FristTouch){
@@ -4394,6 +4314,7 @@ if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (objec
 			    }
 			   PL.yP = PL.y - ((object.y + 32) - PL.MoveYLimit)
 				}
+				PL.DownTouch = true
 				PL.Ytouches ++
 			   crash = true
 			   
@@ -4405,15 +4326,17 @@ if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (objec
 			   if(PL.FristTouch){
 			   if(col[( "0x" + object.col[0])*1].UP(PL,object)){
 				PL.Ytouch = true
-			
 			    }
 			PL.yP = (PL.y + PL.height) - (object.y  - PL.MoveYLimit)
 			   }
+			   PL.UpTouch = true
 			   PL.Ytouches ++
 			crash = true
 		   }
 	    }
-};return crash},
+	}
+};
+return crash},
 },{ 
 X :	function cube (PL,B) {return false},
 Y :	function cube (PL,object) {let crash = false
@@ -4428,6 +4351,7 @@ if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (objec
 			    }
 			PL.yP = (PL.y + PL.height) - ((object.y +1)  - tileVy)
 				}
+				PL.UpTouch = true
 				PL.Ytouches ++
 			crash = true
 			}
@@ -4487,6 +4411,7 @@ if((PL.x < (B.x + B.width) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx)) && 
 			if(col[B.Rigth].RIGTH(PL,B)){
 				auto_com[PL.Movement[3]].X(PL);
 				PL.touchX = true
+				PL.RightTouch = true
 			}
 			PL.xP = PL.x - ((B.x + B.width) - tileVx)
 			crash = true
@@ -4497,6 +4422,7 @@ if((PL.x < (B.x + B.width) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx)) && 
 			if(col[B.Left].LEFT(PL,B)){
 				auto_com[PL.Movement[3]].X(PL);
 				PL.touchX = true
+				PL.LeftTouch = true
 			}
 			PL.xP = (PL.x + PL.width) - (B.x  - tileVx)
 			crash = true
@@ -4512,6 +4438,7 @@ if((PL.x < B.x + (B.width) && (PL.x + (PL.width)) > B.x) && (PL.y <  (B.y + B.he
 				if(col[B.Down].DOWN(PL,B)){
 				auto_com[PL.Movement[2]].Y(PL);
 				PL.touchY = true
+				PL.DownTouch = true
 			    }
 			   PL.yP = PL.y - ((B.y + B.height) - tileVy)
 			   crash = true
@@ -4522,6 +4449,7 @@ if((PL.x < B.x + (B.width) && (PL.x + (PL.width)) > B.x) && (PL.y <  (B.y + B.he
 			   if(col[B.Up].UP(PL,B)){
 				auto_com[PL.Movement[2]].Y(PL);
 				PL.touchY = true
+				PL.UpTouch = true
 			    }
 			PL.yP = (PL.y + PL.height) - (B.y  - tileVy)
 			crash = true
@@ -4733,8 +4661,8 @@ Y: function Y (PL) {if(PL.invecybility != true){PL.lives += 1;PL.invecybility = 
 X: function X (PL,B) {PL.Win = true;PL.InMove = false},
 Y: function Y (PL,B) {PL.Win = true;PL.InMove = false},
 },{ /*9 checkpoint */
-X: function X (PL,B) {establecing_starcords(B.iA,B.iL,PL);B.col = "00000000"},
-Y: function Y (PL,B) {establecing_starcords(B.iA,B.iL,PL);B.col = "00000000"},
+X: function X (PL,B) {establecing_starcords(B.Xcord,B.Ycord,PL);B.col = "00000000"},
+Y: function Y (PL,B) {establecing_starcords(B.Xcord,B.Ycord,PL);B.col = "00000000"},
 }
 ]
 function stopX(p1,tiles){
@@ -4807,7 +4735,7 @@ if(crash){
 }	
 const cameraModeY = [
 function(Player,tiles) {
-	if(((Player.y + Player.height) < (screenHeigthHalf + Player.heightHalf)) && SAVE.CameraY_frese == 0 ){
+	if(((Player.y + Player.INheight) < (screenHeigthHalf + Player.heightHalf)) && SAVE.CameraY_frese == 0 ){
 		//console.log("up")
 	Player.modeY = 0;corection = -1;cameraY = 0;Player.y = (screenHeigthHalf - Player.heightHalf) 
     }
@@ -4823,13 +4751,19 @@ const modeX = [
 function(Player,tiles,mysprites) {
 let crash = false
 Player.Xtouch = false
+Player.LeftTouch = false
+Player.RightTouch = false
 if(tick){
 if(Player.BX <= -1){Player.BX += 1}
 if(Player.BX >= 1){Player.BX += -1}
 }
-let MoveX = Player.MoveX + Player.BX
+	let MoveX = Player.MoveX + Player.BX
 	if(MoveX > positveLimit){MoveX = positveLimit}
 	if(MoveX < negativeLimit){MoveX = negativeLimit}
+	if(Player.Xteleport != 0 ){
+				MoveX = Player.Xteleport
+				Player.Xteleport = 0
+	}
 Player.MoveXLimit = MoveX  + Player.Hx
 Player.xP = (MoveX + Player.Hx) *-1
 cameraX = Player.xP
@@ -4855,9 +4789,15 @@ return cameraX;},
 function(Player,tiles,mysprites) {
 let crash = false
 Player.Xtouch = false
-let MoveX = Player.MoveX + Player.BX
+Player.LeftTouch = false
+Player.RightTouch = false
+	let MoveX = Player.MoveX + Player.BX
 	if(MoveX > positveLimit){MoveX = positveLimit}
 	if(MoveX < negativeLimit){MoveX = negativeLimit}
+	if(Player.Xteleport != 0 ){
+				MoveX = Player.Xteleport
+				Player.Xteleport = 0
+	}
 	Player.MoveXLimit = MoveX  + Player.Hx
 let XnextPosition = MoveX +  Player.Hx
 
@@ -4890,6 +4830,8 @@ function(Player,tiles,sprites){
 	/*cameraY free  // mode 0*/
     let crash = false
 	Player.Ytouch = false
+	Player.UpTouch = false
+	Player.DownTouch = false
 	if(tick){	
        if(Player.BY <= -1){Player.BY += 1}
        if(Player.BY >= 1){Player.BY += -1}
@@ -4897,6 +4839,10 @@ function(Player,tiles,sprites){
 	let MoveY = Player.MoveY + Player.BY
 	if(MoveY > positveLimit){MoveY = positveLimit}
 	if(MoveY < negativeLimit){MoveY = negativeLimit}
+	if(Player.Yteleport != 0 ){
+		MoveY = Player.Yteleport
+		Player.Yteleport = 0
+    }
 	Player.MoveYLimit = MoveY
     Player.yP = MoveY *-1 
     cameraY = Player.yP
@@ -4920,7 +4866,6 @@ if(CompleteTilesColisionY(Player,tiles)){
 		 }
 	crash = true
 }
-
 if(crash){cameraY += Player.yP }
 	for (i = 0; i < tiles.length; i += 1){
 		tiles[i].y += cameraY
@@ -4930,13 +4875,19 @@ function(Player,tiles,sprites) {
  /*cameraY stuck // mode 1 */
 let crash = false
 Player.Ytouch = false
+	Player.UpTouch = false
+	Player.DownTouch = false
 if(tick){
 if(Player.BY <= -1){Player.BY += 1}
 if(Player.BY >= 1){Player.BY += -1}
 }
-let MoveY = Player.MoveY + Player.BY
+	let MoveY = Player.MoveY + Player.BY
 	if(MoveY > positveLimit){MoveY = positveLimit}
 	if(MoveY < negativeLimit){MoveY = negativeLimit}
+	if(Player.Yteleport != 0 ){
+			MoveY = Player.Yteleport
+			Player.Yteleport = 0
+	}
 	Player.MoveYLimit = MoveY
 let YnextPosition = MoveY  
 
@@ -5053,15 +5004,10 @@ const prin = [
 function (Player) {
 	
 },
-function(Player,canvas,X,Y){
-ctx = canvas.getContext("2d");
-Colision
-//ctx.fillStyle = Player.BC
-//ctx.fillRect(Player.x,Player.y,Player.width,Player.height)
+function(Player,ctx,X,Y){
 ctx.drawImage(Player.imC,X * Player.XG,Y * Player.YG , X, Y,Player.Xnegative + Player.x  ,Player.Ynegative + Player.y , X  , Y );
 },
 function(Player,canvas,X,Y){
-ctx = canvas.getContext("2d");
 ctx.save();
 ctx.translate(Player.x -32 / -2, Player.y - 32 / -2);
 ctx.rotate(Player.angle);
@@ -5173,9 +5119,13 @@ if(BG.repeatY){
   //if((BG.y) <  (BG.height - 512)*-1){ BG.y = (BG.height - 512)*-1};if((BG.y ) > 0){BG.y = 0;}
 }
 }
-function drawMinisprite(Sprite,canvas){
-ctx = canvas.getContext("2d");
-ctx.drawImage(image_collection[Sprite.imgN], Sprite.XG ,Sprite.YG , Sprite.width, Sprite.height, Sprite.x, Sprite.y, Sprite.width, Sprite.height)
+function DrawMiniSprites(mini_sprites,canvas){
+	ctx = canvas.getContext("2d");
+	let Sprite;
+	for(let i = 0; i < mini_sprites.length ;i++){
+	Sprite = mini_sprites[i]
+	ctx.drawImage(image_collection[Sprite.imgN], Sprite.XG ,Sprite.YG , Sprite.width, Sprite.height, Sprite.x, Sprite.y, Sprite.width, Sprite.height)
+	}
 }
 function drawLight(canvas,p1,sprites) {
   ctx = canvas.getContext("2d");
@@ -5412,7 +5362,7 @@ var InShadow = false
 var DrawShadow = false
 var song_end = false
 var frisFotogram = true
-var effects_in_game = []//[new effect(2,LavaTexture,32,32,true,512,true,512,0,0)]
+var effects_in_game = []
 var Kills = 0
 function keyHandler(e) {
   e.preventDefault();
@@ -5425,6 +5375,35 @@ function keyHandler(e) {
 }
 /*activa todo el juego*/
 
+ var gamepads = navigator.getGamepads(); // arreglo de gamepads
+ var gp = gamepads[0]; // primer control conectado
+window.addEventListener("gamepadconnected", (e) => {
+    console.log("Gamepad conectado:", e.gamepad);
+});
+
+function documentKeysListener(Player){
+	function keydownHandler(e) {
+	  e.preventDefault();
+	  Player.keys = Player.keys || [];
+	  Player.keys[e.keyCode] = (e.type == "keydown");
+	}
+	function keyupHandler(e) {
+		e.preventDefault();
+	  Player.keys[e.keyCode] = (e.type == "keydown");
+	}
+
+	document.addEventListener('keydown',  keydownHandler)
+	document.addEventListener('keyup', keyupHandler)
+}
+function MiniSpriteManager(mini_sprites){
+	for(let i = 0; i < mini_sprites.length ;i++){
+	if( Margin_MS(mini_sprites[i]) && mini_sprites[i].Live ){
+	Mini_scrips[mini_sprites[i].script](mini_sprites[i])
+		}else{
+		mini_sprites.splice(i, 1); 
+		}
+	};
+}
 function gametest (game,all_frames,p1,p2,tiles,sprites,mini_sprites,Hits){
 
 /*pone en su valor inicial Player todas las variables que lo ocupen*/
@@ -5448,37 +5427,21 @@ Shadow = 0
 InShadow = false
 DrawShadow = false
 song_end = false
+tick = true
+Ax3 = 0
+Ax4 = 0
+Ax6 = 0
+Ax8 = 0
+Ax16 = 0
 
-
-/*if(ct[3].SY == true && ct[3].SX == true){corection = 1}
-if(ct[0].scale == 2){p1.modeX = 0;p1.modeY = 0;p1.priority = true; corection = -1}*/
-for(let i = 0; i < BGC.length ;i++){
-	BGC[i].x = BGC[i].stx + cordX
-	BGC[i].y = BGC[i].sty 
+for(let i = 0; i < BackgroundsInLevel.length ;i++){
+	BackgroundsInLevel[i].x = BackgroundsInLevel[i].stx 
+	BackgroundsInLevel[i].y = BackgroundsInLevel[i].sty 
 	if((SAVE.limit_down   > cordY) == false){
-	BGC[i].y += (cordY * BGC[i].mY)
+	BackgroundsInLevel[i].y += (cordY * BackgroundsInLevel[i].mY)
 	}
 }
-function keydownHandler(e) {
-  e.preventDefault();
-  p1.keys = p1.keys || [];
-  p1.keys[e.keyCode] = (e.type == "keydown");
-}
-
-document.addEventListener('keydown',  keydownHandler)
-        document.addEventListener('keyup', function (e) {
-            p1.keys[e.keyCode] = (e.type == "keydown");
-        })
-		/*
-		document.addEventListener('keydown', function (e) {
-            e.preventDefault();
-            p2.keys = (p2.keys || []);
-            p2.keys[e.keyCode] = (e.type == "keydown");
-        })
-        document.addEventListener('keyup', function (e) {
-            p2.keys[e.keyCode] = (e.type == "keydown");
-        })
-		*/
+documentKeysListener(p1)
 document.addEventListener('mousedown', (event) => {
 	mouse = true
 })
@@ -5505,7 +5468,6 @@ inputY = 0
 backgroundMusic.play();
 /*de aqui para abajo todo lo de esto corchetes se va Player hacer cada frame*/
 function Frames(){
-	if(!on_game){document.removeEventListener('keydown', keydownHandler);}
         if(Frame(p1,p2,tiles,sprites,mini_sprites,Hits)){
 				requestAnimationFrame(Frames)
         }else{
@@ -5557,19 +5519,17 @@ function Textdraw(){
   }
 	requestAnimationFrame(Textdraw)
 }
-
 }
 
 function Frame (p1,p2,tiles,sprites,mini_sprites,Hits){
+gamepads = navigator.getGamepads();
 /*variabels que sirven para controlar cuantos frames van las animaciones*/
 tick = !tick
 Ax3 += 1;if(Ax3 >= 3){Ax3 = 0}
 Ax4 += 1;if(Ax4 >= 4){Ax4 = 0}
 Ax6 += 1;if(Ax6 >= 6){Ax6 = 0}
 Ax8 += 1;if(Ax8 >= 8){Ax8 = 0}
-Ax16 += 1;if(Ax16 >= 16){Ax16 = 0;
-
-}
+Ax16 += 1;if(Ax16 >= 16){Ax16 = 0;}
 if(Ax3 == 2){
 for(let i = 0; i < fotograms.length ;i++){
 	fG_action[i] += 1
@@ -5577,7 +5537,6 @@ for(let i = 0; i < fotograms.length ;i++){
 		fG_action[i] = 0
 	}
 }} 
-
 
  /*rotar o darle algun efecto ala pantalla*/
 //restore(game);
@@ -5601,13 +5560,8 @@ if(p1.Win || p2.Win){
 	pre_finish = true
 }
 
-for(let i = 0; i < mini_sprites.length ;i++){
-if( Margin_MS(mini_sprites[i]) && mini_sprites[i].Live ){
-Mini_scrips[mini_sprites[i].script](mini_sprites[i])
-	}else{
-	mini_sprites.splice(i, 1); 
-	}
-};
+MiniSpriteManager(mini_sprites)
+
 for(let i = 0; i < sprites.length ;i++){
     Colision_sprite[sprites[i].type](sprites[i],p1,p2,tiles)
 };
@@ -5710,30 +5664,17 @@ if(pre_finish && Pre_star == false){
 		         }
 }
 if(!frisFotogram){
-for(let i = 0; i < BGC.length ;i++){
-BG_movement(BGC[i])
+for(let i = 0; i < BackgroundsInLevel.length ;i++){
+BG_movement(BackgroundsInLevel[i])
 }
 }
 SavePositions(p1,16)
 
 SaveCamY = cameraY
-/*determina de que lado se van Player poner los objetos*/
-if(cameraX < 0){angleCX =  -1; cameraX = -2}else{angleCX =  1; cameraX = 2}
-if(cameraY < 0){angleCY =  -1; cameraY = -2}else{angleCY =  1; cameraY = 2}
-/*transforma y muebe los tiles*/
-
-//DrawPatron(game,PaleteTexture,0,WaterLevel,true,true,32,32)
 
 for (i = (tiles.length -1); i > -1; i += -1) {
-Tile_Teleport[SAVE.scroll_configuration](tiles[i],cameraX,angleCX,cameraY,angleCY);
-if(Ax4 == 3){
-Tiles_animation(tiles[i],tiles[i].col[7]*1)
-if(tiles[i].action){
-functions_collection[tiles[i].script].Loop(tiles[i])
+   tiles[i].Update_tile()
 }
-}
-}
-
 if(DrawShadow){drawLight(game,p1,sprites)}
 PrinAllTiles(game)
 for(let i = 0; i < sprites.length ;i++){
@@ -5745,9 +5686,9 @@ for(let i = 0; i < sprites.length ;i++){
 draw_sprite[sprites[i].Mode](sprites[i],game)
 	}
 }
-for(let i = 0; i < mini_sprites.length ;i++){
-drawMinisprite(mini_sprites[i],game)
-}
+
+DrawMiniSprites(mini_sprites,game)
+
 
 if(Stelar){
 ctx.globalAlpha = 0
@@ -5755,14 +5696,14 @@ for(let i = 0; i < Position.length ;i+= 2){
 	ctx.globalAlpha += Alpha * 0.125 
 	ctx.drawImage(
 	p1.imC,
-	p1.G[0] * Position[i].XG,
-	p1.G[1] * Position[i].YG ,
-	p1.G[0],
-	p1.G[1],
+	p1.CameraY[0] * Position[i].XG,
+	p1.CameraY[1] * Position[i].YG ,
+	p1.CameraY[0],
+	p1.CameraY[1],
 	p1.Xnegative + Position[i].X ,
 	p1.Ynegative + Position[i].Y ,
-	p1.G[0],
-	p1.G[1],
+	p1.CameraY[0],
+	p1.CameraY[1],
 	);
 }
 ctx.globalAlpha = Alpha
@@ -5770,16 +5711,16 @@ ctx.globalAlpha = Alpha
 
 //PrinT(game,Position[0].X,Position[0].Y,24,32,"#fff")
 
-animation(p1,p1.G)
-prin[1](p1,game,p1.G[0],p1.G[1]);
+animation(p1,p1.CameraY)
+prin[1](p1,ctx,p1.CameraY[0],p1.CameraY[1]);
 
 
 
 /*pinata el nivel del agua y de la lava*/
 DrawEfects(game)
 /*pinta todos los fondos */
-for(let i = 0; i < BGC.length ;i++){
-draw_background(BGC[i],game);
+for(let i = 0; i < BackgroundsInLevel.length ;i++){
+draw_background(BackgroundsInLevel[i],game);
 }
 //PrinT(game,Xmouse - 16,Ymouse - 16,16,16,"#F00")
 
@@ -5874,9 +5815,9 @@ function Boregito(Value){
 			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,11,"661120201",2,"01400", 0,0)
 			   break
 			    case "BACKGROUND":
-			   BGC.push(new Background("Backgrounds/onlyClouds.png",1024,864,0.5,1,0,0,true,false,0,0))
-			   BGC.push(new Background("Backgrounds/mountains3_noClouds.png",1024,864,0.3,1,0,0,true,false,0,0))
-			   BGC.push(new Background("Backgrounds/backMountains.png",1024,864,0.1,1,0,0,true,false,0,0))
+			   BackgroundsInLevel.push(new Background("Backgrounds/onlyClouds.png",1024,864,0.5,1,0,0,true,false,0,0))
+			   BackgroundsInLevel.push(new Background("Backgrounds/mountains3_noClouds.png",1024,864,0.3,1,0,0,true,false,0,0))
+			   BackgroundsInLevel.push(new Background("Backgrounds/backMountains.png",1024,864,0.1,1,0,0,true,false,0,0))
 			   break
 			   case "STELAR":
 			   Stelar = true
