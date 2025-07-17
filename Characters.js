@@ -1,0 +1,88 @@
+const characters = [
+{
+Name:"Mario of SMB1" ,
+Img :["characters/Mario-sprite.png","characters/Luigi-sprite.png","characters/GoldMario-sprite.png","characters/GreenLuigi-sprite.png"],
+Grid:[/*width*/ 32,/*height*/32,/*static*/0,/*walk*/3,/*run*/0,/*brek*/4,
+/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3,/*death*/0 ],
+width:24,
+height:32,
+WNEGA:-4,
+HNEGA:0,
+WinSound: "SoundEfects/WinSMB1.mp3",
+DeathSound:"SoundEfects/DeathSMB1.mp3",
+GameOverSound: "SoundEfects/Game OverSMB1.mp3"
+
+},
+{
+Name:"Super Mario of SMB1" ,
+Img :["characters/BigMario-sprite.png","characters/MarioFlaco-sprite.png","characters/BigToad-sprite.png","characters/Peach-sprite.png"],
+Grid:[/*width*/ 32,/*height*/64,/*static*/0,/*walk*/3,/*run*/0,/*brek*/4,
+/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3,/*death*/0 ],
+width:32,
+height:64,
+WNEGA:0,
+HNEGA:0,
+WinSound: "SoundEfects/WinSMB1.mp3",
+DeathSound:"SoundEfects/DeathSMB1.mp3",
+GameOverSound: "SoundEfects/Game OverSMB1.mp3"
+},
+{
+Name:"Mario Maker characters of SMB1" ,
+Img :["characters/Toadet-sprite.png","characters/KingDeDeDe.png","characters/SMB1Bowser-Sprite.png"],
+Grid:[/*width*/ 64,/*height*/64,/*static*/0,/*walk*/3,/*run*/0,/*brek*/4,
+/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/6,/*death*/0 ],
+width:32,
+height:64,
+WNEGA:-16,
+HNEGA:0,
+},
+{
+Name:"Mario Maker costumes of SMB1" ,
+Img :["characters/BabyMario-sprite.png","characters/Bowser-sprites.png"],
+Grid:[/*width*/ 48,/*height*/48,/*static*/0,/*walk*/3,/*run*/3,/*brek*/7,
+/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3,/*death*/0 ],
+width:32,
+height:32,
+WNEGA:-8,
+HNEGA:-16,
+},
+{
+Name:"Mario of SMB3" ,
+Img :["characters/Mario3.png","characters/Luigi3.png"],
+Grid:[64,64,/*static*/0,/*walk*/2,/*run*/3,/*brek*/6,/*jumpUP*/1,/*jumpDOWN*/0,/*jump+run*/1,/*swim*/4,/*death*/0],
+width:32,
+height:54,
+WNEGA:-16,
+HNEGA:-10,
+GameOverSound: "SoundEfects/Game OverSMB3.mp3"
+},
+{
+Name:"Mario of SMW" ,
+Img :["characters/Mario-SMW.png"],
+Grid:[32,48,/*static*/0,/*walk*/1,/*run*/2,/*brek*/4,/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/2,/*swim*/3,/*death*/1],
+width:24,
+height:32,
+WNEGA:-4,
+HNEGA:-14,
+GameOverSound: "SoundEfects/Game OverSMB3.mp3"
+},
+{
+Name:"JUMP-MAN" ,
+Img :["characters/Jump_Man.png"],
+Grid:[32,32,/*static*/0,/*walk*/2,/*run*/0,/*brek*/3,/*jumpUP*/1,/*jumpDOWN*/0,/*jump+run*/0,/*swim*/6,/*death*/3],
+width:24,
+height:32,
+WNEGA:-4,
+HNEGA:0,
+GameOverSound: "SoundEfects/Game OverSMB3.mp3"
+},
+{
+Name:"Sonic the hedghog" ,
+Img :["characters/SonicSprite.png"],
+Grid:[59,59,/*static*/1,/*walk*/8,/*run*/3,/*brek*/17,/*jumpUP*/5,/*jumpDOWN*/0,/*jump+run*/0,/*simw*/4,/*death*/0 ],
+width:24,
+height:40,
+WNEGA:-18,
+HNEGA:-11,
+},
+]
