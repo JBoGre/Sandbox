@@ -26,13 +26,6 @@ const ancho = table.style.width
 const largo = table.style.height
 const LVselector = document.getElementById("selector-nivel")
 const chalkboard = document.getElementById("characters")
-let cord = 0
-let selector ="rgba(0,0,0,0)"
-let imageid = 0
-let colide ="rgba(0,0,0,255)"
-let mode = 0 ;
-let ct = [];
-let celd = [];
 flag.addEventListener("click",() =>{
 DrawMode = 7
 DrawsModes[7].Started()
@@ -49,6 +42,25 @@ hand.addEventListener("click",() =>{
 DrawMode = 5
 DrawsModes[5].Started()
 })
+let TouchControls = {
+  Left: false,
+  Right: false,
+  Abuton: false,
+  Bbuton: false,
+};
+/*
+document.getElementById("LeftButon").addEventListener("touchstart", () => TouchControls.Left = true );
+document.getElementById("LeftButon").addEventListener("touchend", () => TouchControls.Left = false);
+
+document.getElementById("RightButon").addEventListener("touchstart", () => TouchControls.Right = true);
+document.getElementById("RightButon").addEventListener("touchend", () => TouchControls.Right = false);
+
+document.getElementById("Abuton").addEventListener("touchstart", () => TouchControls.Abuton = true);
+document.getElementById("Abuton").addEventListener("touchend", () => TouchControls.Abuton = false);
+
+document.getElementById("Bbuton").addEventListener("touchstart", () => TouchControls.Bbuton = true);
+document.getElementById("Bbuton").addEventListener("touchend", () => TouchControls.Bbuton = false);
+*/
 const Selection = document.getElementById('selection')
 function toggleTopMenu() {
 	Selection.classList.toggle('active');
@@ -78,6 +90,25 @@ const cargarJsonBtn = document.getElementById("cargarJson");
             }
         });
 
+
+function cargarJSON(Json) {
+      fetch(Json)
+        .then(response => {
+          if (!response.ok) throw new Error("No se pudo cargar el archivo JSON");
+          return response.json();
+        })
+        .then(data => {
+			SAVE = data
+			chargeLevelNoTiles()
+			let Name  = Json.slice(0,-5)
+			Name = Name.slice(13)
+			Level_name.value  = Name
+		})
+}
+window.addEventListener("beforeunload", function (e) {
+    e.preventDefault(); // Requerido para algunos navegadores
+    e.returnValue = ""; // Necesario para que aparezca el diálogo en otros
+});
 var Target = ""
 
 var SkinSelector = document.getElementById("Skin-selector")
@@ -3623,10 +3654,10 @@ function nullTrigers(player){
 }
 function PlayerTrigers(Player,ctr){
 	nullTrigers(Player)
-	if (Player.keys && Player.keys[controlls[ctr].Jump]) Player.ButonATouch = true;
-	if (Player.keys && Player.keys[controlls[ctr].Run]) Player.ButonBTouch = true;
-	if (Player.keys && Player.keys[controlls[ctr].left]) Player.LeftTouch = true;
-	if (Player.keys && Player.keys[controlls[ctr].right]) Player.RightTouch = true;
+	if ((Player.keys && Player.keys[controlls[ctr].Jump]) || TouchControls.Abuton) Player.ButonATouch = true;
+	if ((Player.keys && Player.keys[controlls[ctr].Run]) || TouchControls.Bbuton) Player.ButonBTouch = true;
+	if ((Player.keys && Player.keys[controlls[ctr].left]) || TouchControls.Left) Player.LeftTouch = true;
+	if ((Player.keys && Player.keys[controlls[ctr].right]) || TouchControls.Right) Player.RightTouch = true;
 	if (Player.keys && Player.keys[controlls[ctr].up]) Player.UpTouch = true;
 	if (Player.keys && Player.keys[controlls[ctr].down]) Player.DownTouch = true;
 	gp = gamepads[0];
