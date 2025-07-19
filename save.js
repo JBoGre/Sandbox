@@ -186,7 +186,7 @@ Action: function Action(Tile,p1,side) {
 	SoundEffectsCollection[1].play()
 	Tile.prin = 0
 	Tile.type = 0
-	TransfromTile(Tile,"rgba(0,0,0,0)",0,"00000000",0)
+	TransfromTile(Tile,Tile.BC,0,"00000000",0)
 },
 Loop: function Loop (Tile) {},
 },
