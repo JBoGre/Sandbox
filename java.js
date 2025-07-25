@@ -2329,11 +2329,10 @@ function deleted_sprites(Sprite_Collection,sprites,cordX,cordY) {
 	for(let i = 0; i < sprites.length ; i++){
 		SP = sprites[i]
 		if(((0 < (SP.stx + (SP.width))+cordX && screenWidth > (SP.stx + cordX))&&(0 < (SP.sty + (SP.height))+cordY && screenHeigth > (SP.sty + cordY))) == false){
-			
-		if(sprites[i].InScreen == false){	
-		if(SP.SAVE){
-			Sprite_Collection.push({X: SP.stx,Y: SP.sty,width:SP.widthPrint,height:SP.heightPrint,script:SP.script,col:SP.col,img:SP.imgN,IN:SP.RenderMode,XV:SP.IXR,YV:SP.IYR})
-		}
+			if(!SP.InScreen || SP.type == 0){
+				if(SP.SAVE){
+					Sprite_Collection.push({X: SP.stx,Y: SP.sty,width:SP.widthPrint,height:SP.heightPrint,script:SP.script,col:SP.col,img:SP.imgN,IN:SP.RenderMode,XV:SP.IXR,YV:SP.IYR})
+				}
 			deleted.push(i)
 			}
 		}	
@@ -2477,6 +2476,9 @@ this.angleY = 0
 function PreProgramedMode (sprite,player1){
 	if(sprite.Xtouch){auto_com[sprite.col[5]].X(sprite)}
 	Movement[sprite.col[7]].X(sprite,player1)
+	if(sprite.Mode == 0 || sprite.Mode == 3){
+		if(sprite.Xvelocity > 0 ){sprite.Mode = 3}else{sprite.Mode = 0}
+	}
 	if(sprite.Ytouch){auto_com[sprite.col[6]].Y(sprite)}
     Movement[sprite.col[8]].Y(sprite,player1)
 	if(sprite.live < 0){
@@ -2485,45 +2487,57 @@ function PreProgramedMode (sprite,player1){
 	}
 }
 function PreRenderMode (ctx,Sprite){
+	ctx.save();
     if(Sprite.IN != undefined){
-	if(Sprite.IN[0] == 1){
+		if(Sprite.IN[0] == 1){
 			ctx.globalCompositeOperation = 'destination-over';
 			ctx.globalAlpha = 0.4
+		}
+		var XG = ( "0x"+ Sprite.IN[1]) * Sprite.width
+		var YG = ( "0x"+ Sprite.IN[2]) * Sprite.height
+	}else{
+		var XG = 0 ;
+		var YG = 0;
+		}
+	let Xposition = Sprite.xPrint
+	let Yposition = Sprite.yPrint
+	if(Sprite.IN[0] == 3){
+		ctx.translate(Sprite.xPrint + Sprite.widthPrint,Sprite.yPrint);
+		ctx.scale(-1, 1); // Invierte verticalmente
+		 Xposition = 0
+		 Yposition = 0
 	}
-	var XG = ( "0x"+ Sprite.IN[1]) * Sprite.width
-	var YG = ( "0x"+ Sprite.IN[2]) * Sprite.height
-	}else{var XG = 0 ;var YG = 0;}
 	ctx.drawImage(
 	image_collection[Sprite.img],
 	XG,
 	YG,
 	Sprite.width,
 	Sprite.height, 
-	Sprite.xPrint,
-	Sprite.yPrint,
+	Xposition,
+	Yposition,
 	Sprite.widthPrint,
 	Sprite.heightPrint,
 	)
-	ctx.globalCompositeOperation = 'source-over';
-	ctx.globalAlpha = 1
+	ctx.restore();
 }
 const Colision_sprite = [
 function(Sprite,player1,player2,tiles){
 /*nothing*/
 },
 function(Sprite,player1,player2,tiles){
-if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
-(0  < (Sprite.y + (Sprite.height)) && screenHeigth  > (Sprite.y))){
-	Sprite.InScreen = true
+if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&& (0  < (Sprite.y + (Sprite.height)) && screenHeigth  > (Sprite.y))){
+		Sprite.InScreen = true
+
+}else{
+	Sprite.InScreen = false
+
+}
 	Sprite.yP = Sprite.MoveY;
 	Sprite.y += Sprite.yP;
 	Sprite.xP = Sprite.MoveX;
 	Sprite.x += Sprite.xP;
 	MiniSpriteColision(Sprite,myMiniSprites)
-	}else{
-	Sprite.InScreen = false
-	
-}
+ 
 },
 function(Sprite,player1,player2,tiles){
 if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
@@ -2604,52 +2618,51 @@ function(Sprite,player1,player2,tiles){
 if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
 (0  < (Sprite.y + (Sprite.height)) && screenHeigth  > (Sprite.y))){
 	Sprite.InScreen = true
-if(tick){
-if(Sprite.BY <= -1){Sprite.BY += 1}
-if(Sprite.BY >= 1){Sprite.BY += -1}
-}
-let MoveY = Sprite.MoveY + Sprite.BY 
-	if(MoveY > positveLimit){MoveY = positveLimit}
-	if(MoveY < negativeLimit){MoveY = negativeLimit}
-Sprite.MoveYLimit = MoveY 
-Sprite.yP = Sprite.MoveYLimit
+	if(tick){
+	if(Sprite.BY <= -1){Sprite.BY += 1}
+	if(Sprite.BY >= 1){Sprite.BY += -1}
+	}
+	let MoveY = Sprite.MoveY + Sprite.BY 
+		if(MoveY > positveLimit){MoveY = positveLimit}
+		if(MoveY < negativeLimit){MoveY = negativeLimit}
+	Sprite.MoveYLimit = MoveY 
+	Sprite.yP = Sprite.MoveYLimit
 
-Sprite.Ytouch = false
-if(!tick){
-Sprite.Ytouches = 0	
-}
-if(CompleteTilesColisionY(Sprite,tiles)){
-	Sprite.yP = Sprite.MoveYLimit + Sprite.yP*-1
-}
-Sprite.y += Sprite.yP
+	Sprite.Ytouch = false
+	if(!tick){
+	Sprite.Ytouches = 0	
+	}
+	if(CompleteTilesColisionY(Sprite,tiles)){
+		Sprite.yP = Sprite.MoveYLimit + Sprite.yP*-1
+	}
+	Sprite.y += Sprite.yP
 
-Sprite.UVY = Sprite.MoveY
-Sprite.UPY = Sprite.y
+	Sprite.UVY = Sprite.MoveY
+	Sprite.UPY = Sprite.y
 
 
 
-if(tick){
-if(Sprite.BX <= -1){Sprite.BX += 1}
-if(Sprite.BX >= 1){Sprite.BX += -1}
-}
-let MoveX = Sprite.MoveX + Sprite.BX
-	if(MoveX > positveLimit){MoveX = positveLimit}
-	if(MoveX < negativeLimit){MoveX = negativeLimit}
-Sprite.MoveXLimit = MoveX 
-Sprite.xP =  Sprite.MoveXLimit
+	if(tick){
+	if(Sprite.BX <= -1){Sprite.BX += 1}
+	if(Sprite.BX >= 1){Sprite.BX += -1}
+	}
+	let MoveX = Sprite.MoveX + Sprite.BX
+		if(MoveX > positveLimit){MoveX = positveLimit}
+		if(MoveX < negativeLimit){MoveX = negativeLimit}
+	Sprite.MoveXLimit = MoveX 
+	Sprite.xP =  Sprite.MoveXLimit
 
-Sprite.Xtouch = false	
-Sprite.Xtouches = 0	
-if(CompleteTilesColisionX(Sprite,tiles)){
-	Sprite.xP = Sprite.MoveXLimit + Sprite.xP*-1
-}
-Sprite.x += Sprite.xP
+	Sprite.Xtouch = false	
+	Sprite.Xtouches = 0	
+	if(CompleteTilesColisionX(Sprite,tiles)){
+		Sprite.xP = Sprite.MoveXLimit + Sprite.xP*-1
+	}
+	Sprite.x += Sprite.xP
 
-Sprite.sideUX = Sprite.sideX
-Sprite.UPX = Sprite.x
+	Sprite.sideUX = Sprite.sideX
+	Sprite.UPX = Sprite.x
 
-MiniSpriteColision(Sprite,myMiniSprites)
-
+	MiniSpriteColision(Sprite,myMiniSprites)
 }else{
 	Sprite.InScreen = false
 }
@@ -2690,45 +2703,47 @@ X: function X (Sprites,A) {
 },
 },{/*Go to p1 (2)*/
 Y: function Y (Sprites,player) {
-if(Sprites.y +(Sprites.height /2) > (player.y + player.heightHalf)){
-	Sprites.MoveY = Sprites.Yvelocity*-1
-	if((Sprites.y +(Sprites.height /2)+Sprites.MoveY) < (player.y + player.heightHplayerlf)){
-		Sprites.MoveY = ((Sprites.height /2) + (Sprites.y+Sprites.MoveY)) - (player.y + player.heightHalf)
+	if(Sprites.y +(Sprites.height /2) > (player.y + player.heightHalf)){
+		Sprites.MoveY = Sprites.Yvelocity*-1
+		if((Sprites.y +(Sprites.height /2)+Sprites.MoveY) < (player.y + player.heightHplayerlf)){
+			Sprites.MoveY = ((Sprites.height /2) + (Sprites.y+Sprites.MoveY)) - (player.y + player.heightHalf)
 		}
-}else{
-	Sprites.MoveY = Sprites.Yvelocity
-	if((Sprites.y+Sprites.MoveY) > (player.y + player.heightHalf) ){
-	Sprites.MoveY = (Sprites.y+Sprites.MoveY) - (player.y + player.heightHalf)
-	}}
+	}else{
+		Sprites.MoveY = Sprites.Yvelocity
+		if((Sprites.y+Sprites.MoveY) > (player.y + player.heightHalf) ){
+			Sprites.MoveY = (Sprites.y+Sprites.MoveY) - (player.y + player.heightHalf)
+		}
+	}
 },
 X: function X (Sprites,player) {
-if(Sprites.x+(Sprites.width /2) >  (player.x + player.widthHalf)){
-	Sprites.MoveX = Sprites.Xvelocity*-1;
-	if((Sprites.x+(Sprites.width /2)+Sprites.MoveX) < (player.x + player.widthHalf)){
-		Sprites.MoveX = ((Sprites.x+Sprites.MoveX)+(Sprites.width /2)) - (player.x + player.widthHalf)
+	if(Sprites.x+(Sprites.width /2) >  (player.x + player.widthHalf)){
+		Sprites.MoveX = Sprites.Xvelocity*-1;
+		if((Sprites.x+(Sprites.width /2)+Sprites.MoveX) < (player.x + player.widthHalf)){
+			Sprites.MoveX = ((Sprites.x+Sprites.MoveX)+(Sprites.width /2)) - (player.x + player.widthHalf)
+			}
+	}else{
+		Sprites.MoveX = Sprites.Xvelocity;
+		if((Sprites.x+Sprites.MoveX) > (player.x + player.widthHplayerlf)){
+		Sprites.MoveX = (Sprites.x+Sprites.MoveX) - (player.x + player.widthHalf)
 		}
-}else{
-Sprites.MoveX = Sprites.Xvelocity;
-if((Sprites.x+Sprites.MoveX) > (player.x + player.widthHplayerlf)){
-	Sprites.MoveX = (Sprites.x+Sprites.MoveX) - (player.x + player.widthHalf)
-	}}
+	}
 },
 },{ /*Gravity (3)*/
 Y: function Y (Sprites,player) {
 	if(tick){
 	if(Sprites.sideY){
-	Sprites.MoveY += 1
+	Sprites.MoveY ++
 	}else{
-	Sprites.MoveY += -1
+	Sprites.MoveY --
 	}
 	}
 },
 X: function X (Sprites,player) {
 		if(tick){
 	if(Sprites.sideX){
-	Sprites.MoveX += 1
+	Sprites.MoveX ++
 	}else{
-	Sprites.MoveX += -1
+	Sprites.MoveX --
 	}
 		}
 },
@@ -2775,87 +2790,112 @@ X: function X (Sprite,player) {
 	}
 	
 },
-},{/*Go to p1 (6)*/
+},{/*Go to p1 Ghost (6)*/
 Y: function Y (Sprite,Player) {
-if(Sprite.y +(Sprite.height /2) > (Player.y + Player.heightHalf)){
-	Sprite.MoveY = 0
-	if(Sprite.sideX == Player.side){
-	Sprite.MoveY += Sprite.Yvelocity*-1
-	if((Sprite.y +(Sprite.height /2)+Sprite.MoveY) < (Player.y + Player.heightHalf)){
-		Sprite.MoveY = ((Sprite.height /2) + (Sprite.y+Sprite.MoveY)) - (Player.y + Player.heightHalf)
+	if(Sprite.y +(Sprite.height /2) > (Player.y + Player.heightHalf)){
+		Sprite.MoveY = 0
+		if(Sprite.sideX == Player.side){
+			Sprite.MoveY += Sprite.Yvelocity*-1
+			if((Sprite.y +(Sprite.height /2)+Sprite.MoveY) < (Player.y + Player.heightHalf)){
+				Sprite.MoveY = ((Sprite.height /2) + (Sprite.y+Sprite.MoveY)) - (Player.y + Player.heightHalf)
+			}
+		}
+	}else{
+		Sprite.MoveY = 0
+		if(Sprite.sideX == Player.side){
+			Sprite.MoveY += Sprite.Yvelocity
+			if((Sprite.y+Sprite.MoveY) > (Player.y + Player.heightHalf) ){
+				Sprite.MoveY = (Sprite.y+Sprite.MoveY) - (Player.y + Player.heightHalf)
+			}
 		}
 	}
-}else{
-	Sprite.MoveY = 0
-	if(Sprite.sideX == Player.side){
-	Sprite.MoveY += Sprite.Yvelocity
-	if((Sprite.y+Sprite.MoveY) > (Player.y + Player.heightHalf) ){
-	Sprite.MoveY = (Sprite.y+Sprite.MoveY) - (Player.y + Player.heightHalf)
-	}
-    }
-}
 },
 X: function X (Sprite,Player) {
-if(Sprite.x+(Sprite.width /2) >  (Player.x + Player.widthHalf)){
-	Sprite.sideX = true
-	Sprite.MoveX = 0
-	if(Sprite.sideX == Player.side){
-	Sprite.MoveX += Sprite.Xvelocity*-1;
-	if((Sprite.x+(Sprite.width /2)+Sprite.MoveX) < (Player.x + Player.widthHalf)){
-		Sprite.MoveX = ((Sprite.x+Sprite.MoveX)+(Sprite.width /2)) - (Player.x + Player.widthHalf)
+	if(Sprite.x+(Sprite.width /2) >  (Player.x + Player.widthHalf)){
+		Sprite.sideX = true
+		Sprite.MoveX = 0
+		if(Sprite.sideX == Player.side){
+			Sprite.MoveX += Sprite.Xvelocity*-1;
+			if((Sprite.x+(Sprite.width /2)+Sprite.MoveX) < (Player.x + Player.widthHalf)){
+				Sprite.MoveX = ((Sprite.x+Sprite.MoveX)+(Sprite.width /2)) - (Player.x + Player.widthHalf)
+				}
 		}
-    }
-}else{
-	Sprite.sideX = false
-	Sprite.MoveX = 0
-	if(Sprite.sideX == Player.side){
-Sprite.MoveX += Sprite.Xvelocity;
-if((Sprite.x+Sprite.MoveX) > (Player.x + Player.widthHalf)){
-	Sprite.MoveX = (Sprite.x+Sprite.MoveX) - (Player.x + Player.widthHalf)
-	}}
+	}else{
+		Sprite.sideX = false
+		Sprite.MoveX = 0
+		if(Sprite.sideX == Player.side){
+			Sprite.MoveX += Sprite.Xvelocity;
+			if((Sprite.x+Sprite.MoveX) > (Player.x + Player.widthHalf)){
+				Sprite.MoveX = (Sprite.x+Sprite.MoveX) - (Player.x + Player.widthHalf)
+			}
+		}
     }
 },
 },{/*enboscade (7)*/
-Y: function Y (Sprites,player) {
-	let Y = player.y
-	if(Math.abs(player.y - Sprites.y) >= 64){
-	if(player.sideY){
-		Y -= 64
-	}else{
-		Y += 64
-	}
-	}
-if(Sprites.y +(Sprites.height /2) > (Y + player.heightHalf)){
-	Sprites.MoveY = Sprites.Yvelocity*-1
-	if((Sprites.y +(Sprites.height /2)+Sprites.MoveY) < (Y + player.heightHalf)){
-		Sprites.MoveY = ((Sprites.height /2) + (Sprites.y+Sprites.MoveY)) - (Y + player.heightHalf)
+	Y: function Y (Sprites,player) {
+		let Y = player.y
+		if(Math.abs(player.y - Sprites.y) >= 64){
+			if(player.sideY){
+				Y -= 64
+			}else{
+				Y += 64
+			}
 		}
-}else{
-	Sprites.MoveY = Sprites.Yvelocity
-	if((Sprites.y+Sprites.MoveY) > (Y + player.heightHalf) ){
-	Sprites.MoveY = (Sprites.y+Sprites.MoveY) - (Y + player.heightHalf)
-	}}
-},
-X: function X (Sprites,player) {
-	let X = player.x 
-	if(Math.abs(player.y - Sprites.y) >= 64){
-	if(player.sideX){
-		X -= 64
-	}else{
-		X += 64
-	}
-	}
-if(Sprites.x+(Sprites.width /2) >  (X + player.widthHalf)){
-	Sprites.MoveX = Sprites.Xvelocity*-1;
-	if((Sprites.x+(Sprites.width /2)+Sprites.MoveX) < (X + player.widthHalf)){
-		Sprites.MoveX = ((Sprites.x+Sprites.MoveX)+(Sprites.width /2)) - (X + player.widthHalf)
+		if(Sprites.y +(Sprites.height /2) > (Y + player.heightHalf)){
+			Sprites.MoveY = Sprites.Yvelocity*-1
+			if((Sprites.y +(Sprites.height /2)+Sprites.MoveY) < (Y + player.heightHalf)){
+				Sprites.MoveY = ((Sprites.height /2) + (Sprites.y+Sprites.MoveY)) - (Y + player.heightHalf)
+			}
+		}else{
+			Sprites.MoveY = Sprites.Yvelocity
+			if((Sprites.y+Sprites.MoveY) > (Y + player.heightHalf) ){
+				Sprites.MoveY = (Sprites.y+Sprites.MoveY) - (Y + player.heightHalf)
+			}
 		}
-}else{
-Sprites.MoveX = Sprites.Xvelocity;
-if((Sprites.x+Sprites.MoveX) > (X + player.widthHalf)){
-	Sprites.MoveX = (Sprites.x+Sprites.MoveX) - (X + player.widthHalf)
-	}}
-},
+	},
+	X: function X (Sprites,player) {
+		let X = player.x 
+		if(Math.abs(player.y - Sprites.y) >= 64){
+			if(player.sideX){
+				X -= 64
+			}else{
+				X += 64
+			}
+		}
+		if(Sprites.x+(Sprites.width /2) >  (X + player.widthHalf)){
+			Sprites.MoveX = Sprites.Xvelocity*-1;
+			if((Sprites.x+(Sprites.width /2)+Sprites.MoveX) < (X + player.widthHalf)){
+				Sprites.MoveX = ((Sprites.x+Sprites.MoveX)+(Sprites.width /2)) - (X + player.widthHalf)
+			}
+		}else{
+			Sprites.MoveX = Sprites.Xvelocity;
+			if((Sprites.x+Sprites.MoveX) > (X + player.widthHalf)){
+				Sprites.MoveX = (Sprites.x+Sprites.MoveX) - (X + player.widthHalf)
+			}
+		}
+	},
+},{ /*Go to Fast to p1 (6)*/
+	Y: function Y (Sprite,player) {
+	if(Ax16 == 15){
+			if(Sprite.y +(Sprite.height /2) > (player.y + player.heightHalf)){
+				Sprite.Yvelocity --
+			}else{
+				Sprite.Yvelocity ++
+			}
+		}
+	Sprite.MoveY = Sprite.Yvelocity
+	},
+	X: function X (Sprite,player) {	
+	if(Ax16 == 15){
+			if(Sprite.x +(Sprite.width /2) > (player.x + player.widthHalf)){
+				Sprite.Xvelocity --
+			}else{
+				Sprite.Xvelocity ++
+			}
+		}
+	Sprite.MoveX = Sprite.Xvelocity
+	},
+
 }
 ]
 const auto_com = [{/*0*/
@@ -2910,6 +2950,56 @@ function Gravedad(sprite,Aument){
 			return true
 		}
 	/*modified : MoveY , Yvelocity;*/
+}
+function Emboscade_player_Y(Sprite,player,aument){
+	if(Ax16 == 15){
+			if(Sprite.y +(Sprite.height /2) > (player.y + player.heightHalf)){
+				Sprite.Yvelocity --
+			}else{
+				Sprite.Yvelocity ++
+			}
+		}
+	if(Sprite.Yvelocity > aument ){Sprite.Yvelocity = aument}
+	if(Sprite.Yvelocity < aument*-1 ){Sprite.Yvelocity = aument*-1}
+	Sprite.MoveY = Sprite.Yvelocity
+}
+function Emboscade_player_X(Sprite,player,aument){
+	if(Ax16 == 15){
+			if(Sprite.x +(Sprite.width /2) > (player.x + player.widthHalf)){
+				Sprite.Xvelocity --
+			}else{
+				Sprite.Xvelocity ++
+			}
+		}
+    if(Sprite.Xvelocity > aument ){Sprite.Xvelocity = aument}
+	if(Sprite.Xvelocity < aument*-1 ){Sprite.Xvelocity = aument*-1}
+	Sprite.MoveX = Sprite.Xvelocity
+}
+function Go_to_player_X(Sprites,player,aument){
+	if(Sprites.x+(Sprites.width /2) >  (player.x + player.widthHalf)){
+		Sprites.MoveX =  aument*-1
+		if((Sprites.x+(Sprites.width /2)+Sprites.MoveX) < (player.x + player.widthHalf)){
+			Sprites.MoveX = ((Sprites.x+Sprites.MoveX)+(Sprites.width /2)) - (player.x + player.widthHalf)
+			}
+	}else{
+		Sprites.MoveX = aument
+		if((Sprites.x+Sprites.MoveX) > (player.x + player.widthHplayerlf)){
+		Sprites.MoveX = (Sprites.x+Sprites.MoveX) - (player.x + player.widthHalf)
+		}
+	}
+}
+function Go_to_player_Y(Sprites,player,aument){
+	if(Sprites.y +(Sprites.height /2) > (player.y + player.heightHalf)){
+		Sprites.MoveY = aument*-1
+		if((Sprites.y +(Sprites.height /2)+Sprites.MoveY) < (player.y + player.heightHplayerlf)){
+			Sprites.MoveY = ((Sprites.height /2) + (Sprites.y+Sprites.MoveY)) - (player.y + player.heightHalf)
+		}
+	}else{
+		Sprites.MoveY = aument
+		if((Sprites.y+Sprites.MoveY) > (player.y + player.heightHalf) ){
+			Sprites.MoveY = (Sprites.y+Sprites.MoveY) - (player.y + player.heightHalf)
+		}
+	}
 }
 function Gravedad_y_Brincar(sprite,Aument){
 	if(tick){
@@ -3330,7 +3420,7 @@ class tile {
 		   this.type = parseInt(this.col[4], 32) || 0;
 		   this.XG = (parseInt(this.col[5], 32))*32 || 0;
 		   this.YG = (parseInt(this.col[6], 32))*32 || 0;
-		   this.fotograms = (parseInt(col[7], 32)) || 0; 
+		   this.fotograms = (parseInt(this.col[7], 32)) || 0; 
 		   this.script = result.script ?? 0;
 		   this.prin = 1
 	   }
@@ -3343,9 +3433,10 @@ class tile {
 	}
 	Tiles_animation(){
 	let include = fotograms.indexOf(this.fotograms)
-	  if(include != -1){
+	  if(include != -1){ 
 		this.animation = fG_action[include]
 	  }else{
+		  
 		  this.animation += 1;
 	  if(this.animation >= this.fotograms){this.animation = 0}
 	  }
@@ -3581,15 +3672,6 @@ function Gird_animation(P,array){
 function ejecuted(P,Cord){
 	if(Ax3 == 2){P.XG += 1};if(P.XG >= Cord[2]){P.XG = 0};
 }
-function Tiles_animation(P,Fotograms){
-let include = fotograms.indexOf(Fotograms)
-  if(include != -1){
-	P.animation = fG_action[include]
-  }else{
-	  P.animation += 1;
-  if(P.animation >= Fotograms){P.animation = 0}
-  }
-}
 
 function player(width, height,color,Gird, X, Y,comportament,Movement,Xnegative,Ynegative,DeathSound) {
 this.width = width; this.height = height;
@@ -3616,6 +3698,7 @@ this.Xnegative = Xnegative ;this.Ynegative = Ynegative ;
 this.YnegativeSave =  Ynegative ;
 this.Hx = 0; this.Hy = 0;
 this.velocity = 1
+this.MaxVelocity = 1
 this.prin = 2
 this.hits = 0
 this.col = comportament
@@ -3931,9 +4014,6 @@ if(Player.Ytouch){
 	Player.hits = 0
 }
 
-if(Ax4 == 3){
-if(Player.MoveX <= -1){Player.MoveX += 1}
-if(Player.MoveX >= 1){Player.MoveX += -1}}
 if(Player.delay > 0 ){Player.delay += 1;if(Player.delay > 8){Player.delay = 0}}
 /*inputs en el aire*/
 Player.Up = false
@@ -3960,74 +4040,93 @@ if (Player.DownTouch) {
 	
 }*/
 //console.log(Player.DownTouch +"/"+ Player.UpTouch)
-if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
-if (Player.LeftTouch) {
-	if(Player.jumped){Player.MoveX += -1;Player.side = true
-	}else{
-			Player.MoveX += -1
-	}
-}else{ 
-if (Player.RightTouch) {
-	if(Player.jumped){Player.MoveX += 1;Player.side = false
-	}else{
-			Player.MoveX += 1
-	}
-}
-}
-}
 /*En agua*/
 if(Player.water ){
-	Player.jumped = true;Player.jt = 0;
-if (Player.ButonATouch){Jump(Player,-3,1,1)}
-if (Player.ButonBTouch){Player.velocity = 4;}
+	if (Player.ButonBTouch && !Player.crouched){Player.MaxVelocity = 6;}
+	if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
+		if (Player.LeftTouch) {
+			if(Player.jumped) Player.side = true ;
+			Player.velocity --;
+			if(Player.velocity < Player.MaxVelocity*-1 )Player.velocity = Player.MaxVelocity*-1;
+		}else{
+			if (Player.RightTouch) {
+				if(Player.jumped) Player.side = false;
+				Player.velocity ++;
+				if(Player.velocity > Player.MaxVelocity )Player.velocity = Player.MaxVelocity;
+			}
+		}
+	}
+	if(Ax4 == 3){
+	if(Player.velocity <= -1){Player.velocity ++}
+	if(Player.velocity >= 1){Player.velocity --}
+	}
+	Player.MoveX = Player.velocity
+	Player.MaxVelocity = 3
+	
+	Player.jumped = true;
+	Player.jt = 0;
+	if (Player.ButonATouch){Jump(Player,-3,1,1)}
 
-Player.InFlor = false
-Player.MoveY += 0.5
-if(Player.MoveY == 3){Player.MoveY = 2}
-if(Player.MoveY > 3){Player.MoveY -= 2}
-
-
-if(Player.MoveX > Player.velocity){Player.MoveX = Player.velocity};
-if(Player.MoveX < Player.velocity*-1 ){Player.MoveX = Player.velocity*-1}
-Player.velocity = 2;
-Player.water = false
-Player.AnimationWater = true
+	Player.InFlor = false
+	Player.MoveY += 0.5
+	if(Player.MoveY == 3){Player.MoveY = 2}
+	if(Player.MoveY > 3){Player.MoveY -= 2}
+	
+	Player.water = false
+	Player.AnimationWater = true
 }else{
 	/*En tierra*/
-if((Player.Xtouch && Player.InFlor == false) && !Player.Down){
-	if(tick){
-	Player.InFlor = false
-	Player.MoveY += 1;
-	if(Player.MoveY > 2){Player.MoveY = 2}
-	}
-	if(Player.MoveX > 0){Player.side = true}
-	if(Player.MoveX < 0){Player.side = false}
-	if(Player.delay == 0){
-	if (Player.ButonATouch) {
-		Player.jumped = true;Player.jt = 0;Jump(Player,-1,1,1);
-		Player.delay += 1
-		if(Player.side){
-			Player.MoveX = -4; 
-			}else{
-			Player.MoveX = 4
-		}
-		}
-	}
-}else{
-	if (Player.ButonATouch) {
-		Jump(Player,jump_force,10,2);
+	if (Player.ButonBTouch && !Player.crouched){Player.MaxVelocity = 8;}
+	if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
+		if (Player.LeftTouch) {
+			if(Player.jumped) Player.side = true ;
+			Player.velocity --;
+			if(Player.velocity < Player.MaxVelocity*-1 )Player.velocity = Player.MaxVelocity*-1;
 		}else{
-		Player.jumped = false
-		Player.jt = 0
+			if (Player.RightTouch) {
+				if(Player.jumped) Player.side = false;
+				Player.velocity ++;
+				if(Player.velocity > Player.MaxVelocity )Player.velocity = Player.MaxVelocity;
+			}
 		}
-	Gravity(Player,16,0.5);
-	Player.InFlor = false	
-}
-
-if (Player.ButonBTouch && !Player.crouched){Player.velocity = 8;}
-if(Player.MoveX > Player.velocity){Player.MoveX = Player.velocity};
-if(Player.MoveX < Player.velocity*-1 ){Player.MoveX = Player.velocity*-1}
-Player.velocity = 4;
+	}
+	if(Ax4 == 3){
+	if(Player.velocity <= -1){Player.velocity ++}
+	if(Player.velocity >= 1){Player.velocity --}
+	}
+	if((Player.Xtouch && Player.InFlor == false) && !Player.Down){
+		if(tick){
+			Player.InFlor = false
+			Player.MoveY += 1;
+			if(Player.MoveY > 2){Player.MoveY = 2}
+		}
+		if(Player.velocity > 0){Player.side = true}
+		if(Player.velocity < 0){Player.side = false}
+		if(Player.delay == 0){
+			if (Player.ButonATouch) {
+				Player.jumped = true;
+				Player.jt = 0;
+				Jump(Player,-1,1,1);
+				Player.delay += 1
+				if(Player.side){
+					Player.velocity = -4; 
+				}else{
+					Player.velocity = 4
+				}
+			}
+		}
+	}else{
+		if (Player.ButonATouch) {
+			Jump(Player,jump_force,10,2);
+		}else{
+			Player.jumped = false
+			Player.jt = 0
+		}
+		Gravity(Player,16,0.5);
+		Player.InFlor = false	
+	}
+	Player.MoveX = Player.velocity
+	Player.MaxVelocity = 4
 }
 ShoterType[shoterMode](ctr,Player)
 
@@ -5472,7 +5571,19 @@ for(let i = 0; i < BackgroundsInLevel.length ;i++){
 	BackgroundsInLevel[i].y += (cordY * BackgroundsInLevel[i].mY)
 	}
 }
-documentKeysListener(p1)
+	function keydownHandler(e) {
+	  e.preventDefault();
+	  p1.keys = p1.keys || [];
+	  p1.keys[e.keyCode] = (e.type == "keydown");
+	}
+	function keyupHandler(e) {
+		e.preventDefault();
+	  p1.keys[e.keyCode] = (e.type == "keydown");
+	}
+
+	document.addEventListener('keydown',  keydownHandler)
+	document.addEventListener('keyup', keyupHandler)
+	
 document.addEventListener('mousedown', (event) => {
 	mouse = true
 })
@@ -5499,6 +5610,10 @@ inputY = 0
 backgroundMusic.play();
 /*de aqui para abajo todo lo de esto corchetes se va Player hacer cada frame*/
 function Frames(){
+	if(!on_game){
+	document.removeEventListener('keydown',  keydownHandler)
+	document.removeEventListener('keyup', keyupHandler)
+	}
         if(Frame(p1,p2,tiles,sprites,mini_sprites,Hits)){
 				requestAnimationFrame(Frames)
         }else{
@@ -5638,12 +5753,12 @@ if(inputX < 0 || inputX > 32){
 };
 /*All sprites scpripts*/
 for(let i = 0; i < sprites.length ;i++){
-	if(sprites[i].InScreen){
-		sprites[i].prin = true
 	Scrips_collection[sprites[i].script].Loop(sprites[i],p1,p2,tiles)
 	sprites[i].BulletTouch = false
 	sprites[i].Yplayertouch = false
-    sprites[i].Xplayertouch = false
+    sprites[i].Xplayertouch = false	
+	if(sprites[i].InScreen){
+	sprites[i].prin = true
 	if(Ax3 == 2){
     Sprite_animation(sprites[i])
 	}
@@ -5651,7 +5766,7 @@ for(let i = 0; i < sprites.length ;i++){
 		sprites.splice(i,1)
 	}
 	}else{
-	sprites[i].prin  = false	
+	sprites[i].prin  = false
 	}
 }
 
@@ -5710,10 +5825,10 @@ if(DrawShadow){drawLight(game,p1,sprites)}
 PrinAllTiles(game)
 for(let i = 0; i < sprites.length ;i++){
 	if(sprites[i].prin){
-	//	ctx.fillStyle = "#FF0"
-	//	ctx.fillRect(sprites[i].x+sprites[i].Xdiference_Print,sprites[i].y+sprites[i].Ydiference_Print,sprites[i].widthPrint,sprites[i].heightPrint)
-	//	ctx.fillStyle = "#F00"
-	//	ctx.fillRect(sprites[i].x,sprites[i].y,sprites[i].width,sprites[i].height)
+		//ctx.fillStyle = "#FF0"
+		//ctx.fillRect(sprites[i].x+sprites[i].Xdiference_Print,sprites[i].y+sprites[i].Ydiference_Print,sprites[i].widthPrint,sprites[i].heightPrint)
+		//ctx.fillStyle = "#F00"
+		//ctx.fillRect(sprites[i].x,sprites[i].y,sprites[i].width,sprites[i].height)
 draw_sprite[sprites[i].Mode](sprites[i],game)
 	}
 }
