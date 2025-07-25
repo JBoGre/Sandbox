@@ -33,7 +33,7 @@ tiles:[
 Name:"Tiles & Objects",
 Images:["texturas/Texturas ASCII_DIY.png","texturas/GradientTexture.png","texturas/Sprites.png","texturas/decoraciones.png",
 "texturas/Monkey.png","texturas/BigMonkey.png","texturas/Goomba.png","texturas/shy guy.png","texturas/3x3 Textures.png",
-"texturas/Decoraciones Realistas.png","texturas/RealisticTexture.png"],
+/*"texturas/Decoraciones Realistas.png","texturas/RealisticTexture.png"*/],
 SoundEffects:["SoundEfects/Checkpoint.wav","SoundEfects/Collect.wav","SoundEfects/Boing.mp3","SoundEfects/Boing.mp3","SoundEfects/Jump Attack.mp3"],
 objects:[
 // Print Blocks 
