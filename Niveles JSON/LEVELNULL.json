@@ -6,8 +6,8 @@
   "CameraX_frese": 0,
   "CameraY_frese": 0,
   "limit_left": 0,
-  "limit_rigth": 256,
-  "limit_up": 256,
+  "limit_rigth": 150,
+  "limit_up": 150,
   "limit_down": 0,
   "StyleBackground": "",
   "backgroundMusic": [
