@@ -16,15 +16,12 @@ limit_down:0,
 totalPrizes : 5,
 backgroundMusic:["Music/smooth jazz.mp3"],
 backgroundMusicTrack: 0 ,
-/*
-StyleBackground:'linear-gradient( rgb(32, 80, 248),rgb(32, 80, 248))',
-backgroundImages:[["Backgrounds/Desert.png",512,512,0.5,0.5,0,0,true,false,0,0],
-],
-*/
 
 StyleBackground:'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))',
 backgroundImages:[
-//["Backgrounds/PanoramicBackground.png",3292,640,0.5,0,0,0,true,false,0,0],
+["Backgrounds/FlorClouds.png",2048,448,0.6,0,0,0,true,false,0,0],
+["Backgrounds/Temple.png",2048,448,0.5,0,0,0,true,false,0,0],
+["Backgrounds/Cloud.png",2048,448,0.4,0,0,0,true,false,0,0],
 ],
 
 
@@ -94,6 +91,9 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"11002950"],
 ["Tile","rgba(0,0,0,0)",1,"11111860"],
 ["Tile","rgba(0,0,0,0)",1,"00000960"],
+
+["Tile","rgba(0,0,0,0)",1,"11111870"],
+["Tile","rgba(0,0,0,0)",1,"44443880"],
 // Donkey Kong
 ["Tile","rgba(0,0,0,0)",5,"00000920"],
 ["Tile","rgba(0,0,0,0)",1,"11002040"],
@@ -104,6 +104,17 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"11111B00"],["Tile","rgba(0,0,0,0)",1,"11111B10"],["Tile","rgba(0,0,0,0)",1,"11111B20"],
 ["Tile","rgba(0,0,0,0)",1,"00000C00"],["Tile","rgba(0,0,0,0)",1,"00000C10"],["Tile","rgba(0,0,0,0)",1,"00000C20"],
 ["Tile","rgba(0,0,0,0)",1,"11111B30"],
+["Tile","rgba(0,0,0,0)",1,"11111C30"],
+
+["Tile","rgba(0,0,0,0)",1,"66661B40"],
+["Tile","rgba(0,0,0,0)",1,"66661D40"],
+["Tile","rgba(0,0,0,0)",1,"66661B60"],
+["Tile","rgba(0,0,0,0)",1,"66661D60"],
+
+["Tile","rgba(0,0,0,0)",1,"66661C40"],
+["Tile","rgba(0,0,0,0)",1,"66661B50"],
+
+
 // Signals
 ["Tile","rgba(0,0,0,0)",1,"00000D00"],
 ["Tile","rgba(0,0,0,0)",1,"00000D10"],
@@ -153,6 +164,7 @@ objects:[
 ["Object",32,32,10,"661120201",2,"01500", 0,0],
 ["Object",32,48,11,"160030000",6,"00023",-1,0],
 ["Object",32,32,12,"160030000",7,"00023",-1,0],
+["Object",64,64,12,"160030000",7,"00323",-2,0],
 ["Object",32,32,13,"6600100000",2,"23800", 2,2],
 ["Object",32,32,15,"160010000",2,"23900",-2,0],
 ["Object",32,32,15,"160010000",2,"33900",2,0],
@@ -164,6 +176,10 @@ objects:[
 ["Object",32,32,"#","660022001",2,"06924",-2,2],
 ["Object",32,32,"#","660022001",2,"36924",2,2],
 ["Object",32,32,19,"660030000",2,"08828",0,0],
+["Object",64,64,20,"160030000",2,"02500",0,0],
+["Object",52,52,21,"660010011",2,"05741",1,5],
+["Object",52,52,21,"660010011",2,"05741",5,1],
+["Object",52,52,21,"660010000",2,"05741",0,0],
 /*
 // Tiles Realistic
 ["Tile","rgba(0,0,0,0)",10,"111110F0"],
@@ -995,11 +1011,11 @@ Loop: function Loop (Sprite,p1) {
 			Sprite.Xvelocity = Sprite.Xvelocity*-1
 			Sprite.State = 1
 		}
-		if(Sprite.State == 1 ){
-			if(Clock(Sprite,10)){
-				Sprite.State = 0
-			}
+	if(Sprite.State == 1 ){
+		if(Clock(Sprite,10)){
+			Sprite.State = 0
 		}
+	}
 	if(Sprite.sideX){
 		Sprite.Mode = 3
 	}else{
@@ -1237,6 +1253,57 @@ Loop: function Loop (Sprite,Player) {
 	if(Sprite.MoveX > 0 ){Sprite.Mode = 3}else{Sprite.Mode = 0}
 	
  },
+ RenderMode: function RenderMode (ctx,Sprite) {
+     PreRenderMode(ctx,Sprite)
+ },
+},{
+	Action: function Action(Sprite) {
+			Sprite.State = 0
+			Sprite.XG = 128
+	},
+	Loop: function Loop (sprite,Player) {
+	 switch (sprite.State){
+	case 0:
+		if(Colision(sprite,Player,0,16,64,512)){
+				sprite.XG = 192
+				sprite.State = 1
+		}
+	break;
+	case 1:
+		Gravedad(sprite,1)
+		if(sprite.Ytouch){
+			sprite.State = 2	
+		}
+	break;
+	case 2:
+		Gravedad(sprite,1)
+		if(Clock(sprite,30)){
+			sprite.MoveY = 0
+			sprite.State = 3
+			sprite.XG = 128
+		}
+	break;
+	case 3:
+		if(Go_to_Started_Y(sprite,1) ||	sprite.Ytouch){
+			sprite.State = 0
+			sprite.MoveY = 0
+		}
+	break;
+	}
+	},
+	RenderMode: function RenderMode (ctx,Sprite) {
+		 PreRenderMode(ctx,Sprite)
+	},
+},{
+Action: function Action(Sprite) {
+		Sprite.Xdiference_Print = -10
+		Sprite.Ydiference_Print = -10
+		Sprite.width = 32
+		Sprite.height = 32
+	},
+Loop: function Loop (Sprite,player) {
+	PreProgramedMode(Sprite,player)
+    },
  RenderMode: function RenderMode (ctx,Sprite) {
      PreRenderMode(ctx,Sprite)
  },
