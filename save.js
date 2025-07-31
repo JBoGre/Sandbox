@@ -19,9 +19,6 @@ backgroundMusicTrack: 0 ,
 
 StyleBackground:'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))',
 backgroundImages:[
-["Backgrounds/FlorClouds.png",2048,448,0.6,0,0,0,true,false,0,0],
-["Backgrounds/Temple.png",2048,448,0.5,0,0,0,true,false,0,0],
-["Backgrounds/Cloud.png",2048,448,0.4,0,0,0,true,false,0,0],
 ],
 
 
