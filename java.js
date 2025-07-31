@@ -2314,7 +2314,9 @@ function localisated_sprites(Sprite_Collection,sprites,cordX,cordY) {
 			sprites.push(new sprite_colision(SP.X,SP.Y,SP.width,SP.height,SP.script,SP.col,SP.img,SP.IN,SP.XV,SP.YV))	
 			}
 			sprites[sprites.length -1].x += cordX
+			sprites[sprites.length -1].StartedX += cordX
 			sprites[sprites.length -1].y += cordY
+			sprites[sprites.length -1].StartedY += cordY
 			Scrips_collection[sprites[sprites.length -1].script].Action(sprites[sprites.length -1])
 			deleted.push(i)
 		}
@@ -2400,6 +2402,7 @@ this.prin = true
 this.FristTouch = false
 this.x = X; this.y = Y;
 this.stx = X; this.sty = Y;
+this.StartedX = X; this.StartedY = Y;
 this.MoveX = 0 ;this.MoveY = 0
 this.xP = 0 ;this.yP = 0
 this.BX = 0 ; this.BY = 0
@@ -2991,13 +2994,43 @@ function Go_to_player_X(Sprites,player,aument){
 function Go_to_player_Y(Sprites,player,aument){
 	if(Sprites.y +(Sprites.height /2) > (player.y + player.heightHalf)){
 		Sprites.MoveY = aument*-1
-		if((Sprites.y +(Sprites.height /2)+Sprites.MoveY) < (player.y + player.heightHplayerlf)){
+		if((Sprites.y +(Sprites.height /2)+Sprites.MoveY) < (player.y + player.heightHalf)){
 			Sprites.MoveY = ((Sprites.height /2) + (Sprites.y+Sprites.MoveY)) - (player.y + player.heightHalf)
 		}
 	}else{
 		Sprites.MoveY = aument
 		if((Sprites.y+Sprites.MoveY) > (player.y + player.heightHalf) ){
 			Sprites.MoveY = (Sprites.y+Sprites.MoveY) - (player.y + player.heightHalf)
+		}
+	}
+}
+function Go_to_Started_X(Sprites,aument){
+	if(Sprites.x  > Sprites.StartedX){
+		Sprites.MoveX = aument*-1
+		if(Sprites.x +Sprites.MoveX  < Sprites.StartedX){
+			Sprites.MoveX =  (Sprites.x+Sprites.MoveX) - Sprites.StartedX
+			return true
+		}
+	}else{
+		Sprites.MoveX = aument
+		if(Sprites.x+Sprites.MoveX > Sprites.StartedX ){
+			Sprites.MoveX = (Sprites.x+Sprites.MoveX) - Sprites.StartedX
+			return true
+		}
+	}
+}
+function Go_to_Started_Y(Sprites,aument){
+	if(Sprites.y  > Sprites.StartedY){
+		Sprites.MoveY = aument*-1
+		if(Sprites.y +Sprites.MoveY  < Sprites.StartedY){
+			Sprites.MoveY =  (Sprites.y+Sprites.MoveY) - Sprites.StartedY
+			return true
+		}
+	}else{
+		Sprites.MoveY = aument
+		if(Sprites.y+Sprites.MoveY > Sprites.StartedY ){
+			Sprites.MoveY = (Sprites.y+Sprites.MoveY) - Sprites.StartedY
+			return true
 		}
 	}
 }
@@ -4594,19 +4627,15 @@ X :	function cubeMoving (PL,B) {let crash = false
 let tileVx =  (PL.MoveX + PL.BX) 
 if((PL.x < (B.x + B.width ) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx)) && (PL.y < (B.y + B.height ))  && PL.y + (PL.height) > (B.y  )){
 	if((PL.y + (PL.height)) > (B.y + 16)){
-
   colM[B.Left].X(PL,B)
       B.Xplayertouch = true
 	}
   }
 },
-
 Y :	function cubeMoving (PL,B) {
 	if(SemiSolidMovingColision(PL,B)){return true}
 },
-
-},{ /*moving have colision   2 */
-	
+},{ /*moving have colision   2 */	
 X :	function cubeMoving (PL,B) {let crash = false
 let tileVx = (PL.MoveX + PL.BX) 
 if((PL.x < (B.x + B.width ) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx)) && (PL.y < (B.y + B.height ))  && PL.y + (PL.height) > (B.y  )){
@@ -4632,7 +4661,6 @@ if((PL.x < (B.x + B.width +1) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx -1
 	}
   }
 },
-
 Y :	function cubeMoving (PL,B) {
 if(SemiSolidMovingColision(PL,B)){return true}
 },
@@ -4685,26 +4713,31 @@ if((PL.x < B.x + (B.width) && (PL.x + (PL.width)) > B.x) && (PL.y <  (B.y + B.he
 function SemiSolidMovingColision(PL,B){
 	PL.touchesInY = 0
 let crash = false
-let extraUp = 0
-if(B.yP > 0){extraUp = (B.yP*-1)-2 };if(B.yP < 0){extraUp = B.yP }
-if((PL.x < (B.x-PL.Hx) + (B.width) && (PL.x + (PL.width)) > (B.x-PL.Hx)) && (PL.y <  (B.y-1)  && (PL.y + (PL.height) > (B.y+extraUp) ))){
-	if(B.Up != 0){
+let extraUp = 0 // se le suma a la colision para hacer mas aplicar el movimiento del objeto
+let tileVy = (PL.MoveY + PL.BY) // el movimiento siguiente del jugador
+
+
+if(B.yP > 0){extraUp = (B.yP*-1)-2 };    // dependiendo de a que lado va sera la velocidad que se aplique
+if(B.yP < 0){extraUp = B.yP }
+if((PL.x < (B.x-PL.Hx) + (B.width) && (PL.x + (PL.width)) > (B.x-PL.Hx)) && (PL.y <  ((B.y-1)-tileVy)  && (PL.y + (PL.height) > ((B.y+extraUp) - tileVy)))){
+	if(B.Up != 0){ // al jugador se le aplica el movimient del objeto
 	   PL.Hx +=  B.xP
 	   PL.Hy =  B.yP
 	}
-		if((PL.MoveY + PL.BY) > 0 ){
-			if(B.Up != 0){
-			   if(col[B.Up].UP(PL,B)){
+	if((PL.MoveY + PL.BY) > 0 ){ // colision normal 
+		if(B.Up != 0){
+		    if(col[B.Up].UP(PL,B)){
 				auto_com[PL.Movement[2]].Y(PL);
 				PL.touchY = true
 				PL.touchesInY += 1
-			    }
-			PL.yP = (PL.y + PL.height ) - (B.y + B.yP*-1)
+		    }
+			PL.yP = (PL.y + PL.height ) - ((B.y + B.yP*-1 )- tileVy)
 			crash = true
-			}
-			B.Yplayertouch = true
 		}
-};return crash
+		B.Yplayertouch = true
+	}
+};
+return crash
 }
 const col =[
 {   /*nothing-0*/
@@ -5094,6 +5127,7 @@ return crash
 function MoveExtras_in_Y(){
 for(i = 0; i < mysprites.length; i += 1){
 	mysprites[i].y += cameraY;
+	mysprites[i].StartedY += cameraY;
 	}
 for(i = 0; i < myMiniSprites.length;i++){
 	if(myMiniSprites[i].script != 0 ){
@@ -5111,6 +5145,7 @@ for(let i = 0; i < effects_in_game.length ;i++){
 function MoveExtras_in_X(){
 for(i = 0; i < mysprites.length; i += 1){
 	mysprites[i].x += cameraX;
+	mysprites[i].StartedX += cameraX;
 	}
 for(i = 0; i < myMiniSprites.length;i++){
 	if(myMiniSprites[i].script != 0 ){
@@ -5610,16 +5645,13 @@ inputY = 0
 backgroundMusic.play();
 /*de aqui para abajo todo lo de esto corchetes se va Player hacer cada frame*/
 function Frames(){
-	if(!on_game){
-	document.removeEventListener('keydown',  keydownHandler)
-	document.removeEventListener('keyup', keyupHandler)
-	}
         if(Frame(p1,p2,tiles,sprites,mini_sprites,Hits)){
 				requestAnimationFrame(Frames)
         }else{
 	       if(reset_game){
 	       buton[2](0)
 	       }else{
+			on_game = false
 			backgroundMusic.pause();  // Pausa el audio
 			backgroundMusic.currentTime = 0; // Reinicia al inicio
 				  if(Win_or_lose){
@@ -5650,6 +5682,10 @@ function Frames(){
 			Textdraw()
 		   }
 		}
+	if(!on_game){
+	document.removeEventListener('keydown',  keydownHandler)
+	document.removeEventListener('keyup', keyupHandler)
+	}
   }
 
 Frames()
