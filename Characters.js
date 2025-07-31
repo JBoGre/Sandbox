@@ -35,6 +35,9 @@ width:32,
 height:64,
 WNEGA:-16,
 HNEGA:0,
+WinSound: "SoundEfects/WinSMB1.mp3",
+DeathSound:"SoundEfects/DeathSMB1.mp3",
+GameOverSound: "SoundEfects/Game OverSMB1.mp3"
 },
 {
 Name:"Mario Maker costumes of SMB1" ,
@@ -54,6 +57,7 @@ width:32,
 height:54,
 WNEGA:-16,
 HNEGA:-10,
+DeathSound:"SoundEfects/DeathSMB3.mp3",
 GameOverSound: "SoundEfects/Game OverSMB3.mp3"
 },
 {
@@ -64,7 +68,9 @@ width:24,
 height:32,
 WNEGA:-4,
 HNEGA:-14,
-GameOverSound: "SoundEfects/Game OverSMB3.mp3"
+WinSound: "SoundEfects/WinSMW.mp3",
+DeathSound:"SoundEfects/DeathSMW.mp3",
+GameOverSound: "SoundEfects/Game OverSMW.mp3"
 },
 {
 Name:"JUMP-MAN" ,
@@ -74,7 +80,8 @@ width:24,
 height:32,
 WNEGA:-4,
 HNEGA:0,
-GameOverSound: "SoundEfects/Game OverSMB3.mp3"
+DeathSound:"SoundEfects/DeathDKA.mp3",
+WinSound: "SoundEfects/WinDKA.mp3",
 },
 {
 Name:"Sonic the hedghog" ,
@@ -84,5 +91,7 @@ width:24,
 height:40,
 WNEGA:-18,
 HNEGA:-11,
+WinSound: "SoundEfects/WinSONIC.mp3",
+GameOverSound: "SoundEfects/Game OverSONIC.mp3"
 },
 ]
