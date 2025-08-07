@@ -25,7 +25,6 @@ const pestana = document.getElementById("controladores3")
 const ancho = table.style.width
 const largo = table.style.height
 const LVselector = document.getElementById("selector-nivel")
-const chalkboard = document.getElementById("characters")
 flag.addEventListener("click",() =>{
 DrawMode = 7
 DrawsModes[7].Started()
@@ -110,58 +109,103 @@ window.addEventListener("beforeunload", function (e) {
     e.returnValue = ""; // Necesario para que aparezca el diálogo en otros
 });
 var Target = ""
-
+const CharacterSelector2 = document.getElementById("Character-selector2")
+const chalkboard = document.getElementById("characters")
 var SkinSelector = document.getElementById("Skin-selector")
-var characterSelect = 0
-var SkinSelect = 0
-	function DrawSelectionsSkins()	{
-		SkinSelector.innerHTML = ""
-	for(let i = 0; i < characters[characterSelect].Img.length ; i++){
-		SkinSelector.innerHTML += "<canvas class = Skins  id = Skin"+i+" onclick=ChangeSkin("+i+") ></canvas>"
+var chalkboard2;
+var SkinSelector2;
+var Skins_for_players = [
+	{
+	PlayerID : 0, 
+	characterSelect : 0  ,
+	SkinSelect : 0 ,
+	},
+	{
+    PlayerID : 1, 
+	characterSelect : 0  ,
+	SkinSelect : 1 ,	
 	}
-	for(let i = 0; i < characters[characterSelect].Img.length ; i++){
+]
+	function DrawSelectionsSkins(object,Number)	{
+		object.innerHTML = ""
+	for(let i = 0; i < characters[Number].Img.length ; i++){
+		object.innerHTML += "<canvas class = Skins  id = Skin"+i+" onclick=ChangeSkin("+Number+","+i+") ></canvas>"
+	}
+	for(let i = 0; i < characters[Number].Img.length ; i++){
 	let SkinToPrint = document.getElementById("Skin"+i)
-		PrinCharacter(SkinToPrint,characterSelect,i)
+		PrinCharacter(SkinToPrint,Number,i)
+		}
 	}
+	function DrawSelectionsSkins2(object,Number)	{
+		object.innerHTML = ""
+	for(let i = 10; i < characters[Number].Img.length+10 ; i++){
+	let Skin = i -10
+		object.innerHTML += "<canvas class = Skins  id = Skin"+i+" onclick=ChangeSkin2("+Number+","+Skin+") ></canvas>"
+	}
+	for(let i = 10; i < characters[Number].Img.length+10 ; i++){
+	let SkinToPrint = document.getElementById("Skin"+i)
+		PrinCharacter(SkinToPrint,Number,i-10)
+		}
 	}
 
-function ChangeSkin(Number){
-	SkinSelect = Number
+function ChangeSkin(characterSelect,SkinSelect){
+	Skins_for_players[0].SkinSelect = SkinSelect
 	PrinCharacter(chalkboard,characterSelect,SkinSelect)
 }
-const salvarJsonBtn = document.getElementById("SalvarJson");
-       salvarJsonBtn.addEventListener("click", () => {
-		   if (Level_name.value.startsWith("(-<= ")) {
-			   console.log("codes Active")
-			   let Value = Level_name.value.slice(5)
-			   Boregito(Value)
-		   }else{
-		   Save_Level_NoTiles()
-		   }
-	   })
-	   
-	   
+function ChangeSkin2(characterSelect,SkinSelect){
+	Skins_for_players[1].SkinSelect = SkinSelect
+	PrinCharacter(chalkboard2,characterSelect,SkinSelect)
+}
+	  	   
 document.getElementById("arrowRight").addEventListener('click', function() {
-	characterSelect += -1
-	SkinSelect = 0
-	if(characterSelect < 0){characterSelect = characters.length -1 }
+	arrowRight_forSkins(0)
+	PrinCharacter(chalkboard,Skins_for_players[0].characterSelect,0)
 	
-	PrinCharacter(chalkboard,characterSelect,0)
-	
-	DrawSelectionsSkins()
+	DrawSelectionsSkins(SkinSelector,Skins_for_players[0].characterSelect)
 })
 document.getElementById("arrowLeft").addEventListener('click', function() {
-	characterSelect += 1
-	SkinSelect = 0
-	if(characterSelect >= characters.length ){characterSelect = 0}
+	arrowLeft_forSkins(0)
 	
-    PrinCharacter(chalkboard,characterSelect,0)
+	PrinCharacter(chalkboard,Skins_for_players[0].characterSelect,0)
 	
-	DrawSelectionsSkins()
+	DrawSelectionsSkins(SkinSelector,Skins_for_players[0].characterSelect)
 })
-
-
-
+function Star_Multiplayer(){
+	Multiplayer = true
+	CharacterSelector2.innerHTML =
+	"<div class=arrow id=arrowRight2></div><canvas  id=characters2  ></canvas><div class=arrow id=arrowLeft2></div><div id=Skin-selector2 style= width:64em;height:32em;float:left; > </div>"
+	chalkboard2 = document.getElementById("characters2")
+	SkinSelector2 = document.getElementById("Skin-selector2")
+	PrinCharacter(chalkboard2,Skins_for_players[1].characterSelect,Skins_for_players[1].SkinSelect)
+	DrawSelectionsSkins2(SkinSelector2,Skins_for_players[1].characterSelect)
+	document.getElementById("arrowRight2").addEventListener('click', function() {
+		arrowRight_forSkins(1)
+		PrinCharacter(chalkboard2,Skins_for_players[1].characterSelect,0)
+		
+		DrawSelectionsSkins2(SkinSelector2,Skins_for_players[1].characterSelect)
+	})
+	document.getElementById("arrowLeft2").addEventListener('click', function() {
+		arrowLeft_forSkins(1)
+		
+		PrinCharacter(chalkboard2,Skins_for_players[1].characterSelect,0)
+		
+		DrawSelectionsSkins2(SkinSelector2,Skins_for_players[1].characterSelect)
+	})
+}
+function arrowRight_forSkins(PlayerID){
+	let Player = Skins_for_players[PlayerID]
+	Player.characterSelect += -1
+	Player.SkinSelect = 0
+	if(Player.characterSelect < 0){Player.characterSelect = characters.length -1 }
+	
+}
+function arrowLeft_forSkins(PlayerID){
+	let Player = Skins_for_players[PlayerID]
+	Player.characterSelect += 1
+	Player.SkinSelect = 0
+	if(Player.characterSelect >= characters.length ){Player.characterSelect = 0}
+	
+}
 function PrinCharacter(Canva,Number,Character,){
 	let Grid = characters[Number].Grid
 	let ctx = Canva.getContext("2d");
@@ -188,8 +232,18 @@ function PrinCharacter(Canva,Number,Character,){
 		}
 	)
 }
-
-DrawSelectionsSkins()
+const salvarJsonBtn = document.getElementById("SalvarJson");
+       salvarJsonBtn.addEventListener("click", () => {
+		   if (Level_name.value.startsWith("(-<= ")) {
+			   console.log("codes Active")
+			   let Value = Level_name.value.slice(5)
+			   Boregito(Value)
+		   }else{
+		   Save_Level_NoTiles()
+		   }
+	   })
+PrinCharacter(chalkboard,Skins_for_players[0].characterSelect,Skins_for_players[0].SkinSelect)
+DrawSelectionsSkins(SkinSelector,Skins_for_players[0].characterSelect)
 let margin_v = '0'
 const LLY = document.getElementsByClassName("flecha")
 
@@ -1212,7 +1266,7 @@ const RandomLevelConfiguration = [
 	Azar_Level_width = 128
 	Azar_Enemies_Multiplicater = 1
 	},
-	function(){ //Random
+	function(){ //Random 10
 	let Solid = RandomNumber(1,16)
 	let SemiSolid = RandomNumber(1,16)
 	Solids = 100
@@ -1239,11 +1293,10 @@ var Azar_Stars = 10
 var Azar_Enemies = 200
 var Azar_Enemies_Multiplicater = 1
 var LavaVelocity = -1
-var SkinLevel = 0
+var SkinLevel = 1
 var SkinS = SkinLevel
 var SkinSS = SkinLevel
-var LevelType = 2
-var SkinLevel = 0
+var LevelType = undefined
 function Azar_Level(){
 	AZAR = true
 	LC = []
@@ -2051,7 +2104,6 @@ let lastYcord = 0
 var isDrawing = false
 var DrawMode = 0
 	
-PrinCharacter(chalkboard,characterSelect,0)
 
 
 SAVE.Inicial_Script()
@@ -2146,8 +2198,8 @@ audioPlayer.pause();
 audioPlayer.muted = true
 prizes = 0
 
-let p1InF = characters[characterSelect]
-let p2InF = characters[characterSelect]
+let p1InF = characters[Skins_for_players[0].characterSelect]
+let p2InF = characters[Skins_for_players[1].characterSelect]
 activate_custom_songs(p1InF)
 establecing_starcords(startX,startY,p1InF)
 TilesCollection = structuredClone(LC);
@@ -2161,8 +2213,8 @@ game_area.style.height = screenHeigth + "px"
 charge(game_area,SAVE.X,SAVE.Y,0,0,StarX,StarY);
 StarPosition()
 
-p1 = new player(p1InF.width,p1InF.height,p1InF.Img[SkinSelect],p1InF.Grid,PositionX,PositionY,1,"0031",p1InF.WNEGA,p1InF.HNEGA,p1InF.DeathSound)
-p2 = new player(p2InF.width,p2InF.height,p2InF.Img[0],p2InF.Grid,PositionX,PositionY,1,"0031",p2InF.WNEGA,p2InF.HNEGA,p2InF.DeathSound)
+p1 = new player(p1InF.width,p1InF.height,p1InF.Img[Skins_for_players[0].SkinSelect],p1InF.Grid,PositionX,PositionY,1,"0031",p1InF.WNEGA,p1InF.HNEGA,p1InF.DeathSound)
+p2 = new player(p2InF.width,p2InF.height,p2InF.Img[Skins_for_players[1].SkinSelect],p2InF.Grid,PositionX,PositionY,1,"0031",p2InF.WNEGA,p2InF.HNEGA,p2InF.DeathSound)
 gametest(game,10000,p1,p2,myObstacles,mysprites,myMiniSprites,myHits)
 type_but = 1
 },
@@ -2193,13 +2245,6 @@ type_but = 0
 	
 },
 function(b) { 
-/*
-for(let i = 0; i < TilesCollection.length ; i++){
-	TilesCollection[i].col = LC[i].col
-	TilesCollection[i].color = LC[i].color
-	TilesCollection[i].IN = LC[i].IN
-	TilesCollection[i].script = LC[i].script
-}*/
 myObstacles.length = 0
 mysprites.length = 0
 myMiniSprites.length = 0
@@ -2207,10 +2252,10 @@ myHits.length = 0
 CreateSpritesTolevel()
 charge(game_area,SAVE.X,SAVE.Y,0,0,StarX,StarY);
 StarPosition()
-let p1InF = characters[characterSelect]
-let p2InF = characters[characterSelect]
-p1 = new player(p1InF.width,p1InF.height,p1InF.Img[SkinSelect],p1InF.Grid,PositionX,PositionY,1,"0031",p1InF.WNEGA,p1InF.HNEGA,p1InF.DeathSound)
-p2 = new player(p2InF.width,p2InF.height,p2InF.Img[0],p2InF.Grid,PositionX,PositionY,1,"0031",p2InF.WNEGA,p2InF.HNEGA,p2InF.DeathSound)
+let p1InF = characters[Skins_for_players[0].characterSelect]
+let p2InF = characters[Skins_for_players[1].characterSelect]
+p1 = new player(p1InF.width,p1InF.height,p1InF.Img[Skins_for_players[0].SkinSelect],p1InF.Grid,PositionX,PositionY,1,"0031",p1InF.WNEGA,p1InF.HNEGA,p1InF.DeathSound)
+p2 = new player(p2InF.width,p2InF.height,p2InF.Img[Skins_for_players[1].SkinSelect],p2InF.Grid,PositionX,PositionY,1,"0031",p2InF.WNEGA,p2InF.HNEGA,p2InF.DeathSound)
 gametest(game,100000,p1,p2,myObstacles,mysprites,myMiniSprites,myHits)
 type_but = 1
 },
@@ -2413,6 +2458,8 @@ this.Ytouches = 0
 this.Xtouches = 0
 this.BulletTouch = false
 this.Ytouch = false;this.Xtouch = false
+this.UpTriger = false;this.DownTriger = false
+this.LeftTriger = false;this.RightTriger = false
 this.Xdiference_Print = 0;this.Ydiference_Print = 0;
 this.widthGrid = width; this.heightGrid = height;
 this.widthPrint = width; this.heightPrint = height;
@@ -2425,6 +2472,7 @@ if(SAVE == undefined){
 }
 this.State = 0
 this.water = false
+this.waterAlture = 0
 this.script = script 
 if(comportament != undefined){
 	this.col = comportament
@@ -2563,20 +2611,14 @@ for (i = 0; i < tiles.length; i += 1){
 			if( (Sprite.y + (Sprite.height)) < (TL.y + 32)){
 				
 				Sprite.yP =(Sprite.y + Sprite.height) - TL.y 
-				//Sprite.Ytouch = true
 			
 				}else{
-				//if(TL.type != 2 ){
 				Sprite.yP = Sprite.y - (TL.y + 32)
-				//Sprite.Ytouch = true
-				//}
 			}
-			//if(Sprite.Ytouch ){
 			Sprite.y += Sprite.yP*-1;
 			Sprite.yP = Sprite.MoveY + Sprite.yP*-1
 			Sprite.Ytouch = true
 			Sprite.Ytouches ++
-			//}
 		}
 	}
 }
@@ -2610,6 +2652,7 @@ for (i = 0; i < tiles.length; i += 1){
 Sprite.sideUX = Sprite.sideX
 Sprite.UPX = Sprite.x
 
+Sprites_Effects(Sprite)
 MiniSpriteColision(Sprite,myMiniSprites)
 
 }else{
@@ -2632,6 +2675,8 @@ if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
 	Sprite.yP = Sprite.MoveYLimit
 
 	Sprite.Ytouch = false
+	Sprite.UpTriger = false
+	Sprite.DownTriger = false
 	if(!tick){
 	Sprite.Ytouches = 0	
 	}
@@ -2656,6 +2701,8 @@ if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
 	Sprite.xP =  Sprite.MoveXLimit
 
 	Sprite.Xtouch = false	
+	Sprite.LeftTriger = false
+	Sprite.RightTriger = false
 	Sprite.Xtouches = 0	
 	if(CompleteTilesColisionX(Sprite,tiles)){
 		Sprite.xP = Sprite.MoveXLimit + Sprite.xP*-1
@@ -2666,6 +2713,7 @@ if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
 	Sprite.UPX = Sprite.x
 
 	MiniSpriteColision(Sprite,myMiniSprites)
+	Sprites_Effects(Sprite)
 }else{
 	Sprite.InScreen = false
 }
@@ -2941,18 +2989,19 @@ X: function X (Sprite) {Sprite.MoveX = 0; Sprite.velocity = 0;Sprite.BX = 0;Spri
 ]
 /*Sprite Functions*/
 function Gravedad(sprite,Aument){
-	if(tick){
-        if(sprite.water){
+	if(sprite.water){
 		sprite.MoveY += Aument/2
 		}else{
 		sprite.MoveY += Aument
 		}
-	}
 		if(sprite.Ytouch){
 			sprite.MoveY = 0
 			return true
 		}
 	/*modified : MoveY , Yvelocity;*/
+}
+function randomBoolean() {
+	return Math.random() < 0.5;
 }
 function Emboscade_player_Y(Sprite,player,aument){
 	if(Ax16 == 15){
@@ -3261,8 +3310,8 @@ function MarginTeleport (p1) {
 		   p1.Ytouch = true
 		   return true
 		}
-	   if((p1.y + p1.height)  + p1.MoveYLimit >  screenHeigth  ){
-		   p1.yP = (p1.y + p1.height) +  p1.MoveYLimit - screenHeigth;
+	   if((p1.y + p1.height)  + p1.MoveYLimit >  screenHeigth + p1.height ){
+		   p1.yP = (p1.y + p1.height) +  p1.MoveYLimit - screenHeigth - p1.height
 		   p1.Ytouch = true
 		   if(!p1.invecybility){p1.lives  -- }	
 		   return true
@@ -3727,6 +3776,8 @@ this.InFlor = false
 this.Action = false
 this.angle = 0;
 this.FristTouch = false
+this.Xvelocity = 0
+this.Yvelocity = 0
 this.Xnegative = Xnegative ;this.Ynegative = Ynegative ;
 this.YnegativeSave =  Ynegative ;
 this.Hx = 0; this.Hy = 0;
@@ -3738,6 +3789,7 @@ this.col = comportament
 this.xP = 0; this.yP = 0
 this.invecybility = true
 this.lives = 1
+this.Colision = true
 this.touchX = false ;this.touchY = false;
 this.x = X; this.y = Y;
 this.MoveX = 0;this.MoveY = 0;
@@ -3770,13 +3822,16 @@ function nullTrigers(player){
 }
 function PlayerTrigers(Player,ctr){
 	nullTrigers(Player)
+	PlayerGamepad = ctr
+	if(PlayerGamepad > 0){PlayerGamepad --}
 	if ((Player.keys && Player.keys[controlls[ctr].Jump]) || TouchControls.Abuton) Player.ButonATouch = true;
 	if ((Player.keys && Player.keys[controlls[ctr].Run]) || TouchControls.Bbuton) Player.ButonBTouch = true;
 	if ((Player.keys && Player.keys[controlls[ctr].left]) || TouchControls.Left) Player.LeftTouch = true;
 	if ((Player.keys && Player.keys[controlls[ctr].right]) || TouchControls.Right) Player.RightTouch = true;
 	if (Player.keys && Player.keys[controlls[ctr].up]) Player.UpTouch = true;
 	if (Player.keys && Player.keys[controlls[ctr].down]) Player.DownTouch = true;
-	gp = gamepads[0];
+	
+	gp = gamepads[PlayerGamepad];
 	if (gp) {
 		if(gp.buttons[0].pressed || gp.buttons[1].pressed){
 			Player.ButonATouch = true;
@@ -3800,38 +3855,55 @@ function PlayerTrigers(Player,ctr){
 		}
     }
 }
-function PlayerAction (player,controls,chocolate){
+function PlayerAction (player,player2,controls,chocolate){
 if(player.lives > 0 ){
 	 if(!player.InMove){
 		 nullTrigers(player)
 	 }else{
 		 PlayerTrigers(player,controls)
 	 }
+		player.Colision = true
 		 plataformer_Easy(controls,player)
-		 
+		 player.songEnd = false
+		 GameOverMusicEnd = false
          }else{
-			if(chocolate == false){
+			if(player2.lives < 1){
 				backgroundMusic.pause();       // Pausa el audio
 					backgroundMusic.currentTime = 0;  // Reinicia al inicio
 					
 				}
-			if(player.songEnd == false){
-				player.deathMusic.play()
+			if(Multiplayer){
+			player.Colision = false
+			player.lives = 0;
+			if(Bubble(player,player2) && GameOverMusicEnd){
+				return true;
+			}
+			}else{
+				if(death[2](player) && player.songEnd){
+					return true;
 				}		
-        player.lives = 0;if(death[2](player) && player.songEnd){
-	   if(chocolate){player.y = 240;player.x = 240;player.lives = 1;player.MoveY = -8
-	   player.songEnd = false
-   }else{
-	   return true;
-   }}
-}
+			}
+			if(!player.songEnd){
+				player.deathMusic.play()
+			}
+			if(!GameOverMusicEnd ){
+				if(player2.lives < 1 && Multiplayer ){
+				GameOverMusic.play()
+				player.deathMusic.pause()
+				player2.deathMusic.pause()
+				}
+			}		
+			
+		 }
 }
 
-const controlls =[{up:38,down:40,left:37,right:39,Jump:90,Run:88 },{up:87,down:83,left:65,right:68,Jump:32,Run:18 },{up:38,down:40,left:37,right:39,Jump:17,Run:40 },]
+const controlls =[
+{up:38,down:40,left:37,right:39,Jump:90,Run:88 },
+{up:38,down:40,left:37,right:39,Jump:79,Run:80 },
+{up:87,down:83,left:65,right:68,Jump:86,Run:66 },]
 function Player_Effects(Player){
 	for(let i = 0; i < effects_in_game.length ;i++){
 		let effect = effects_in_game[i]
-		effectAction[effect.type].Reset(Player)
 		let onX = false
 		let onY = false
 		if(effect.sideX){
@@ -3855,7 +3927,43 @@ function Player_Effects(Player){
 			}	
 		}
 		if(onX && onY){
+			effectAction[effect.type].Reset(Player)
 			effectAction[effect.type].Action(Player)
+		}
+	}
+}
+function Sprites_Effects(Sprite){
+	Sprite.water = false
+	Sprite.waterAlture = 0
+	for(let i = 0; i < effects_in_game.length ;i++){
+		let effect = effects_in_game[i]
+		if(effect.type == 1){
+			let onX = false
+			let onY = false
+			if(effect.sideX){
+				if(Sprite.x + Sprite.width > effect.VariableAltureX){
+					onX = true
+					
+				}
+			}else{
+				if(Sprite.x  < effect.VariableAltureX){
+					onX = true
+				}
+				
+			}
+			if(effect.sideY){
+				if(Sprite.y + Sprite.height > effect.VariableAltureY){
+					onY = true
+				}
+			}else{
+				if(Sprite.y  < effect.VariableAltureY){
+					onY = true
+				}	
+			}
+			if(onX && onY){
+			Sprite.waterAlture = effect.VariableAltureY 
+				Sprite.water = true
+			}
 		}
 	}
 }
@@ -4034,7 +4142,31 @@ function Fly(ctr,Player,B,C){
     if(Player.MoveY < Player.velocity*-1 ){Player.MoveY = Player.velocity*-1}
 }
 // Player Var
-var jump_force = -8
+var jump_force = -7
+function Bubble(Player,Player2){
+if(Player.ButonBTouch) Player.MaxVelocity = 3;
+	Emboscade_player_X(Player,Player2,Player.MaxVelocity)
+	Emboscade_player_Y(Player,Player2,Player.MaxVelocity)
+	Player.MaxVelocity = 2
+if(Player2.lives > 0){
+	if(
+		(Player.x < (Player2.x + Player2.width) && (Player.x + Player.width) > Player2.x ) 
+									&& 
+		(Player.y < (Player2.y + Player2.height)  && (Player.y + Player.height) > Player2.y)
+	)
+		{
+			Player.songEnd = true
+			SoundEffectsCollection[5].currentTime = 0;
+			SoundEffectsCollection[5].play()
+			Player.velocity = 0
+			Player.MoveX = 0
+			Player.MoveY = -4
+			Player.lives = 1
+		}
+}else{
+	return true ;
+}
+}
 function plataformer_Easy(ctr,Player,B,C){
 //if(Player.invecybility){Player.Time += 1;Player.prin = 4;if(Player.Time==20){Player.invecybility = false;Player.Time = 0;}}
 /*comprobar si esta en el suelo*/
@@ -4150,7 +4282,7 @@ if(Player.water ){
 		}
 	}else{
 		if (Player.ButonATouch) {
-			Jump(Player,jump_force,10,2);
+			Jump(Player,jump_force,14,2);
 		}else{
 			Player.jumped = false
 			Player.jt = 0
@@ -4305,7 +4437,12 @@ function animation(P,Con){
 					P.XG = Con[2]}
 					}
 			}else{
+				if(P.Up){
+				P.YG = 7
+			    P.XG = 1
+				}else{
 				P.XG = 0
+				}
 			}
 		}
 	    /*derrape*/
@@ -4443,7 +4580,7 @@ if((PL.x < (object.x + 32) - PL.MoveXLimit && (PL.x + (PL.width)) > (object.x - 
 			}
 			PL.xP = PL.x - ((object.x + 32) - PL.MoveXLimit) // aplica una operacion para sacar al jugador de ahi
 			}
-			PL.RightTouch = true
+			PL.RightTriger = true
 			PL.Xtouches ++
 			crash = true
 		} // todo lo demas funciona igual solo que en lo otro
@@ -4456,7 +4593,7 @@ if((PL.x < (object.x + 32) - PL.MoveXLimit && (PL.x + (PL.width)) > (object.x - 
 			}
 			PL.xP = (PL.x + PL.width) - (object.x  - PL.MoveXLimit)
 			}
-			PL.LeftTouch = true
+			PL.LeftTriger = true
 			PL.Xtouches ++
 			crash = true
 		}
@@ -4477,7 +4614,7 @@ if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (objec
 			    }
 			   PL.yP = PL.y - ((object.y + 32) - PL.MoveYLimit)
 				}
-				PL.DownTouch = true
+				PL.UpTriger = true
 				PL.Ytouches ++
 			   crash = true
 			   
@@ -4492,7 +4629,7 @@ if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (objec
 			    }
 			PL.yP = (PL.y + PL.height) - (object.y  - PL.MoveYLimit)
 			   }
-			   PL.UpTouch = true
+			   PL.DownTriger = true
 			   PL.Ytouches ++
 			crash = true
 		   }
@@ -4514,7 +4651,7 @@ if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (objec
 			    }
 			PL.yP = (PL.y + PL.height) - ((object.y +1)  - tileVy)
 				}
-				PL.UpTouch = true
+				PL.DownTriger = true
 				PL.Ytouches ++
 			crash = true
 			}
@@ -4809,8 +4946,8 @@ Y: function Y (PL) {if(PL.MoveX - PL.BX > 0 ){PL.BX = -8}else{PL.BX = 8};PL.Move
 X: function X (PL) {if(PL.MoveY + PL.BY < 0 ){PL.BY = -8}else{PL.BY = 8};},
 Y: function Y (PL) {if(PL.MoveX + PL.BX < 0 ){PL.BX = -8}else{PL.BX = 8};},
 },{   /* water (4)*/
-X: function X (PL) {PL.water = true},
-Y: function Y (PL) {PL.water = true},
+X: function X (PL) {PL.water = true;},
+Y: function Y (PL) {PL.water = true;},
 },{    /* prizes (5)*/
 X: function X (PL,B) {prizes += 1;B.col = "00000000";},
 Y: function Y (PL,B) {prizes += 1;B.col = "00000000";},
@@ -4828,7 +4965,7 @@ X: function X (PL,B) {establecing_starcords(B.Xcord,B.Ycord,PL);B.col = "0000000
 Y: function Y (PL,B) {establecing_starcords(B.Xcord,B.Ycord,PL);B.col = "00000000"},
 }
 ]
-function stopX(p1,tiles){
+function stopX(p1,p2,tiles){
 let GoTo = 0
 var crash = false
 cordX += cameraX
@@ -4842,9 +4979,10 @@ if(crash){
 	for (i = 0; i < tiles.length; i += 1){
 		tiles[i].x += GoTo
 	}
-	if(!frisFotogram){
+	/*if(!frisFotogram){
 		p1.x += GoTo - p1.xP
-	}//else{ p1.x += GoTo + p1.xP}
+		p2.x += GoTo - p2.xP
+	}*/
 	cameraX += GoTo
 	cordX += GoTo;
 	p1.modeX = 1;
@@ -4864,7 +5002,7 @@ function(Player) {
 	}
 },
 ]
-function stopY(p1,tiles){
+function stopY(p1,p2,tiles){
 let GoTo = 0
 var crash = false
 let line_position = 0
@@ -4886,9 +5024,10 @@ if(crash){
 	for (i = 0; i < tiles.length; i += 1){
 		tiles[i].y += GoTo
 	} 
-    if(!frisFotogram){
+    /*if(!frisFotogram){
 		p1.y += GoTo - p1.yP
-		}//else{ p1.y += GoTo + p1.yP}
+		p2.y += GoTo - p2.yP
+		}*/
 	cameraY += GoTo
 	cordY += GoTo;
 	p1.modeY = 1;
@@ -4910,46 +5049,33 @@ function(Player,tiles) {
 	}
 	},
 ]
-const modeX = [
-function(Player,tiles,mysprites) {
-let crash = false
-Player.Xtouch = false
-Player.LeftTouch = false
-Player.RightTouch = false
-if(tick){
-if(Player.BX <= -1){Player.BX += 1}
-if(Player.BX >= 1){Player.BX += -1}
-}
-	let MoveX = Player.MoveX + Player.BX
-	if(MoveX > positveLimit){MoveX = positveLimit}
-	if(MoveX < negativeLimit){MoveX = negativeLimit}
-	if(Player.Xteleport != 0 ){
-				MoveX = Player.Xteleport
-				Player.Xteleport = 0
-	}
-Player.MoveXLimit = MoveX  + Player.Hx
-Player.xP = (MoveX + Player.Hx) *-1
-cameraX = Player.xP
-/*calculate sprites*/
-
-for (i = 0; i < mysprites.length; i += 1){
-	
-    if(calculate_M[mysprites[i].typeColision].X(Player,mysprites[i])){
-		mysprites[i].Xplayertouch = true
-        crash = true; i = 1000;
+function PlayerMovementManagerX (Player,tiles,sprites){
+	if(Player.lives > 0 || Multiplayer){
+		if(Player.modeX == 0){
+		cameraX = MovementXPlayer(Player,tiles,sprites,0);
+		for (i = 0; i < tiles.length; i += 1){
+			tiles[i].x -= cameraX
+		}
+		cameraX = cameraX*-1
+		}else{
+			Player.x += MovementXPlayer(Player,tiles,sprites,0);
+		}
 	}
 }
-if(CompleteTilesColisionX(Player,tiles)){
-	crash = true
-}
-
-
-if(crash){cameraX += Player.xP}
-	for (i = 0; i < tiles.length; i += 1){
-		tiles[i].x += cameraX
+function PlayerMovementManagerY (Player,tiles,sprites){
+	if(Player.lives > 0 || Multiplayer){
+		if(Player.modeY == 0){
+		cameraY = MovementYPlayer(Player,tiles,sprites,0);
+		for (i = 0; i < tiles.length; i += 1){
+			tiles[i].y -= cameraY
+		}
+		cameraY = cameraY*-1
+		}else{
+			Player.y += MovementYPlayer(Player,tiles,sprites,0);
+		}
 	}
-return cameraX;},
-function(Player,tiles,mysprites) {
+}
+function MovementXPlayer (Player,tiles,mysprites) {
 let crash = false
 Player.Xtouch = false
 Player.LeftTouch = false
@@ -4972,69 +5098,24 @@ if(Player.BX >= 1){Player.BX += -1}
 if(Xmargin[SAVE.Margin](Player)){
 	crash = true
 }
-for (i = 0; i < mysprites.length; i += 1){
-	
-	if(calculate_M[mysprites[i].typeColision].X(Player,mysprites[i])){
-		mysprites[i].Xplayertouch = true
+if(Player.Colision){
+	for (i = 0; i < mysprites.length; i += 1){
+		
+		if(calculate_M[mysprites[i].typeColision].X(Player,mysprites[i])){
+			mysprites[i].Xplayertouch = true
+			crash = true
+		}
+	}
+	if(CompleteTilesColisionX(Player,tiles)){
 		crash = true
 	}
 }
-if(CompleteTilesColisionX(Player,tiles)){
-	crash = true
-}
 
 if(crash){XnextPosition += Player.xP *-1}
-Player.x += XnextPosition
-return 0;
-},
-];
-const modeY = [
-function(Player,tiles,sprites){
-	/*cameraY free  // mode 0*/
-    let crash = false
-	Player.Ytouch = false
-	Player.UpTouch = false
-	Player.DownTouch = false
-	if(tick){	
-       if(Player.BY <= -1){Player.BY += 1}
-       if(Player.BY >= 1){Player.BY += -1}
-    }
-	let MoveY = Player.MoveY + Player.BY
-	if(MoveY > positveLimit){MoveY = positveLimit}
-	if(MoveY < negativeLimit){MoveY = negativeLimit}
-	if(Player.Yteleport != 0 ){
-		MoveY = Player.Yteleport
-		Player.Yteleport = 0
-    }
-	Player.MoveYLimit = MoveY
-    Player.yP = MoveY *-1 
-    cameraY = Player.yP
-	
-    Player.Hy = 0; Player.Hx = 0
-	
-/*calculate sprites*/
-for (i = 0; i < sprites.length; i += 1){
-	
-     if(calculate_M[sprites[i].typeColision].Y(Player,sprites[i],MoveY)){
-		 mysprites[i].Yplayertouch = true
-         crash = true;i = 1000
-		 }
+return XnextPosition
 }
-cameraY += Player.Hy *-1
-Player.MoveYLimit += Player.Hy *-1
-/*calculate tiles*/
-if(CompleteTilesColisionY(Player,tiles)){
-	if(Player.Ytouch && Player.MoveYLimit > 0 ){
-			 Player.InFlor = true
-		 }
-	crash = true
-}
-if(crash){cameraY += Player.yP }
-	for (i = 0; i < tiles.length; i += 1){
-		tiles[i].y += cameraY
-	}
-return cameraY},
-function(Player,tiles,sprites) { 
+
+function MovementYPlayer (Player,tiles,sprites){
  /*cameraY stuck // mode 1 */
 let crash = false
 Player.Ytouch = false
@@ -5063,30 +5144,29 @@ if(Ymargin[SAVE.Margin](Player)){
 }
 Player.Hy = 0;Player.Hx = 0;
 
+if(Player.Colision){
+	for (i = 0; i < sprites.length; i += 1){
+		
+		if(calculate_M[sprites[i].typeColision].Y(Player,sprites[i],MoveY)){
+			mysprites[i].Yplayertouch = true
+			crash = true
+		}
+	}
+	YnextPosition += Player.Hy 
+	Player.MoveYLimit += Player.Hy 
 
-for (i = 0; i < sprites.length; i += 1){
-	
-    if(calculate_M[sprites[i].typeColision].Y(Player,sprites[i],MoveY)){
-		mysprites[i].Yplayertouch = true
+	if(CompleteTilesColisionY(Player,tiles)){
+		if(Player.Ytouch && Player.MoveYLimit > 0 ){
+				 Player.InFlor = true
+			 }
 		crash = true
-    }
-}
-YnextPosition += Player.Hy 
-Player.MoveYLimit += Player.Hy 
-
-if(CompleteTilesColisionY(Player,tiles)){
-	if(Player.Ytouch && Player.MoveYLimit > 0 ){
-			 Player.InFlor = true
-		 }
-	crash = true
+	}
 }
 
 if(crash){YnextPosition += Player.yP *-1}
-Player.y += YnextPosition
 
-return 0;
-},
-];
+return YnextPosition
+}
 function CompleteTilesColisionX(Player,Tiles){
 	let crash = false
 	Player.FristTouch = true
@@ -5493,6 +5573,7 @@ Wellcome.Img.addEventListener("load", (e) => {
 	DrawTexture(S0,Wellcome)
 	
 })
+
 var on_game = true
 var pre_finish = false
 var Pre_star = true
@@ -5529,6 +5610,10 @@ var song_end = false
 var frisFotogram = true
 var effects_in_game = []
 var Kills = 0
+var Player_CRT = {
+	Player1:  1,
+	Player2:  2,
+}
 function keyHandler(e) {
   e.preventDefault();
   console.log(e.key.charCodeAt(0))
@@ -5538,7 +5623,7 @@ function keyHandler(e) {
  Tileselect =  ['Tile', 'rgba(0,0,0,0)', 0, '00000'+Key+'0']
  
 }
-/*activa todo el juego*/
+//document.addEventListener('keydown',  keyHandler)
 
  var gamepads = navigator.getGamepads(); // arreglo de gamepads
  var gp = gamepads[0]; // primer control conectado
@@ -5569,92 +5654,8 @@ function MiniSpriteManager(mini_sprites){
 		}
 	};
 }
-function gametest (game,all_frames,p1,p2,tiles,sprites,mini_sprites,Hits){
-
-/*pone en su valor inicial Player todas las variables que lo ocupen*/
-   for(let i = 0; i < effects_in_game.length ;i++){  
-	effects_in_game[i].VariableAltureY = (screenHeigth - effects_in_game[i].altureY ) + cordY  
-	effects_in_game[i].VariableAltureX = effects_in_game[i].altureX + cordX
-   }	
-   /*
-		WaterLevel = (SAVE.WaterLevel*-1 + screenHeigth) + cordY
-        deathLevel = (SAVE.DeathLevel*-1 + screenHeigth) + cordY
-	ShadowLevel = (1408*-1 + screenHeigth) + cordY
-	*/
-corection = -1;
-clok_number = 0
-Kills = 0
-p1.priority = false
-p1.modeX = 0
-p1.modeY = 0
-Alpha = 0
-Shadow = 0
-InShadow = false
-DrawShadow = false
-song_end = false
-tick = true
-Ax3 = 0
-Ax4 = 0
-Ax6 = 0
-Ax8 = 0
-Ax16 = 0
-
-for(let i = 0; i < BackgroundsInLevel.length ;i++){
-	BackgroundsInLevel[i].x = BackgroundsInLevel[i].stx 
-	BackgroundsInLevel[i].y = BackgroundsInLevel[i].sty 
-	if((SAVE.limit_down   > cordY) == false){
-	BackgroundsInLevel[i].y += (cordY * BackgroundsInLevel[i].mY)
-	}
-}
-	function keydownHandler(e) {
-	  e.preventDefault();
-	  p1.keys = p1.keys || [];
-	  p1.keys[e.keyCode] = (e.type == "keydown");
-	}
-	function keyupHandler(e) {
-		e.preventDefault();
-	  p1.keys[e.keyCode] = (e.type == "keydown");
-	}
-
-	document.addEventListener('keydown',  keydownHandler)
-	document.addEventListener('keyup', keyupHandler)
-	
-document.addEventListener('mousedown', (event) => {
-	mouse = true
-})
-document.addEventListener('mouseup', (event) => {
-  mouse = false
-});
-p1.deathMusic.addEventListener("ended", () => {
-		p1.songEnd = true	
-        p1.deathMusic.currentTime = 0	
-})
-p2.deathMusic.addEventListener("ended", () => {
-		p2.songEnd = true	
-        p2.deathMusic.currentTime = 0	
-})
-on_game = true
-Win_or_lose = false
-pre_finish = false
-Pre_star = true
-frisFotogram = true
-reset_game = false
-TextFinishGame = []
-inputX = 0
-inputY = 0
-backgroundMusic.play();
-/*de aqui para abajo todo lo de esto corchetes se va Player hacer cada frame*/
-function Frames(){
-        if(Frame(p1,p2,tiles,sprites,mini_sprites,Hits)){
-				requestAnimationFrame(Frames)
-        }else{
-	       if(reset_game){
-	       buton[2](0)
-	       }else{
-			on_game = false
-			backgroundMusic.pause();  // Pausa el audio
-			backgroundMusic.currentTime = 0; // Reinicia al inicio
-				  if(Win_or_lose){
+function Win_or_lose_Manager(){
+					if(Win_or_lose){
 					  if(AZAR){
 						  TextFinishGame.push(new Text("Passed level "+ Azar_floor,'#8F8','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
 						  TextFinishGame.push(new Text("If you wish to continue, insert the code again.",'white','24px Arial','center',screenWidth/2,screenWidth/2,0.1,screenHeigth,screenHeigth/2+screenHeigth/4,0.05))  
@@ -5674,18 +5675,134 @@ function Frames(){
 					   if(AZAR){
 						Azar_Level()
 						buton[1](0) 
-					   }else{
+						}
 					  TextFinishGame.push(new Text("GameOver",'#F00','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
 					  TextFinishGame.push(new Text("Kills/"+Kills,'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/2,0.2))
-					   }
 				  }
+}
+function gametest (game,all_frames,p1,p2,tiles,sprites,mini_sprites,Hits){
+
+/*pone en su valor inicial Player todas las variables que lo ocupen*/
+   for(let i = 0; i < effects_in_game.length ;i++){  
+	effects_in_game[i].VariableAltureY = (screenHeigth - effects_in_game[i].altureY ) + cordY  
+	effects_in_game[i].VariableAltureX = effects_in_game[i].altureX + cordX
+   }	
+   /*
+		WaterLevel = (SAVE.WaterLevel*-1 + screenHeigth) + cordY
+        deathLevel = (SAVE.DeathLevel*-1 + screenHeigth) + cordY
+	ShadowLevel = (1408*-1 + screenHeigth) + cordY
+	*/
+corection = -1;
+clok_number = 0
+Kills = 0
+p1.priority = false
+p1.modeX = 0
+p1.modeY = 0
+p2.modeX = 1
+p2.modeY = 1
+Alpha = 0
+Shadow = 0
+InShadow = false
+DrawShadow = false
+song_end = false
+tick = true
+Ax3 = 0
+Ax4 = 0
+Ax6 = 0
+Ax8 = 0
+Ax16 = 0
+
+for(let i = 0; i < BackgroundsInLevel.length ;i++){
+	BackgroundsInLevel[i].x = BackgroundsInLevel[i].stx 
+	BackgroundsInLevel[i].y = BackgroundsInLevel[i].sty 
+	if((SAVE.limit_down   > cordY) == false){
+	BackgroundsInLevel[i].y += (cordY * BackgroundsInLevel[i].mY)
+	}
+}
+	function keydownHandlerP1(e) {
+	  e.preventDefault();
+	  p1.keys = p1.keys || [];
+	  p1.keys[e.keyCode] = (e.type == "keydown");
+	}
+	function keyupHandlerP1(e) {
+		e.preventDefault();
+	  p1.keys[e.keyCode] = (e.type == "keydown");
+	}
+	function keydownHandlerP2(e) {
+	  e.preventDefault();
+	  p2.keys = p2.keys || [];
+	  p2.keys[e.keyCode] = (e.type == "keydown");
+	}
+	function keyupHandlerP2(e) {
+		e.preventDefault();
+	  p2.keys[e.keyCode] = (e.type == "keydown");
+	}
+	
+
+	document.addEventListener('keydown',  keydownHandlerP1)
+	document.addEventListener('keyup', keyupHandlerP1)
+	document.addEventListener('keydown',  keydownHandlerP2)
+	document.addEventListener('keyup', keyupHandlerP2)
+	
+document.addEventListener('mousedown', (event) => {
+	mouse = true
+})
+document.addEventListener('mouseup', (event) => {
+  mouse = false
+});
+p1.deathMusic.addEventListener("ended", () => {
+		p1.songEnd = true	
+        p1.deathMusic.currentTime = 0	
+})
+p2.deathMusic.addEventListener("ended", () => {
+		p2.songEnd = true	
+        p2.deathMusic.currentTime = 0	
+})
+GameOverMusic.addEventListener("ended", () => {
+	GameOverMusicEnd = true
+	GameOverMusicEnd.currentTime = 0	
+})
+GameOverMusicEnd = false
+p1.priority = true
+if(!Multiplayer){ 
+	p2.lives = -1
+	Player_CRT.Player1 = 0
+}
+on_game = true
+Win_or_lose = false
+pre_finish = false
+Pre_star = true
+frisFotogram = true
+reset_game = false
+TextFinishGame = []
+inputX = 0
+inputY = 0
+backgroundMusic.play();
+/*de aqui para abajo todo lo de esto corchetes se va Player hacer cada frame*/
+function Frames(){
+	if(!on_game){
+	document.removeEventListener('keydown',  keydownHandlerP1)
+	document.removeEventListener('keyup', keyupHandlerP1)
+	document.removeEventListener('keydown',  keydownHandlerP2)
+	document.removeEventListener('keyup', keyupHandlerP2)
+	}
+        if(Frame(p1,p2,tiles,sprites,mini_sprites,Hits)){
+				requestAnimationFrame(Frames)
+        }else{
+	       if(reset_game){
+	       buton[2](0)
+	       }else{
+			on_game = false
+			backgroundMusic.pause();  // Pausa el audio
+			backgroundMusic.currentTime = 0; // Reinicia al inicio
+			Win_or_lose_Manager()	  
+			document.removeEventListener('keydown',  keydownHandlerP1)
+			document.removeEventListener('keyup', keyupHandlerP1)
+			document.removeEventListener('keydown',  keydownHandlerP2)
+			document.removeEventListener('keyup', keyupHandlerP2)
 			Textdraw()
 		   }
 		}
-	if(!on_game){
-	document.removeEventListener('keydown',  keydownHandler)
-	document.removeEventListener('keyup', keyupHandler)
-	}
   }
 
 Frames()
@@ -5725,14 +5842,18 @@ for(let i = 0; i < fotograms.length ;i++){
 clear(game);/*Este es el que refresca la pantalla cada frame*/
 //rotate(game,0)
 if(UpSide){UpSideDown(game)}
-cameraX = 0;cameraY = 0;
+cameraX = 0;
+cameraY = 0;
 /*Estos dos hacen los input de los jugadores y determinan si estan muertos*/
-/*if(PlayerAction(p2,1,true)){
-	//pre_finish = true
-   // reset_game = true
-}   */
+if(Multiplayer){
+Player_Effects(p2)
+	if(PlayerAction(p2,p1,Player_CRT.Player2,Multiplayer)){
+		//pre_finish = true
+	   //reset_game = true
+	} 
+}
 Player_Effects(p1)
-if(PlayerAction(p1,0,false)){
+if(PlayerAction(p1,p2,Player_CRT.Player1,Multiplayer)){
 	pre_finish = true
 	if(!AZAR){reset_game = true}
 
@@ -5749,14 +5870,14 @@ for(let i = 0; i < sprites.length ;i++){
 };
 
 /*camera Y*/ 
-
-if(p1.lives > 0){cameraY = modeY[p1.modeY](p1,tiles,sprites,0);}
+PlayerMovementManagerY(p1,tiles,sprites)
 
 if(p1.modeY == 1){
     cameraModeY[p1.camY](p1,tiles)
      }else{
-        stopY(p1,tiles)
+        stopY(p1,p2,tiles)
 }
+
 MoveExtras_in_Y()
 inputY += cameraY
 
@@ -5767,17 +5888,20 @@ if(inputY < 0 || inputY > 32){
     deleted_sprites(Sprite_Collection,sprites,cordX,cordY)
 };
 /*Move player 2*/
-//p2.y += cameraY
-//if(p2.lives > 0){modeY[1](p2,tiles,mysprites,0);}
+if(Multiplayer){
+	if(!frisFotogram)p2.y += cameraY
+	p2.y += MovementYPlayer(p2,tiles,mysprites,0);
+}
 
 /*camera X*/
-if(p1.lives > 0){cameraX = modeX[p1.modeX](p1,tiles,sprites,0);}
+PlayerMovementManagerX(p1,tiles,sprites)
 
 if(p1.modeX == 1){
    cameraModeX[p1.camX](p1)
    }else{	   
-       stopX(p1,tiles)
+       stopX(p1,p2,tiles)
 }
+
 
 MoveExtras_in_X()
 
@@ -5805,9 +5929,10 @@ for(let i = 0; i < sprites.length ;i++){
 	sprites[i].prin  = false
 	}
 }
-
-//p2.x += cameraX
-//if(p2.lives > 0){modeX[1](p2,tiles,mysprites,0);}
+if(Multiplayer){
+	if(!frisFotogram)p2.x += cameraX
+	p2.x += MovementXPlayer(p2,tiles,mysprites,0);
+}
 
 /*Mueve Player los minisprites*/
 MiniSprites_Vx_VY()
@@ -5892,7 +6017,20 @@ ctx.globalAlpha = Alpha
 }
 
 //PrinT(game,Position[0].X,Position[0].Y,24,32,"#fff")
+if(Multiplayer){
+	
+if(!p2.Colision){
+ctx.drawImage(HudTEXTURES,0,96,64, 64,p2.x - (96-p2.width - p2.Xnegative*0.5 )*0.5  ,p2.y - (96-p2.height - p2.Ynegative*0.5 )*0.5 ,96,96);
+}
+ctx.drawImage(HudTEXTURES,80,96,16, 16,p2.x +p2.widthHalf -8,p2.y -16, 16  , 16);
+animation(p2,p2.CameraY)
+prin[1](p2,ctx,p2.CameraY[0],p2.CameraY[1]);
 
+if(!p1.Colision){
+ctx.drawImage(HudTEXTURES,0,96,64, 64,p1.x - (96-p1.width - p1.Xnegative*0.5 )*0.5  ,p1.y - (96-p1.height - p1.Ynegative*0.5 )*0.5 ,96,96);
+}
+ctx.drawImage(HudTEXTURES,64,96,16, 16,p1.x +p1.widthHalf -8,p1.y -16, 16  , 16);
+}
 animation(p1,p1.CameraY)
 prin[1](p1,ctx,p1.CameraY[0],p1.CameraY[1]);
 
@@ -5920,8 +6058,12 @@ var invecybility = false
 var UpSide = false
 var TESTSCREEN = false
 var AZAR = false
+var Multiplayer = false
 function Boregito(Value){
 		   switch(Value){
+			   case "MULTIPLAYER":
+			    Multiplayer = true
+			   break 
 			   case "WATER":
 			    effects_in_game.push(new effect(1,WaterTexture,512,512,true,0,true,512,0,0))
 			   break 

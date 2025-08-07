@@ -19,6 +19,8 @@ backgroundMusicTrack: 0 ,
 
 StyleBackground:'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))',
 backgroundImages:[
+["Backgrounds/FlorClouds.png",2048,448,0.6,0,0,0,true,false,0,0],
+["Backgrounds/Cloud.png",2048,448,0.4,0,0,0,true,false,0,0],
 ],
 
 
@@ -28,7 +30,8 @@ Name:"Tiles & Objects",
 Images:["texturas/Texturas ASCII_DIY.png","texturas/GradientTexture.png","texturas/Sprites.png","texturas/decoraciones.png",
 "texturas/Monkey.png","texturas/BigMonkey.png","texturas/Goomba.png","texturas/shy guy.png","texturas/3x3 Textures.png",
 /*"texturas/Decoraciones Realistas.png","texturas/RealisticTexture.png"*/],
-SoundEffects:["SoundEfects/Checkpoint.wav","SoundEfects/Collect.wav","SoundEfects/Boing.mp3","SoundEfects/Boing.mp3","SoundEfects/Jump Attack.mp3"],
+SoundEffects:["SoundEfects/Checkpoint.wav","SoundEfects/Collect.wav","SoundEfects/Boing.mp3","SoundEfects/Boing.mp3","SoundEfects/Jump Attack.mp3",
+"SoundEfects/bubble-pop.mp3","SoundEfects/Destroy.wav","SoundEfects/Break.wav"],
 objects:[
 // Print Blocks 
 ["Tile","rgba(0,0,0,0)",0,"00000000"],
@@ -149,7 +152,7 @@ objects:[
 
 ["Object",42,42,0,"661132103",2,"22300", -1,8],
 ["Object",84,84,1,"661132103",2,"21100", -1,8],
-["Object",42,42,2,"661122103",2,"22300", -1,8],
+["Object",42,42,2,"661132103",2,"22300", -1,8],
 ["Object",42,42,14,"661132103",2,"22300", -1,8],
 ["Object",32,32,7,"661132103",5,"2A200", -2,8],
 ["Object",32,32,"#","661132103",1,"08200", 0,8],
@@ -327,6 +330,8 @@ Action: function Action(Tile,p1,side) {
 },
 Loop: function Loop (Tile) {
 	if(Clock(Tile,10)){
+		SoundEffectsCollection[7].currentTime = 0;
+		SoundEffectsCollection[7].play()
 	myMiniSprites.push(new Mini_sprite(Tile.x+16,Tile.y,1,1,128,96,RandomNumber(1,16),5,0,0,16,16,0))
 	myMiniSprites.push(new Mini_sprite(Tile.x,Tile.y,1,1,128+16,96,RandomNumber(1,16),5,0,0,16,16,0))
 	Tile.action = false
@@ -356,6 +361,8 @@ Loop: function Loop (Tile) {
 {
 Action: function Action(Tile,p1,side) {
 	if( (!side  && p1.atack) || (side  && p1.atackY)){
+		SoundEffectsCollection[7].currentTime = 0;
+		SoundEffectsCollection[7].play()
 		explosions32[0](Tile)
 		Tile.type = 0
 	    Tile.imgN = 0
@@ -367,6 +374,8 @@ Action: function Action(Tile,p1,side) {
 },
 Loop: function Loop (Tile) {
 	if(Clock(Tile,10)){
+	SoundEffectsCollection[7].currentTime = 0;
+	SoundEffectsCollection[7].play()
 	myMiniSprites.push(new Mini_sprite(Tile.x,Tile.y,Tile.imgN,1,Tile.XG,Tile.YG,RandomNumber(1,8),5,0,0,16,16,0))
 	myMiniSprites.push(new Mini_sprite(Tile.x+16,Tile.y,Tile.imgN,1,Tile.XG+16,Tile.YG,RandomNumber(1,8),5,0,0,16,16,0))
 	myMiniSprites.push(new Mini_sprite(Tile.x,Tile.y+16,Tile.imgN,1,Tile.XG,Tile.YG+16,RandomNumber(1,8),5,0,0,16,16,0))
@@ -476,6 +485,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
 {
 Action: function Action(Sprite) { // 2
 	 Sprite.Mode = 1
+	 Sprite.type = 3
      Sprite.width = 32
 	 Sprite.height = 16
 	 Sprite.widthPrint = 42
@@ -1218,34 +1228,50 @@ Loop: function Loop (Sprite,player) {
 		Sprite.intervald_time = 0
 },
 Loop: function Loop (Sprite,Player) {
-	if(Colision(Sprite,p1,-132,-132,288,288)){
-		Sprite.intervald_time = 0
-		Sprite.State = 1
-	}
-    if(Sprite.State == 1){
-		Sprite.XG = 192
-		Sprite.FramesIntervalds = 4
-		Emboscade_player_Y(Sprite,Player,3)
-		Emboscade_player_X(Sprite,Player,3)
-		if(Sprite.Xtouch){
-		Sprite.Xvelocity = Sprite.Xvelocity *-1
-		Sprite.MoveX = Sprite.Xvelocity
+	if(Sprite.water){
+		if(Colision(Sprite,p1,-132,-132,288,288)){
+			Sprite.intervald_time = 0
+			Sprite.State = 1
 		}
-		if(Sprite.Ytouch){
-		Sprite.Yvelocity = Sprite.Yvelocity *-1
-		Sprite.MoveY = Sprite.Yvelocity
-		}
-		if(Clock(Sprite,180)){
-			Sprite.State = 0
+		if(Sprite.State == 1){
+			Sprite.XG = 192
+			Sprite.FramesIntervalds = 4
+			Emboscade_player_Y(Sprite,Player,3)
+			Emboscade_player_X(Sprite,Player,3)
+			if(Sprite.y  + Sprite.MoveY < Sprite.waterAlture){
+				Sprite.MoveY =  Sprite.waterAlture - Sprite.y
+			}
+			if(Sprite.Xtouch){
+				Sprite.Xvelocity = Sprite.Xvelocity *-1
+				Sprite.MoveX = Sprite.Xvelocity
+			}
+			if(Sprite.Ytouch){
+				Sprite.Yvelocity = Sprite.Yvelocity *-1
+				Sprite.MoveY = Sprite.Yvelocity
+			}
+			if(Clock(Sprite,180)){
+				Sprite.State = 0
+			}
+		}else{
+			Gravedad(Sprite,0.5)
+			Sprite.XG = 256
+			Sprite.FramesIntervalds = 8
+			Sprite.Yvelocity = 0
+			if(Sprite.Xvelocity >=  1){Sprite.Xvelocity --}
+			if(Sprite.Xvelocity <= -1){Sprite.Xvelocity ++}
+			Sprite.MoveX = Sprite.Xvelocity
 		}
 	}else{
-		Gravedad(Sprite,0.5)
-		Sprite.XG = 256
-		Sprite.FramesIntervalds = 8
+		Sprite.XG = 192
+		Sprite.FramesIntervalds = 4
 		Sprite.Yvelocity = 0
+		Gravedad(Sprite,1)
 		if(Sprite.Xvelocity >=  1){Sprite.Xvelocity --}
 		if(Sprite.Xvelocity <= -1){Sprite.Xvelocity ++}
-		Sprite.MoveX = Sprite.Xvelocity
+		if(Sprite.DownTriger){
+			Sprite.MoveY += -4
+			if(randomBoolean()){Sprite.MoveX = 2}else{Sprite.MoveX = -2}
+		}
 	}
 	if(Sprite.MoveX > 0 ){Sprite.Mode = 3}else{Sprite.Mode = 0}
 	
