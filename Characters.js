@@ -14,6 +14,32 @@ GameOverSound: "SoundEfects/Game OverSMB1.mp3"
 
 },
 {
+Name:"New Mario Characters" ,
+Img :["characters/NewMario.png","characters/NewLuigi.png","characters/NewPeach.png","characters/NewDaisy.png"],
+Grid:[/*width*/ 48,/*height*/48,/*static*/1,/*walk*/3,/*run*/2,/*brek*/7,
+/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/6,/*death*/0 ],
+width:24,
+height:32,
+WNEGA:-12,
+HNEGA:-16,
+WinSound: "SoundEfects/WinNew.mp3",
+DeathSound:"SoundEfects/DeathNew.mp3",
+GameOverSound: "SoundEfects/Game OverNew.mp3"
+},
+{
+Name:"Enemies and objects" ,
+Img :["characters/QuestionBlock.png","characters/BoingBlock.png","characters/Resorte.png","characters/Resorte2.png"],
+Grid:[/*width*/ 48,/*height*/48,/*static*/1,/*walk*/3,/*run*/2,/*brek*/7,
+/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/6,/*death*/0 ],
+width:24,
+height:32,
+WNEGA:-12,
+HNEGA:-16,
+WinSound: "SoundEfects/WinNew.mp3",
+DeathSound:"SoundEfects/DeathNew.mp3",
+GameOverSound: "SoundEfects/Game OverNew.mp3"
+},
+{
 Name:"Super Mario of SMB1" ,
 Img :["characters/BigMario-sprite.png","characters/MarioFlaco-sprite.png","characters/BigToad-sprite.png","characters/Peach-sprite.png"],
 Grid:[/*width*/ 32,/*height*/64,/*static*/0,/*walk*/3,/*run*/0,/*brek*/4,
@@ -42,7 +68,7 @@ GameOverSound: "SoundEfects/Game OverSMB1.mp3"
 {
 Name:"Mario Maker costumes of SMB1" ,
 Img :["characters/BabyMario-sprite.png","characters/Bowser-sprites.png"],
-Grid:[/*width*/ 48,/*height*/48,/*static*/0,/*walk*/3,/*run*/3,/*brek*/7,
+Grid:[/*width*/ 48,/*height*/48,/*static*/1,/*walk*/3,/*run*/2,/*brek*/7,
 /*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3,/*death*/0 ],
 width:32,
 height:32,
@@ -85,13 +111,14 @@ WinSound: "SoundEfects/WinDKA.mp3",
 },
 {
 Name:"Sonic the hedghog" ,
-Img :["characters/SonicSprite.png"],
+Img :["characters/SonicSprite.png","characters/KnucklesSprite.png"],
 Grid:[59,59,/*static*/1,/*walk*/8,/*run*/3,/*brek*/17,/*jumpUP*/5,/*jumpDOWN*/0,/*jump+run*/0,/*simw*/4,/*death*/0 ],
 width:24,
 height:40,
 WNEGA:-18,
 HNEGA:-11,
 WinSound: "SoundEfects/WinSONIC.mp3",
-GameOverSound: "SoundEfects/Game OverSONIC.mp3"
+DeathSound:"SoundEfects/DeathSonic.wav",
+GameOverSound: "SoundEfects/Game OverSONIC.mp3",
 },
 ]
