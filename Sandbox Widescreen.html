@@ -161,6 +161,13 @@
 	border:2em rgb(0,0,0) outset; 
 	float:left;
 	}
+	#characters2{
+	width:24em;
+    height:24em;
+	margin:0em 0em;
+	border:2em rgb(0,0,0) outset; 
+	float:left;
+	}
 	.Skins{
 	width:12em;
     height:12em;
@@ -189,6 +196,12 @@
 	   background-position: 0px -16em;  /* Coordenadas del recorte dentro de la imagen */ 
 	}
 	#arrowLeft{
+	background-position: -16em 0px;  /* Coordenadas del recorte dentro de la imagen */
+	}
+	#arrowRight2{
+	   background-position: 0px -16em;  /* Coordenadas del recorte dentro de la imagen */ 
+	}
+	#arrowLeft2{
 	background-position: -16em 0px;  /* Coordenadas del recorte dentro de la imagen */
 	}
 	#colors{
@@ -396,6 +409,7 @@
 	<script   src="./MusicList.js" defer></script>
 	<script   src="./Characters.js" defer></script>
     <script   src="./java.js" defer></script>
+	<script   src="./Shotter.js" defer></script>
  </head>
  <body>
   <header>   </header>
@@ -513,9 +527,18 @@
 	 float:left
 	 ;" >
 		
-		</div>
+     </div>
 		
-		</div>
+    </div>
+		<div id="Character-selector2" style="
+	 width:128em;  
+	 height:32em; 
+	 float:left; 
+	"> 
+	 <button onclick="Star_Multiplayer()"style="font-size:32px;">Multiplayer</button>
+	
+		
+    </div>
 		<a class="Text"  href="index.html">Editor</a>
 				<div id="BlockResolution_Selector" style="
 	 width:52em;  
