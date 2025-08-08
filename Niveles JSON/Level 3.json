@@ -6488,8 +6488,8 @@
     }
   ],
   "Levelsprites": [],
-  "StartX": 55,
-  "StartY": 25,
+  "StartX": 3,
+  "StartY": 3,
   "totalPrizes": 5,
   "Limit_Up": 184
 }
