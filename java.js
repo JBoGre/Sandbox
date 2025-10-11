@@ -605,6 +605,8 @@ Scrips_collection = [
 {
 Action: function Action(sprite,i) {
 	sprite.live = 0
+	if(sprite.col[7] == 8){sprite.Xvelocity = 0}
+	if(sprite.col[8] == 8){sprite.Xvelocity = 0}
 },
 Loop: function Loop (sprite,player1,player2,tiles,i){
 	PreProgramedMode(sprite,player1)
@@ -2115,7 +2117,7 @@ function Create_sprites() {
 	}
 }
 
-let myObstacles = [];
+let myTiles = [];
 let mysprites = [];
 let myMiniSprites = [];
 let myHits = [];
@@ -2215,7 +2217,7 @@ StarPosition()
 
 p1 = new player(p1InF.width,p1InF.height,p1InF.Img[Skins_for_players[0].SkinSelect],p1InF.Grid,PositionX,PositionY,1,"0031",p1InF.WNEGA,p1InF.HNEGA,p1InF.DeathSound)
 p2 = new player(p2InF.width,p2InF.height,p2InF.Img[Skins_for_players[1].SkinSelect],p2InF.Grid,PositionX,PositionY,1,"0031",p2InF.WNEGA,p2InF.HNEGA,p2InF.DeathSound)
-gametest(game,10000,p1,p2,myObstacles,mysprites,myMiniSprites,myHits)
+gametest(game,10000,p1,p2,myTiles,mysprites,myMiniSprites,myHits)
 type_but = 1
 },
 function(b) {
@@ -2229,7 +2231,7 @@ finishMusic.currentTime = 0; // Reinicia al inicio
 GameOverMusic.pause();       // Pausa el audio
 GameOverMusic.currentTime = 0; // Reinicia al inicio
 table.style.overflow = "auto"
-myObstacles = [];
+myTiles = [];
 mysprites = [];
 myMiniSprites = [];
 ctx = Grid.getContext("2d")
@@ -2245,7 +2247,7 @@ type_but = 0
 	
 },
 function(b) { 
-myObstacles.length = 0
+myTiles.length = 0
 mysprites.length = 0
 myMiniSprites.length = 0
 myHits.length = 0
@@ -2256,7 +2258,7 @@ let p1InF = characters[Skins_for_players[0].characterSelect]
 let p2InF = characters[Skins_for_players[1].characterSelect]
 p1 = new player(p1InF.width,p1InF.height,p1InF.Img[Skins_for_players[0].SkinSelect],p1InF.Grid,PositionX,PositionY,1,"0031",p1InF.WNEGA,p1InF.HNEGA,p1InF.DeathSound)
 p2 = new player(p2InF.width,p2InF.height,p2InF.Img[Skins_for_players[1].SkinSelect],p2InF.Grid,PositionX,PositionY,1,"0031",p2InF.WNEGA,p2InF.HNEGA,p2InF.DeathSound)
-gametest(game,100000,p1,p2,myObstacles,mysprites,myMiniSprites,myHits)
+gametest(game,100000,p1,p2,myTiles,mysprites,myMiniSprites,myHits)
 type_but = 1
 },
 ]
@@ -2333,7 +2335,7 @@ this.repetTheBackgroundY = Math.round((screenWidth / height)+0.4)+1
 this.repetTheBackgroundY = 1
 }
 this.repeatY = repeatY
-if(Xleft != undefined && Xleft != 0){this.x = Xleft*-1}else{this.x = 0}
+this.x = Xleft
 this.mX = movementX; this.mY = movementY;
 this.AX = autoX; this.AY = autoY;
 this.height = height
@@ -2389,140 +2391,140 @@ function deleted_sprites(Sprite_Collection,sprites,cordX,cordY) {
 	}
 }
 function Sprite(X,Y,width,height,script,comportament,img,RenderMode,Xvelocity,Yvelocity,SAVE) {
-this.InScreen = true
-this.prin = true
-this.x = X; this.y = Y;
-this.stx = X; this.sty = Y;
-this.Yplayertouch = false; this.Xplayertouch = false
-this.BulletTouch = false
-this.live = 1
-if(SAVE == undefined){
-    this.SAVE = true
+	this.InScreen = true
+	this.prin = true
+	this.x = X; this.y = Y;
+	this.stx = X; this.sty = Y;
+	this.Yplayertouch = false; this.Xplayertouch = false
+	this.BulletTouch = false
+	this.live = 1
+	if(SAVE == undefined){
+		this.SAVE = true
+		}else{
+			this.SAVE = SAVE
+		}
+	this.MoveX = 0 ;this.MoveY = 0
+	this.xP = 0 ;this.yP = 0
+	this.Xdiference_Print = 0;this.Ydiference_Print = 0;
+	this.widthGrid = width; this.heightGrid = height;
+	this.widthPrint = width; this.heightPrint = height;
+	this.width = width; this.height = height;	
+	this.script = script 
+	if(comportament != undefined){
+		this.col = comportament
+		this.type = ( "0x" + comportament[4])*1
+		this.typeColision = this.type
+		this.Up = ( "0x"+ comportament[0])*1;this.Left = ( "0x"+ comportament[1])*1;
+		this.Down = ( "0x"+ comportament[2])*1;this.Rigth = ( "0x"+ comportament[3])*1;
+		}else{
+			this.Up = 0;this.Left = 0;
+			this.Down = 0;this.Rigth = 0;
+			this.col = "000000000"
+			this.type = 0
+			this.typeColision = this.type
+		}
+	this.Xvelocity = Xvelocity ;this.Yvelocity = Yvelocity  ;
+	this.IXR = Xvelocity ;this.IYR = Yvelocity ;
+	if(RenderMode != undefined){
+		this.XG = ("0x"+ RenderMode[1])*width; this.YG = ( "0x"+ RenderMode[2])*height
+		this.RenderMode = RenderMode
+		this.Mode = RenderMode[0]
+		this.LoopFotogram = ("0x"+ RenderMode[3])*1
+		this.FramesIntervalds = ("0x"+ RenderMode[4])*1
+		}else{
+			this.XG = 0 ;this.YG = 0 
+			this.RenderMode = "000000"
+			this.Mode = 0
+			this.FramesIntervalds = 0
+			this.LoopFotogram = 0
+			}
+	this.intervald_frame = 0
+	this.intervaled_time = 0
+	this.imgN = img
+	this.fotogram = 0
+}
+function sprite_colision(X,Y,width,height,script,comportament,img,RenderMode,Xvelocity,Yvelocity,SAVE) {
+	this.InScreen = true
+	this.prin = true
+	this.FristTouch = false
+	this.x = X; this.y = Y;
+	this.stx = X; this.sty = Y;
+	this.StartedX = X; this.StartedY = Y;
+	this.MoveX = 0 ;this.MoveY = 0
+	this.xP = 0 ;this.yP = 0
+	this.BX = 0 ; this.BY = 0
+	this.MoveYLimit = 0 ;this.MoveXLimit = 0
+	this.sideX = true ;this.sideY = true
+	this.Yplayertouch = false; this.Xplayertouch = false
+	this.Ytouches = 0
+	this.Xtouches = 0
+	this.BulletTouch = false
+	this.Ytouch = false;this.Xtouch = false
+	this.UpTriger = false;this.DownTriger = false
+	this.LeftTriger = false;this.RightTriger = false
+	this.Xdiference_Print = 0;this.Ydiference_Print = 0;
+	this.widthGrid = width; this.heightGrid = height;
+	this.widthPrint = width; this.heightPrint = height;
+	this.width = width; this.height = height;	
+	this.live = 1
+	if(SAVE == undefined){
+		this.SAVE = true
 	}else{
 		this.SAVE = SAVE
 	}
-this.MoveX = 0 ;this.MoveY = 0
-this.xP = 0 ;this.yP = 0
-this.Xdiference_Print = 0;this.Ydiference_Print = 0;
-this.widthGrid = width; this.heightGrid = height;
-this.widthPrint = width; this.heightPrint = height;
-this.width = width; this.height = height;	
-this.script = script 
-if(comportament != undefined){
-	this.col = comportament
-	this.type = ( "0x" + comportament[4])*1
-	this.typeColision = this.type
-	this.Up = ( "0x"+ comportament[0])*1;this.Left = ( "0x"+ comportament[1])*1;
-	this.Down = ( "0x"+ comportament[2])*1;this.Rigth = ( "0x"+ comportament[3])*1;
-	}else{
-		this.Up = 0;this.Left = 0;
-		this.Down = 0;this.Rigth = 0;
-		this.col = "000000000"
-		this.type = 0
+	this.State = 0
+	this.water = false
+	this.waterAlture = 0
+	this.script = script 
+	if(comportament != undefined){
+		this.col = comportament
+		this.type = ( "0x" + comportament[4])*1
 		this.typeColision = this.type
-	}
-this.Xvelocity = Xvelocity ;this.Yvelocity = Yvelocity  ;
-this.IXR = Xvelocity ;this.IYR = Yvelocity ;
-if(RenderMode != undefined){
-	this.XG = ("0x"+ RenderMode[1])*width; this.YG = ( "0x"+ RenderMode[2])*height
-	this.RenderMode = RenderMode
-	this.Mode = RenderMode[0]
-	this.LoopFotogram = ("0x"+ RenderMode[3])*1
-	this.FramesIntervalds = ("0x"+ RenderMode[4])*1
-	}else{
-		this.XG = 0 ;this.YG = 0 
-		this.RenderMode = "000000"
-		this.Mode = 0
-		this.FramesIntervalds = 0
-		this.LoopFotogram = 0
+		this.Up = ( "0x"+ comportament[0])*1;this.Left = ( "0x"+ comportament[1])*1;
+		this.Down = ( "0x"+ comportament[2])*1;this.Rigth = ( "0x"+ comportament[3])*1;
+		}else{
+			this.Up = 0;this.Left = 0;
+			this.Down = 0;this.Rigth = 0;
+			this.col = "000000000"
+			this.type = 0
+			this.typeColision = this.type
 		}
-this.intervald_frame = 0
-this.intervaled_time = 0
-this.imgN = img
-this.fotogram = 0
-}
-function sprite_colision(X,Y,width,height,script,comportament,img,RenderMode,Xvelocity,Yvelocity,SAVE) {
-this.InScreen = true
-this.prin = true
-this.FristTouch = false
-this.x = X; this.y = Y;
-this.stx = X; this.sty = Y;
-this.StartedX = X; this.StartedY = Y;
-this.MoveX = 0 ;this.MoveY = 0
-this.xP = 0 ;this.yP = 0
-this.BX = 0 ; this.BY = 0
-this.MoveYLimit = 0 ;this.MoveXLimit = 0
-this.sideX = true ;this.sideY = true
-this.Yplayertouch = false; this.Xplayertouch = false
-this.Ytouches = 0
-this.Xtouches = 0
-this.BulletTouch = false
-this.Ytouch = false;this.Xtouch = false
-this.UpTriger = false;this.DownTriger = false
-this.LeftTriger = false;this.RightTriger = false
-this.Xdiference_Print = 0;this.Ydiference_Print = 0;
-this.widthGrid = width; this.heightGrid = height;
-this.widthPrint = width; this.heightPrint = height;
-this.width = width; this.height = height;	
-this.live = 1
-if(SAVE == undefined){
-    this.SAVE = true
-}else{
-	this.SAVE = SAVE
-}
-this.State = 0
-this.water = false
-this.waterAlture = 0
-this.script = script 
-if(comportament != undefined){
-	this.col = comportament
-	this.type = ( "0x" + comportament[4])*1
-	this.typeColision = this.type
-	this.Up = ( "0x"+ comportament[0])*1;this.Left = ( "0x"+ comportament[1])*1;
-	this.Down = ( "0x"+ comportament[2])*1;this.Rigth = ( "0x"+ comportament[3])*1;
-	}else{
-		this.Up = 0;this.Left = 0;
-		this.Down = 0;this.Rigth = 0;
-		this.col = "000000000"
-		this.type = 0
-		this.typeColision = this.type
-	}
-if(RenderMode != undefined){
-	this.XG = ("0x"+ RenderMode[1])*width; this.YG = ( "0x"+ RenderMode[2])*height
-	this.RenderMode = RenderMode
-	this.Mode = RenderMode[0]
-	this.LoopFotogram = ("0x"+ RenderMode[3])*1
-	this.FramesIntervalds = ("0x"+ RenderMode[4])*1
-	}else{
-		this.XG = 0 ;this.YG = 0 
-		this.RenderMode = "000000"
-		this.Mode = 0
-		this.FramesIntervalds = 0
-		this.LoopFotogram = 0
-	}
-this.angle = 0
-this.fotogram = 0
-this.sideX = true ;this.sideY = true
-if(Xvelocity != undefined){
-	this.Xvelocity = Xvelocity;if(Xvelocity < 0){this.sideX = false}
-	}else{
-		this.Xvelocity = 0
+	if(RenderMode != undefined){
+		this.XG = ("0x"+ RenderMode[1])*width; this.YG = ( "0x"+ RenderMode[2])*height
+		this.RenderMode = RenderMode
+		this.Mode = RenderMode[0]
+		this.LoopFotogram = ("0x"+ RenderMode[3])*1
+		this.FramesIntervalds = ("0x"+ RenderMode[4])*1
+		}else{
+			this.XG = 0 ;this.YG = 0 
+			this.RenderMode = "000000"
+			this.Mode = 0
+			this.FramesIntervalds = 0
+			this.LoopFotogram = 0
 		}
-if(Yvelocity != undefined){
-	this.Yvelocity = Yvelocity;if(Yvelocity < 0){this.sideY = false}
-	}else{
-		this.Yvelocity = 0
-	}
-if(img){
-	this.imgN = img
-	}else{
-		this.imgN = 0
+	this.angle = 0
+	this.fotogram = 0
+	this.sideX = true ;this.sideY = true
+	if(Xvelocity != undefined){
+		this.Xvelocity = Xvelocity;if(Xvelocity < 0){this.sideX = false}
+		}else{
+			this.Xvelocity = 0
+			}
+	if(Yvelocity != undefined){
+		this.Yvelocity = Yvelocity;if(Yvelocity < 0){this.sideY = false}
+		}else{
+			this.Yvelocity = 0
 		}
-this.IXR = this.Xvelocity ;this.IYR = this.Yvelocity ;
-this.intervald_frame = 0
-this.intervald_time = 0
-this.angleX = 0
-this.angleY = 0
+	if(img){
+		this.imgN = img
+		}else{
+			this.imgN = 0
+			}
+	this.IXR = this.Xvelocity ;this.IYR = this.Yvelocity ;
+	this.intervald_frame = 0
+	this.intervald_time = 0
+	this.angleX = 0
+	this.angleY = 0
 }
 function PreProgramedMode (sprite,player1){
 	if(sprite.Xtouch){auto_com[sprite.col[5]].X(sprite)}
@@ -2532,7 +2534,10 @@ function PreProgramedMode (sprite,player1){
 	}
 	if(sprite.Ytouch){auto_com[sprite.col[6]].Y(sprite)}
     Movement[sprite.col[8]].Y(sprite,player1)
+	if(sprite.BulletTouch){sprite.live--}
 	if(sprite.live < 0){
+		SoundEffectsCollection[7].currentTime = 0;
+		SoundEffectsCollection[7].play()
 		explosions32[0](sprite)
 		Kills ++
 	}
@@ -2571,6 +2576,49 @@ function PreRenderMode (ctx,Sprite){
 	)
 	ctx.restore();
 }
+function Simple_Tiles_ColisionY(Sprite,tiles){
+	Sprite.yP = 0
+	Sprite.Ytouch = false
+	for (i = 0; i < tiles.length; i += 1){
+	var TL = tiles[i]
+		if(TL.type != 0 && TL.type != 3 ){
+			if((Sprite.x < TL.x + (32) && (Sprite.x + (Sprite.width)) > TL.x) && (Sprite.y < TL.y + (32))  && Sprite.y + (Sprite.height) > TL.y){
+				if( (Sprite.y + (Sprite.height)) < (TL.y + 32)){
+					
+					Sprite.yP =(Sprite.y + Sprite.height) - TL.y 
+
+				
+					}else{
+					Sprite.yP = Sprite.y - (TL.y + 32)
+
+				}
+				//Sprite.y += Sprite.yP*-1;
+				Sprite.Ytouch = true
+				return true;
+			}
+		}
+	}
+}
+function Simple_Tiles_ColisionX(Sprite,tiles){
+	Sprite.xP = 0
+	Sprite.Xtouch = false
+	for (i = 0; i < tiles.length; i += 1){
+	var TL = tiles[i]
+		if(TL.type != 0 && TL.type != 3){
+			if((Sprite.x < TL.x + (32) && (Sprite.x + (Sprite.width)) > TL.x) && (Sprite.y < TL.y + (32))  && Sprite.y + (Sprite.height) > TL.y){
+				if( (Sprite.x + (Sprite.width)) < (TL.x + 32)){
+					Sprite.xP =(Sprite.x + Sprite.width) - TL.x; 
+					}else{
+					Sprite.xP =  Sprite.x - (TL.x + 32); 
+
+				}
+				//Sprite.x += Sprite.xP*-1;
+				Sprite.Xtouch = true
+				return true;
+			}
+		}
+	}
+}
 const Colision_sprite = [
 function(Sprite,player1,player2,tiles){
 /*nothing*/
@@ -2606,7 +2654,7 @@ Sprite.Ytouches = 0
 }
 for (i = 0; i < tiles.length; i += 1){
 	var TL = tiles[i]
-	if(TL.type != 0 ){
+	if(TL.type != 0 && TL.type != 3 ){
 		if((Sprite.x < TL.x + (32) && (Sprite.x + (Sprite.width)) > TL.x) && (Sprite.y < TL.y + (32))  && Sprite.y + (Sprite.height) > TL.y){
 			if( (Sprite.y + (Sprite.height)) < (TL.y + 32)){
 				
@@ -2635,7 +2683,7 @@ Sprite.Xtouch = false
 Sprite.Xtouches = 0	
 for (i = 0; i < tiles.length; i += 1){
 	var TL = tiles[i]
-	if(TL.type != 0 /*&& TL.type != 2*/){
+	if(TL.type != 0 && TL.type != 3){
 		if((Sprite.x < TL.x + (32) && (Sprite.x + (Sprite.width)) > TL.x) && (Sprite.y < TL.y + (32))  && Sprite.y + (Sprite.height) > TL.y){
 			if( (Sprite.x + (Sprite.width)) < (TL.x + 32)){
 				Sprite.xP =(Sprite.x + Sprite.width) - TL.x; 
@@ -2721,7 +2769,7 @@ if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
 ]
 const Movement =[{
 	/*Sum MoveX (0)*/
-Y: function Y (Sprites,A) {Sprites.MoveY = Sprites.Yvelocity},
+Y: function Y (Sprites,A) {Sprites.MoveY = Sprites.Yvelocity;},
 X: function X (Sprites,A) {Sprites.MoveX = Sprites.Xvelocity;},
 },{
 Y: function Y (Sprites,A) {
@@ -2925,26 +2973,12 @@ X: function X (Sprite,Player) {
 			}
 		}
 	},
-},{ /*Go to Fast to p1 (6)*/
+},{ /*Go to Fast to p1 (8)*/
 	Y: function Y (Sprite,player) {
-	if(Ax16 == 15){
-			if(Sprite.y +(Sprite.height /2) > (player.y + player.heightHalf)){
-				Sprite.Yvelocity --
-			}else{
-				Sprite.Yvelocity ++
-			}
-		}
-	Sprite.MoveY = Sprite.Yvelocity
+	Emboscade_player_Y(Sprite,player,Sprite.IYR)
 	},
 	X: function X (Sprite,player) {	
-	if(Ax16 == 15){
-			if(Sprite.x +(Sprite.width /2) > (player.x + player.widthHalf)){
-				Sprite.Xvelocity --
-			}else{
-				Sprite.Xvelocity ++
-			}
-		}
-	Sprite.MoveX = Sprite.Xvelocity
+    Emboscade_player_X(Sprite,player,Sprite.IXR)
 	},
 
 }
@@ -3391,7 +3425,20 @@ if(P.intervald_frame >= P.frame){
 	}
 	}
 },
+function(P){
+	//6
+	if(Simple_Tiles_ColisionX(P,myTiles)){
+		 P.MoveX = P.MoveX *-1
+	}else{
+		if(Simple_Tiles_ColisionY(P,myTiles)){
+			P.MoveY = P.MoveY *-1
+		}
+	}
+	//if(P.Xtouch){ P.MoveX = P.MoveX *-1}
+	//if(P.Ytouch){ P.MoveY = P.MoveY *-1;}
+}
 ]
+
 const explosions32 = [
 function(object){
 	myMiniSprites.push(new Mini_sprite(object.x,object.y,object.imgN,1,object.XG,object.YG,0,1,-1,-10,16,16,0))
@@ -3563,13 +3610,13 @@ function charge (b,SX,SY,x,y,XL,YL) {
 	function charge (){
     G = XL 
     for(let i = 0; i <  limitX +Xplus; i++){ 
-    myObstacles.push(new tile(0,"rgba(0,0,0,256)", X, Y,Q,G,"00000000",0));
+    myTiles.push(new tile(0,"rgba(0,0,0,256)", X, Y,Q,G,"00000000",0));
 	
 	if(Q < 0){
 		
-		myObstacles[myObstacles.length -1].Swich_tile()
+		myTiles[myTiles.length -1].Swich_tile()
 		}else{
-	        myObstacles[myObstacles.length -1].Swich_tile()
+	        myTiles[myTiles.length -1].Swich_tile()
 			
 			//Q = SAVE.Y;
 	}
@@ -3822,8 +3869,6 @@ function nullTrigers(player){
 }
 function PlayerTrigers(Player,ctr){
 	nullTrigers(Player)
-	PlayerGamepad = ctr
-	if(PlayerGamepad > 0){PlayerGamepad --}
 	if ((Player.keys && Player.keys[controlls[ctr].Jump]) || TouchControls.Abuton) Player.ButonATouch = true;
 	if ((Player.keys && Player.keys[controlls[ctr].Run]) || TouchControls.Bbuton) Player.ButonBTouch = true;
 	if ((Player.keys && Player.keys[controlls[ctr].left]) || TouchControls.Left) Player.LeftTouch = true;
@@ -3831,7 +3876,7 @@ function PlayerTrigers(Player,ctr){
 	if (Player.keys && Player.keys[controlls[ctr].up]) Player.UpTouch = true;
 	if (Player.keys && Player.keys[controlls[ctr].down]) Player.DownTouch = true;
 	
-	gp = gamepads[PlayerGamepad];
+	gp = gamepads[Player.gp];
 	if (gp) {
 		if(gp.buttons[0].pressed || gp.buttons[1].pressed){
 			Player.ButonATouch = true;
@@ -3864,6 +3909,7 @@ if(player.lives > 0 ){
 	 }
 		player.Colision = true
 		 plataformer_Easy(controls,player)
+		 //Tank(controls,player)
 		 player.songEnd = false
 		 GameOverMusicEnd = false
          }else{
@@ -4041,12 +4087,8 @@ function PacMan(ctr,Player,B,C){
 	if(Player.MoveX != 0){Player.InFlor = true}
 	if(Player.MoveY != 0){Player.InFlor = false}
 }
-function Kart(ctr,Player,B,C){
-	/*
-	if(frisFotogram){
-		Player.velocity = 8
-	}
-	*/
+function Tank(ctr,Player,B,C){
+
 	 if(Player.Xtouch){
 		 Player.MoveX = 0
 		 Player.delay ++
@@ -4063,7 +4105,7 @@ function Kart(ctr,Player,B,C){
 				Player.delay = 0
 			}
 	}
-	//if(Player.delay == 0){	
+		
 		if (Player.keys && Player.keys[controlls[ctr].left]) {
 			Player.angle -= (4) * Math.PI / 180;    
 		}else{
@@ -4074,17 +4116,69 @@ function Kart(ctr,Player,B,C){
 		
 		if(Player.keys && Player.keys[controlls[ctr].up]){
 			Player.velocity ++
-			if(Player.velocity > 8){Player.velocity = 8};
+			if(Player.velocity > 4){Player.velocity = 4};
 		}
 		if(Player.keys && Player.keys[controlls[ctr].down]){
 			Player.velocity --
-			if(Player.velocity < -8){Player.velocity = -8};
+			if(Player.velocity < -4){Player.velocity = -4};
 		}
-		Player.MoveX = Player.velocity * Math.sin(Player.angle)
-		Player.MoveY = (Player.velocity * Math.cos(Player.angle))*-1
+		
+		Player.MoveX = Player.velocity * Math.cos(Player.angle)
+		Player.MoveY = Player.velocity * Math.sin(Player.angle)
 		if(Player.velocity >= 0.5){Player.velocity -= 0.5}
 		if(Player.velocity <= -0.5){Player.velocity += 0.5}
-	//}
+		if(Player.shotdelay > 0 ){
+			Player.shotdelay += 1;
+			if(Player.shotdelay > 8){Player.shotdelay = 0}
+		}
+		if (Player.ButonBTouch){
+			
+			if(Player.shotdelay == 0){Player.shotdelay += 1
+			
+			 myMiniSprites.push(new Mini_sprite(Player.x+(Player.widthHalf/2),Player.y+(Player.heightHalf/2),2,0,64,96,0,6,Math.cos(Player.angle) * 5,Math.sin(Player.angle) * 5,16,16,0))
+			 }
+		}
+		
+}
+function TankMouse(ctr,Player,B,C){
+
+	 if(Player.Xtouch){
+		 Player.MoveX = 0
+		 Player.delay ++
+     }
+	 if(Player.Ytouch){
+		 Player.MoveY = 0
+		 Player.delay ++
+	 }
+	
+	Player.InFlor = true
+	if(Player.delay > 0 ){
+		Player.delay += 1;
+			if(Player.delay > 8){
+				Player.delay = 0
+			}
+	}
+		Player.angle = Math.atan2(Ymouse - (Player.y+(Player.height/2)), Xmouse - (Player.x+(Player.widthHalf/2)));
+		if(mouse){
+			Player.velocity ++
+			if(Player.velocity > 4){Player.velocity = 4};
+		}
+
+		Player.MoveX = Player.velocity * Math.cos(Player.angle)
+		Player.MoveY = Player.velocity * Math.sin(Player.angle)
+		if(Player.velocity >= 0.5){Player.velocity -= 0.5}
+		if(Player.velocity <= -0.5){Player.velocity += 0.5}
+		if(Player.shotdelay > 0 ){
+			Player.shotdelay += 1;
+			if(Player.shotdelay > 8){Player.shotdelay = 0}
+		}
+		if (Player.ButonBTouch){
+			
+			if(Player.shotdelay == 0){Player.shotdelay += 1
+			
+			 myMiniSprites.push(new Mini_sprite(Player.x+(Player.widthHalf/2),Player.y+(Player.heightHalf/2),2,0,64,96,0,0,Math.cos(Player.angle) * 10,Math.sin(Player.angle) * 10))
+			 }
+		}
 		
 }
 function Fly(ctr,Player,B,C){
@@ -4329,7 +4423,7 @@ if (Player.UpTouch) {Player.shotY = -8;if(Player.MoveX == 0){Player.shotX = 0}}
 if (Player.DownTouch) {Player.shotY = 8;if(Player.MoveX == 0){Player.shotX = 0}}
 if (Player.ButonBTouch){
  if(Player.shotdelay == 0){Player.shotdelay += 1
-	 myMiniSprites.push(new Mini_sprite(Player.x+(Player.widthHalf/2),Player.y+(Player.heightHalf/2),1,0,0,0,0,0,Player.shotX,Player.shotY))
+	 myMiniSprites.push(new Mini_sprite(Player.x+(Player.widthHalf/2),Player.y+(Player.heightHalf/2),2,0,64,96,0,0,Player.shotX,Player.shotY))
 	 }
   }
 },
@@ -4339,7 +4433,7 @@ Player.angle = Math.atan2(Ymouse - (Player.y+(Player.height/2)), Xmouse - (Playe
 if(Player.shotdelay > 0 ){Player.shotdelay += 1;if(Player.shotdelay > 8){Player.shotdelay = 0}}
 if (mouse){
  if(Player.shotdelay == 0){Player.shotdelay += 1
-	 myMiniSprites.push(new Mini_sprite(Player.x+(Player.widthHalf/2),Player.y+(Player.heightHalf/2),1,0,0,0,0,2,Math.cos(Player.angle) * 10,Math.sin(Player.angle) * 10))
+	 myMiniSprites.push(new Mini_sprite(Player.x+(Player.widthHalf/2),Player.y+(Player.heightHalf/2),2,0,64,96,0,2,Math.cos(Player.angle) * 10,Math.sin(Player.angle) * 10))
 	 }
   }
 },
@@ -4373,7 +4467,7 @@ if (player.UpTouch){
 if(player.shotdelay > 0 ){player.shotdelay += 1;if(player.shotdelay > 8){player.shotdelay = 0}}
 if (player.ButonBTouch){
  if(player.shotdelay == 0){player.shotdelay += 1
-	 myMiniSprites.push(new Mini_sprite(player.x+(player.widthHalf/2),player.y+(player.heightHalf/2),1,0,0,0,0,0,Math.cos(player.angle) * 10,Math.sin(player.angle) * 10))
+	 myMiniSprites.push(new Mini_sprite(player.x+(player.widthHalf/2),player.y+(player.heightHalf/2),2,0,64,96,0,0,Math.cos(player.angle) * 10,Math.sin(player.angle) * 10))
 	 }
   }
 }
@@ -4511,31 +4605,27 @@ function Gravity (P,N,CameraY) {
   }
 
 function MiniSpriteColision(Sprite,MiniSprites){
-for (i = 0; i < MiniSprites.length; i += 1){
-if(MiniSprites[i].type > 0){
-let MiniSprite = MiniSprites[i]
-	if((Sprite.x < MiniSprite.x + MiniSprite.width && (Sprite.x + (Sprite.width)) > MiniSprite.x) && (Sprite.y < MiniSprite.y + (MiniSprite.height))  && Sprite.y + (Sprite.height) > MiniSprite.y){
-		   MiniSprites.splice(i, 1); 
-		   Sprite.BulletTouch = true
-		   Sprite.live --
+	for (i = 0; i < MiniSprites.length; i += 1){
+		if(MiniSprites[i].type == 1){
+		let MiniSprite = MiniSprites[i]
+			if((Sprite.x < MiniSprite.x + MiniSprite.width && (Sprite.x + (Sprite.width)) > MiniSprite.x) && (Sprite.y < MiniSprite.y + (MiniSprite.height))  && Sprite.y + (Sprite.height) > MiniSprite.y){
+				   MiniSprites.splice(i, 1); 
+				   Sprite.BulletTouch = true
+			}
+		 }
 	}
- }
 }
-}
-const For_let_Action = [
-function(B){
-	"nothing"
-},
-function(B){
-},
-function(B){
-},
-function(B){
-},
-function(B){
-	B.Yplus += 2 ;if(B.Yplus > 0){B.Yplus = 0;B.action = false}
-}
-]	
+function MiniSpritePlayerColision(Player,MiniPlayers){
+	for (i = 0; i < MiniPlayers.length; i += 1){
+		if(MiniPlayers[i].type == 2){
+		let MiniPlayer = MiniPlayers[i]
+			if((Player.x < MiniPlayer.x + MiniPlayer.width && (Player.x + (Player.width)) > MiniPlayer.x) && (Player.y < MiniPlayer.y + (MiniPlayer.height))  && Player.y + (Player.height) > MiniPlayer.y){
+				   MiniPlayers.splice(i, 1); 		
+				   Player.lives --
+			}
+		 }
+	}
+}	
 const death = [
 function(Player){return true},
 function(Player){
@@ -4606,13 +4696,13 @@ if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (objec
 		if( (PL.y + (PL.height)) > (object.y + 32)){
 			if(object.col[2] != 0){
 				if(PL.FristTouch){
-				if(col[( "0x" + object.col[2])*1].DOWN(PL,object)){
-				PL.Ytouch = true
-				if(PL.touchesInY == 1){
-					PL.lives = -1
-				}
-			    }
-			   PL.yP = PL.y - ((object.y + 32) - PL.MoveYLimit)
+					if(col[( "0x" + object.col[2])*1].DOWN(PL,object)){
+						PL.Ytouch = true
+							if(PL.touchesInY == 1){
+								PL.lives = -1
+							}
+						}
+					PL.yP = PL.y - ((object.y + 32) - PL.MoveYLimit)
 				}
 				PL.UpTriger = true
 				PL.Ytouches ++
@@ -4658,47 +4748,22 @@ if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (objec
 	    }
 };return crash},
 },{
-X :	function cube_whit_not_solid (PL,B) {
-if((PL.x < (B.x+8) + (32 - 8) && (PL.x + (PL.width)) > (B.x+8)) && (PL.y < (B.y+8) + (32 - 8))  && PL.y + (PL.height) > (B.y+8)){
-if(B.col[1] != 0  && PL.priority != undefined){colM[B.col[1]].X(PL,B)
-functions_collection[B.script].Action(B,PL,false)
-;
-}
-}
-},
-Y :	function cube_whit_not_solid (PL,B) {
-if((PL.x < (B.x+8) + (32 - 8) && (PL.x + (PL.width)) > (B.x+8)) && (PL.y < (B.y+8) + (32 - 8))  && PL.y + (PL.height) > (B.y+8)){
-if(B.col[1] != 0  && PL.priority != undefined){colM[B.col[0]].Y(PL,B)
-functions_collection[B.script].Action(B,PL,false)
-;
-}
-}
-},
-},{ 
-X :	function triangle (PL,B) {let crash = false
- let distance =  (B.x - (PL.x-16))  ; if(distance > 0){distance = 0}
-if((PL.x < B.x + (32) && (PL.x + (PL.width)) > B.x) && (PL.y < B.y + (32))  && PL.y + (PL.height) > ((B.y) - distance)){
-if(PL.MoveX > 0){crash =  col[B.col[1]].LEFT(PL,B.x,B)}
-};return crash},
-Y :	function triangle (PL,B) {let crash = false
-let distance =  (B.x - (PL.x-16)) ; if(distance > 0){distance = 0}
-if((PL.x < (B.x + (32)) && (PL.x + (PL.width)) > B.x) && (PL.y <  (B.y + (32))  && PL.y + (PL.height) > ((B.y) - distance))){
-if(PL.MoveY < 0){col[B.col[2]].DOWN(PL,B.y + (32))}else{
-col[B.col[0]].UP(PL,(B.y) - distance,B)}
-crash = true};return crash},
-},{ 
-X :	function triangle (PL,B) {let crash = false
- let distance =  ((PL.x-16) - B.x) ; if(distance > 0){distance = 0}
- PrinT(PL,B.x,(B.y+1) - distance,32,32,"#F00")
-if((PL.x < B.x + (32) && (PL.x + (PL.width)) > B.x) && (PL.y < B.y + (32))  && PL.y + (PL.height) > ((B.y) -  distance)){
-if(PL.MoveX < 0){crash =  col[B.col[5]].RIGTH(PL,B.x + (32),B)}
-};return crash},
-Y :	function triangle (PL,B) {let crash = false
-let distance =  ((PL.x-16) - B.x) ; if(distance > 0){distance = 0}
-if((PL.x < (B.x + (32)) && (PL.x + (PL.width)) > B.x) && (PL.y <  (B.y + (32))  && PL.y + (PL.height) > ((B.y) - distance))){
-if(PL.MoveY < 0){col[B.col[2]].DOWN(PL,(B.y) + (32),B)}else{
-col[B.col[0]].UP(PL,(B.y) - distance,B)}
-crash = true};return crash},
+	X :	function cube_whit_not_solid (PL,B) {
+		if((PL.x < (B.x+8) + (32 - 8) && (PL.x + (PL.width)) > (B.x+8)) && (PL.y < (B.y+8) + (32 - 8))  && PL.y + (PL.height) > (B.y+8)){
+			if(B.col[1] != 0  && PL.priority != undefined){colM[B.col[1]].X(PL,B)
+			functions_collection[B.script].Action(B,PL,false)
+			;
+			}
+		}
+	},
+	Y :	function cube_whit_not_solid (PL,B) {
+		if((PL.x < (B.x+8) + (32 - 8) && (PL.x + (PL.width)) > (B.x+8)) && (PL.y < (B.y+8) + (32 - 8))  && PL.y + (PL.height) > (B.y+8)){
+			if(B.col[1] != 0  && PL.priority != undefined){colM[B.col[0]].Y(PL,B)
+			functions_collection[B.script].Action(B,PL,false)
+			;
+			}
+		}
+	},
 },		
 ]
 const calculate_M =[
@@ -5062,20 +5127,20 @@ function PlayerMovementManagerX (Player,tiles,sprites){
 		}
 	}
 }
-function PlayerMovementManagerY (Player,tiles,sprites){
+function PlayerMovementManagerY (Player,tiles,sprites,mini_sprites){
 	if(Player.lives > 0 || Multiplayer){
 		if(Player.modeY == 0){
-		cameraY = MovementYPlayer(Player,tiles,sprites,0);
+		cameraY = MovementYPlayer(Player,tiles,sprites,mini_sprites);
 		for (i = 0; i < tiles.length; i += 1){
 			tiles[i].y -= cameraY
 		}
 		cameraY = cameraY*-1
 		}else{
-			Player.y += MovementYPlayer(Player,tiles,sprites,0);
+			Player.y += MovementYPlayer(Player,tiles,sprites,mini_sprites);
 		}
 	}
 }
-function MovementXPlayer (Player,tiles,mysprites) {
+function MovementXPlayer (Player,tiles,sprites) {
 let crash = false
 Player.Xtouch = false
 Player.LeftTouch = false
@@ -5099,10 +5164,10 @@ if(Xmargin[SAVE.Margin](Player)){
 	crash = true
 }
 if(Player.Colision){
-	for (i = 0; i < mysprites.length; i += 1){
+	for (i = 0; i < sprites.length; i += 1){
 		
-		if(calculate_M[mysprites[i].typeColision].X(Player,mysprites[i])){
-			mysprites[i].Xplayertouch = true
+		if(calculate_M[sprites[i].typeColision].X(Player,sprites[i])){
+			sprites[i].Xplayertouch = true
 			crash = true
 		}
 	}
@@ -5115,7 +5180,7 @@ if(crash){XnextPosition += Player.xP *-1}
 return XnextPosition
 }
 
-function MovementYPlayer (Player,tiles,sprites){
+function MovementYPlayer (Player,tiles,sprites,MiniSprites){
  /*cameraY stuck // mode 1 */
 let crash = false
 Player.Ytouch = false
@@ -5148,13 +5213,13 @@ if(Player.Colision){
 	for (i = 0; i < sprites.length; i += 1){
 		
 		if(calculate_M[sprites[i].typeColision].Y(Player,sprites[i],MoveY)){
-			mysprites[i].Yplayertouch = true
+			sprites[i].Yplayertouch = true
 			crash = true
 		}
 	}
 	YnextPosition += Player.Hy 
 	Player.MoveYLimit += Player.Hy 
-
+	MiniSpritePlayerColision(Player,MiniSprites)
 	if(CompleteTilesColisionY(Player,tiles)){
 		if(Player.Ytouch && Player.MoveYLimit > 0 ){
 				 Player.InFlor = true
@@ -5210,7 +5275,7 @@ for(i = 0; i < mysprites.length; i += 1){
 	mysprites[i].StartedY += cameraY;
 	}
 for(i = 0; i < myMiniSprites.length;i++){
-	if(myMiniSprites[i].script != 0 ){
+	if(myMiniSprites[i].type != 1 ){
 	myMiniSprites[i].y += cameraY;
 	}
 	}
@@ -5228,7 +5293,7 @@ for(i = 0; i < mysprites.length; i += 1){
 	mysprites[i].StartedX += cameraX;
 	}
 for(i = 0; i < myMiniSprites.length;i++){
-	if(myMiniSprites[i].script != 0 ){
+	if(myMiniSprites[i].type != 1 ){
 	myMiniSprites[i].x += cameraX;
 	}
 	}
@@ -5256,7 +5321,7 @@ function(Player,canvas,X,Y){
 ctx.save();
 ctx.translate(Player.x -32 / -2, Player.y - 32 / -2);
 ctx.rotate(Player.angle);
-ctx.drawImage(HudTEXTURES,0 ,0 , X, Y,32 / -2, 32 / -2, X  , Y ,);
+ctx.drawImage(HudTEXTURES,32 ,0 , X, Y,32 / -2, 32 / -2, X  , Y ,);
 ctx.restore();
 },
 function(Player,canvas,N){
@@ -5295,28 +5360,108 @@ ctx.drawImage(image_collection[Tile.imgN[0]],Tile.XG, ((Tile.animation*32) + Til
 ]
 function PrinAllTiles(canvas){
 let Tile;
-for (i = (myObstacles.length -1); i > -1; i += -1) {
-	if(myObstacles[i].prin != 0){
-	Tile = myObstacles[i]
+
+for (i = (myTiles.length -1); i > -1; i += -1) {
+	if(myTiles[i].prin != 0){
+	Tile = myTiles[i]
 	ctx.fillStyle = Tile.BC
     ctx.fillRect(Tile.x,Tile.y,32,32)
 	}
 }
-for (i = (myObstacles.length -1); i > -1; i += -1) {
-	if(myObstacles[i].prin != 0){
-	Tile = myObstacles[i]
-     ctx.drawImage(
-	image_collection[Tile.imgN],
-	Tile.XG, 
-	((Tile.animation*Tile.heg) + Tile.YG), 
-	Tile.Wid, 
-	Tile.heg, 
-	Tile.x + Tile.Xplus, 
-	Tile.y + Tile.Yplus, 
-	Tile.Wid, 
-	Tile.heg, 
-	)
+
+
+
+for (i = (myTiles.length -1); i > -1; i += -1) {
+	if(myTiles[i].prin != 0){
+		Tile = myTiles[i]
+		 ctx.drawImage(
+		image_collection[Tile.imgN],
+		Tile.XG, 
+		((Tile.animation*Tile.heg) + Tile.YG), 
+		Tile.Wid, 
+		Tile.heg, 
+		Tile.x + Tile.Xplus, 
+		Tile.y + Tile.Yplus, 
+		Tile.Wid, 
+		Tile.heg, 
+		)
+		}
+    }
+	
+}
+//0.03125 (32)
+function PrinAllTilesBlur(canvas,Number){
+let Tile;
+let Tile_whit = 32 * Number
+let offscreen = document.createElement("canvas");
+offscreen.width = screenWidth*Number;
+offscreen.height = screenHeigth*Number;
+let octx = offscreen.getContext("2d");
+
+
+for (i = (myTiles.length -1); i > -1; i += -1) {
+	if(myTiles[i].prin != 0){
+	Tile = myTiles[i]
+	octx.fillStyle = Tile.BC
+    octx.fillRect(Tile.x*Number,Tile.y*Number,Tile_whit,Tile_whit)
 	}
+}
+ctx.drawImage(offscreen, 0, 0, offscreen.width , offscreen.height, 0, 0, screenWidth, screenHeigth);
+
+
+for (i = (myTiles.length -1); i > -1; i += -1) {
+	if(myTiles[i].prin != 0){
+		Tile = myTiles[i]
+		 ctx.drawImage(
+		image_collection[Tile.imgN],
+		Tile.XG, 
+		((Tile.animation*Tile.heg) + Tile.YG), 
+		Tile.Wid, 
+		Tile.heg, 
+		Tile.x + Tile.Xplus, 
+		Tile.y + Tile.Yplus, 
+		Tile.Wid, 
+		Tile.heg, 
+		)
+		}
+    }
+	
+}
+
+
+function PrinAllTilesColor(canvas){
+let Tile;
+let Tile_whit = 1
+let offscreen = document.createElement("canvas");
+offscreen.width = screenWidth*2;
+offscreen.height = screenHeigth*2;
+let octx = offscreen.getContext("2d");
+
+
+for (i = (myTiles.length -1); i > -1; i += -1) {
+	if(myTiles[i].prin != 0){
+	Tile = myTiles[i]
+	octx.fillStyle = Tile.BC
+    octx.fillRect(Tile.x*2,Tile.y*2,64,64)
+	}
+}
+ctx.drawImage(offscreen, 0, 0, offscreen.width , offscreen.height, 0, 0, screenWidth, screenHeigth);
+
+for (i = (myTiles.length -1); i > -1; i += -1) {
+	if(myTiles[i].prin != 0){
+		Tile = myTiles[i]
+		 ctx.drawImage(
+		image_collection[Tile.imgN],
+		Tile.XG+16, 
+		((Tile.animation*Tile.heg) + Tile.YG)+16, 
+		Tile_whit, 
+		Tile_whit, 
+		Tile.x + Tile.Xplus, 
+		Tile.y + Tile.Yplus, 
+		Tile.Wid, 
+		Tile.heg, 
+		)
+		}
     }
 }
 
@@ -5680,6 +5825,7 @@ function Win_or_lose_Manager(){
 					  TextFinishGame.push(new Text("Kills/"+Kills,'white','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/2,0.2))
 				  }
 }
+const STEP = 1000 / 60; 
 function gametest (game,all_frames,p1,p2,tiles,sprites,mini_sprites,Hits){
 
 /*pone en su valor inicial Player todas las variables que lo ocupen*/
@@ -5767,6 +5913,9 @@ p1.priority = true
 if(!Multiplayer){ 
 	p2.lives = -1
 	Player_CRT.Player1 = 0
+}else{
+	Player1 =  1
+	Player2 =  2
 }
 on_game = true
 Win_or_lose = false
@@ -5822,6 +5971,15 @@ function Textdraw(){
 
 function Frame (p1,p2,tiles,sprites,mini_sprites,Hits){
 gamepads = navigator.getGamepads();
+for (var gp of gamepads) {
+  if (gp) {
+	  if( p1.gp == null){
+		p1.gp = gp.index
+	  }else{
+		p2.gp = gp.index
+	  }
+  }
+}
 /*variabels que sirven para controlar cuantos frames van las animaciones*/
 tick = !tick
 Ax3 += 1;if(Ax3 >= 3){Ax3 = 0}
@@ -5870,7 +6028,7 @@ for(let i = 0; i < sprites.length ;i++){
 };
 
 /*camera Y*/ 
-PlayerMovementManagerY(p1,tiles,sprites)
+PlayerMovementManagerY(p1,tiles,sprites,mini_sprites)
 
 if(p1.modeY == 1){
     cameraModeY[p1.camY](p1,tiles)
@@ -5890,7 +6048,7 @@ if(inputY < 0 || inputY > 32){
 /*Move player 2*/
 if(Multiplayer){
 	if(!frisFotogram)p2.y += cameraY
-	p2.y += MovementYPlayer(p2,tiles,mysprites,0);
+	p2.y += MovementYPlayer(p2,tiles,mysprites,mini_sprites);
 }
 
 /*camera X*/
@@ -5983,7 +6141,13 @@ for (i = (tiles.length -1); i > -1; i += -1) {
    tiles[i].Update_tile()
 }
 if(DrawShadow){drawLight(game,p1,sprites)}
-PrinAllTiles(game)
+//0.015625
+//0.03125
+//0.0625
+//0.125
+PrinAllTilesBlur(game,2)
+//PrinAllTilesColor(game)
+
 for(let i = 0; i < sprites.length ;i++){
 	if(sprites[i].prin){
 		//ctx.fillStyle = "#FF0"
@@ -6080,7 +6244,7 @@ function Boregito(Value){
 			   case "WELLCOME":
 			   cargarJSON("Niveles JSON/WELLCOME.json")
 			   break 
-			   case "SHOTERMODE ":
+			   case "SHOTERMODE":
 			   shoterMode = 1
 			   break ;
 			   case "POUNTERSHOT ":
@@ -6119,7 +6283,22 @@ function Boregito(Value){
 				[
 					[32,32,16,"160010000",2,"23900",-2,0],
 					[32,32,16,"160010000",2,"24900",2,0],
-					[32,32,17,"160010000",2,"25800",2,2]
+					[32,32,17,"160010000",2,"25800",2,2],
+				]
+			   Azar_Level()
+			   break
+			   case "AZAR+":
+			   AZAR = true
+			   Azar_Blocks_Skins[2]()
+			   GridSprites.style.zIndex = 20
+			   ChangeMusic ("Music/Super Mario World Athletic.mp3")
+			   backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))'
+			   Azar_Sprites =
+				[
+					[32,32,16,"160010000",2,"23900",-2,0],
+					[32,32,16,"160010000",2,"24900",2,0],
+					//[32,32,17,"160010000",2,"25800",2,2],
+					[32,32,11,"661120201",2,"01400", 0,0],
 				]
 			   Azar_Level()
 			   break
