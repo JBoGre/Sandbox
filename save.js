@@ -1243,7 +1243,7 @@ Loop: function Loop (Sprite,player) {
 		Sprite.intervald_time = 0
 },
 Loop: function Loop (Sprite,Player) {
-	if(Sprite.water){
+	//if(Sprite.water){
 		if(Colision(Sprite,p1,-132,-132,288,288)){
 			Sprite.intervald_time = 0
 			Sprite.State = 1
@@ -1276,6 +1276,7 @@ Loop: function Loop (Sprite,Player) {
 			if(Sprite.Xvelocity <= -1){Sprite.Xvelocity ++}
 			Sprite.MoveX = Sprite.Xvelocity
 		}
+	/*
 	}else{
 		Sprite.XG = 192
 		Sprite.FramesIntervalds = 4
@@ -1288,6 +1289,7 @@ Loop: function Loop (Sprite,Player) {
 			if(randomBoolean()){Sprite.MoveX = 2}else{Sprite.MoveX = -2}
 		}
 	}
+	*/
 	if(Sprite.MoveX > 0 ){Sprite.Mode = 3}else{Sprite.Mode = 0}
 	
  },
