@@ -3869,6 +3869,7 @@ function nullTrigers(player){
 }
 function PlayerTrigers(Player,ctr){
 	nullTrigers(Player)
+	
 	if ((Player.keys && Player.keys[controlls[ctr].Jump]) || TouchControls.Abuton) Player.ButonATouch = true;
 	if ((Player.keys && Player.keys[controlls[ctr].Run]) || TouchControls.Bbuton) Player.ButonBTouch = true;
 	if ((Player.keys && Player.keys[controlls[ctr].left]) || TouchControls.Left) Player.LeftTouch = true;
@@ -3877,6 +3878,7 @@ function PlayerTrigers(Player,ctr){
 	if (Player.keys && Player.keys[controlls[ctr].down]) Player.DownTouch = true;
 	
 	gp = gamepads[Player.gp];
+	
 	if (gp) {
 		if(gp.buttons[0].pressed || gp.buttons[1].pressed){
 			Player.ButonATouch = true;
@@ -3899,6 +3901,7 @@ function PlayerTrigers(Player,ctr){
 			Player.DownTouch = true;
 		}
     }
+	
 }
 function PlayerAction (player,player2,controls,chocolate){
 if(player.lives > 0 ){
@@ -3909,7 +3912,7 @@ if(player.lives > 0 ){
 	 }
 		player.Colision = true
 		 plataformer_Easy(controls,player)
-		 //Tank(controls,player)
+		 
 		 player.songEnd = false
 		 GameOverMusicEnd = false
          }else{
@@ -5771,7 +5774,7 @@ function keyHandler(e) {
 //document.addEventListener('keydown',  keyHandler)
 
  var gamepads = navigator.getGamepads(); // arreglo de gamepads
- var gp = gamepads[0]; // primer control conectado
+ var gp = null;
 window.addEventListener("gamepadconnected", (e) => {
     console.log("Gamepad conectado:", e.gamepad);
 });
@@ -5970,16 +5973,18 @@ function Textdraw(){
 }
 
 function Frame (p1,p2,tiles,sprites,mini_sprites,Hits){
-gamepads = navigator.getGamepads();
-for (var gp of gamepads) {
-  if (gp) {
-	  if( p1.gp == null){
-		p1.gp = gp.index
-	  }else{
-		p2.gp = gp.index
+	gamepads = navigator.getGamepads();
+	for (var gp of gamepads) {
+	  if (gp) {
+		  if( p1.gp == null){
+			p1.gp = gp.index
+		  }else{
+			p2.gp = gp.index +1
+			
+		  }
 	  }
-  }
-}
+	}
+
 /*variabels que sirven para controlar cuantos frames van las animaciones*/
 tick = !tick
 Ax3 += 1;if(Ax3 >= 3){Ax3 = 0}
