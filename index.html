@@ -102,7 +102,14 @@
 	border:4em rgb(0,0,0) outset; 
 	float:left;
 	}
+	#Character-selector{
+	font-size:2px;
+	 width:128em;  
+	 height:84em; 
+	 float:left; 
+	}
 	#characters{
+	font-size:2px;
 	width:48em;
     height:48em;
 	margin:0em 0em;
@@ -110,31 +117,18 @@
 	float:left;
 	}
 	.Skins{
+	font-size:2px;
 	width:14em;
     height:14em;
 	margin:0em 0em;
-	border:2em rgb(0,0,0) outset; 
+	border:1em rgb(0,0,0) outset; 
 	float:left;
 	}
 	.Skins:hover{
-	border:2em rgb(128,0,0) outset; 
-	}
-	.DRAWING{
-	width:16em;
-    height:16em;
-	margin:0em 0em;
-	border:2em rgb(0,0,0) outset; 
-	float:left;
-	}
-	.colorR{
-    width:16em;
-    height:16em;
-	margin:0em 0em;
-	border:2em rgb(0,0,0) outset; 
-    background-color:rgb(10,10,10);
-    float:left;
+	border:1em rgb(128,0,0) outset; 
 	}
 	.arrow{
+	font-size:2px;
 	background-color:#FFF;
 	background-size: cover;
 	float:left;
@@ -153,6 +147,21 @@
 	}
 	#arrowLeft{
 	background-position: -32em 0px;  /* Coordenadas del recorte dentro de la imagen */
+	}
+	.DRAWING{
+	width:16em;
+    height:16em;
+	margin:0em 0em;
+	border:2em rgb(0,0,0) outset; 
+	float:left;
+	}
+	.colorR{
+    width:16em;
+    height:16em;
+	margin:0em 0em;
+	border:2em rgb(0,0,0) outset; 
+    background-color:rgb(10,10,10);
+    float:left;
 	}
 	.PLUS{
 	background-color:#FFF;
@@ -398,6 +407,7 @@
 	<script   src="./MusicList.js" defer></script>
 	<script   src="./Characters.js" defer></script>
     <script   src="./java.js" defer></script>
+	<script   src="./Shotter.js" defer></script>
  </head>
  <body>
   <header>   </header>
@@ -449,12 +459,8 @@
 	 <input class="range" id="color3" min="0"max="255" type="range" onchange="CS(this,2)">
 	 <input class="styled" type="button" value="addBackground" onclick="DRAWS[drawNum](Grid);backgroundBase = Grid.style.backgroundImage" />
 	 </div>
-     <div id="Character-selector" style="
-	 width:128em;  
-	 height:84em; 
-	 float:left; 
-	"> 
-	<div class="Text"  style=" width:256px;  " >Character</div>
+     <div id="Character-selector"> 
+	
 		 <div class="arrow" id="arrowRight"></div>
 		 <canvas  id="characters"  ></canvas>
 		 	 <div class="arrow" id="arrowLeft"></div>
@@ -503,6 +509,8 @@
 	<option class="Text" value='Niveles JSON/Factory Level.json'>Extra 1</option>
 	<option class="Text" value='Niveles JSON/Faro.json'>Extra 2</option>
 	<option class="Text" value='Niveles JSON/1-1.json'>Extra 3</option>
+	<option class="Text" value='Niveles JSON/1-2.json'>Extra 4</option>
+	<option class="Text" value='Niveles JSON/LEVEL Pixel Art 2.json'>Extra 5</option>
   </select>
   <input type="button" class="Text"  style=" width:150px;  " value="change" onclick="cargarJSON(LevelSelected)">
 	
