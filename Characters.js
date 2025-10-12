@@ -15,7 +15,12 @@ GameOverSound: "SoundEfects/Game OverSMB1.mp3"
 },
 {
 Name:"New Mario Characters" ,
-Img :["characters/NewMario.png","characters/NewLuigi.png","characters/NewPeach.png","characters/NewDaisy.png"],
+Img :[
+"characters/NewMario.png","characters/NewLuigi.png",
+"characters/NewPeach.png","characters/NewDaisy.png",
+"characters/NewToad.png","characters/NewToaded.png",
+"characters/NewWario.png","characters/NewWaluigi.png",
+],
 Grid:[/*width*/ 48,/*height*/48,/*static*/1,/*walk*/3,/*run*/2,/*brek*/7,
 /*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/6,/*death*/0 ],
 width:24,
@@ -41,7 +46,12 @@ GameOverSound: "SoundEfects/Game OverNew.mp3"
 },
 {
 Name:"Super Mario of SMB1" ,
-Img :["characters/BigMario-sprite.png","characters/MarioFlaco-sprite.png","characters/BigToad-sprite.png","characters/Peach-sprite.png"],
+Img :[
+"characters/BigMario-sprite.png",
+"characters/BigLuigi-sprite.png",
+"characters/BigToad-sprite.png",
+"characters/Peach-sprite.png",
+"characters/MarioFlaco-sprite.png",],
 Grid:[/*width*/ 32,/*height*/64,/*static*/0,/*walk*/3,/*run*/0,/*brek*/4,
 /*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/0,/*simw*/3,/*death*/0 ],
 width:32,
