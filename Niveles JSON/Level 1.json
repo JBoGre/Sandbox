@@ -15,7 +15,21 @@
     "Music/smooth jazz.mp3"
   ],
   "backgroundMusicTrack": 0,
-  "backgroundImages": [],
+  "backgroundImages": [
+  [
+      "Backgrounds/Normal Font 2.png",
+      1024,
+      576,
+      0.5,
+      0.5,
+      0,
+      0,
+      true,
+      false,
+      0,
+      0
+    ]
+  ],
   "LevelTiles": "GetContext",
   "LevelCol": [
     {
