@@ -18,7 +18,47 @@
     "Music/Kirby Super Star Green Greens.mp3"
   ],
   "backgroundMusicTrack": 0,
-  "backgroundImages": [],
+   "backgroundImages": [
+     [
+      "Backgrounds/Tree Font.png",
+      688,
+      600,
+      0.5,
+      0.5,
+      0,
+      0,
+      true,
+      false,
+      0,
+      0
+    ],
+    [
+      "Backgrounds/Clouds Transparent.png",
+      880,
+      512,
+      0.4,
+      0.4,
+      0.1,
+      0,
+      true,
+      false,
+      0,
+      128
+    ], 
+    [
+      "Backgrounds/Tree Font Transparent.png",
+      573,
+      500,
+      0.2,
+      0.2,
+      0,
+      0,
+      true,
+      false,
+      0,
+      0
+    ]
+  ],
   "LevelTiles": "GetContext",
   "LevelCol": [
     {
