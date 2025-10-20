@@ -2191,6 +2191,8 @@ function AnalizerAudio(audio){
       }
     }
 table.style.overflow = "auto"
+var NolimitX = false
+var NolimitY = false
 const buton = [
 function(b) {
 Selection.classList.toggle('active');
@@ -2268,27 +2270,32 @@ buton[type_but](0)
 })
 function StarPosition(){
 	PositionX = screenWidth/2
-	if(Limit_Rigth !== false && Limit_Rigth  > cordX - screenWidth ){
-		PositionX += Limit_Rigth - (cordX - screenWidth)
-	}
-	if(Limit_Left !== false && Limit_Left < cordX){
-		PositionX +=  Limit_Left - cordX
+	if(!NolimitX){
+		if(Limit_Rigth !== false && Limit_Rigth  > cordX - screenWidth ){
+			PositionX += Limit_Rigth - (cordX - screenWidth)
+		}else{
+			if(Limit_Left !== false && Limit_Left < cordX){
+				PositionX +=  Limit_Left - cordX
+			}
+		}
 	}
 	
 	PositionY = Math.round(screenHeigth/2)
-	console.log(Limit_Up +"/"+( cordY -screenHeigth  ))
-	if(Limit_Up !== false && Limit_Up < cordY - screenHeigth){
-		PositionY +=  Limit_Up - (cordY - screenHeigth)
-		console.log(Limit_Up)
-	}
-	if(Limit_Down !== false && Limit_Down > cordY ){
-		PositionY += Limit_Down  - cordY
-		console.log(Limit_Down)
+	if(!NolimitY){
+		if(Limit_Up !== false && Limit_Up < (cordY + screenHeigth) ){
+			PositionY +=  Limit_Up - (cordY + screenHeigth)
+			console.log(Limit_Up)
+		}else{
+			if(Limit_Down !== false && Limit_Down > cordY ){
+				PositionY += Limit_Down  - cordY
+				console.log(Limit_Down)
+			}
+		}
 	}
 	
 }
 function establecing_starcords(X,Y,Player){
-	StarX  = X - limitXHalf+1;
+	StarX  = X  - limitXHalf+1;
 	StarY  = Y - limitYHalf+Math.round((Player.height/32)+0.4);
 }
 function Text(text,color,font,textAlign,Xstart,Xfinal,velocityX,Ystart,Yfinal,velocityY){
@@ -3536,7 +3543,13 @@ class tile {
 	},
 	]
 	Swich_tile (){
-	let result = TilesCollection.find(Tile => Tile.X == this.Xcord && Tile.Y == this.Ycord  );
+		let Xcord = this.Xcord
+		if(this.Xcord < 0) Xcord = 0; 
+		if(this.Xcord > limitXGird-1) Xcord = limitXGird-1; 
+		let Ycord = this.Ycord
+		if(this.Ycord < 0) Ycord = 0; 
+		if(this.Ycord > limitYGird-1) Ycord = limitYGird-1; 
+	let result = TilesCollection.find(Tile => Tile.X == Xcord && Tile.Y == Ycord  );
 	   if(result == undefined){
 		   this.col = "00000000";
 		   this.script = 0  ;
@@ -3606,51 +3619,37 @@ function charge (b,SX,SY,x,y,XL,YL) {
     let Y = screenHeigth +32; 
     let SXC = SX 
 	let SYC = SY 
-    var Q = YL - 1;
-	var G = XL
+    var Ycord = YL - 1;
+	var Xcord = XL
 	let E = 32
-	let stop = 0
-    let l = 0
-	let L = 0
-	function charge (){
-    G = XL 
-    for(let i = 0; i <  limitX +Xplus; i++){ 
-    myTiles.push(new tile(0,"rgba(0,0,0,256)", X, Y,Q,G,"00000000",0));
-	
-	if(Q < 0){
-		
-		myTiles[myTiles.length -1].Swich_tile()
-		}else{
-	        myTiles[myTiles.length -1].Swich_tile()
-			
-			//Q = SAVE.Y;
-	}
-    X += E;
-	G +=1
-	if(G > SXC){
-		G = (Tile_Teleport_charge[SAVE.scroll_configuration](G,SXC))
-		
+		function charge (){
+			Xcord = XL 
+			for(let i = 0; i <  limitX +Xplus; i++){ 
+			myTiles.push(new tile(0,"rgba(0,0,0,256)", X, Y,Ycord,Xcord,"00000000",0));
+					myTiles[myTiles.length -1].Swich_tile()
+
+			X += E;
+			Xcord +=1
+			}
+			X = 0;   
+			Y -= E;  
+			Ycord+=1;
 		}
-	}
-	X = 0;   
-	Y -= E;  
-	Q+=1;
-	}
     let ctxZ = b.getContext("2d");
+	
 	if(TESTSCREEN){
-	b.width = screenWidth*2
-	b.height = screenHeigth*2
+		b.width = screenWidth*2
+		b.height = screenHeigth*2
 	}else{
-    b.width = screenWidth
-	b.height = screenHeigth
+		b.width = screenWidth
+		b.height = screenHeigth
 	}
     ctxZ.clearRect(0, 0, b.width, b.height);
     for(let i = 0; i <  limitY + Yplus	; i++){		
-    charge()
+		charge()
     }
 	cordX = XL *-32
 	cordY = (YL *32) + 32 
-	console.log(cordX / 32+"/"+ cordY/ 32)
     localisated_sprites(Sprite_Collection,mysprites,cordX,cordY)
 }
 const Tile_Teleport = [
@@ -5047,7 +5046,6 @@ Y: function Y (PL,B) {establecing_starcords(B.Xcord,B.Ycord,PL);B.col = "0000000
 function stopX(p1,p2,tiles){
 let GoTo = 0
 var crash = false
-cordX += cameraX
 if(Limit_Left !== false){
     if(Limit_Left < cordX)
     {GoTo =  Limit_Left - cordX;crash = true;p1.camX =1;}}
@@ -5086,7 +5084,6 @@ let GoTo = 0
 var crash = false
 let line_position = 0
 let SaveCordY = cordY
-cordY += cameraY 
 let SaveMovement = cameraY
 if(Limit_Up !== false){
     if(Limit_Up < (cordY + screenHeigth)){
@@ -6046,11 +6043,14 @@ for(let i = 0; i < sprites.length ;i++){
 /*camera Y*/ 
 PlayerMovementManagerY(p1,tiles,sprites,mini_sprites)
 
+
 if(p1.modeY == 1){
     cameraModeY[p1.camY](p1,tiles)
      }else{
-        stopY(p1,p2,tiles)
+	cordY += cameraY 
+    if(!NolimitY)stopY(p1,p2,tiles);
 }
+
 
 MoveExtras_in_Y()
 inputY += cameraY
@@ -6070,11 +6070,14 @@ if(Multiplayer){
 /*camera X*/
 PlayerMovementManagerX(p1,tiles,sprites)
 
+
 if(p1.modeX == 1){
    cameraModeX[p1.camX](p1)
    }else{	   
-       stopX(p1,p2,tiles)
+      cordX += cameraX
+      if(!NolimitX)stopX(p1,p2,tiles);
 }
+
 
 
 MoveExtras_in_X()
