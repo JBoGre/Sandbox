@@ -2274,13 +2274,18 @@ function StarPosition(){
 	if(Limit_Left !== false && Limit_Left < cordX){
 		PositionX +=  Limit_Left - cordX
 	}
+	
 	PositionY = Math.round(screenHeigth/2)
-	if(Limit_Up != false && Limit_Up < cordY - screenHeigth){
+	console.log(Limit_Up +"/"+( cordY -screenHeigth  ))
+	if(Limit_Up !== false && Limit_Up < cordY - screenHeigth){
 		PositionY +=  Limit_Up - (cordY - screenHeigth)
+		console.log(Limit_Up)
 	}
-	if(Limit_Down !== false && Limit_Down   > cordY ){
+	if(Limit_Down !== false && Limit_Down > cordY ){
 		PositionY += Limit_Down  - cordY
+		console.log(Limit_Down)
 	}
+	
 }
 function establecing_starcords(X,Y,Player){
 	StarX  = X - limitXHalf+1;
@@ -3645,6 +3650,7 @@ function charge (b,SX,SY,x,y,XL,YL) {
     }
 	cordX = XL *-32
 	cordY = (YL *32) + 32 
+	console.log(cordX / 32+"/"+ cordY/ 32)
     localisated_sprites(Sprite_Collection,mysprites,cordX,cordY)
 }
 const Tile_Teleport = [
@@ -3862,6 +3868,7 @@ this.deathMusic = new Audio(DeathSound)
 }
 this.songEnd = false
 }
+var FastDeath = true
 function nullTrigers(player){
 	player.UpTouch = false;player.DownTouch = false
 	player.LeftTouch = false;player.RightTouch = false
@@ -3910,28 +3917,33 @@ if(player.lives > 0 ){
 	 }else{
 		 PlayerTrigers(player,controls)
 	 }
-		player.Colision = true
+		 player.Colision = true
 		 plataformer_Easy(controls,player)
-		 
 		 player.songEnd = false
 		 GameOverMusicEnd = false
          }else{
 			if(player2.lives < 1){
 				backgroundMusic.pause();       // Pausa el audio
-					backgroundMusic.currentTime = 0;  // Reinicia al inicio
+				backgroundMusic.currentTime = 0;  // Reinicia al inicio
 					
 				}
 			if(Multiplayer){
-			player.Colision = false
-			player.lives = 0;
-			if(Bubble(player,player2) && GameOverMusicEnd){
-				return true;
-			}
-			}else{
-				if(death[2](player) && player.songEnd){
+				player.Colision = false
+				player.lives = 0;
+				if(Bubble(player,player2) && (GameOverMusicEnd || FastDeath)){
+					if(FastDeath){
+					GameOverMusic.play()
+					player.deathMusic.pause()
+					player2.deathMusic.pause()
+					}
 					return true;
-				}		
-			}
+				}
+			}else{
+				if((death[2](player) && player.songEnd) || FastDeath){
+					if(FastDeath) player.deathMusic.play() ;
+					return true;	
+				}				
+			}		
 			if(!player.songEnd){
 				player.deathMusic.play()
 			}
@@ -3942,7 +3954,6 @@ if(player.lives > 0 ){
 				player2.deathMusic.pause()
 				}
 			}		
-			
 		 }
 }
 
@@ -6159,7 +6170,7 @@ for(let i = 0; i < sprites.length ;i++){
 		//ctx.fillRect(sprites[i].x+sprites[i].Xdiference_Print,sprites[i].y+sprites[i].Ydiference_Print,sprites[i].widthPrint,sprites[i].heightPrint)
 		//ctx.fillStyle = "#F00"
 		//ctx.fillRect(sprites[i].x,sprites[i].y,sprites[i].width,sprites[i].height)
-draw_sprite[sprites[i].Mode](sprites[i],game)
+		draw_sprite[sprites[i].Mode](sprites[i],game)
 	}
 }
 
@@ -6188,17 +6199,17 @@ ctx.globalAlpha = Alpha
 //PrinT(game,Position[0].X,Position[0].Y,24,32,"#fff")
 if(Multiplayer){
 	
-if(!p2.Colision){
-ctx.drawImage(HudTEXTURES,0,96,64, 64,p2.x - (96-p2.width - p2.Xnegative*0.5 )*0.5  ,p2.y - (96-p2.height - p2.Ynegative*0.5 )*0.5 ,96,96);
-}
-ctx.drawImage(HudTEXTURES,80,96,16, 16,p2.x +p2.widthHalf -8,p2.y -16, 16  , 16);
-animation(p2,p2.CameraY)
-prin[1](p2,ctx,p2.CameraY[0],p2.CameraY[1]);
+	if(!p2.Colision){
+		ctx.drawImage(HudTEXTURES,0,96,64, 64,p2.x - (96-p2.width - p2.Xnegative*0.5 )*0.5  ,p2.y - (96-p2.height - p2.Ynegative*0.5 )*0.5 ,96,96);
+	}
+	ctx.drawImage(HudTEXTURES,80,96,16, 16,p2.x +p2.widthHalf -8,p2.y -16, 16  , 16);
+	animation(p2,p2.CameraY)
+	prin[1](p2,ctx,p2.CameraY[0],p2.CameraY[1]);
 
-if(!p1.Colision){
-ctx.drawImage(HudTEXTURES,0,96,64, 64,p1.x - (96-p1.width - p1.Xnegative*0.5 )*0.5  ,p1.y - (96-p1.height - p1.Ynegative*0.5 )*0.5 ,96,96);
-}
-ctx.drawImage(HudTEXTURES,64,96,16, 16,p1.x +p1.widthHalf -8,p1.y -16, 16  , 16);
+	if(!p1.Colision){
+		ctx.drawImage(HudTEXTURES,0,96,64, 64,p1.x - (96-p1.width - p1.Xnegative*0.5 )*0.5  ,p1.y - (96-p1.height - p1.Ynegative*0.5 )*0.5 ,96,96);
+	}
+	ctx.drawImage(HudTEXTURES,64,96,16, 16,p1.x +p1.widthHalf -8,p1.y -16, 16  , 16);
 }
 animation(p1,p1.CameraY)
 prin[1](p1,ctx,p1.CameraY[0],p1.CameraY[1]);
@@ -6222,6 +6233,7 @@ if(frisFotogram){
 frisFotogram = false
 return on_game;
 }
+
 var Stelar = false
 var invecybility = false
 var UpSide = false
@@ -6256,10 +6268,10 @@ function Boregito(Value){
 			   shoterMode = 2
 			   break ;
                case "ENEMIES":
-			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,0,"661122103",1,"09100", -1,8)
-	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,0,"661122200",1,"09000", -1,1)
-	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,0,"661122503",1,"09200", -2,1)
-	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,0,"661120201",1,"09300", 0,-8)
+			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,24,"161122103",1,"09100", -1,8)
+	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,24,"161122200",1,"09000", -1,1)
+	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,24,"161122503",1,"09200", -2,1)
+	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,24,"161120201",1,"09300", 0,-8)
 			   break
 			   case "BULLETBILLS":
 			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,16,"160010000",2,"23900",-2,0)
