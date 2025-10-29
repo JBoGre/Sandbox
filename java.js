@@ -3326,14 +3326,15 @@ ctx.drawImage(
 },
 ]
 const Xmargin = [
-function MarginTeleport (p1) {
+function Margin (p1) {
        if(p1.x + p1.MoveXLimit < 0  ){
 		   p1.xP = p1.x  +  p1.MoveXLimit - 0  ;
-		
+			if(!p1.invecybility && p1.LeftTriger){p1.lives  -- }	
 		   return true
 		}
        if((p1.x + p1.width)  + p1.MoveXLimit >  screenWidth  ){
 		   p1.xP = (p1.x + p1.width) +  p1.MoveXLimit - screenWidth;
+		   if(!p1.invecybility && p1.RightTriger){p1.lives  -- }	
 		  
 		   return true
 		}	
@@ -3350,10 +3351,11 @@ function MarginTeleport (p1) {
 },
 ]
 const Ymargin = [
-function MarginTeleport (p1) {
+function Margin (p1) {
        if(p1.y + p1.MoveYLimit < 0  ){
 		   p1.yP = p1.y  +  p1.MoveYLimit - 0  ;
 		   p1.Ytouch = true
+		   if(!p1.invecybility && p1.UpTriger){p1.lives  -- }	
 		   return true
 		}
 	   if((p1.y + p1.height)  + p1.MoveYLimit >  screenHeigth + p1.height ){
@@ -3506,7 +3508,7 @@ class tile {
 		this.animation = 0;
 	}
 	Update_tile (){
-	    this.TileTeleport[0]();
+	    this.TileTeleport[TileTeleportType]();
 		if(Ax4 == 3){
 			this.Tiles_animation()
 			if(this.action){
@@ -3539,6 +3541,38 @@ class tile {
 			   this.Xcord += rX 
 			   this.Swich_tile()
 			   this.x += Xmargin 
+		}
+	},
+	() => {
+		let SX = SAVE.X;
+		let	SY = SAVE.Y;
+		let rX = limitX +Xplus
+		let rY = limitY +Yplus
+		let Xmargin = limitTilesX +XplusPixels ;
+		let Ymargin = limitTilesY +YplusPixels; 
+		if(limitX -2 >= SX ){rX = 1}
+		if(limitY -2 >= SY ){rY = 1}
+		if(this.y < YplusPixels *-1  ){
+				this.Ycord = (this.Ycord - rY) % SY
+				if(this.Ycord < 0 ){this.Ycord = this.Ycord + SY  }
+			   this.Swich_tile()
+			   this.y += Ymargin 
+			   }
+		if(this.y > limitTilesY){
+			this.Ycord = (this.Ycord + rY) % SY ;
+			this.Swich_tile()
+			this.y += Ymargin *-1
+		}
+		if(this.x > limitTilesX){
+			this.Xcord = (this.Xcord - rX) % SX ;
+			if(this.Xcord < 0 ){this.Xcord = this.Xcord + SX  }
+			this.Swich_tile()
+			this.x += Xmargin  *-1
+		}
+		if(this.x < XplusPixels *-1){
+			   this.Xcord = (this.Xcord + rX) % SX ;
+			   this.Swich_tile()
+			   this.x += Xmargin
 		}
 	},
 	]
@@ -3614,6 +3648,8 @@ var Xplus = 2
 var Yplus = 2
 var XplusPixels = Xplus *32
 var YplusPixels = Yplus *32
+var LoopTiles = false
+var TileTeleportType = 0
 function charge (b,SX,SY,x,y,XL,YL) {
     let X = 0 ;
     let Y = screenHeigth +32; 
@@ -3635,6 +3671,22 @@ function charge (b,SX,SY,x,y,XL,YL) {
 			Y -= E;  
 			Ycord+=1;
 		}
+		function chargeLoop (){
+			Xcord = XL
+		    while(Xcord < 0 ){
+				Xcord += SAVE.X 				
+			}
+			for(let i = 0; i <  limitX +Xplus; i++){ 
+			myTiles.push(new tile(0,"rgba(0,0,0,256)", X, Y,Ycord,Xcord,"00000000",0));
+					myTiles[myTiles.length -1].Swich_tile()
+
+			X += E;
+			Xcord = (Xcord  + 1) % SAVE.X
+			}
+			X = 0;   
+			Y -= E;  
+			Ycord = (Ycord  + 1) % SAVE.Y
+		}
     let ctxZ = b.getContext("2d");
 	
 	if(TESTSCREEN){
@@ -3645,70 +3697,23 @@ function charge (b,SX,SY,x,y,XL,YL) {
 		b.height = screenHeigth
 	}
     ctxZ.clearRect(0, 0, b.width, b.height);
-    for(let i = 0; i <  limitY + Yplus	; i++){		
-		charge()
-    }
+	if(LoopTiles){
+		while(Ycord < 0 ){
+				Ycord += SAVE.Y 				
+			}
+		for(let i = 0; i <  limitY + Yplus	; i++){		
+			chargeLoop()
+		}
+	}else{
+		for(let i = 0; i <  limitY + Yplus	; i++){		
+			charge()
+		}
+	}
 	cordX = XL *-32
 	cordY = (YL *32) + 32 
     localisated_sprites(Sprite_Collection,mysprites,cordX,cordY)
 }
 const Tile_Teleport = [
-function(Player){
-var rX = limitX +Xplus
-var rY = limitY +Yplus
-var Xmargin = limitTilesX +XplusPixels ;var Ymargin = limitTilesY +YplusPixels; 
-if(Player.y < YplusPixels *-1 ){
-        Player.Ycord += rY*-1
-	   Swich_tile(Player,Player.Ycord,Player.Xcord)
-       Player.y += Ymargin 
-}
-if(Player.y > limitTilesY){
-	Player.Ycord += rY
-	Swich_tile(Player,Player.Ycord,Player.Xcord)
-    Player.y += Ymargin *-1
-}
-if(Player.x > limitTilesX){
-	Player.Xcord += rX*-1
-	Swich_tile(Player,Player.Ycord,Player.Xcord)
-    Player.x += Xmargin  *-1
-}
-if(Player.x < XplusPixels *-1){
-	   Player.Xcord += rX 
-	   Swich_tile(Player,Player.Ycord,Player.Xcord,LC)
-       Player.x += Xmargin 
-}
-},
-function(Player){
-var SX = SAVE.X;
-var SY = SAVE.Y;
-var rX = limitX +Xplus
-if(limitX -2 >= SX ){rX = 1}
-var rY = limitY +Yplus
-if(limitY -2 >= SY ){rY = 1}
-var Xmargin = limitTilesX +XplusPixels;var Ymargin = limitTilesY +YplusPixels; 
-if(Player.y < YplusPixels *-1  ){
-        Player.Ycord = (Player.Ycord - rY) % SY
-		if(Player.Ycord < 0 ){Player.Ycord = Player.Ycord + SY  }
-	   Swich_tile(Player,Player.Ycord,Player.Xcord)
-       Player.y += Ymargin 
-	   }
-if(Player.y > limitTilesY){
-	Player.Ycord = (Player.Ycord + rY) % SY ;
-	Swich_tile(Player,Player.Ycord,Player.Xcord)
-    Player.y += Ymargin *-1
-}
-if(Player.x > limitTilesX){
-	Player.Xcord = (Player.Xcord - rX) % SX ;
-	if(Player.Xcord < 0 ){Player.Xcord = Player.Xcord + SX  }
-	Swich_tile(Player,Player.Ycord,Player.Xcord)
-    Player.x += Xmargin  *-1
-}
-if(Player.x < XplusPixels *-1){
-	   Player.Xcord = (Player.Xcord + rX) % SX ;
-	   Swich_tile(Player,Player.Ycord,Player.Xcord)
-       Player.x += Xmargin
-}
-},
 function(Player){
 var SX = SAVE.X; 
 var SY = SAVE.Y
@@ -4789,7 +4794,6 @@ if((PL.x < (B.x + B.width) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx)) && 
 			if(col[B.Rigth].RIGTH(PL,B)){
 				auto_com[PL.Movement[3]].X(PL);
 				PL.touchX = true
-				PL.RightTouch = true
 			}
 			PL.xP = PL.x - ((B.x + B.width) - tileVx)
 			crash = true
@@ -5154,8 +5158,8 @@ function PlayerMovementManagerY (Player,tiles,sprites,mini_sprites){
 function MovementXPlayer (Player,tiles,sprites) {
 let crash = false
 Player.Xtouch = false
-Player.LeftTouch = false
-Player.RightTouch = false
+Player.LeftTriger = false
+Player.RightTriger = false
 	let MoveX = Player.MoveX + Player.BX
 	if(MoveX > positveLimit){MoveX = positveLimit}
 	if(MoveX < negativeLimit){MoveX = negativeLimit}
@@ -5171,9 +5175,6 @@ if(Player.BX <= -1){Player.BX += 1}
 if(Player.BX >= 1){Player.BX += -1}
 }
 
-if(Xmargin[SAVE.Margin](Player)){
-	crash = true
-}
 if(Player.Colision){
 	for (i = 0; i < sprites.length; i += 1){
 		
@@ -5186,6 +5187,9 @@ if(Player.Colision){
 		crash = true
 	}
 }
+if(Xmargin[SAVE.Margin](Player)){
+	crash = true
+}
 
 if(crash){XnextPosition += Player.xP *-1}
 return XnextPosition
@@ -5195,8 +5199,8 @@ function MovementYPlayer (Player,tiles,sprites,MiniSprites){
  /*cameraY stuck // mode 1 */
 let crash = false
 Player.Ytouch = false
-	Player.UpTouch = false
-	Player.DownTouch = false
+Player.UpTriger = false
+Player.DownTriger = false
 if(tick){
 if(Player.BY <= -1){Player.BY += 1}
 if(Player.BY >= 1){Player.BY += -1}
@@ -5211,13 +5215,6 @@ if(Player.BY >= 1){Player.BY += -1}
 	Player.MoveYLimit = MoveY
 let YnextPosition = MoveY  
 
-
-if(Ymargin[SAVE.Margin](Player)){
-	crash = true
-	if(Player.Ytouch && Player.MoveYLimit > 0 ){
-			 Player.InFlor = true
-		 }
-}
 Player.Hy = 0;Player.Hx = 0;
 
 if(Player.Colision){
@@ -5237,6 +5234,12 @@ if(Player.Colision){
 			 }
 		crash = true
 	}
+}
+if(Ymargin[SAVE.Margin](Player)){
+	crash = true
+	if(Player.Ytouch && Player.MoveYLimit > 0 ){
+			 Player.InFlor = true
+		 }
 }
 
 if(crash){YnextPosition += Player.yP *-1}
@@ -5739,6 +5742,8 @@ var negativeLimit = -16
 var Position = []
 var limitTilesX = (limitX )*32
 var limitTilesY = (limitY )*32
+var XTilesDraw = limitTilesX +XplusPixels ;
+var YTilesDraw = limitTilesY +YplusPixels ;
 const fotograms = [2,4,8,16]
 const fG_action = [0,0,0,0]
 let corection = 1
@@ -5925,8 +5930,8 @@ if(!Multiplayer){
 	p2.lives = -1
 	Player_CRT.Player1 = 0
 }else{
-	Player1 =  1
-	Player2 =  2
+	Player_CRT.Player1 =  1
+	Player_CRT.Player2 =  2
 }
 on_game = true
 Win_or_lose = false
@@ -6077,8 +6082,6 @@ if(p1.modeX == 1){
       cordX += cameraX
       if(!NolimitX)stopX(p1,p2,tiles);
 }
-
-
 
 MoveExtras_in_X()
 
@@ -6274,7 +6277,7 @@ function Boregito(Value){
 			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,24,"161122103",1,"09100", -1,8)
 	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,24,"161122200",1,"09000", -1,1)
 	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,24,"161122503",1,"09200", -2,1)
-	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,24,"161120201",1,"09300", 0,-8)
+	           createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,24,"161120201",1,"09300", 0,-4)
 			   break
 			   case "BULLETBILLS":
 			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,16,"160010000",2,"23900",-2,0)
@@ -6360,6 +6363,19 @@ function Boregito(Value){
 			   break 
 			   case "TESTSCREEN":
 			   TESTSCREEN = true
+			   break 
+			   case "SLOWDEATH":
+			   FastDeath = false
+			   break 
+			   case "NOLIMITS":
+			   NolimitX = true
+			   NolimitY = true
+			   break 
+			   case "LOOPTILES":
+			   LoopTiles = true
+			   TileTeleportType = 1
+			   NolimitX = true
+			   NolimitY = true
 			   break 
 			   default:
 			   console.log("No code")
