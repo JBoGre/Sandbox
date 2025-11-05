@@ -87,9 +87,9 @@ HNEGA:-16,
 },
 {
 Name:"Mario of SMB3" ,
-Img :["characters/Mario3.png","characters/Luigi3.png","characters/MarioRaccon.png",/*"characters/LuigiRaccon.png",*/
-"characters/MarioTanoky.png","characters/MarioFrog.png","characters/MarioHammerBros.png","characters/Toad3.png"],
-Grid:[64,64,/*static*/0,/*walk*/2,/*run*/3,/*brek*/6,/*jumpUP*/1,/*jumpDOWN*/0,/*jump+run*/1,/*swim*/4,/*death*/0],
+Img :["characters/Mario3.png","characters/Luigi3.png","characters/MarioRaccon.png","characters/MarioTanoky.png",
+"characters/MarioFrog.png","characters/MarioHammerBros.png","characters/Toad3.png","characters/Toaded3.png"],
+Grid:[64,64,/*static*/0,/*walk*/2,/*run*/3,/*brek*/6,/*jumpUP*/1,/*jumpDOWN*/1,/*jump+run*/2,/*swim*/4,/*death*/0],
 width:32,
 height:54,
 WNEGA:-16,
