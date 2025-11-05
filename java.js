@@ -3376,8 +3376,9 @@ function MarginTeleport (p1) {
        if(p1.y < (0  - YREST) ){p1.y = 240;p1.x = 240;p1.lives = 1;p1.MoveY = -8}
 },
 ]
-function Mini_sprite(X,Y,img,RenderMode,XG,YG,frame,scrip,MoveX,MoveY,width,height,type){
+function Mini_sprite(X,Y,img,RenderMode,XG,YG,frame,scrip,MoveX,MoveY,width,height,type,Disapear){
 this.script = scrip
+this.Frame_Animate = 0
 this.Live = true
 this.x = X; this.y = Y;
 this.MoveX = MoveX;this.MoveY = MoveY;
@@ -3392,6 +3393,9 @@ if(this.height == undefined){
 this.type = type
 if(this.type == undefined){
 	this.type = 1
+}
+if(this.Disapear == undefined){
+	this.Disapear = true
 }
 this.imgN = img;
 this.Mode = RenderMode
@@ -3412,6 +3416,10 @@ function(P){
 },
 function(P){
 	//2
+	if(Ax3 == 2){
+	P.Frame_Animate++
+	if(P.Frame_Animate >= P.frame){P.Live = false }
+	}
 
 },
 
@@ -3840,7 +3848,7 @@ this.YnegativeSave =  Ynegative ;
 this.Hx = 0; this.Hy = 0;
 this.velocity = 1
 this.MaxVelocity = 1
-this.prin = 2
+this.prin = 1
 this.hits = 0
 this.col = comportament
 this.xP = 0; this.yP = 0
@@ -3925,40 +3933,48 @@ if(player.lives > 0 ){
 		 plataformer_Easy(controls,player)
 		 player.songEnd = false
 		 GameOverMusicEnd = false
-         }else{
-			if(player2.lives < 1){
-				backgroundMusic.pause();       // Pausa el audio
-				backgroundMusic.currentTime = 0;  // Reinicia al inicio
-					
-				}
-			if(Multiplayer){
-				player.Colision = false
-				player.lives = 0;
-				if(Bubble(player,player2) && (GameOverMusicEnd || FastDeath)){
-					if(FastDeath){
-					GameOverMusic.play()
-					player.deathMusic.pause()
-					player2.deathMusic.pause()
-					}
-					return true;
-				}
-			}else{
-				if((death[2](player) && player.songEnd) || FastDeath){
-					if(FastDeath) player.deathMusic.play() ;
-					return true;	
-				}				
-			}		
-			if(!player.songEnd){
-				player.deathMusic.play()
-			}
-			if(!GameOverMusicEnd ){
-				if(player2.lives < 1 && Multiplayer ){
+    }else{
+		if(player2.lives < 1){
+			backgroundMusic.pause();       // Pausa el audio
+			backgroundMusic.currentTime = 0;  // Reinicia al inicio		
+		}
+		
+		if(Multiplayer){
+			player.Colision = false
+			player.lives = 0;
+			if(Bubble(player,player2) && (GameOverMusicEnd || FastDeath)){
+				if(FastDeath){
 				GameOverMusic.play()
 				player.deathMusic.pause()
 				player2.deathMusic.pause()
 				}
-			}		
-		 }
+				return true;
+			}
+		}else{
+			if((death[2](player) && player.songEnd) || FastDeath){
+				if(FastDeath) player.deathMusic.play() ;
+				return true;	
+			}				
+		}
+		if(!player.songEnd){
+			player.deathMusic.play()
+		}
+		if(!GameOverMusicEnd ){
+			if(player2.lives < 1 && Multiplayer ){
+			GameOverMusic.play()
+			player.deathMusic.pause()
+			player2.deathMusic.pause()
+			}
+		}
+		/*
+		if(Stocked(player,player2)){
+			player.lives = 1;
+		}else{
+			player.lives = 0;
+		}
+		player.Stocked = false
+		*/
+	}
 }
 
 const controlls =[
@@ -4278,6 +4294,42 @@ if(Player2.lives > 0){
 }else{
 	return true ;
 }
+}
+function Stocked(Player,Player2){
+	Player.velocity = 0
+	Gravity(Player,16,0.5);
+	if(Ax4 == 3){
+	if(Player.MoveX	<= -1){Player.MoveX ++}
+	if(Player.MoveX >= 1){Player.MoveX --}
+	}
+		if(Player.UpTriger){
+			if(Player.Stocked){
+				Player.MoveY = 4;
+				if(Player.MoveX	<= -1) Player.MoveX = -8
+				if(Player.MoveX >= 1)  Player.MoveX = 8
+				if(Player.MoveX == 0) Player.MoveX = 8
+			}else{
+				Player.MoveY = 0;
+				Player.angle = 0
+				return true
+			}
+		}
+		if(Player.DownTriger){
+			if(Player.Stocked){
+				Player.MoveY = -8;
+				if(Player.MoveX	<= -1) Player.MoveX = -8
+				if(Player.MoveX >= 1)  Player.MoveX = 8
+				if(Player.MoveX == 0) Player.MoveX = 8
+			}else{
+				Player.MoveY = 0;
+				Player.angle = 0;
+				return true
+			}
+		}
+		if(Player.LeftTriger)Player.MoveX = -8
+		if(Player.RightTriger)Player.MoveX = 8
+	if(Player.MoveX	<= -1){Player.angle += 0.1 }
+	if(Player.MoveX >= 1){Player.angle -= 0.1}
 }
 function plataformer_Easy(ctr,Player,B,C){
 //if(Player.invecybility){Player.Time += 1;Player.prin = 4;if(Player.Time==20){Player.invecybility = false;Player.Time = 0;}}
@@ -4627,18 +4679,18 @@ function MiniSpriteColision(Sprite,MiniSprites){
 		if(MiniSprites[i].type == 1){
 		let MiniSprite = MiniSprites[i]
 			if((Sprite.x < MiniSprite.x + MiniSprite.width && (Sprite.x + (Sprite.width)) > MiniSprite.x) && (Sprite.y < MiniSprite.y + (MiniSprite.height))  && Sprite.y + (Sprite.height) > MiniSprite.y){
-				   MiniSprites.splice(i, 1); 
+				   if(MiniSprite.Disapear){MiniSprites.splice(i, 1)};
 				   Sprite.BulletTouch = true
 			}
 		 }
 	}
 }
-function MiniSpritePlayerColision(Player,MiniPlayers){
-	for (i = 0; i < MiniPlayers.length; i += 1){
-		if(MiniPlayers[i].type == 2){
-		let MiniPlayer = MiniPlayers[i]
-			if((Player.x < MiniPlayer.x + MiniPlayer.width && (Player.x + (Player.width)) > MiniPlayer.x) && (Player.y < MiniPlayer.y + (MiniPlayer.height))  && Player.y + (Player.height) > MiniPlayer.y){
-				   MiniPlayers.splice(i, 1); 		
+function MiniSpritePlayerColision(Player,MiniSprites){
+	for (i = 0; i < MiniSprites.length; i += 1){
+		if(MiniSprites[i].type == 2){
+		let MiniSprite = MiniSprites[i]
+			if((Player.x < MiniSprite.x + MiniSprite.width && (Player.x + (Player.width)) > MiniSprite.x) && (Player.y < MiniSprite.y + (MiniSprite.height))  && Player.y + (Player.height) > MiniSprite.y){
+				   if(MiniSprite.Disapear){MiniSprites.splice(i, 1)};
 				   Player.lives --
 			}
 		 }
@@ -4968,13 +5020,13 @@ DOWN: function Y (PL){PL.BY = 0;return true ;},
 LEFT : function X (PL) {PL.BX = 0;return true ;},
 RIGTH: function X (PL) {PL.BX = 0;return true ;},
 },{    /*Action-2*/
-UP: function Y (PL,N){ },
-DOWN: function Y (PL){ },
-LEFT : function X (PL) { },
-RIGTH: function X (PL) { },
+UP: function Y (PL,N){PL.BY = 0; },
+DOWN: function Y (PL){PL.BY = 0; },
+LEFT : function X (PL) {PL.BX = 0; },
+RIGTH: function X (PL) {PL.BX = 0; },
 },{   /*bouncing-3*/
-UP: function Y (PL){PL.MoveY = -16;PL.BY = 0},
-DOWN: function Y (PL){if(PL.BY == 0){PL.MoveY = 16;PL.BY = 0}else{PL.BY = 24;PL.MoveY = 0}},
+UP: function Y (PL,B){PL.MoveY = -16;PL.BY = 0;console.log(B.Xcord,B.Ycord);},
+DOWN: function Y (PL){if(PL.BY == 0){PL.MoveY = 16;PL.BY = 0}else{PL.BY = 24;PL.MoveY = 0};},
 LEFT : function X (PL) {PL.BX = -16;PL.MoveX = 0},
 RIGTH: function X (PL) {PL.BX = 16;PL.MoveX = 0},
 },{   /*treadmill <- 4*/
@@ -4988,10 +5040,10 @@ DOWN: function Y (PL){if(PL.BX > -2){PL.BX += -2}return true},
 LEFT : function X (PL) {if(PL.BY > -8){PL.BY += -2};return true},
 RIGTH: function X (PL) {if(PL.BY < 4){PL.BY += 2};return true},
 },{    /*dangerus-death-6*/
-UP: function Y (PL){if(PL.invecybility != true){PL.lives --;};return true},
-DOWN: function Y (PL){if(PL.invecybility != true){PL.lives --;};return true},
-LEFT : function X (PL) {if(PL.invecybility != true){PL.lives --;};return true},
-RIGTH: function X (PL) {if(PL.invecybility != true){PL.lives --;};return true},
+UP: function Y (PL){if(PL.invecybility != true){PL.lives --;PL.Stocked = true};return true},
+DOWN: function Y (PL){if(PL.invecybility != true){PL.lives --;PL.Stocked = true};return true},
+LEFT : function X (PL) {if(PL.invecybility != true){PL.lives --;PL.Stocked = true};return true},
+RIGTH: function X (PL) {if(PL.invecybility != true){PL.lives --;PL.Stocked = true};return true},
 },{   /*extra life - Extra power-7 no in using*/
 UP: function Y (PL){if(PL.invecybility != true){PL.lives += 1;PL.invecybility = true};return true},
 DOWN: function Y (PL){if(PL.invecybility != true){PL.lives += 1;PL.invecybility = true};return true},
@@ -5004,14 +5056,15 @@ LEFT : function X (PL) {PL.BX = PL.MoveX *-1;PL.MoveX = 0},
 RIGTH: function X (PL) {PL.BX = PL.MoveX *-1;PL.MoveX = 0},
 },{ /*Action-9*/
 UP: function Y (PL,B){;return true;},
-DOWN: function Y (PL,B){;return true;},
+DOWN: function Y (PL,B){;return true},
 LEFT : function X (PL,B){;return true},
 RIGTH: function X (PL,B){;return true},
-},{   /*trap Player*/
-UP: function Y (PL){return true},
-DOWN: function Y (PL){return true},
-LEFT : function X (PL){PL.BY = -2 ;return true},
-RIGTH: function X (PL) {PL.BY = -2;return true},
+},{   /*ICE*/
+UP: function Y (PL){if(PL.MoveX+PL.BX <= -1){if(PL.BX >= -2 )PL.BX = -2;};if(PL.MoveX+PL.BX >= 1){if(PL.BX <= 2 )PL.BX = 2;};return true;},
+//UP: function Y (PL){if(PL.MoveX <= -1){PL.BX = -2};if(PL.MoveX >= 1){PL.BX = 2};return true;},
+DOWN: function Y (PL){return true;},
+LEFT : function X (PL){PL.BX = 0;return true},
+RIGTH: function X (PL) {PL.BX = 0;return true},
 },
 ]
 const colM =[
@@ -5034,8 +5087,8 @@ Y: function Y (PL) {PL.water = true;},
 X: function X (PL,B) {prizes += 1;B.col = "00000000";},
 Y: function Y (PL,B) {prizes += 1;B.col = "00000000";},
 },{  /* death (6)*/
-X: function X (PL,B) {if(PL.invecybility != true){PL.lives --;}},
-Y: function Y (PL,B) {if(PL.invecybility != true){PL.lives --;}},
+X: function X (PL,B) {if(PL.invecybility != true){PL.lives --;PL.Stocked = true}},
+Y: function Y (PL,B) {if(PL.invecybility != true){PL.lives --;PL.Stocked = true}},
 },{  /* no use (7)*/
 X: function X (PL) {if(PL.invecybility != true){PL.lives += 1;PL.invecybility = true}},
 Y: function Y (PL) {if(PL.invecybility != true){PL.lives += 1;PL.invecybility = true}},
@@ -5528,7 +5581,7 @@ function DrawMiniSprites(mini_sprites,canvas){
 	let Sprite;
 	for(let i = 0; i < mini_sprites.length ;i++){
 	Sprite = mini_sprites[i]
-	ctx.drawImage(image_collection[Sprite.imgN], Sprite.XG ,Sprite.YG , Sprite.width, Sprite.height, Sprite.x, Sprite.y, Sprite.width, Sprite.height)
+	ctx.drawImage(image_collection[Sprite.imgN], Sprite.XG + Sprite.Frame_Animate*Sprite.width ,Sprite.YG , Sprite.width, Sprite.height, Sprite.x, Sprite.y, Sprite.width, Sprite.height)
 	}
 }
 function drawLight(canvas,p1,sprites) {
@@ -6169,7 +6222,6 @@ if(DrawShadow){drawLight(game,p1,sprites)}
 //0.125
 PrinAllTilesBlur(game,2)
 //PrinAllTilesColor(game)
-
 for(let i = 0; i < sprites.length ;i++){
 	if(sprites[i].prin){
 		//ctx.fillStyle = "#FF0"
@@ -6218,7 +6270,7 @@ if(Multiplayer){
 	ctx.drawImage(HudTEXTURES,64,96,16, 16,p1.x +p1.widthHalf -8,p1.y -16, 16  , 16);
 }
 animation(p1,p1.CameraY)
-prin[1](p1,ctx,p1.CameraY[0],p1.CameraY[1]);
+prin[p1.prin](p1,ctx,p1.CameraY[0],p1.CameraY[1]);
 
 
 
