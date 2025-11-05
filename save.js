@@ -30,9 +30,9 @@ tiles:[
 Name:"Tiles & Objects",
 Images:["texturas/Texturas ASCII_DIY.png","texturas/GradientTexture.png","texturas/Sprites.png","texturas/decoraciones.png",
 "texturas/Monkey.png","texturas/BigMonkey.png","texturas/Goomba.png","texturas/shy guy.png","texturas/3x3 Textures.png",
-/*"texturas/Decoraciones Realistas.png","texturas/RealisticTexture.png"*/],
+"texturas/terrain.png","texturas/terrainShadow.png","texturas/Explosion.png"],
 SoundEffects:["SoundEfects/Checkpoint.wav","SoundEfects/Collect.wav","SoundEfects/Boing.mp3","SoundEfects/Boing.mp3","SoundEfects/Jump Attack.mp3",
-"SoundEfects/bubble-pop.mp3","SoundEfects/Destroy.wav","SoundEfects/Break.wav"],
+"SoundEfects/bubble-pop.mp3","SoundEfects/Destroy.wav","SoundEfects/Break.wav","SoundEfects/Fuse.ogg","SoundEfects/ExplosionTNT.ogg"],
 objects:[
 // Print Blocks 
 ["Tile","rgba(0,0,0,0)",0,"00000000"],
@@ -107,6 +107,10 @@ objects:[
 ["Tile","rgba(0,0,0,0)",5,"00000920"],
 ["Tile","rgba(0,0,0,0)",1,"11002040"],
 ["Tile","rgba(0,0,0,0)",1,"00000140"],
+// Roma Temple
+["Tile","rgba(0,0,0,0)",1,"00000970"],
+["Tile","rgba(0,0,0,0)",1,"00000980"],
+["Tile","rgba(0,0,0,0)",1,"00000990"],
 // Others
 ["Tile","rgba(0,0,0,0)",1,"00000340"],["Tile","rgba(0,0,0,0)",1,"00000130"],
 // Weird Textures
@@ -135,8 +139,12 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"11111480"],
 // special Blocks
 ["Tile","rgba(0,0,0,0)",2,"40002808"],["Tile","rgba(0,0,0,0)",2,"50002908"],
+
 ["Tile","rgba(0,0,0,0)",1,"61111A00"],["Tile","rgba(0,0,0,0)",1,"11611A10"],["Tile","rgba(0,0,0,0)",1,"11161A20"],["Tile","rgba(0,0,0,0)",1,"16111A30"],["Tile","rgba(0,0,0,0)",1,"66661A40"],
-["Tile","rgba(0,0,0,0)",2,"99993400",0],["Tile","rgba(0,0,0,0)",2,"88883500",0],
+
+["Tile","rgba(0,0,0,0)",2,"99993400",0],
+["Tile","rgba(0,0,0,0)",2,"88883500",0],
+
 ["Tile","rgba(0,0,0,0)",2,"55003606",1],
 ["Tile","rgba(0,0,0,0)",2,"31311200",2],
 ["Tile","rgba(0,0,0,0)",2,"13131210",3],
@@ -146,6 +154,12 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"11111830",7],
 ["Tile","rgba(0,0,0,0)",1,"61111A50",7],
 ["Tile","rgba(0,0,0,0)",1,"11611A60",7],
+["Tile","rgba(0,0,0,0)",1,"11111890"],
+["Tile","rgba(0,0,0,0)",1,"12121790"],
+["Tile","rgba(0,0,0,0)",1,"A11118A0"],
+["Tile","rgba(0,0,0,0)",1,"A21217A0"],
+["Tile","rgba(0,0,0,0)",1,"A00028B0"],
+["Tile","rgba(0,0,0,0)",1,"100027B0"],
 //["Tile","rgba(0,0,0,0)",1,"11111D20",8],
 //["Tile","rgba(0,0,0,0)",1,"11112D20",8],
 //["Tile","rgba(0,0,0,0)",1,"11111420",9],
@@ -159,11 +173,11 @@ objects:[
 ["Object",64,32,5,"161120005",4,"01223", 0,4],
 ["Object",96,64,6,"161120005",5,"00045", 0,0],
 
-["Object",42,42,0,"661132103",2,"22300", -1,8],
-["Object",84,84,1,"661132103",2,"21100", -1,8],
-["Object",42,42,2,"661132103",2,"22300", -1,8],
-["Object",42,42,14,"661132103",2,"22300", -1,8],
-["Object",32,32,7,"661132103",5,"2A200", -2,8],
+["Object",42,42,0,"661132103",2,"22300", -1,8], // Spike Ball
+["Object",84,84,1,"661132103",2,"21100", -1,8], // Big Spike Ball
+["Object",42,42,2,"661132103",2,"22300", -1,8], // Fall Spike Ball
+["Object",42,42,14,"661132103",2,"22300", -1,8], // Spike Ball 2
+["Object",32,32,7,"661132103",5,"2A200", -2,8], // Barrel
 ["Object",32,32,7,"661132103",5,"2A200", 2,8],
 ["Object",32,32,"#","661132103",1,"08200", 0,8],
 ["Object",32,32,"#","111132103",1,"03200", 0,8],
@@ -173,17 +187,17 @@ objects:[
 ["Object",64,32,"#","101122200",2,"02200", 0,2],
 ["Object",32,32,10,"661120201",2,"01500", 0,0], // Fly
 ["Object",32,48,11,"160030000",6,"00023",-1,0], // Gomba
-["Object",32,48,11,"160030000",6,"30023",1,0],
+["Object",32,48,11,"160030000",6,"30023",1,0],  // Gomba
 ["Object",32,32,12,"160030000",7,"00023",-1,0], // Shyguy
-["Object",32,32,12,"160030000",7,"30023",1,0],
-["Object",64,64,12,"160030000",7,"00323",-2,0],
-["Object",64,64,12,"160030000",7,"30323",2,0],
-["Object",32,32,13,"6600100000",2,"23800", 2,2],
-["Object",32,32,15,"160010000",2,"03900",-2,0],
-["Object",32,32,15,"160010000",2,"33900",2,0],
-["Object",128,128,15,"160010000",2,"03000",-2,0],
-["Object",128,128,15,"160010000",2,"33000",2,0],
-["Object",32,32,16,"160010000",2,"25800",2,2],
+["Object",32,32,12,"160030000",7,"30023",1,0],  // Shyguy
+["Object",64,64,12,"160030000",7,"00323",-2,0],	// Topo
+["Object",64,64,12,"160030000",7,"30323",2,0],  // Topo
+["Object",32,32,13,"6600100000",2,"23800", 2,2],// Eye
+["Object",32,32,15,"160010000",2,"03900",-2,0], // BulletBill
+["Object",32,32,15,"160010000",2,"33900",2,0],  // BulletBill
+["Object",128,128,15,"160010000",2,"03000",-2,0], // BigBulletBill
+["Object",128,128,15,"160010000",2,"33000",2,0],  // BigBulletBill
+["Object",32,32,16,"160010000",2,"25800",2,2], // redBulletBill
 ["Object",32,32,17,"110020011",2,"67062",4,1],
 ["Object",48,64,18,"660030000",2,"00524",0,0],
 ["Object",32,32,"#","660022001",2,"06924",-2,2],
@@ -195,61 +209,174 @@ objects:[
 ["Object",52,52,21,"660010000",2,"05741",0,0],
 ["Object",36,48,22,"160030000",2,"00824",4,4],
 ["Object",32,32,"#","660010088",2,"08A00",3,3],
-/*
-// Tiles Realistic
-["Tile","rgba(0,0,0,0)",10,"111110F0"],
-["Tile","rgba(0,0,0,0)",10,"111111F0"],
-["Tile","rgba(0,0,0,0)",10,"111112F0"],
-["Tile","rgba(0,0,0,0)",10,"111113F0"],
-["Tile","rgba(0,0,0,0)",10,"111114F0"],
-["Tile","rgba(0,0,0,0)",10,"111115F0"],
-["Tile","rgba(0,0,0,0)",10,"111116F0"],
-["Tile","rgba(0,0,0,0)",10,"111117F0"],
-["Tile","rgba(0,0,0,0)",10,"111110D0"],
-["Tile","rgba(0,0,0,0)",10,"111111D0"],
-["Tile","rgba(0,0,0,0)",10,"111112D0"],
-["Tile","rgba(0,0,0,0)",10,"111113D0"],
-["Tile","rgba(0,0,0,0)",10,"111114D0"],
-["Tile","rgba(0,0,0,0)",10,"666615D0"],
-["Tile","rgba(0,0,0,0)",10,"111116D0"],
-["Tile","rgba(0,0,0,0)",10,"111117D0"],
-//
-["Tile","rgba(0,0,0,0)",10,"000000E0"],
-["Tile","rgba(0,0,0,0)",10,"000001E0"],
-["Tile","rgba(0,0,0,0)",10,"000002E0"],
-["Tile","rgba(0,0,0,0)",10,"000003E0"],
-["Tile","rgba(0,0,0,0)",10,"000004E0"],
-["Tile","rgba(0,0,0,0)",10,"000005E0"],
-["Tile","rgba(0,0,0,0)",10,"000006E0"],
-["Tile","rgba(0,0,0,0)",10,"000007E0"],
-["Tile","rgba(0,0,0,0)",10,"000000C0"],
-["Tile","rgba(0,0,0,0)",10,"000001C0"],
-["Tile","rgba(0,0,0,0)",10,"000002C0"],
-//
-["Tile","rgba(0,0,0,0)",10,"00000FF0"],
-["Tile","rgba(0,0,0,0)",10,"00000EF0"],
-["Tile","rgba(0,0,0,0)",10,"00000FE0"],
-["Tile","rgba(0,0,0,0)",10,"00000EE0"],
-["Tile","rgba(0,0,0,0)",10,"00000DF0"],
-["Tile","rgba(0,0,0,0)",10,"00000CF0"],
-["Tile","rgba(0,0,0,0)",10,"00000DE0"],
-["Tile","rgba(0,0,0,0)",10,"00000CE0"],
-["Tile","rgba(0,0,0,0)",10,"00000BF0"],
-["Tile","rgba(0,0,0,0)",10,"00000AF0"],
-["Tile","rgba(0,0,0,0)",10,"00000BE0"],
-["Tile","rgba(0,0,0,0)",10,"00000AE0"],
+["Object",32,32,23,"161122103",1,"09100", -1,8],
+["Object",32,32,23,"161122200",1,"09000", -1,1],
+["Object",32,32,23,"161122503",1,"09200", -2,1],
+["Object",32,32,23,"161120201",1,"09300", 0,-4],
+["Object",96,96,24,"661110000",2,"22500", 0,0],
+["Object",96,96,24,"661110001",2,"22500", 0,-4],
+["Object",96,96,24,"661110001",2,"22500", 0,4],
+["Object",96,96,24,"661110010",2,"22500", 4,0],
+//["Object",32,32,25,"000030000",9,"08028", 0,0],
 
-["Object",64,32,"#","000000000",9,"10000", 0,0],
-["Object",64,64,"#","000000000",9,"11000", 0,0],
-["Object",128,128,"#","000000000",9,"11100", 0,0],
-["Object",128,128,"#","000000000",9,"10100", 0,0],
-["Object",128,256,"#","000000000",9,"10100", 0,0],
-["Object",256,128,"#","000000000",9,"11100", 0,0],
+
+// Minecraft
+/*
+["Tile","rgba(0,0,0,0)",9,"11111200"],
+["Tile","rgba(0,0,0,0)",10,"00000200"],
+["Tile","rgba(0,0,0,0)",9,"11111300"],
+["Tile","rgba(0,0,0,0)",10,"10002300"], //grass
+["Tile","rgba(0,0,0,0)",9,"11111440"], 
+["Tile","rgba(0,0,0,0)",10,"10002440"], // Grass Ice
+["Tile","rgba(0,0,0,0)",9,"11111500"],
+["Tile","rgba(0,0,0,0)",10,"00000500"], // Piedra Sincelada
+["Tile","rgba(0,0,0,0)",9,"11111700"],
+["Tile","rgba(0,0,0,0)",10,"00000700"], // Ladrillo 
+["Tile","rgba(0,0,0,0)",9,"11111010"],
+["Tile","rgba(0,0,0,0)",10,"00000010"], // Piedra
+["Tile","rgba(0,0,0,0)",9,"11111420"],
+["Tile","rgba(0,0,0,0)",10,"00000420"], // Piedra Musgosa
+["Tile","rgba(0,0,0,0)",9,"11111210"],
+["Tile","rgba(0,0,0,0)",10,"00000210"], // Arena
+["Tile","rgba(0,0,0,0)",9,"11111310"],
+["Tile","rgba(0,0,0,0)",10,"00000310"], // Grava
+["Tile","rgba(0,0,0,0)",9,"11111840"],
+["Tile","rgba(0,0,0,0)",10,"00000840"], // Arena de Ladrillo
+["Tile","rgba(0,0,0,0)",9,"11111400"],
+["Tile","rgba(0,0,0,0)",10,"00000400"], // Madera
+["Tile","rgba(0,0,0,0)",9,"11111530"],
+["Tile","rgba(0,0,0,0)",10,"00000530"], // hojas
+["Tile","rgba(0,0,0,0)",9,"11111430"],
+["Tile","rgba(0,0,0,0)",10,"00000430"], // hojas
+["Tile","rgba(0,0,0,0)",9,"11111410"],
+["Tile","rgba(0,0,0,0)",10,"00000410"], // tronco
+["Tile","rgba(0,0,0,0)",9,"11111510"],
+["Tile","rgba(0,0,0,0)",10,"00000510"], // tronco
+["Tile","rgba(0,0,0,0)",9,"11111580"],
+["Tile","rgba(0,0,0,0)",10,"00000580"], // hojas
+["Tile","rgba(0,0,0,0)",9,"11111480"],
+["Tile","rgba(0,0,0,0)",10,"00000480"], // hojas
+["Tile","rgba(0,0,0,0)",9,"11111470"],
+["Tile","rgba(0,0,0,0)",10,"00000470"], // tronco
+["Tile","rgba(0,0,0,0)",9,"11111570"],
+["Tile","rgba(0,0,0,0)",10,"00000570"], // tronco
+["Tile","rgba(0,0,0,0)",9,"11111610"],
+["Tile","rgba(0,0,0,0)",10,"00000610"], // Hierro Bloque
+["Tile","rgba(0,0,0,0)",9,"11111710"],
+["Tile","rgba(0,0,0,0)",10,"00000710"], // Oro Bloque
+["Tile","rgba(0,0,0,0)",9,"11111810"],
+["Tile","rgba(0,0,0,0)",10,"00000810"], // Diamante Bloque
+["Tile","rgba(0,0,0,0)",9,"11111100"],
+["Tile","rgba(0,0,0,0)",10,"00000100"], // Roca
+["Tile","rgba(0,0,0,0)",9,"11111220"], 
+["Tile","rgba(0,0,0,0)",10,"00000220"],//Carbon
+["Tile","rgba(0,0,0,0)",9,"11111120"],
+["Tile","rgba(0,0,0,0)",10,"00000120"], // Hierro
+["Tile","rgba(0,0,0,0)",9,"11111020"],
+["Tile","rgba(0,0,0,0)",10,"00000020"], // oro
+["Tile","rgba(0,0,0,0)",9,"11111330"],
+["Tile","rgba(0,0,0,0)",10,"00000330"], // redstone
+["Tile","rgba(0,0,0,0)",9,"11111230"],
+["Tile","rgba(0,0,0,0)",10,"00000230"], // Diamante
+["Tile","rgba(0,0,0,0)",9,"11111240"],
+["Tile","rgba(0,0,0,0)",10,"00000240"],  // Nieve
+["Tile","rgba(0,0,0,0)",9,"A2121340"],
+["Tile","rgba(0,0,0,0)",10,"00000340"], // Hielo
+["Tile","rgba(0,0,0,0)",9,"11111320"],
+["Tile","rgba(0,0,0,0)",10,"00000320"], // Libreria
+["Tile","rgba(0,0,0,0)",9,"66661640"],
+["Tile","rgba(0,0,0,0)",10,"00000640"], // Cactus
+["Tile","rgba(0,0,0,0)",9 ,"11111030"],
+["Tile","rgba(0,0,0,0)",10,"00000030"], // Esponja
+["Tile","rgba(0,0,0,0)",9 ,"11111130"],
+["Tile","rgba(0,0,0,0)",10,"00000130"], // Vidrio
+["Tile","rgba(0,0,0,0)",9,"11111760"],
+["Tile","rgba(0,0,0,0)",10,"00000760"], // Nether
+["Tile","rgba(0,0,0,0)",9,"11111860"],
+["Tile","rgba(0,0,0,0)",10,"00000860"], // Arena de Almas
+["Tile","rgba(0,0,0,0)",9,"11111960"],
+["Tile","rgba(0,0,0,0)",10,"00000960"], // Iluminador
+["Tile","rgba(0,0,0,0)",9,"11111520"],
+["Tile","rgba(0,0,0,0)",10,"00000520"], // Obsidiana
+["Tile","rgba(0,0,0,0)",9,"11111110"],
+["Tile","rgba(0,0,0,0)",10,"00000110"], // Bedrock
+["Tile","rgba(0,0,0,0)",9,"11111C30"],
+["Tile","rgba(0,0,0,0)",10,"00000C30"], // Mesa de Crafteo
+["Tile","rgba(0,0,0,0)",9,"11111C20"],
+["Tile","rgba(0,0,0,0)",10,"00000C20"], // Horno
+["Tile","rgba(0,0,0,0)",9,"11111D30"],
+["Tile","rgba(0,0,0,0)",10,"00000D30"], // Horno Encendido
+["Tile","rgba(0,0,0,0)",9,"11111B10"],
+["Tile","rgba(0,0,0,0)",10,"00000B10"], // Cofre
+["Tile","rgba(0,0,0,0)",9,"00000680"],
+["Tile","rgba(0,0,0,0)",9,"00000780"],
+["Tile","rgba(0,0,0,0)",10,"00000680"], // cama
+["Tile","rgba(0,0,0,0)",10,"00000780"], // cama
+["Tile","rgba(0,0,0,0)",9,"11111800",10],
+["Tile","rgba(0,0,0,0)",10,"00000800"], // TNT
+["Tile","rgba(0,0,0,0)",9,"44443DC0"], // Agua
+["Tile","rgba(0,0,0,0)",10,"00000DC0"], 
+["Tile","rgba(0,0,0,0)",9,"66663DE0"], // Lava
+["Tile","rgba(0,0,0,0)",10,"00000DE0"], 
+["Tile","rgba(0,0,0,0)",9,"00000C80"], // Cerca
+["Tile","rgba(0,0,0,0)",9,"00000D80"], 
+["Tile","rgba(0,0,0,0)",9,"00000E80"], 
+["Tile","rgba(0,0,0,0)",9,"00000F80"], 
+["Tile","rgba(0,0,0,0)",10,"00000C80"], // Cerca
+["Tile","rgba(0,0,0,0)",10,"00000D80"], 
+["Tile","rgba(0,0,0,0)",10,"00000E80"], 
+["Tile","rgba(0,0,0,0)",10,"00000F80"], 
+["Tile","rgba(0,0,0,0)",9,"00000C00"],
+["Tile","rgba(0,0,0,0)",10,"00000C00"], // rosa
+["Tile","rgba(0,0,0,0)",9,"00000D00"],
+["Tile","rgba(0,0,0,0)",10,"00000D00"], // flor amarilla
+["Tile","rgba(0,0,0,0)",9,"00000C10"],
+["Tile","rgba(0,0,0,0)",10,"00000C10"], // Hongo rojo
+["Tile","rgba(0,0,0,0)",9,"00000D10"],
+["Tile","rgba(0,0,0,0)",10,"00000D10"], // Hongo cafe
+["Tile","rgba(0,0,0,0)",9,"00000F00"],
+["Tile","rgba(0,0,0,0)",10,"00000F00"],  // retoño
+["Tile","rgba(0,0,0,0)",9,"00000720"],
+["Tile","rgba(0,0,0,0)",10,"00000720"], // Sacate
+["Tile","rgba(0,0,0,0)",9,"00000050"],
+["Tile","rgba(0,0,0,0)",10,"00000050"], // Antorcha
+["Tile","rgba(0,0,0,0)",9 ,"11111040"],
+["Tile","rgba(0,0,0,0)",10,"00000040"], // WOOL
+["Tile","rgba(0,0,0,0)",9 ,"11111270"],
+["Tile","rgba(0,0,0,0)",10,"00000270"], 
+["Tile","rgba(0,0,0,0)",9 ,"11111170"],
+["Tile","rgba(0,0,0,0)",10,"00000170"], 
+["Tile","rgba(0,0,0,0)",9 ,"11111180"],
+["Tile","rgba(0,0,0,0)",10,"00000180"],
+["Tile","rgba(0,0,0,0)",9 ,"11111280"],
+["Tile","rgba(0,0,0,0)",10,"00000280"],
+["Tile","rgba(0,0,0,0)",9 ,"11111190"],
+["Tile","rgba(0,0,0,0)",10,"00000190"],
+["Tile","rgba(0,0,0,0)",9 ,"11111290"],
+["Tile","rgba(0,0,0,0)",10,"00000290"],
+["Tile","rgba(0,0,0,0)",9 ,"111111A0"],
+["Tile","rgba(0,0,0,0)",10,"000001A0"],
+["Tile","rgba(0,0,0,0)",9 ,"111112A0"],
+["Tile","rgba(0,0,0,0)",10,"000002A0"],
+["Tile","rgba(0,0,0,0)",9 ,"111111B0"],
+["Tile","rgba(0,0,0,0)",10,"000001B0"],
+["Tile","rgba(0,0,0,0)",9 ,"111112B0"],
+["Tile","rgba(0,0,0,0)",10,"000002B0"],
+["Tile","rgba(0,0,0,0)",9 ,"111111C0"],
+["Tile","rgba(0,0,0,0)",10,"000001C0"],
+["Tile","rgba(0,0,0,0)",9 ,"111112C0"],
+["Tile","rgba(0,0,0,0)",10,"000002C0"],
+["Tile","rgba(0,0,0,0)",9 ,"111111D0"],
+["Tile","rgba(0,0,0,0)",10,"000001D0"],
+["Tile","rgba(0,0,0,0)",9 ,"111112D0"],
+["Tile","rgba(0,0,0,0)",10,"000002D0"],
+["Tile","rgba(0,0,0,0)",9 ,"111111E0"],
+["Tile","rgba(0,0,0,0)",10,"000001E0"],
 */
 ],
 TileScripts:[
 {
-Action: function Action(Tile,p1,side) {
+Action: function Action(Tile,p1,side) { // 0
     Tile.action = true
 	SoundEffectsCollection[0].play()
 	Tile.Up = 0
@@ -267,7 +394,7 @@ Loop: function Loop (Tile) {
 },
 },
 {
-Action: function Action(Tile,p1,side) {
+Action: function Action(Tile,p1,side) { // 1
 	SoundEffectsCollection[1].currentTime = 0;
 	SoundEffectsCollection[1].play()
 	Tile.prin = 0
@@ -277,7 +404,7 @@ Action: function Action(Tile,p1,side) {
 Loop: function Loop (Tile) {},
 },
 {
-Action: function Action(Tile,p1,side) {
+Action: function Action(Tile,p1,side) { // 2
 	if(side && p1.FristTouch){
 		SoundEffectsCollection[2].currentTime = 0;
 		SoundEffectsCollection[2].play()
@@ -289,7 +416,7 @@ Action: function Action(Tile,p1,side) {
 	Tile.action = true
 	}
 },
-Loop: function Loop (Tile) {
+Loop: function Loop (Tile) { 
 	if(Clock(Tile,5)){
 	Tile.XG = 64
 	Tile.heg = 32
@@ -299,7 +426,7 @@ Loop: function Loop (Tile) {
 },
 },
 {
-Action: function Action(Tile,p1,side) {
+Action: function Action(Tile,p1,side) { // 3
 	if(side == false && p1.FristTouch){
 		SoundEffectsCollection[3].currentTime = 0;
 		SoundEffectsCollection[3].play()
@@ -321,7 +448,7 @@ Loop: function Loop (Tile) {
 },
 },
 {
-Action: function Action(Tile,p1,side) {
+Action: function Action(Tile,p1,side) { // 4
 	if(p1.FristTouch){
 	SoundEffectsCollection[3].currentTime = 0;
 	SoundEffectsCollection[3].play()
@@ -340,7 +467,7 @@ Loop: function Loop (Tile) {
 },
 },
 {
-Action: function Action(Tile,p1,side) {
+Action: function Action(Tile,p1,side) { // 5
 	Tile.action = true
 },
 Loop: function Loop (Tile) {
@@ -356,7 +483,7 @@ Loop: function Loop (Tile) {
 },
 },
 {
-Action: function Action(Tile,p1,side) {
+Action: function Action(Tile,p1,side) { // 6
 	if(side == false){
 	if(Tile.intervald_time == undefined){Tile.intervald_time = 0}
 	Tile.intervald_time += 2
@@ -374,7 +501,7 @@ Loop: function Loop (Tile) {
 },
 },
 {
-Action: function Action(Tile,p1,side) {
+Action: function Action(Tile,p1,side) {   // 7
 	if( (!side  && p1.atack) || (side  && p1.atackY)){
 		SoundEffectsCollection[7].currentTime = 0;
 		SoundEffectsCollection[7].play()
@@ -404,7 +531,7 @@ Loop: function Loop (Tile) {
 },
 },
 {
-Action: function Action(Tile,p1,side) {
+Action: function Action(Tile,p1,side) { // 8
 	if(side && p1.Down ) {
 	p1.InMove = false
 	establecing_starcords(Tile.iA+8,Tile.iL+8,p1)
@@ -417,9 +544,8 @@ Loop: function Loop (Tile) {
 },
 },
 {
-Action: function Action(Tile,p1,side) {
+Action: function Action(Tile,p1,side) { // 9
 	if(side) {
-		console.log(Tile.col)
 	p1.InMove = false
 	establecing_starcords(Tile.iA+8,Tile.iL+8,p1)
 reset_game = true
@@ -430,10 +556,26 @@ Loop: function Loop (Tile) {
 
 },
 },
+{
+Action: function Action(Tile,p1,side) { // 10
+	if(side){
+		Tile.action = true
+
+	}
+},
+Loop: function Loop (Tile) {
+	if(Clock(Tile,1)){
+		Tile.type = 0
+		Tile.imgN = 0
+		Tile.XG = 0
+		Tile.YG = 0
+		mysprites.push(new sprite_colision(Tile.x,Tile.y,32,32,26,"000030000",9,"08028", 0,-8,false))
+		Scrips_collection[mysprites[mysprites.length -1].script].Action(mysprites[mysprites.length -1])
+		Tile.action = false
+		}
+},
+},
 ],
-
-
-
 SpriteScripts:[
 {
 Action: function Action(Sprite) { // 0
@@ -448,9 +590,9 @@ Action: function Action(Sprite) { // 0
 		 Sprite.widthGrid = 84
 		 Sprite.heightGrid = 84
 	},
-Loop: function Loop (sprite,player1) {
-		PreProgramedMode (sprite,player1)
-		sprite.angle += sprite.MoveX*2 
+Loop: function Loop (Sprite,player1) {
+		PreProgramedMode (Sprite,player1)
+		Sprite.angle += Sprite.MoveX*2 
     },
 RenderMode: function RenderMode (ctx,Sprite) {
 		ctx.drawImage(
@@ -479,9 +621,9 @@ Action: function Action(Sprite) { // 1
 	 Sprite.widthGrid = 84
 	 Sprite.heightGrid = 84
 	},
-Loop: function Loop (sprite,player1) {
-	PreProgramedMode (sprite,player1)
-	sprite.angle += sprite.MoveX*2 
+Loop: function Loop (Sprite,player1) {
+	PreProgramedMode (Sprite,player1)
+	Sprite.angle += Sprite.MoveX*2 
     },
 RenderMode: function RenderMode (ctx,Sprite) {
 	ctx.drawImage(
@@ -512,13 +654,13 @@ Action: function Action(Sprite) { // 2
 	 Sprite.widthGrid = 84
 	 Sprite.heightGrid = 84
 	},
-Loop: function Loop (sprite,player1) {
-	if(Colision(sprite,player1,0,0,32,512)){
+Loop: function Loop (Sprite,player1) {
+	if(Colision(Sprite,player1,0,0,32,512)){
 		
-		sprite.State = 1
+		Sprite.State = 1
 	}
-	if(sprite.State == 1){
-		(Gravedad(sprite,1))
+	if(Sprite.State == 1){
+		(Gravedad(Sprite,1))
 	}
     },
 RenderMode: function RenderMode (ctx,Sprite) {
@@ -539,11 +681,11 @@ RenderMode: function RenderMode (ctx,Sprite) {
 Action: function Action(Sprite) { // 3
 
 	},
-Loop: function Loop (sprite,player1) {
-    PreProgramedMode (sprite,player1)
-	if(sprite.Xplayertouch){
-		explosions32[2](sprite)
-		sprite.live = -1
+Loop: function Loop (Sprite,player1) {
+    PreProgramedMode (Sprite,player1)
+	if(Sprite.Xplayertouch){
+		explosions32[2](Sprite)
+		Sprite.live = -1
 	}
     },
 RenderMode: function RenderMode (ctx,Sprite) {
@@ -590,55 +732,55 @@ Action: function Action(Sprite) { // 4
 	 Sprite.tick = 0
 	 Sprite.live = 1
 	},
-Loop: function Loop (sprite,player1) {
-	if(sprite.Yplayertouch){
-		sprite.type = 1
-		sprite.typeColision = 1
-		sprite.Ytouch = false
+Loop: function Loop (Sprite,player1) {
+	if(Sprite.Yplayertouch){
+		Sprite.type = 1
+		Sprite.typeColision = 1
+		Sprite.Ytouch = false
 		 SoundEffectsCollection[4].currentTime = 0;
 		 SoundEffectsCollection[4].play()
 		 player1.MoveY = -8;player1.BY = 0
-		 sprite.MoveX = 0
-		 sprite.MoveY = -4
-		 sprite.sideY = true
-		 sprite.live = 0
-		 sprite.XG = 0
-		 sprite.YG = 128
-		 sprite.LoopFotogram = 2
-		 sprite.FramesIntervalds = 2 
+		 Sprite.MoveX = 0
+		 Sprite.MoveY = -4
+		 Sprite.sideY = true
+		 Sprite.live = 0
+		 Sprite.XG = 0
+		 Sprite.YG = 128
+		 Sprite.LoopFotogram = 2
+		 Sprite.FramesIntervalds = 2 
 	 }
-	if(sprite.live > 0){
-		Gravedad_y_Brincar(sprite,1)
-		if(sprite.jumped){
-			sprite.XG = 0
-			sprite.LoopFotogram = 3
-			sprite.FramesIntervalds = 2 
+	if(Sprite.live > 0){
+		Gravedad_y_Brincar(Sprite,1)
+		if(Sprite.jumped){
+			Sprite.XG = 0
+			Sprite.LoopFotogram = 3
+			Sprite.FramesIntervalds = 2 
 		}else{
-			sprite.fotogram = 0
-			sprite.XG = 198
-			sprite.LoopFotogram = 0
-			sprite.FramesIntervalds = 0 
+			Sprite.fotogram = 0
+			Sprite.XG = 198
+			Sprite.LoopFotogram = 0
+			Sprite.FramesIntervalds = 0 
 		}
-		turn_if_obstacle_X(sprite)
-		sprite.YG = 0
-		if(!sprite.sideX){
-			sprite.YG = 32
-		if(Colision(sprite,player1,-48,0,32,48)){
-			if(sprite.jumped){sprite.MoveY += -10
-			sprite.jumped = false;
+		turn_if_obstacle_X(Sprite)
+		Sprite.YG = 0
+		if(!Sprite.sideX){
+			Sprite.YG = 32
+		if(Colision(Sprite,player1,-48,0,32,48)){
+			if(Sprite.jumped){Sprite.MoveY += -10
+			Sprite.jumped = false;
 			}
 		}
 		}else{
-			if(Colision(sprite,player1,32,0,32,48)){
-			if(sprite.jumped){sprite.MoveY += -10
-			sprite.jumped = false;
+			if(Colision(Sprite,player1,32,0,32,48)){
+			if(Sprite.jumped){Sprite.MoveY += -10
+			Sprite.jumped = false;
 			}		
 		}
 		}
-		sprite.MoveX = sprite.Xvelocity
+		Sprite.MoveX = Sprite.Xvelocity
 	}else{
-		Gravedad(sprite,1)
-		console.log(sprite.MoveY)
+		Gravedad(Sprite,1)
+		console.log(Sprite.MoveY)
 	}
     },
 RenderMode: function RenderMode (ctx,Sprite) {
@@ -668,17 +810,17 @@ Action: function Action(Sprite) { // 5
 	 Sprite.col = "160020005"
 	 Sprite.type = 2
 	},
-Loop: function Loop (sprite,player1) {
-	 PreProgramedMode(sprite,player1)
-	 if(sprite.Yplayertouch){
+Loop: function Loop (Sprite,player1) {
+	 PreProgramedMode(Sprite,player1)
+	 if(Sprite.Yplayertouch){
 		 SoundEffectsCollection[4].currentTime = 0;
 		 SoundEffectsCollection[4].play()
-		 sprite.moveY = -4
-		 sprite.sideY = true
-		 sprite.col = "001110003"
-		 sprite.type = 1
-		 sprite.XG = 0
-		 sprite.YG = 128
+		 Sprite.moveY = -4
+		 Sprite.sideY = true
+		 Sprite.col = "001110003"
+		 Sprite.type = 1
+		 Sprite.XG = 0
+		 Sprite.YG = 128
 		 player1.MoveY = -8;player1.BY = 0
 	 }
 },
@@ -707,53 +849,53 @@ Action: function Action(Sprite) { // 6
 	 Sprite.widthGrid = 96
 	 Sprite.heightGrid = 64
 	},
-Loop: function Loop (sprite,player1) {
-	 //PreProgramedMode(sprite,player1)
-	 if(sprite.Yplayertouch){
+Loop: function Loop (Sprite,player1) {
+	 //PreProgramedMode(Sprite,player1)
+	 if(Sprite.Yplayertouch){
 		 SoundEffectsCollection[4].currentTime = 0;
 		 SoundEffectsCollection[4].play()
 		 player1.MoveY = -8;player1.BY = 0
-		 sprite.fotogram = 0
-		 sprite.State = -1
-		 sprite.intervald_time = 0
-		 sprite.intervald_frame = 0
+		 Sprite.fotogram = 0
+		 Sprite.State = -1
+		 Sprite.intervald_time = 0
+		 Sprite.intervald_frame = 0
 	 }
-	 switch (sprite.State){
+	 switch (Sprite.State){
 	 case -1 : 
-	 	 sprite.YG = 128
-		 sprite.LoopFotogram = 3
-		 if(Clock(sprite,60)){
-			 sprite.fotogram = 0
-			sprite.State = 0
+	 	 Sprite.YG = 128
+		 Sprite.LoopFotogram = 3
+		 if(Clock(Sprite,60)){
+			 Sprite.fotogram = 0
+			Sprite.State = 0
 		 }
 	break;
 	case 0 :
-		 sprite.YG = 0
-		 sprite.LoopFotogram = 4
-		 if(Clock(sprite,65)){
-			 sprite.intervald_frame = 0
-			 sprite.fotogram = 0
+		 Sprite.YG = 0
+		 Sprite.LoopFotogram = 4
+		 if(Clock(Sprite,65)){
+			 Sprite.intervald_frame = 0
+			 Sprite.fotogram = 0
 			 if(randomBoolean()){
-				 sprite.State = 1
+				 Sprite.State = 1
 			 }
 		 }
     break;
 	case 1 :
-		 sprite.YG = 64
-		 sprite.LoopFotogram = 3
-		 if(Clock(sprite,40)){
-			sprite.YG = 0
-			sprite.intervald_frame = 0
-			sprite.fotogram = 0
-			sprite.State = 0
+		 Sprite.YG = 64
+		 Sprite.LoopFotogram = 3
+		 if(Clock(Sprite,40)){
+			Sprite.YG = 0
+			Sprite.intervald_frame = 0
+			Sprite.fotogram = 0
+			Sprite.State = 0
 		 }
-		 if(sprite.intervald_time == 34){
-		 mysprites.push(new  sprite_colision(sprite.x+80,sprite.y+32+8,32,32,8,"661132103",5,"29200", 2,8,false))
+		 if(Sprite.intervald_time == 34){
+		 mysprites.push(new  sprite_colision(Sprite.x+80,Sprite.y+32+8,32,32,8,"661132103",5,"29200", 2,8,false))
 			 Scrips_collection[mysprites[mysprites.length -1].script].Action(mysprites[mysprites.length -1])
 		 }
     break;
 	 }
-	console.log(sprite.fotogram)
+	
 },
 RenderMode: function RenderMode (ctx,Sprite) {
 ctx.drawImage(
@@ -782,9 +924,9 @@ Action: function Action(Sprite) { // 7
 	 Sprite.widthGrid = 32
 	 Sprite.heightGrid = 32
 	},
-Loop: function Loop (sprite,player1) {
-	PreProgramedMode (sprite,player1)
-	sprite.angle += sprite.MoveX*3
+Loop: function Loop (Sprite,player1) {
+	PreProgramedMode (Sprite,player1)
+	Sprite.angle += Sprite.MoveX*3
     },
 RenderMode: function RenderMode (ctx,Sprite) {
 	ctx.drawImage(
@@ -1101,16 +1243,16 @@ Action: function Action(Sprite) { // 14
 		 Sprite.heightGrid = 84
 		 Sprite.State = 0
 	},
-Loop: function Loop (sprite,player1) {
-		PreProgramedMode (sprite,player1)
-		sprite.angle += sprite.MoveX*2 
-		if(sprite.Ytouches == 1 && sprite.State == 0){
-			sprite.Xvelocity = sprite.Xvelocity*-1
-			sprite.State = 1
+Loop: function Loop (Sprite,player1) {
+		PreProgramedMode (Sprite,player1)
+		Sprite.angle += Sprite.MoveX*2 
+		if(Sprite.Ytouches == 1 && Sprite.State == 0){
+			Sprite.Xvelocity = Sprite.Xvelocity*-1
+			Sprite.State = 1
 		}
-		if(sprite.State == 1 ){
-			if(Clock(sprite,10)){
-				sprite.State = 0
+		if(Sprite.State == 1 ){
+			if(Clock(Sprite,10)){
+				Sprite.State = 0
 			}
 		}
     },
@@ -1129,7 +1271,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 15
 	Sprite.Ydiference_Print = -4
 	 Sprite.height -= 8
 	},
@@ -1301,32 +1443,32 @@ Loop: function Loop (Sprite,Player) {
 			Sprite.State = 0
 			Sprite.XG = 128
 	},
-	Loop: function Loop (sprite,Player) {
-	 switch (sprite.State){
+	Loop: function Loop (Sprite,Player) {
+	 switch (Sprite.State){
 	case 0:
-		if(Colision(sprite,Player,0,16,64,512)){
-				sprite.XG = 192
-				sprite.State = 1
+		if(Colision(Sprite,Player,0,16,64,512)){
+				Sprite.XG = 192
+				Sprite.State = 1
 		}
 	break;
 	case 1:
-		Gravedad(sprite,1)
-		if(sprite.Ytouch){
-			sprite.State = 2	
+		Gravedad(Sprite,1)
+		if(Sprite.Ytouch){
+			Sprite.State = 2	
 		}
 	break;
 	case 2:
-		Gravedad(sprite,1)
-		if(Clock(sprite,30)){
-			sprite.MoveY = 0
-			sprite.State = 3
-			sprite.XG = 128
+		Gravedad(Sprite,1)
+		if(Clock(Sprite,30)){
+			Sprite.MoveY = 0
+			Sprite.State = 3
+			Sprite.XG = 128
 		}
 	break;
 	case 3:
-		if(Go_to_Started_Y(sprite,1) ||	sprite.Ytouch){
-			sprite.State = 0
-			sprite.MoveY = 0
+		if(Go_to_Started_Y(Sprite,1) ||	Sprite.Ytouch){
+			Sprite.State = 0
+			Sprite.MoveY = 0
 		}
 	break;
 	}
@@ -1400,6 +1542,54 @@ Loop: function Loop (Sprite,Player) {
     },
  RenderMode: function RenderMode (ctx,Sprite) {
      PreRenderMode(ctx,Sprite)
+ },
+},
+{
+Action: function Action(Sprite) { // 23
+
+	},
+Loop: function Loop (Sprite,p1) {
+	if(Sprite.Yplayertouch){
+		Sprite.live = -1
+		p1.MoveY = -8;p1.BY = 0
+		p1.hits++
+	}
+		PreProgramedMode(Sprite,p1)
+    },
+ RenderMode: function RenderMode (ctx,Sprite) {
+        PreRenderMode(ctx,Sprite)
+ },
+},
+{
+Action: function Action(Sprite) { // 24
+	},
+Loop: function Loop (Sprite,player1) {
+		Sprite.angle += 4
+		PreProgramedMode(Sprite,player1)
+    },
+RenderMode: function RenderMode (ctx,Sprite) {
+	    PreRenderMode(ctx,Sprite)
+ },
+},
+{
+Action: function Action(Sprite) { // 25
+	Sprite.MoveY = -4
+	SoundEffectsCollection[8].currentTime = 0;
+	SoundEffectsCollection[8].play()
+	},
+Loop: function Loop (Sprite,player1) {
+		if(Clock(Sprite,200)){
+			for (i = 0; i < 10; i += 1){
+			myMiniSprites.push(new Mini_sprite(Sprite.x+RandomNumber(-64,64),Sprite.y+RandomNumber(-64,64),11,0,0,0,16,2,0,0,64,64,2,true))
+			Sprite.live = -1
+			SoundEffectsCollection[9].currentTime = 0;
+			SoundEffectsCollection[9].play()
+			}
+		}
+		Gravedad(Sprite,0.5,16)
+    },
+RenderMode: function RenderMode (ctx,Sprite) {
+	    PreRenderMode(ctx,Sprite)
  },
 },
 ]
