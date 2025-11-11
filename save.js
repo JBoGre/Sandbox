@@ -197,6 +197,7 @@ objects:[
 ["Object",128,128,15,"160010000",2,"03000",-2,0], // BigBulletBill
 ["Object",128,128,15,"160010000",2,"33000",2,0],  // BigBulletBill
 ["Object",32,32,16,"160010000",2,"25800",2,2], // redBulletBill
+["Object",128,128,16,"160010000",2,"23100",2,2],  //redBigBulletBill
 ["Object",32,32,17,"110020011",2,"67062",4,1],
 ["Object",48,64,18,"660030000",2,"00524",0,0],
 ["Object",32,32,"#","660022001",2,"06924",-2,2],
@@ -208,11 +209,11 @@ objects:[
 ["Object",52,52,21,"660010000",2,"05741",0,0],
 ["Object",36,48,22,"160030000",2,"00824",4,4],
 ["Object",32,32,"#","660010088",2,"08A00",3,3],
-["Object",32,32,23,"161122103",1,"09100", -1,8],
+["Object",32,32,23,"161122103",1,"09100", -1,8], // Globos
 ["Object",32,32,23,"161122200",1,"09000", -1,1],
 ["Object",32,32,23,"161122503",1,"09200", -2,1],
 ["Object",32,32,23,"161120201",1,"09300", 0,-4],
-["Object",96,96,24,"661110000",2,"22500", 0,0],
+["Object",96,96,24,"661110000",2,"22500", 0,0], // Cierra Circular
 ["Object",96,96,24,"661110001",2,"22500", 0,-4],
 ["Object",96,96,24,"661110001",2,"22500", 0,4],
 ["Object",96,96,24,"661110010",2,"22500", 4,0],
@@ -1275,20 +1276,23 @@ Action: function Action(Sprite) { // 15
 	 Sprite.height -= 8
 	},
 Loop: function Loop (Sprite,p1) {
-	if(Sprite.Yplayertouch){
-		SoundEffectsCollection[4].currentTime = 0;
-		SoundEffectsCollection[4].play()
-		Sprite.live = 0
-		p1.MoveY = -8;p1.BY = 0
-		p1.hits++
-	}
 	if(Sprite.live < 1 ){
-		Sprite.type = 1
-		Sprite.Up = 0
-		Sprite.Left = 0
-		Gravedad(Sprite,1,16)
+		Gravedad(Sprite,0.5,16)
 	}else{
 		PreProgramedMode(Sprite,p1)
+		if(Sprite.Yplayertouch || Sprite.BulletTouch ){
+			SoundEffectsCollection[4].currentTime = 0;
+			SoundEffectsCollection[4].play()
+			Sprite.live = 0
+			Sprite.type = 1
+			Sprite.Up = 0
+			Sprite.Left = 0
+			Sprite.MoveY = -8;
+			if(!p1.invecybility && AirDash)p1.AplySecondjump = true;
+			p1.MoveY = -8;
+			p1.BY = 0
+			p1.hits++
+		}
 	}
     },
  RenderMode: function RenderMode (ctx,Sprite) {
@@ -1296,26 +1300,29 @@ Loop: function Loop (Sprite,p1) {
  },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 16
 	Sprite.Ydiference_Print = -4
 	 Sprite.height -= 8
 	Sprite.angle = 0
 	},
 Loop: function Loop (Sprite,p1) {
-	if(Sprite.Yplayertouch){
-		SoundEffectsCollection[4].currentTime = 0;
-		SoundEffectsCollection[4].play()
-		Sprite.live = 0
-		p1.MoveY = -8;p1.BY = 0
-		p1.hits++
-	}
 	if(Sprite.live < 1 ){
-		Sprite.type = 1
-		Sprite.Up = 0
-		Sprite.Left = 0
-		Gravedad(Sprite,1,16)
+		Gravedad(Sprite,0.5,16)
 		Sprite.angle += Sprite.Xvelocity * Math.PI / 180;  
 	}else{
+		if(Sprite.Yplayertouch || Sprite.BulletTouch){
+			SoundEffectsCollection[4].currentTime = 0;
+			SoundEffectsCollection[4].play()
+			Sprite.live = 0
+			Sprite.type = 1
+			Sprite.Up = 0
+			Sprite.Left = 0
+			Sprite.MoveY = -8;
+			if(!p1.invecybility && AirDash)p1.AplySecondjump = true;
+			p1.MoveY = -8;
+			p1.BY = 0
+			p1.hits++
+		}
 		Sprite.angle = Math.atan2(p1.y - Sprite.y,p1.x - Sprite.x ) + Math.tan(1)
 		Sprite.MoveX = Sprite.Xvelocity * Math.sin(Sprite.angle)
 		Sprite.MoveY = (Sprite.Yvelocity * Math.cos(Sprite.angle))*-1
@@ -1327,7 +1334,7 @@ Loop: function Loop (Sprite,p1) {
  },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 17
 	Sprite.typeColision = 3
 	},
 Loop: function Loop (Sprite,p1) {
@@ -1346,7 +1353,7 @@ Loop: function Loop (Sprite,p1) {
  },
 },
 {
-Action: function Action(Sprite) {
+Action: function Action(Sprite) { // 18
 		Sprite.width = 24
 		Sprite.height = 64
 		Sprite.widthPrint = 48
