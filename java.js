@@ -1202,7 +1202,7 @@ const RandomLevelConfiguration = [
 	SemiSolids = 300
 	SemiSolidRange = [3,16,3,16]
 	Azar_Level_width = 256
-	Azar_Enemies_Multiplicater = 2
+	Azar_Enemies_Multiplicater = 1
 	},
 	function(){ // Big Solids 2
 	Solids = 20	
@@ -1210,14 +1210,14 @@ const RandomLevelConfiguration = [
 	SemiSolids = 300
 	SemiSolidRange = [3,16,3,16]
 	Azar_Level_width = 256
-	Azar_Enemies_Multiplicater = 2
+	Azar_Enemies_Multiplicater = 1
 	},
 	function(){ //Only Semi Solids 3
 	Solids = 0 
 	SolidRange = [3,8,3,16]
 	SemiSolids = 500
 	SemiSolidRange = [1,8,1,16]
-	Azar_Level_height = 128
+	Azar_Level_width = 128
 	Azar_Enemies_Multiplicater = 1
 	},
 	function(){ //Only Solids 4
@@ -1280,9 +1280,77 @@ const RandomLevelConfiguration = [
 	},
 ]
 function Azar_floor_dificult (floor) {
-	Azar_Level_height = 128 + floor * 64
-	Azar_Enemies = 150 + floor* 50
+	Azar_Level_height = 128 + floor * 32
+	Azar_Enemies = 200 + floor* 50
     Azar_floor = floor
+	if(AzarPlus){Azar_floor_Enemies(floor)}
+}
+function Azar_floor_Enemies (floor) {
+	switch(floor){
+		case 1 :
+		Azar_Sprites =
+				[
+					[32,32,16,"160010000",2,"23900",-2,0], // BulletBill
+					[32,32,16,"160010000",2,"24900",2,0], // BulletBill
+				]
+		break
+		case 2 :
+		Azar_Sprites =
+				[
+					[32,32,16,"160010000",2,"23900",-2,0], // BulletBill
+					[32,32,16,"160010000",2,"24900",2,0], // BulletBill
+					[32,32,16,"160010000",2,"23900",-2,0], // BulletBill
+					[32,32,16,"160010000",2,"24900",2,0], // BulletBill
+					[32,32,17,"160010000",2,"25800",2,2], // RedBulletBill
+				]
+		break
+		case 3 :
+		Azar_Sprites =
+				[
+					[32,32,16,"160010000",2,"23900",-2,0], // BulletBill
+					[32,32,16,"160010000",2,"24900",2,0], // BulletBill
+					[32,32,17,"160010000",2,"25800",2,2], // RedBulletBill
+				]
+		break
+		case 4 :
+		Azar_Sprites =
+				[
+					[32,32,16,"160010000",2,"23900",-2,0], // BulletBill
+					[32,32,16,"160010000",2,"24900",2,0], // BulletBill
+					[32,32,17,"160010000",2,"25800",2,2], // RedBulletBill
+				]
+		if(randomBoolean()){
+			Azar_Sprites.push([128,128,16,"160010000",2,"03000",-2,0],[128,128,16,"160010000",2,"33000",2,0])// BigBulletBill
+		}
+		break
+		case 5 :
+		Azar_Sprites =
+				[
+					[32,32,17,"160010000",2,"25800",2,2], // RedBulletBill
+				]
+		if(randomBoolean()){
+			Azar_Sprites.push([32,32,16,"160010000",2,"23900",-2,0],[32,32,16,"160010000",2,"24900",2,0])// BulletBill
+		}
+		if(randomBoolean()){
+			Azar_Sprites.push([128,128,16,"160010000",2,"03000",-2,0],[128,128,16,"160010000",2,"33000",2,0])// BigBulletBill
+		}
+		break
+		default:
+			Azar_Sprites =
+				[
+					[32,32,17,"160010000",2,"25800",2,2], // RedBulletBill
+				]
+		if(randomBoolean()){
+			Azar_Sprites.push([32,32,16,"160010000",2,"23900",-2,0],[32,32,16,"160010000",2,"24900",2,0])// BulletBill
+		}
+		if(randomBoolean()){
+			Azar_Sprites.push([128,128,16,"160010000",2,"03000",-2,0],[128,128,16,"160010000",2,"33000",2,0])// BigBulletBill
+		}
+		if(randomBoolean()){
+			Azar_Sprites.push([128,128,17,"160010000",2,"23100",2,2])// RedBigBulletBill
+		}
+		break
+	}
 }
 var Solids = 100
 var SolidRange = [3,8,3,16] // solid MinX MaxX MinY MaxY
@@ -1295,14 +1363,12 @@ var Azar_Stars = 10
 var Azar_Enemies = 200
 var Azar_Enemies_Multiplicater = 1
 var LavaVelocity = -1
-var SkinLevel = 1
-var SkinS = SkinLevel
-var SkinSS = SkinLevel
+var AzarPlus = false
 var LevelType = undefined
 function Azar_Level(){
 	AZAR = true
 	LC = []
-	 Avoid_undefined_in_Azar()
+	Avoid_undefined_in_Azar()
 	SAVE.Levelsprites = []
 	Sprite_Collection = []
 	SpritesInGrid = []
@@ -1313,7 +1379,6 @@ function Azar_Level(){
 	Limit_Up = false
 	Limit_Rigth = Azar_Level_width * -32
 	Azar_Create_Solid_SemiSolid()
-	
 	Azar_Create_Sprites()
 	createSprites_No_in_solid(Azar_Stars,SAVE.X-16,3,16,SAVE.Y-2,32,32,18,"110020011",2,"67062",4,1)
 	effects_in_game = []
@@ -1326,13 +1391,11 @@ function Avoid_undefined_in_Azar(){
 	}else{
 		RandomLevelConfiguration[LevelType]()
 	}
-	if(SkinLevel == undefined){
-		let Skin = RandomNumber(1,7)
-		SkinS = Skin
-		SkinSS = Skin
-	}else{
-		SkinS = SkinLevel
-		SkinSS = SkinLevel
+	if(AzarPlus){
+		let Number = RandomNumber(0,10)
+		BackgroundsInLevel = []
+		Azar_Blocks_Skins[Number]()
+		Azar_Back_Sound[Number]()
 	}
 }	
 function Azar_Create_Sprites(){
@@ -1343,8 +1406,7 @@ function Azar_Create_Sprites(){
 		createSprites_No_in_solid(count,SAVE.X-16,SAVE.Y,16,0,Sprite[0],Sprite[1],Sprite[2],Sprite[3],Sprite[4],Sprite[5],Sprite[6],Sprite[7])
 	}
 }
-var Azar_Sprites =
-[
+var Azar_Sprites =[
 	[32,32,16,"160010000",2,"23900",-2,0],
 	[32,32,16,"160010000",2,"24900",2,0],
 	[32,32,17,"160010000",2,"25800",2,2]
@@ -1378,17 +1440,24 @@ function Azar_Create_Solid_SemiSolid(){
 	}
 	fillblockImg_3x3(16,3,0,2,Solid[0],Solid[1],Solid[2],Solid[3],Solid[4],Solid[5],Solid[6])
 }
-var Azar_Solids =
-[
+var Azar_Solids =[
 	[1,"#FFF","11111200",0,1,0,0],
 ]
-var Azar_SemiSolids =
-[
+var Azar_SemiSolids =[
    [1,"#FFF","10002220",0,1,0,0],
 ];
-
 const Azar_Blocks_Skins = [
-	function(){ // Minimalist 0 
+	function(){ // Special  0
+	Azar_Solids =[
+		[8,"rgb(112,208,80)","11111330",2,2,0,0], // Grass Smb3
+    ]
+	Azar_SemiSolids =[
+		[8,"rgb(88,200,248)","10002630",2,2,0,0], // Block Blue Smb3
+		[8,"rgb(248,144,72)","10002930",2,2,0,0], // Block Orange Smb3
+		[8,"rgb(224,224,224)","10002C30",2,2,0,0], // Block White Smb3
+    ]
+    },
+	function(){ // Minimalist 1
 	Azar_Solids =[
 		[1,"#FFF","11111200",0,1,0,0],
     ]
@@ -1396,7 +1465,7 @@ const Azar_Blocks_Skins = [
 		[1,"#FFF","10002220",0,1,0,0],
     ]
 	},
-	function(){ // Clasic  1
+	function(){ // Clasic  2
 	Azar_Solids =[
 		[8,"rgb(176,96,32)","11111030",2,2,0,0],
     ]
@@ -1407,17 +1476,7 @@ const Azar_Blocks_Skins = [
 		[8,"rgb(128,184,80)","10002F30",2,2,0,0], // Block Green Smb3
     ]
     },
-		function(){ // Grass  2
-	Azar_Solids =[
-		[8,"rgb(112,208,80)","11111330",2,2,0,0], // Grass Smb3
-    ]
-	Azar_SemiSolids =[
-		[8,"rgb(88,200,248)","10002630",2,2,0,0], // Block Blue Smb3
-		[8,"rgb(248,144,72)","10002930",2,2,0,0], // Block Orange Smb3
-		[8,"rgb(224,224,224)","10002C30",2,2,0,0], // Block White Smb3
-    ]
-    },
-	function(){ // UnderGround  3
+	function(){ // UnderGround Clasic 3
 	Azar_Solids =[
 		[8,"rgb(8,57,123)","11111300",2,2,0,0],// UnderGround Smb1
     ]
@@ -1425,7 +1484,23 @@ const Azar_Blocks_Skins = [
 		[8,"rgba(0,0,0,0)","10002F00",2,2,0,0], // Bones Smb1
     ]
     },
-	function(){ // Castle  4
+	function(){ // Ground  4
+	Azar_Solids =[
+		[8,"rgb(0,0,0)","111110F0",2,2,0,0], // Ground SMM
+    ]
+	Azar_SemiSolids =[
+		[8,"rgba(0,0,0,0)","100023F0",2,2,0,0], // Ground SMM
+    ]
+    },
+	function(){ // UnderGround 5
+	Azar_Solids =[
+		[8,"rgb(0,0,0)","111116F0",2,2,0,0], // UnderGround SMM
+    ]
+	Azar_SemiSolids =[
+		[8,"rgba(0,0,0,0)","100029F0",2,2,0,0], // Bones SMM
+    ]
+    },
+	function(){ // Castle  6
 	Azar_Solids =[
 		[8,"rgb(0,0,0)","11111CF0",2,2,0,0], // Castle SMM
     ]
@@ -1434,7 +1509,33 @@ const Azar_Blocks_Skins = [
 		[8,"rgba(0,0,0,0)","100029F0",2,2,0,0], // Bones SMM
     ]
     },
-	function(){ // All_in_one
+	function(){ // SarasaLand 7
+	Azar_Solids =[
+		[8,"rgb(200,120,48)","11111090",2,2,0,0], // Ground Smb2
+    ]
+	Azar_SemiSolids =[
+		[8,"rgb(68,140,8)","10002390",2,2,0,0], //  Ground Smb2
+    ]
+    },
+	function(){ // DinosaurIsland 8,
+	Azar_Solids =[
+		[8,"rgb(216,160,56)","11111060",2,2,0,0], // Ground SmW
+    ]
+	Azar_SemiSolids =[
+		[8,"rgb(154,102,36)","10002C60",2,2,0,0], // Ground SmW
+    ]
+    },
+	function(){ // Fortres 9,
+	Azar_Solids =[
+		[8,"rgb(144,168,176)","11111360",2,2,0,0], // Castel Rock SmW
+		[8,"rgb(144,168,176)","11111660",2,2,0,0], // Castel SmW
+    ]
+	Azar_SemiSolids =[
+		[8,"rgba(0,0,0,0)","10002960",2,2,0,0], // Fortres SmW
+    ]
+    },
+	function(){ // All_in_one 10
+	
 	Azar_Solids =[
 	[1,"#FFF","11111200",0,1,0,0], //Minimalist Sandbox
 	
@@ -1450,9 +1551,7 @@ const Azar_Blocks_Skins = [
 	[8,"rgb(176,96,32)","11111030",2,2,0,0], //Ground Smb3
 	[8,"rgb(112,208,80)","11111330",2,2,0,0], // Grass Smb3
 	
-	[8,"rgb(200,152,88)","11111060",2,2,0,0], // Ground SmW
-	[8,"rgb(88,112,112)","11111960",2,2,0,0], // UnderGround SmW
-	[8,"rgb(120,104,24)","11111C60",2,2,0,0], // Forrest SmW
+	[8,"rgb(216,160,56)","11111060",2,2,0,0], // Ground SmW
 	[8,"rgb(144,168,176)","11111360",2,2,0,0], // Castel Rock SmW
 	[8,"rgb(144,168,176)","11111660",2,2,0,0], // Castel SmW
 	[8,"rgb(128,128,200)","11111F60",2,2,0,0], // Special SmW
@@ -1471,6 +1570,9 @@ const Azar_Blocks_Skins = [
 	
 	[8,"rgb(68,140,8)","10002390",2,2,0,0], //  Ground Smb2
 	
+	[8,"rgb(154,102,36)","10002C60",2,2,0,0], // Ground SmW
+	[8,"rgba(0,0,0,0)","10002960",2,2,0,0], // Fortres SmW
+	
 	[8,"rgb(88,200,248)","10002630",2,2,0,0], // Block Blue Smb3
 	[8,"rgb(248,144,72)","10002930",2,2,0,0], // Block Orange Smb3
 	[8,"rgb(224,224,224)","10002C30",2,2,0,0], // Block White Smb3
@@ -1483,6 +1585,56 @@ const Azar_Blocks_Skins = [
 	[8,"rgba(0,0,0,0)","10002FF0",2,2,0,0], // Castle SMM
     ]
 	},
+]
+const Azar_Back_Sound = [
+function(){ // Special  0
+ChangeMusic ("Music/Super Mario Galaxy Gusty Garden Galaxy.mp3")
+backgroundBase = 'linear-gradient(#3f87a6, #ebf8e1, rgb(195, 256, 256))'
+},
+function(){ // Minimalist 1 
+BackgroundsInLevel.push(new Background("Backgrounds/Normal Font 2.png",1024,576,0.5,0,0,0,true,false,0,0))
+ChangeMusic ("Music/Super Gypsy Woman.mp3")
+backgroundBase = "linear-gradient(rgb(255, 255, 255), rgb(80, 119, 117))"
+},
+function(){ // Clasic 2
+ChangeMusic ("Music/Super Mario Galaxy Blue Sky Athletics.mp3")
+backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))'
+},
+function(){ // UnderGround Clasic 3
+ChangeMusic ("Music/Super Mario Bros Underground (Remix).mp3")
+backgroundBase = 'linear-gradient(rgb(0, 0, 0), rgb(0, 0, 168))'
+},
+function(){ // Ground  4
+ChangeMusic ("Music/Super Smash Bros Ultimate Ground Theme.mp3")
+backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))'
+},
+function(){ // UnderGround 5
+ChangeMusic ("Music/Super Smash Bros Ultimate Underground Theme.mp3")
+backgroundBase = 'linear-gradient(rgb(0, 0, 0), rgb(0, 0, 168))'
+},
+function(){ // Castle 6,
+ChangeMusic ("Music/Super Smash Bros Ultimate Castle Theme_Fortress Boss.mp3")
+backgroundBase = 'linear-gradient(rgb(0, 0, 0), rgb(168, 0, 0))'
+},
+function(){ // SarasaLand 7,
+ChangeMusic ("Music/Super Mario Bros 2 Overworld (Remix).mp3")
+backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))'
+},
+function(){ // DinosaurIsland 8,
+BackgroundsInLevel.push(new Background("Backgrounds/onlyClouds.png",1024,864,0.5,0,0,0,true,false,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/mountains3_noClouds.png",1024,864,0.3,0,0,0,true,false,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/backMountains.png",1024,864,0.1,0,0,0,true,false,0,0))
+ChangeMusic ("Music/Super Mario World Athletic Theme (Remix).mp3")
+backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))'
+},
+function(){ // Fortres 9,
+ChangeMusic ("Music/Super Mario World Fortres (Remix).mp3")
+backgroundBase = 'linear-gradient(rgb(0, 0, 0), rgb(168, 0, 0))'
+},
+function(){ // All_in_one 10
+ChangeMusic ("Music/ModernDay.mp3")
+backgroundBase = "linear-gradient(rgb(255, 255, 255), rgb("+RandomNumber(0,256)+","+RandomNumber(0,256)+","+RandomNumber(0,256)+"))"
+},
 ]
  var Grid = null
  var GridSprites = null
@@ -1615,6 +1767,8 @@ function Create_images() {
 	}
 	HudTEXTURES = new Image()
 	HudTEXTURES.src = "texturas/HudTextures.png"
+	Tornado = new Image()
+	Tornado.src = "texturas/Tornado.png"
 image_collection[image_collection.length -1].addEventListener("load", (e) => {
 DrawGirdTiles(Grid)
 DrawGirdSprites(GridSprites)
@@ -3458,6 +3612,9 @@ function(P){
 	}
 	//if(P.Xtouch){ P.MoveX = P.MoveX *-1}
 	//if(P.Ytouch){ P.MoveY = P.MoveY *-1;}
+},
+function(P,player){
+	//7
 }
 ]
 
@@ -3849,9 +4006,9 @@ this.Hx = 0; this.Hy = 0;
 this.velocity = 1
 this.MaxVelocity = 1
 this.prin = 1
-this.hits = 0
 this.col = comportament
 this.xP = 0; this.yP = 0
+this.time = 0
 this.invecybility = true
 this.lives = 1
 this.Colision = true
@@ -3860,6 +4017,7 @@ this.x = X; this.y = Y;
 this.MoveX = 0;this.MoveY = 0;
 this.MoveXLimit = 0;this.MoveYLimit = 0;
 this.jumped = false ;this.jt = 0
+this.SecondJump = false
 this.imC = new Image();
 this.imC.src = color
 this.BX = 0; this.BY = 0;
@@ -3976,7 +4134,6 @@ if(player.lives > 0 ){
 		*/
 	}
 }
-
 const controlls =[
 {up:38,down:40,left:37,right:39,Jump:90,Run:88 },
 {up:38,down:40,left:37,right:39,Jump:79,Run:80 },
@@ -4332,15 +4489,31 @@ function Stocked(Player,Player2){
 	if(Player.MoveX >= 1){Player.angle -= 0.1}
 }
 function plataformer_Easy(ctr,Player,B,C){
-//if(Player.invecybility){Player.Time += 1;Player.prin = 4;if(Player.Time==20){Player.invecybility = false;Player.Time = 0;}}
 /*comprobar si esta en el suelo*/
-//Player.invecybility = true
+if(Player.invecybility){
+	Player.time ++
+		if(Player.time > 30){
+			Player.time = 0
+			Player.invecybility = false
+		}
+}
  if(Player.Xtouch){
-	auto_com[Player.Movement[3]].X(Player);//auto comprotamiento del jugador
+	Player.Xvelocity = Player.Xvelocity*-1;
+	Player.MoveX = 0;
+	Player.Hx = 0;
+	Player.sideX = !Player.sideX
 }
 if(Player.Ytouch){
-	auto_com[Player.Movement[2]].Y(Player);//auto comprotamiento del jugador
-	Player.hits = 0
+	if(Player.MoveYLimit > 0 ){
+		Player.jumped = true;
+		if(!Player.invecybility && AirDash)Player.AplySecondjump = true;
+		Player.MoveY = 0;
+		Player.jt = 0;
+		Player.InFlor = true;
+		}else{
+			Player.MoveY = 0;
+			Player.jumped = false
+			}
 }
 
 if(Player.delay > 0 ){Player.delay += 1;if(Player.delay > 8){Player.delay = 0}}
@@ -4368,8 +4541,6 @@ if (Player.DownTouch) {
 	}
 	
 }*/
-//console.log(Player.DownTouch +"/"+ Player.UpTouch)
-/*En agua*/
 if(Player.water ){
 	if (Player.ButonBTouch && !Player.crouched){Player.MaxVelocity = 6;}
 	if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
@@ -4391,7 +4562,6 @@ if(Player.water ){
 	}
 	Player.MoveX = Player.velocity
 	Player.MaxVelocity = 3
-	
 	Player.jumped = true;
 	Player.jt = 0;
 	if (Player.ButonATouch){Jump(Player,-3,1,1)}
@@ -4423,36 +4593,53 @@ if(Player.water ){
 	if(Player.velocity <= -1){Player.velocity ++}
 	if(Player.velocity >= 1){Player.velocity --}
 	}
-	if((Player.Xtouch && Player.InFlor == false) && !Player.Down){
+	
+	if((Player.Xtouch && !Player.InFlor) && !Player.Down){
 		if(tick){
 			Player.InFlor = false
 			Player.MoveY += 1;
 			if(Player.MoveY > 2){Player.MoveY = 2}
 		}
+		Player.Slide = true
+		if(!Player.invecybility && AirDash)Player.AplySecondjump = true;
 		if(Player.velocity > 0){Player.side = true}
 		if(Player.velocity < 0){Player.side = false}
 		if(Player.delay == 0){
 			if (Player.ButonATouch) {
-				Player.jumped = true;
-				Player.jt = 0;
-				Jump(Player,-1,1,1);
-				Player.delay += 1
-				if(Player.side){
-					Player.velocity = -4; 
-				}else{
-					Player.velocity = 4
-				}
+					Player.jumped = true;
+					Player.SecondJump = true;
+					Player.jt = 0;
+					Player.delay += 1
+					if(Player.side){
+						Player.velocity = -4; 
+					}else{
+						Player.velocity = 4
+					}
+				
 			}
 		}
 	}else{
 		if (Player.ButonATouch) {
+			if(Player.jumped && !Player.Down){
 			Jump(Player,jump_force,14,2);
+			}else{
+				if(Player.SecondJump){
+					if(!Player.Slide)Player.MoveY = -10;
+					Player.time = 0;
+					Player.AplySecondjump = false
+					Player.SecondJump = false
+					Player.invecybility = true
+				}
+			}
+		Player.SecondJump = false
 		}else{
+			if(Player.AplySecondjump && AirDash){Player.SecondJump = true;Player.AplySecondjump = false}
 			Player.jumped = false
 			Player.jt = 0
 		}
 		Gravity(Player,16,0.5);
 		Player.InFlor = false	
+		Player.Slide = false
 	}
 	Player.MoveX = Player.velocity
 	Player.MaxVelocity = 4
@@ -4894,27 +5081,15 @@ if((PL.x < B.x + (B.width) && (PL.x + (PL.width)) > B.x) && (PL.y <  (B.y + B.he
 
     /*moving havent colision  1 */	
 	
-X :	function cubeMoving (PL,B) {let crash = false
-let tileVx =  (PL.MoveX + PL.BX) 
-if((PL.x < (B.x + B.width ) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx)) && (PL.y < (B.y + B.height ))  && PL.y + (PL.height) > (B.y  )){
-	if((PL.y + (PL.height)) > (B.y + 16)){
-  colM[B.Left].X(PL,B)
-      B.Xplayertouch = true
-	}
-  }
+X :	function cubeMoving (PL,B) {
+	SemiSolidMovingColision_X(PL,B)
 },
 Y :	function cubeMoving (PL,B) {
 	if(SemiSolidMovingColision(PL,B)){return true}
 },
 },{ /*moving have colision   2 */	
-X :	function cubeMoving (PL,B) {let crash = false
-let tileVx = (PL.MoveX + PL.BX) 
-if((PL.x < (B.x + B.width ) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx)) && (PL.y < (B.y + B.height ))  && PL.y + (PL.height) > (B.y  )){
-	if((PL.y + (PL.height)) > (B.y + 16)){
-  colM[B.Left].X(PL,B)
-      B.Xplayertouch = true
-	}
-  }
+X :	function cubeMoving (PL,B) {
+	SemiSolidMovingColision_X(PL,B)
 },
 
 Y :	function cubeMoving (PL,B) {
@@ -4922,30 +5097,16 @@ if(SemiSolidMovingColision(PL,B)){return true}
 },
 },{ /*moving have colision  3*/
 	
-X :	function cubeMoving (PL,B) {let crash = false
-let tileVx = (PL.MoveX + PL.BX) 
-if((PL.x < (B.x + B.width +1) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx -1)) && (PL.y < (B.y + B.height ))  && PL.y + (PL.height) > (B.y  )){
-	if((PL.y + (PL.height)) > (B.y + 16)){
-		
-  colM[B.Left].X(PL,B)
-      B.Xplayertouch = true
-	}
-  }
+X :	function cubeMoving (PL,B) {
+	SemiSolidMovingColision_X(PL,B)
 },
 Y :	function cubeMoving (PL,B) {
 if(SemiSolidMovingColision(PL,B)){return true}
 },
 },{ /*moving efect  4 */
 	
-X :	function cubeMoving (PL,B) {let crash = false
-let tileVx = (PL.MoveX + PL.BX) 
-if((PL.x < (B.x + B.width +1) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx -1)) && (PL.y < (B.y + B.height ))  && PL.y + (PL.height) > (B.y  )){
-	if((PL.y + (PL.height)) > (B.y + 16)){
-		
-  colM[B.Left].X(PL,B)
-      B.Xplayertouch = true
-	}
-  }
+X :	function cubeMoving (PL,B) {
+	SemiSolidMovingColision_X(PL,B)
 },
 
 Y :	function cubeMoving (PL,B) {
@@ -5009,6 +5170,20 @@ if((PL.x < (B.x-PL.Hx) + (B.width) && (PL.x + (PL.width)) > (B.x-PL.Hx)) && (PL.
 	}
 };
 return crash
+}
+function SemiSolidMovingColision_X(PL,B){
+let tileVx = (PL.MoveX + PL.BX) 
+if(PL.invecybility){ 
+	if((PL.x-8 < (B.x + B.width ) - tileVx && (PL.x+8 + (PL.width)) > (B.x - tileVx)) && (PL.y-8 < (B.y + B.height ))  && PL.y+8 + (PL.height) > (B.y)){
+		B.BulletTouch = true;PL.time = 0
+	}
+}
+if((PL.x < (B.x + B.width ) - tileVx && (PL.x + (PL.width)) > (B.x - tileVx)) && (PL.y < (B.y + B.height ))  && PL.y + (PL.height) > (B.y  )){
+	if((PL.y + (PL.height)) > (B.y + 16)){
+  colM[B.Left].X(PL,B)
+      B.Xplayertouch = true
+	}
+  }
 }
 const col =[
 {   /*nothing-0*/
@@ -5874,8 +6049,7 @@ function Win_or_lose_Manager(){
 						  TextFinishGame.push(new Text("Passed level "+ Azar_floor,'#8F8','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
 						  TextFinishGame.push(new Text("If you wish to continue, insert the code again.",'white','24px Arial','center',screenWidth/2,screenWidth/2,0.1,screenHeigth,screenHeigth/2+screenHeigth/4,0.05))  
 						  Azar_floor++
-						  Azar_Level_height += 64
-                          Azar_Enemies += 50
+						  Azar_floor_dificult (Azar_floor)
 						  AZAR = false
 					  }else{
 						  TextFinishGame.push(new Text("Tanks for playing",'#8F8','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
@@ -5895,7 +6069,7 @@ function Win_or_lose_Manager(){
 				  }
 }
 const STEP = 1000 / 60; 
-function gametest (game,all_frames,p1,p2,tiles,sprites,mini_sprites,Hits){
+function gametest (game,all_frames,p1,p2,tiles,sprites,mini_sprites){
 
 /*pone en su valor inicial Player todas las variables que lo ocupen*/
    for(let i = 0; i < effects_in_game.length ;i++){  
@@ -6004,7 +6178,7 @@ function Frames(){
 	document.removeEventListener('keydown',  keydownHandlerP2)
 	document.removeEventListener('keyup', keyupHandlerP2)
 	}
-        if(Frame(p1,p2,tiles,sprites,mini_sprites,Hits)){
+        if(Frame(p1,p2,tiles,sprites,mini_sprites)){
 				requestAnimationFrame(Frames)
         }else{
 	       if(reset_game){
@@ -6038,7 +6212,7 @@ function Textdraw(){
 }
 }
 
-function Frame (p1,p2,tiles,sprites,mini_sprites,Hits){
+function Frame (p1,p2,tiles,sprites,mini_sprites){
 	gamepads = navigator.getGamepads();
 	for (var gp of gamepads) {
 	  if (gp) {
@@ -6252,6 +6426,10 @@ for(let i = 0; i < Position.length ;i+= 2){
 	);
 }
 ctx.globalAlpha = Alpha
+
+}
+if(p1.invecybility){
+	ctx.drawImage(Tornado,Ax4*64,0,64, 64,p1.x - (96-p1.width - p1.Xnegative*0.5 )*0.5  ,p1.y - (96-p1.height - p1.Ynegative*0.5 )*0.5 ,96,96);
 }
 
 //PrinT(game,Position[0].X,Position[0].Y,24,32,"#fff")
@@ -6298,6 +6476,7 @@ var UpSide = false
 var TESTSCREEN = false
 var AZAR = false
 var Multiplayer = false
+var AirDash = false
 function Boregito(Value){
 		   switch(Value){
 			   case "MULTIPLAYER":
@@ -6350,10 +6529,10 @@ function Boregito(Value){
 			   break
 			   case "AZAR":
 			   AZAR = true
-			   Azar_Blocks_Skins[1]()
+			   AirDash = true
+			   Azar_Blocks_Skins[2]()
+			   Azar_Back_Sound[2]()
 			   GridSprites.style.zIndex = 20
-			   ChangeMusic ("Music/Super Mario World Athletic.mp3")
-			   backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))'
 			   Azar_Sprites =
 				[
 					[32,32,16,"160010000",2,"23900",-2,0],
@@ -6364,38 +6543,37 @@ function Boregito(Value){
 			   break
 			   case "AZAR+":
 			   AZAR = true
-			   Azar_Blocks_Skins[2]()
+			   AirDash = true
+			   AzarPlus = true
+			   BackgroundsInLevel = []
 			   GridSprites.style.zIndex = 20
-			   ChangeMusic ("Music/Super Mario World Athletic.mp3")
-			   backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))'
-			   Azar_Sprites =
-				[
-					[32,32,16,"160010000",2,"23900",-2,0],
-					[32,32,16,"160010000",2,"24900",2,0],
-					//[32,32,17,"160010000",2,"25800",2,2],
-					[32,32,11,"661120201",2,"01400", 0,0],
-				]
+			   Azar_floor_dificult (Azar_floor)
 			   Azar_Level()
 			   break
 			   case "AZARHARD":
 			   AZAR = true
-			   Azar_Blocks_Skins[4]()
+			   AirDash = true
+			   Azar_Blocks_Skins[9]()
+			   Azar_Back_Sound[9]()
 			   GridSprites.style.zIndex = 20
-			   ChangeMusic ("Music/Super Mario World Fortress.mp3")
-			   backgroundBase = 'linear-gradient(rgb(0, 0, 0), rgb(168, 0, 0))'
+			   BackgroundsInLevel = []
 			   Azar_Sprites =
 				[
 					[32,32,17,"160010000",2,"25800",2,2]
 				]
 			   Azar_Level()
 			   break
+			   case "AIRDASH" :
+			   AirDash = true
+			   break 
 			   case "FLY":
 			   createSprites_No_in_solid(50,SAVE.X,SAVE.Y,16,0,32,32,11,"661120201",2,"01400", 0,0)
 			   break
 			    case "BACKGROUND":
-			   BackgroundsInLevel.push(new Background("Backgrounds/onlyClouds.png",1024,864,0.5,1,0,0,true,false,0,0))
-			   BackgroundsInLevel.push(new Background("Backgrounds/mountains3_noClouds.png",1024,864,0.3,1,0,0,true,false,0,0))
-			   BackgroundsInLevel.push(new Background("Backgrounds/backMountains.png",1024,864,0.1,1,0,0,true,false,0,0))
+				BackgroundsInLevel = []
+			   BackgroundsInLevel.push(new Background("Backgrounds/onlyClouds.png",1024,864,0.5,0,0,0,true,false,0,0))
+			   BackgroundsInLevel.push(new Background("Backgrounds/mountains3_noClouds.png",1024,864,0.3,0,0,0,true,false,0,0))
+			   BackgroundsInLevel.push(new Background("Backgrounds/backMountains.png",1024,864,0.1,0,0,0,true,false,0,0))
 			   break
 			   case "STELAR":
 			   Stelar = true
