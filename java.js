@@ -1597,16 +1597,19 @@ ChangeMusic ("Music/Super Gypsy Woman.mp3")
 backgroundBase = "linear-gradient(rgb(255, 255, 255), rgb(80, 119, 117))"
 },
 function(){ // Clasic 2
+BackgroundsInLevel.push(new Background("Backgrounds/Clasic.png",512,374,0.5,0,0,0,true,false,0,0))
 ChangeMusic ("Music/Super Mario Galaxy Blue Sky Athletics.mp3")
-backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))'
+backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(115, 165, 255),rgb(115, 165, 255))'
 },
 function(){ // UnderGround Clasic 3
+BackgroundsInLevel.push(new Background("Backgrounds/Underground Clasic.png",512,192,0.5,0.5,0,0,true,true,0,0))
 ChangeMusic ("Music/Super Mario Bros Underground (Remix).mp3")
 backgroundBase = 'linear-gradient(rgb(0, 0, 0), rgb(0, 0, 168))'
 },
 function(){ // Ground  4
+BackgroundsInLevel.push(new Background("Backgrounds/Ground.png",512,512,0.5,0,0,0,true,false,0,0))
 ChangeMusic ("Music/Super Smash Bros Ultimate Ground Theme.mp3")
-backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))'
+backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(118, 134, 255))'
 },
 function(){ // UnderGround 5
 ChangeMusic ("Music/Super Smash Bros Ultimate Underground Theme.mp3")
@@ -1617,15 +1620,17 @@ ChangeMusic ("Music/Super Smash Bros Ultimate Castle Theme_Fortress Boss.mp3")
 backgroundBase = 'linear-gradient(rgb(0, 0, 0), rgb(168, 0, 0))'
 },
 function(){ // SarasaLand 7,
+BackgroundsInLevel.push(new Background("Backgrounds/Sarasaland.png",1024,224,0.5,0,0,0,true,false,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/Cloud.png",1024,224,0.5,0,0,0,true,false,0,0))
 ChangeMusic ("Music/Super Mario Bros 2 Overworld (Remix).mp3")
-backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))'
+backgroundBase = 'linear-gradient(rgb(82, 138, 165), rgb(198, 251, 255))'
 },
 function(){ // DinosaurIsland 8,
 BackgroundsInLevel.push(new Background("Backgrounds/onlyClouds.png",1024,864,0.5,0,0,0,true,false,0,0))
 BackgroundsInLevel.push(new Background("Backgrounds/mountains3_noClouds.png",1024,864,0.3,0,0,0,true,false,0,0))
 BackgroundsInLevel.push(new Background("Backgrounds/backMountains.png",1024,864,0.1,0,0,0,true,false,0,0))
 ChangeMusic ("Music/Super Mario World Athletic Theme (Remix).mp3")
-backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))'
+backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(88, 168, 240))'
 },
 function(){ // Fortres 9,
 ChangeMusic ("Music/Super Mario World Fortres (Remix).mp3")
@@ -6530,6 +6535,7 @@ function Boregito(Value){
 			   case "AZAR":
 			   AZAR = true
 			   AirDash = true
+			   BackgroundsInLevel = []
 			   Azar_Blocks_Skins[2]()
 			   Azar_Back_Sound[2]()
 			   GridSprites.style.zIndex = 20
