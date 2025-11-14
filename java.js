@@ -4581,160 +4581,160 @@ function Stocked(Player,Player2){
 	if(Player.MoveX >= 1){Player.angle -= 0.1}
 }
 function plataformer_Easy(ctr,Player,B,C){
-/*comprobar si esta en el suelo*/
-if(Player.invecybility){
-	Player.time ++
-		if(Player.time > 30){
-			Player.time = 0
-			Player.invecybility = false
-		}
-}
- if(Player.Xtouch){
-	Player.Xvelocity = Player.Xvelocity*-1;
-	Player.MoveX = 0;
-	Player.Hx = 0;
-	Player.sideX = !Player.sideX
-}
-if(Player.Ytouch){
-	if(Player.MoveYLimit > 0 ){
-		Player.jumped = true;
-		if(!Player.invecybility && AirDash)Player.AplySecondjump = true;
-		Player.MoveY = 0;
-		Player.jt = 0;
-		Player.InFlor = true;
-		}else{
+	/*comprobar si esta en el suelo*/
+	if(Player.invecybility){
+		Player.time ++
+			if(Player.time > 30){
+				Player.time = 0
+				Player.invecybility = false
+			}
+	}
+	 if(Player.Xtouch){
+		Player.Xvelocity = Player.Xvelocity*-1;
+		Player.MoveX = 0;
+		Player.Hx = 0;
+		Player.sideX = !Player.sideX
+	}
+	if(Player.Ytouch){
+		if(Player.MoveYLimit > 0 ){
+			Player.jumped = true;
+			if(!Player.invecybility)Player.AplySecondjump = true;
 			Player.MoveY = 0;
-			Player.jumped = false
-			}
-}
-
-if(Player.delay > 0 ){Player.delay += 1;if(Player.delay > 8){Player.delay = 0}}
-/*inputs en el aire*/
-Player.Up = false
-if (Player.UpTouch) {
-	Player.Up = true
-}
-Player.Down = false
-if (Player.DownTouch) {
-	Player.Down = true
-	/*if(!Player.crouched && Player.jumped ){
-	Player.height = Player.heightHalf
-	Player.Ynegative += Player.heightHalf*-1
-    Player.Yteleport = Player.heightHalf
-	Player.crouched = true
-	}*/
-}/*else{
-	/*
-	if(Player.crouched && Player.jumped){
-	Player.height = Player.heightSave
-	Player.Ynegative = Player.YnegativeSave
-	Player.Yteleport = Player.heightHalf*-1
-	Player.crouched = false	
-	}
-	
-}*/
-if(Player.water ){
-	if (Player.ButonBTouch && !Player.crouched){Player.MaxVelocity = 6;}
-	if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
-		if (Player.LeftTouch) {
-			if(Player.jumped) Player.side = true ;
-			Player.velocity --;
-			if(Player.velocity < Player.MaxVelocity*-1 )Player.velocity = Player.MaxVelocity*-1;
-		}else{
-			if (Player.RightTouch) {
-				if(Player.jumped) Player.side = false;
-				Player.velocity ++;
-				if(Player.velocity > Player.MaxVelocity )Player.velocity = Player.MaxVelocity;
-			}
-		}
-	}
-	if(Ax4 == 3){
-	if(Player.velocity <= -1){Player.velocity ++}
-	if(Player.velocity >= 1){Player.velocity --}
-	}
-	Player.MoveX = Player.velocity
-	Player.MaxVelocity = 3
-	Player.jumped = true;
-	Player.jt = 0;
-	if (Player.ButonATouch){Jump(Player,-3,1,1)}
-
-	Player.InFlor = false
-	Player.MoveY += 0.5
-	if(Player.MoveY == 3){Player.MoveY = 2}
-	if(Player.MoveY > 3){Player.MoveY -= 2}
-	
-	Player.water = false
-	Player.AnimationWater = true
-}else{
-	/*En tierra*/
-	if (Player.ButonBTouch && !Player.crouched){Player.MaxVelocity = 8;}
-	if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
-		if (Player.LeftTouch) {
-			if(Player.jumped) Player.side = true ;
-			Player.velocity --;
-			if(Player.velocity < Player.MaxVelocity*-1 )Player.velocity = Player.MaxVelocity*-1;
-		}else{
-			if (Player.RightTouch) {
-				if(Player.jumped) Player.side = false;
-				Player.velocity ++;
-				if(Player.velocity > Player.MaxVelocity )Player.velocity = Player.MaxVelocity;
-			}
-		}
-	}
-	if(Ax4 == 3){
-	if(Player.velocity <= -1){Player.velocity ++}
-	if(Player.velocity >= 1){Player.velocity --}
-	}
-	
-	if((Player.Xtouch && !Player.InFlor) && !Player.Down){
-		if(tick){
-			Player.InFlor = false
-			Player.MoveY += 1;
-			if(Player.MoveY > 2){Player.MoveY = 2}
-		}
-		Player.Slide = true
-		if(!Player.invecybility && AirDash)Player.AplySecondjump = true;
-		if(Player.velocity > 0){Player.side = true}
-		if(Player.velocity < 0){Player.side = false}
-		if(Player.delay == 0){
-			if (Player.ButonATouch) {
-					Player.jumped = true;
-					Player.SecondJump = true;
-					Player.jt = 0;
-					Player.delay += 1
-					if(Player.side){
-						Player.velocity = -4; 
-					}else{
-						Player.velocity = 4
-					}
-				
-			}
-		}
-	}else{
-		if (Player.ButonATouch) {
-			if(Player.jumped && !Player.Down){
-			Jump(Player,jump_force,14,2);
+			Player.jt = 0;
+			Player.InFlor = true;
 			}else{
-				if(Player.SecondJump){
-					if(!Player.Slide)Player.MoveY = -10;
-					Player.time = 0;
-					Player.AplySecondjump = false
-					Player.SecondJump = false
-					Player.invecybility = true
+				Player.MoveY = 0;
+				Player.jumped = false
+				}
+	}
+
+	if(Player.delay > 0 ){Player.delay += 1;if(Player.delay > 8){Player.delay = 0}}
+	/*inputs en el aire*/
+	Player.Up = false
+	if (Player.UpTouch) {
+		Player.Up = true
+	}
+	Player.Down = false
+	if (Player.DownTouch) {
+		Player.Down = true
+		/*if(!Player.crouched && Player.jumped ){
+		Player.height = Player.heightHalf
+		Player.Ynegative += Player.heightHalf*-1
+		Player.Yteleport = Player.heightHalf
+		Player.crouched = true
+		}*/
+	}/*else{
+		/*
+		if(Player.crouched && Player.jumped){
+		Player.height = Player.heightSave
+		Player.Ynegative = Player.YnegativeSave
+		Player.Yteleport = Player.heightHalf*-1
+		Player.crouched = false	
+		}
+		
+	}*/
+	if(Player.water ){
+		if (Player.ButonBTouch && !Player.crouched){Player.MaxVelocity = 6;}
+		if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
+			if (Player.LeftTouch) {
+				if(Player.jumped) Player.side = true ;
+				Player.velocity --;
+				if(Player.velocity < Player.MaxVelocity*-1 )Player.velocity = Player.MaxVelocity*-1;
+			}else{
+				if (Player.RightTouch) {
+					if(Player.jumped) Player.side = false;
+					Player.velocity ++;
+					if(Player.velocity > Player.MaxVelocity )Player.velocity = Player.MaxVelocity;
 				}
 			}
-		Player.SecondJump = false
-		}else{
-			if(Player.AplySecondjump && AirDash){Player.SecondJump = true;Player.AplySecondjump = false}
-			Player.jumped = false
-			Player.jt = 0
 		}
-		Gravity(Player,16,0.5);
-		Player.InFlor = false	
-		Player.Slide = false
-	}
-	Player.MoveX = Player.velocity
-	Player.MaxVelocity = 4
+		if(Ax4 == 3){
+		if(Player.velocity <= -1){Player.velocity ++}
+		if(Player.velocity >= 1){Player.velocity --}
+		}
+		Player.MoveX = Player.velocity
+		Player.MaxVelocity = 3
+		Player.jumped = true;
+		Player.jt = 0;
+		if (Player.ButonATouch){Jump(Player,-3,1,1)}
+
+		Player.InFlor = false
+		Player.MoveY += 0.5
+		if(Player.MoveY == 3){Player.MoveY = 2}
+		if(Player.MoveY > 3){Player.MoveY -= 2}
+		
+		Player.water = false
+		Player.AnimationWater = true
+	}else{
+		/*En tierra*/
+		if (Player.ButonBTouch && !Player.crouched){Player.MaxVelocity = 8;}
+		if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
+			if (Player.LeftTouch) {
+				if(Player.jumped) Player.side = true ;
+				Player.velocity --;
+				if(Player.velocity < Player.MaxVelocity*-1 )Player.velocity = Player.MaxVelocity*-1;
+			}else{
+				if (Player.RightTouch) {
+					if(Player.jumped) Player.side = false;
+					Player.velocity ++;
+					if(Player.velocity > Player.MaxVelocity )Player.velocity = Player.MaxVelocity;
+				}
+			}
+		}
+		if(Ax4 == 3){
+		if(Player.velocity <= -1){Player.velocity ++}
+		if(Player.velocity >= 1){Player.velocity --}
+		}
+		
+		if((Player.Xtouch && !Player.InFlor) && !Player.Down){
+			if(tick){
+				Player.InFlor = false
+				Player.MoveY += 1;
+				if(Player.MoveY > 2){Player.MoveY = 2}
+			}
+			Player.Slide = true
+			if(!Player.invecybility)Player.AplySecondjump = true;
+			if(Player.velocity > 0){Player.side = true}
+			if(Player.velocity < 0){Player.side = false}
+			if(Player.delay == 0){
+				if (Player.ButonATouch) {
+						Player.jumped = true;
+						Player.SecondJump = true;
+						Player.jt = 0;
+						Player.delay += 1
+						if(Player.side){
+							Player.velocity = -4; 
+						}else{
+							Player.velocity = 4
+						}
+					
+				}
+			}
+		}else{
+			if (Player.ButonATouch) {
+				if(Player.jumped && !Player.Down){
+				Jump(Player,jump_force,14,2);
+				}else{
+					if(Player.SecondJump && AirDash){
+						if(!Player.Slide)Player.MoveY = -10;
+						Player.time = 0;
+						Player.AplySecondjump = false
+						Player.SecondJump = false
+						Player.invecybility = true
+					}
+				}
+			Player.SecondJump = false
+			}else{
+				if(Player.AplySecondjump){Player.SecondJump = true;Player.AplySecondjump = false}
+				Player.jumped = false
+				Player.jt = 0
+			}
+			Gravity(Player,16,0.5);
+			Player.InFlor = false	
+			Player.Slide = false
+		}
+		Player.MoveX = Player.velocity
+		Player.MaxVelocity = 4
 }
 ShoterType[shoterMode](ctr,Player)
 
