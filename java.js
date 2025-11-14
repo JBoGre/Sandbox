@@ -1597,7 +1597,7 @@ ChangeMusic ("Music/Super Gypsy Woman.mp3")
 backgroundBase = "linear-gradient(rgb(255, 255, 255), rgb(80, 119, 117))"
 },
 function(){ // Clasic 2
-BackgroundsInLevel.push(new Background("Backgrounds/Clasic.png",512,374,0.5,0,0,0,true,false,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/Clasic.png",512,382,0.5,0,0,0,true,false,0,0))
 ChangeMusic ("Music/Super Mario Galaxy Blue Sky Athletics.mp3")
 backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(115, 165, 255),rgb(115, 165, 255))'
 },
@@ -1621,7 +1621,7 @@ backgroundBase = 'linear-gradient(rgb(0, 0, 0), rgb(168, 0, 0))'
 },
 function(){ // SarasaLand 7,
 BackgroundsInLevel.push(new Background("Backgrounds/Sarasaland.png",1024,224,0.5,0,0,0,true,false,0,0))
-BackgroundsInLevel.push(new Background("Backgrounds/Cloud.png",1024,224,0.5,0,0,0,true,false,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/Cloud.png",1024,224,0.3,0,0,0,true,false,0,0))
 ChangeMusic ("Music/Super Mario Bros 2 Overworld (Remix).mp3")
 backgroundBase = 'linear-gradient(rgb(82, 138, 165), rgb(198, 251, 255))'
 },
@@ -1633,6 +1633,7 @@ ChangeMusic ("Music/Super Mario World Athletic Theme (Remix).mp3")
 backgroundBase = 'linear-gradient(rgb(255, 255, 255), rgb(88, 168, 240))'
 },
 function(){ // Fortres 9,
+BackgroundsInLevel.push(new Background("Backgrounds/Fortres.png",512,432,0.5,0.5,0,0,true,true,0,0))
 ChangeMusic ("Music/Super Mario World Fortres (Remix).mp3")
 backgroundBase = 'linear-gradient(rgb(0, 0, 0), rgb(168, 0, 0))'
 },
@@ -2622,9 +2623,16 @@ function sprite_colision(X,Y,width,height,script,comportament,img,RenderMode,Xve
 	this.stx = X; this.sty = Y;
 	this.StartedX = X; this.StartedY = Y;
 	this.MoveX = 0 ;this.MoveY = 0
-	this.xP = 0 ;this.yP = 0
-	this.BX = 0 ; this.BY = 0
-	this.MoveYLimit = 0 ;this.MoveXLimit = 0
+	this.xP = 0 ;
+	this.yP = 0
+	this.BX = 0 ; 
+	this.BY = 0
+	this.Hx = 0;
+	this.Hy = 0;
+	this.Movement = comportament
+	this.Colision = true
+	this.MoveYLimit = 0 ;
+	this.MoveXLimit = 0;
 	this.sideX = true ;this.sideY = true
 	this.Yplayertouch = false; this.Xplayertouch = false
 	this.Ytouches = 0
@@ -2645,7 +2653,6 @@ function sprite_colision(X,Y,width,height,script,comportament,img,RenderMode,Xve
 	}
 	this.State = 0
 	this.water = false
-	this.waterAlture = 0
 	this.script = script 
 	if(comportament != undefined){
 		this.col = comportament
@@ -2691,7 +2698,8 @@ function sprite_colision(X,Y,width,height,script,comportament,img,RenderMode,Xve
 		}else{
 			this.imgN = 0
 			}
-	this.IXR = this.Xvelocity ;this.IYR = this.Yvelocity ;
+	this.IXR = this.Xvelocity ;
+	this.IYR = this.Yvelocity ;
 	this.intervald_frame = 0
 	this.intervald_time = 0
 	this.angleX = 0
@@ -2883,6 +2891,83 @@ function(Sprite,player1,player2,tiles){
 if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
 (0  < (Sprite.y + (Sprite.height)) && screenHeigth  > (Sprite.y))){
 	Sprite.InScreen = true
+	/*
+	let crash = false
+	Sprite.Ytouch = false
+	Sprite.UpTriger = false
+	Sprite.DownTriger = false
+	if(tick){
+	if(Sprite.BY <= -1){Sprite.BY += 1}
+	if(Sprite.BY >= 1){Sprite.BY += -1}
+	}
+		let MoveY = Sprite.MoveY + Sprite.BY
+		if(MoveY > positveLimit){MoveY = positveLimit}
+		if(MoveY < negativeLimit){MoveY = negativeLimit}
+		Sprite.MoveYLimit = MoveY
+	let YnextPosition = MoveY  
+
+	Sprite.Hy = 0;Sprite.Hx = 0;
+	
+		for (i = 0; i < mysprites.length; i += 1){
+			
+			if(calculate_M[mysprites[i].typeColision].Y(Sprite,mysprites[i],MoveY)){
+				mysprites[i].Yplayertouch = true
+				crash = true
+			}
+		}
+		YnextPosition += Sprite.Hy 
+		Sprite.MoveYLimit += Sprite.Hy 
+		MiniSpritePlayerColision(Sprite,myMiniSprites)
+		if(CompleteTilesColisionY(Sprite,myTiles)){
+			if(Sprite.Ytouch && Sprite.MoveYLimit > 0 ){
+					 Sprite.InFlor = true
+				 }
+			crash = true
+		}
+
+	if(crash){YnextPosition += Sprite.yP *-1}
+	if(YnextPosition == undefined){YnextPosition = 0}
+	 //00//
+	Sprite.y += YnextPosition
+	Sprite.yP = YnextPosition
+	 //00//
+	crash = false
+	Sprite.Xtouch = false
+	Sprite.LeftTriger = false
+	Sprite.RightTriger = false
+		let MoveX = Sprite.MoveX + Sprite.BX
+		if(MoveX > positveLimit){MoveX = positveLimit}
+		if(MoveX < negativeLimit){MoveX = negativeLimit}
+		Sprite.MoveXLimit = MoveX + Sprite.Hx
+
+	let XnextPosition = MoveX + Sprite.Hx
+
+	if(tick){
+	if(Sprite.BX <= -1){Sprite.BX += 1}
+	if(Sprite.BX >= 1){Sprite.BX += -1}
+	}
+
+	if(Sprite.Colision){
+		for (i = 0; i < mysprites.length; i += 1){
+			
+			if(calculate_M[mysprites[i].typeColision].X(Sprite,mysprites[i])){
+				mysprites[i].Xplayertouch = true
+				crash = true
+			}
+		}
+		if(CompleteTilesColisionX(Sprite,myTiles)){
+			crash = true
+		}
+	}
+
+	if(crash){XnextPosition += Sprite.xP *-1}
+	if(XnextPosition == undefined){XnextPosition = 0}
+	 //00//
+	Sprite.x += XnextPosition
+	Sprite.xP = XnextPosition
+	 //00//
+	*/
+	
 	if(tick){
 	if(Sprite.BY <= -1){Sprite.BY += 1}
 	if(Sprite.BY >= 1){Sprite.BY += -1}
@@ -2933,6 +3018,7 @@ if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
 
 	MiniSpriteColision(Sprite,myMiniSprites)
 	Sprites_Effects(Sprite)
+	
 }else{
 	Sprite.InScreen = false
 }
@@ -3553,9 +3639,10 @@ this.type = type
 if(this.type == undefined){
 	this.type = 1
 }
-if(this.Disapear == undefined){
+if(Disapear == undefined){
 	this.Disapear = true
 }
+console.log(this.Disapear)
 this.imgN = img;
 this.Mode = RenderMode
 this.XG = XG;this.YG = YG
@@ -3592,8 +3679,8 @@ function(P){
 function(P){
 	// 4
 	if(Ax4 == 3){
-P.intervald_frame++
-if(P.intervald_frame >= P.frame){P.Live = false }
+		P.intervald_frame++
+		if(P.intervald_frame >= P.frame){P.Live = false }
 	}
 },
 function(P){
@@ -4868,10 +4955,11 @@ function Gravity (P,N,CameraY) {
 
 function MiniSpriteColision(Sprite,MiniSprites){
 	for (i = 0; i < MiniSprites.length; i += 1){
-		if(MiniSprites[i].type == 1){
+		if(MiniSprites[i].type == 1 || MiniSprites[i].type == 3){
 		let MiniSprite = MiniSprites[i]
 			if((Sprite.x < MiniSprite.x + MiniSprite.width && (Sprite.x + (Sprite.width)) > MiniSprite.x) && (Sprite.y < MiniSprite.y + (MiniSprite.height))  && Sprite.y + (Sprite.height) > MiniSprite.y){
 				   if(MiniSprite.Disapear){MiniSprites.splice(i, 1)};
+				 
 				   Sprite.BulletTouch = true
 			}
 		 }
@@ -5152,8 +5240,6 @@ function SemiSolidMovingColision(PL,B){
 let crash = false
 let extraUp = 0 // se le suma a la colision para hacer mas aplicar el movimiento del objeto
 let tileVy = (PL.MoveY + PL.BY) // el movimiento siguiente del jugador
-
-
 if(B.yP > 0){extraUp = (B.yP*-1)-2 };    // dependiendo de a que lado va sera la velocidad que se aplique
 if(B.yP < 0){extraUp = B.yP }
 if((PL.x < (B.x-PL.Hx) + (B.width) && (PL.x + (PL.width)) > (B.x-PL.Hx)) && (PL.y <  ((B.y-1)-tileVy)  && (PL.y + (PL.height) > ((B.y+extraUp) - tileVy)))){
@@ -5205,7 +5291,7 @@ DOWN: function Y (PL){PL.BY = 0; },
 LEFT : function X (PL) {PL.BX = 0; },
 RIGTH: function X (PL) {PL.BX = 0; },
 },{   /*bouncing-3*/
-UP: function Y (PL,B){PL.MoveY = -16;PL.BY = 0;console.log(B.Xcord,B.Ycord);},
+UP: function Y (PL,B){PL.MoveY = -16;PL.BY = 0;},
 DOWN: function Y (PL){if(PL.BY == 0){PL.MoveY = 16;PL.BY = 0}else{PL.BY = 24;PL.MoveY = 0};},
 LEFT : function X (PL) {PL.BX = -16;PL.MoveX = 0},
 RIGTH: function X (PL) {PL.BX = 16;PL.MoveX = 0},
@@ -5401,7 +5487,8 @@ Player.RightTriger = false
 				Player.Xteleport = 0
 	}
 	Player.MoveXLimit = MoveX  + Player.Hx
-let XnextPosition = MoveX +  Player.Hx
+
+let XnextPosition = MoveX  + Player.Hx
 
 if(tick){
 if(Player.BX <= -1){Player.BX += 1}
@@ -5425,6 +5512,7 @@ if(Xmargin[SAVE.Margin](Player)){
 }
 
 if(crash){XnextPosition += Player.xP *-1}
+if(XnextPosition == undefined){XnextPosition = 0}
 return XnextPosition
 }
 
@@ -5446,8 +5534,15 @@ if(Player.BY >= 1){Player.BY += -1}
 			Player.Yteleport = 0
 	}
 	Player.MoveYLimit = MoveY
+	if(Player.MoveYLimit == undefined){Player.MoveYLimit = 0}
 let YnextPosition = MoveY  
 
+if(Ymargin[SAVE.Margin](Player)){
+	crash = true
+	if(Player.Ytouch && Player.MoveYLimit > 0 ){
+			 Player.InFlor = true
+		 }
+}
 Player.Hy = 0;Player.Hx = 0;
 
 if(Player.Colision){
@@ -5468,15 +5563,9 @@ if(Player.Colision){
 		crash = true
 	}
 }
-if(Ymargin[SAVE.Margin](Player)){
-	crash = true
-	if(Player.Ytouch && Player.MoveYLimit > 0 ){
-			 Player.InFlor = true
-		 }
-}
 
 if(crash){YnextPosition += Player.yP *-1}
-
+if(YnextPosition == undefined){YnextPosition = 0}
 return YnextPosition
 }
 function CompleteTilesColisionX(Player,Tiles){
@@ -6229,7 +6318,12 @@ function Frame (p1,p2,tiles,sprites,mini_sprites){
 		  }
 	  }
 	}
-
+if(frisFotogram){
+	if(!invecybility){
+	p1.invecybility = false
+	p2.invecybility = false
+	}
+}
 /*variabels que sirven para controlar cuantos frames van las animaciones*/
 tick = !tick
 Ax3 += 1;if(Ax3 >= 3){Ax3 = 0}
@@ -6465,12 +6559,6 @@ draw_background(BackgroundsInLevel[i],game);
 }
 //PrinT(game,Xmouse - 16,Ymouse - 16,16,16,"#F00")
 
-if(frisFotogram){
-	if(!invecybility){
-	p1.invecybility = false
-	p2.invecybility = false
-	}
-}
 frisFotogram = false
 return on_game;
 }

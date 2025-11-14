@@ -116,6 +116,14 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"00000970"],
 ["Tile","rgba(0,0,0,0)",1,"00000980"],
 ["Tile","rgba(0,0,0,0)",1,"00000990"],
+
+["Tile","rgba(0,0,0,0)",1,"11111A70"],
+["Tile","rgba(0,0,0,0)",1,"11111B70"],
+["Tile","rgba(0,0,0,0)",1,"00000A80"],
+["Tile","rgba(0,0,0,0)",1,"11002B80"],
+["Tile","rgba(0,0,0,0)",1,"11111A90"],
+["Tile","rgba(0,0,0,0)",1,"00000B90"],
+
 // Others
 ["Tile","rgba(0,0,0,0)",1,"00000340"],["Tile","rgba(0,0,0,0)",1,"00000130"],
 // Weird Textures
@@ -159,6 +167,7 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"11111830",7],
 ["Tile","rgba(0,0,0,0)",1,"61111A50",7],
 ["Tile","rgba(0,0,0,0)",1,"11611A60",7],
+["Tile","rgba(0,0,0,0)",1,"11113F00",11],
 //["Tile","rgba(0,0,0,0)",1,"11111D20",8],
 //["Tile","rgba(0,0,0,0)",1,"11112D20",8],
 //["Tile","rgba(0,0,0,0)",1,"11111420",9],
@@ -166,6 +175,7 @@ objects:[
 
 ["Object",128,128,"#","000000000",3,"10000", 0,0],["Object",128,128,"#","000000000",3,"11000", 0,0],
 ["Object",128,128,"#","000000000",3,"12000", 0,0],["Object",128,128,"#","000000000",3,"13000", 0,0],
+["Object",128,128,"#","000000000",3,"10100", 0,0],
 ["Object",128,256,"#","000000000",3,"10100", 0,0],
 
 ["Object",64,32,4,"660030300",4,"00100", 0,0],
@@ -180,10 +190,10 @@ objects:[
 ["Object",32,32,7,"661132103",5,"2A200", 2,8],
 ["Object",32,32,"#","661132103",1,"08200", 0,8],
 ["Object",32,32,"#","111132103",1,"03200", 0,8],
-["Object",32,64,8,"661110000",2,"03343", 0,0],
-["Object",16,32,9,"661121163",2,"00823", 1,2],
-["Object",64,32,"#","101122200",2,"02200", -2,0],
-["Object",64,32,"#","101122200",2,"02200", 0,2],
+["Object",32,64,8,"661110000",2,"03343", 0,0], // Fire
+["Object",16,32,9,"661121163",2,"00823", 1,2], // Fire Whit Legs
+["Object",64,32,"#","101122200",2,"02200", -2,0],// Left_Right_Platafrom
+["Object",64,32,"#","101122200",2,"02200", 0,2], // Up_Down_Platafrom
 ["Object",32,32,10,"661120201",2,"01500", 0,0], // Fly
 ["Object",32,48,11,"160030000",6,"00023",-1,0], // Gomba
 ["Object",32,48,11,"160030000",6,"30023",1,0],  // Gomba
@@ -575,6 +585,20 @@ Loop: function Loop (Tile) {
 		}
 },
 },
+{
+Action: function Action(Tile,p1,side) { // 11
+	if(!Tile.action){myMiniSprites.push(new Mini_sprite(Tile.x-64,Tile.y-64,2,1,0,480,90,4,0,0,160,160,3,false))}
+	Tile.action = true
+	Tile.YG = 32
+},
+Loop: function Loop (Tile) {
+	if(Clock(Tile,90)){
+	Tile.YG = 0
+	Tile.action = false
+	}
+	
+},
+},
 ],
 SpriteScripts:[
 {
@@ -951,6 +975,8 @@ Action: function Action(Sprite) { // 8
 	 Sprite.XG  = 96
 	 Sprite.YG = 192
 	 Sprite.State = 0
+	 Sprite.Up = 0
+	 Sprite.Left = 0
 	},
 Loop: function Loop (Sprite,player1) {
 	if(Sprite.State == 0){
@@ -960,6 +986,8 @@ Loop: function Loop (Sprite,player1) {
 		Sprite.y ++
 			if(Sprite.heightPrint < 0){
 				Sprite.y --
+				Sprite.Up = 0
+				Sprite.Left = 0
 				Sprite.Ydiference_Print = 0
 				Sprite.heightPrint = 0
 				Sprite.height = 0
@@ -976,6 +1004,8 @@ Loop: function Loop (Sprite,player1) {
 			Sprite.Ydiference_Print -= 2
 		}
 		if(Sprite.heightPrint > 64){
+			Sprite.Up = 6
+			Sprite.Left = 6
 			Sprite.y += 2
 			Sprite.Ydiference_Print = -32
 			Sprite.heightPrint = 64
@@ -1586,7 +1616,7 @@ Action: function Action(Sprite) { // 25
 Loop: function Loop (Sprite,player1) {
 		if(Clock(Sprite,200)){
 			for (i = 0; i < 10; i += 1){
-			myMiniSprites.push(new Mini_sprite(Sprite.x+RandomNumber(-64,64),Sprite.y+RandomNumber(-64,64),11,0,0,0,16,2,0,0,64,64,2,true))
+			myMiniSprites.push(new Mini_sprite(Sprite.x+RandomNumber(-64,64),Sprite.y+RandomNumber(-64,64),11,0,0,0,16,2,0,0,64,64,2,false))
 			Sprite.live = -1
 			SoundEffectsCollection[9].currentTime = 0;
 			SoundEffectsCollection[9].play()
