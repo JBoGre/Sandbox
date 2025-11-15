@@ -218,7 +218,8 @@ objects:[
 ["Object",52,52,21,"660010011",2,"05741",5,1],
 ["Object",52,52,21,"660010000",2,"05741",0,0],
 ["Object",36,48,22,"160030000",2,"00824",4,4],
-["Object",32,32,"#","660010088",2,"08A00",3,3],
+["Object",32,32,"#","660010088",2,"08A00",3,3], // Spectre
+["Object",32,32,26,"000000000",2,"00024", 4,0],
 ["Object",32,32,23,"161122103",1,"09100", -1,8], // Globos
 ["Object",32,32,23,"161122200",1,"09000", -1,1],
 ["Object",32,32,23,"161122503",1,"09200", -2,1],
@@ -1623,6 +1624,19 @@ Loop: function Loop (Sprite,player1) {
 			}
 		}
 		Gravedad(Sprite,0.5,16)
+    },
+RenderMode: function RenderMode (ctx,Sprite) {
+	    PreRenderMode(ctx,Sprite)
+ },
+},
+{
+Action: function Action(MyElement) { // 26
+	},
+Loop: function Loop (MyElement,player1) {
+		if(Clock(MyElement,200)){
+			 mysprites.push(new Sprite(MyElement.x,MyElement.y,32,32,0,"660010088",2,"08A00",3,3,false))
+			 Scrips_collection[mysprites[mysprites.length -1].script].Action(mysprites[mysprites.length -1])
+		}
     },
 RenderMode: function RenderMode (ctx,Sprite) {
 	    PreRenderMode(ctx,Sprite)

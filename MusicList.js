@@ -27,6 +27,7 @@ MusicList = [
  {"Crs":"Music/Kirby Super Star Save Hut.mp3", "Name":"Kirby Super Star Save Hut",},
  {"Crs":"Music/Kirby Super Star King Dedede's Theme.mp3", "Name":"Kirby Super Star King Dedede's Theme",},
  {"Crs":"Music/Sonic The Hedghog Green Hill Zone (Remix).mp3", "Name":"Sonic The Hedghog Green Hill Zone (Remix)",},
+  {"Crs":"Music/Sonic the Hedgehog 3 Marble Garden (Remix).mp3", "Name":"Sonic the Hedgehog 3 Marble Garden (Remix)",},
  {"Crs":"Music/Sonic 3D Blast The Final Fight (Remix).mp3", "Name":"Sonic 3D Blast The Final Fight (Remix)",},
  {"Crs":"Music/Columns III  Credits theme (Remix).mp3", "Name":"Columns III  Credits theme (Remix)",},
  {"Crs":"Music/Donkey Kong Country DK Island Swing .mp3", "Name":"DonkeyKong Country DK Island Swing",},
