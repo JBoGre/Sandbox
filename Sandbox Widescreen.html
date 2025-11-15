@@ -78,6 +78,17 @@
 	#selection.active {
       transform: translateY(0);
     }
+	#Up_bar{
+	text-align:center ;
+	font-size:16px;
+	background-color:rgb(240,240,240);
+	width:2048px;
+	min-width:2048px;
+	height: 4em;
+	float:left;
+	 z-index: 999;
+
+	}
 	.select{
 	font-size:10px;
 	}
@@ -203,6 +214,17 @@
 	}
 	#arrowLeft2{
 	background-position: -16em 0px;  /* Coordenadas del recorte dentro de la imagen */
+	}
+	::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    }
+	::-webkit-scrollbar-track {
+	background: #eeeeee;
+	}
+	::-webkit-scrollbar-thumb {
+	background: #aaaaaa;
+	border-radius: 4px;
 	}
 	#colors{
 	float:left;
@@ -498,6 +520,7 @@
      </div>
 	 <div style = "" id= "selection">
 	  <button id="button-toggle" onclick="toggleTopMenu()">☰ Top Menu</button>
+	 <div style = "" id= "Up_bar">
 	  <div id="start" >start</div>
      	<div id="Level-selector" style="
 	 width:128em;  
@@ -554,6 +577,7 @@
 	<option class="Text" value='Niveles JSON/Level 2.json'>Level 2</option>
 	<option class="Text" value='Niveles JSON/Level 3.json'>Level 3</option>
 	<option class="Text" value='Niveles JSON/Level A.json'>Level 4 route 1</option>
+	<option class="Text" value='Niveles JSON/Level B.json'>Level 5 route 1</option>
 	<option class="Text" value='Niveles JSON/Level 4.json'>Level 4 route 2</option>
 	<option class="Text" value='Niveles JSON/Level 5.json'>Level 5 route 2</option>
 	<option class="Text" value='Niveles JSON/Level 6 route 2.json'>Level 6 route 2</option>
@@ -564,6 +588,7 @@
 	<option class="Text" value='Niveles JSON/LEVEL Pixel Art 2.json'>Extra 5</option>
   </select>
   <input type="button" class="Text"  style=" width:150px;  " value="change" onclick="cargarJSON(LevelSelected)">
+  </div>
   </div>
 </div>
 	
