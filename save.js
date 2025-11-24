@@ -21,6 +21,7 @@ backgroundMusicTrack: 0 ,
 StyleBackground:'linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))',
 backgroundImages:[
 ["Backgrounds/FlorClouds.png",2042,128,0.6,0,0,0,true,false,0,0],
+//["Backgrounds/Temple.png",2042,448,0.5,0,0,0,true,false,0,0],
 ["Backgrounds/Cloud.png",2048,448,0.4,0,0,0,true,false,0,0],
 ],
 
@@ -32,7 +33,8 @@ Images:["texturas/Texturas ASCII_DIY.png","texturas/GradientTexture.png","textur
 "texturas/Monkey.png","texturas/BigMonkey.png","texturas/Goomba.png","texturas/shy guy.png","texturas/3x3 Textures.png",
 "texturas/terrain.png","texturas/terrainShadow.png","texturas/Explosion.png"],
 SoundEffects:["SoundEfects/Checkpoint.wav","SoundEfects/Collect.wav","SoundEfects/Boing.mp3","SoundEfects/Boing.mp3","SoundEfects/Jump Attack.mp3",
-"SoundEfects/bubble-pop.mp3","SoundEfects/Destroy.wav","SoundEfects/Break.wav","SoundEfects/Fuse.ogg","SoundEfects/ExplosionTNT.ogg"],
+"SoundEfects/bubble-pop.mp3","SoundEfects/Destroy.wav","SoundEfects/Break.wav","SoundEfects/Fuse.ogg","SoundEfects/ExplosionTNT.ogg"
+,"SoundEfects/Alert.wav","SoundEfects/bomb.mp3"],
 objects:[
 // Print Blocks 
 ["Tile","rgba(0,0,0,0)",0,"00000000"],
@@ -97,6 +99,13 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"11111680"],
 ["Tile","rgba(0,0,0,0)",1,"11111690"],
 ["Tile","rgba(0,0,0,0)",1,"11111780"],
+
+["Tile","rgba(0,0,0,0)",1,"100025A0"],
+["Tile","rgba(0,0,0,0)",1,"000005B0"],
+["Tile","rgba(0,0,0,0)",1,"100026A0"],
+["Tile","rgba(0,0,0,0)",1,"000006B0"],
+["Tile","rgba(0,0,0,0)",1,"000000F8"],
+["Tile","rgba(0,0,0,0)",1,"000002F8"],
 
 // MAYA Temple
 ["Tile","rgba(0,0,0,0)",1,"11111840"],
@@ -178,16 +187,16 @@ objects:[
 ["Object",128,128,"#","000000000",3,"10100", 0,0],
 ["Object",128,256,"#","000000000",3,"10100", 0,0],
 
-["Object",64,32,4,"660030300",4,"00100", 0,0],
-["Object",64,32,5,"161120005",4,"01223", 0,4],
-["Object",96,64,6,"161120005",5,"00045", 0,0],
+["Object",64,32,4,"660030300",4,"00100", 0,0], // Monkey
+["Object",64,32,5,"161120005",4,"01223", 0,4], // scaler Monkey
+["Object",96,64,6,"161120005",5,"00045", 0,0], // Donkey Kong
 
 ["Object",42,42,0,"661132103",2,"22300", -1,8], // Spike Ball
 ["Object",84,84,1,"661132103",2,"21100", -1,8], // Big Spike Ball
 ["Object",42,42,2,"661132103",2,"22300", -1,8], // Fall Spike Ball
 ["Object",42,42,14,"661132103",2,"22300", -1,8], // Spike Ball 2
 ["Object",32,32,7,"661132103",5,"2A200", -2,8], // Barrel
-["Object",32,32,7,"661132103",5,"2A200", 2,8],
+["Object",32,32,7,"661132103",5,"2A200", 2,8],// Barrel
 ["Object",32,32,"#","661132103",1,"08200", 0,8],
 ["Object",32,32,"#","111132103",1,"03200", 0,8],
 ["Object",32,64,8,"661110000",2,"03343", 0,0], // Fire
@@ -197,6 +206,7 @@ objects:[
 ["Object",32,32,10,"661120201",2,"01500", 0,0], // Fly
 ["Object",32,48,11,"160030000",6,"00023",-1,0], // Gomba
 ["Object",32,48,11,"160030000",6,"30023",1,0],  // Gomba
+["Object",32,48,11,"160030000",6,"30223",1,0],  // Gomba
 ["Object",32,32,12,"160030000",7,"00023",-1,0], // Shyguy
 ["Object",32,32,12,"160030000",7,"30023",1,0],  // Shyguy
 ["Object",64,64,12,"160030000",7,"00323",-2,0],	// Topo
@@ -208,18 +218,18 @@ objects:[
 ["Object",128,128,15,"160010000",2,"33000",2,0],  // BigBulletBill
 ["Object",32,32,16,"160010000",2,"25800",2,2], // redBulletBill
 ["Object",128,128,16,"160010000",2,"23100",2,2],  //redBigBulletBill
-["Object",32,32,17,"110020011",2,"67062",4,1],
-["Object",48,64,18,"660030000",2,"00524",0,0],
-["Object",32,32,"#","660022001",2,"06924",-2,2],
-["Object",32,32,"#","660022001",2,"36924",2,2],
-["Object",32,32,19,"660030000",2,"08828",0,0],
-["Object",64,64,20,"160030000",2,"02500",0,0],
-["Object",52,52,21,"660010011",2,"05741",1,5],
-["Object",52,52,21,"660010011",2,"05741",5,1],
-["Object",52,52,21,"660010000",2,"05741",0,0],
-["Object",36,48,22,"160030000",2,"00824",4,4],
+["Object",32,32,17,"110020011",2,"67062",4,1], // STAR
+["Object",48,64,18,"660030000",2,"00524",0,0], // Zombie
+["Object",32,32,"#","660022001",2,"06924",-2,2], // FISH
+["Object",32,32,"#","660022001",2,"36924",2,2], // FISH
+["Object",32,32,19,"660030000",2,"08828",0,0], // SLEEP FISH
+["Object",64,64,20,"160030000",2,"02500",0,0], // TWOMP
+["Object",52,52,21,"660010011",2,"05741",1,5], // ESQUELETON
+["Object",52,52,21,"660010011",2,"05741",5,1], // ESQUELETON
+["Object",52,52,21,"660010000",2,"05741",0,0], // ESQUELETON
+["Object",36,48,22,"160032103",2,"00944",2,2],// Angel
 ["Object",32,32,"#","660010088",2,"08A00",3,3], // Spectre
-["Object",32,32,26,"000000000",2,"00024", 4,0],
+["Object",32,32,26,"000000000",2,"00024", 4,0], // Spectre Spawn
 ["Object",32,32,23,"161122103",1,"09100", -1,8], // Globos
 ["Object",32,32,23,"161122200",1,"09000", -1,1],
 ["Object",32,32,23,"161122503",1,"09200", -2,1],
@@ -228,6 +238,8 @@ objects:[
 ["Object",96,96,24,"661110001",2,"22500", 0,-4],
 ["Object",96,96,24,"661110001",2,"22500", 0,4],
 ["Object",96,96,24,"661110010",2,"22500", 4,0],
+["Object",32,40,27,"111132103",2,"0A000", 0,0],
+["Object",32,32,28,"000032103",2,"0A224", 0,0],
 //["Object",32,32,25,"000030000",9,"08028", 0,0],
 
 
@@ -603,7 +615,7 @@ Loop: function Loop (Tile) {
 ],
 SpriteScripts:[
 {
-Action: function Action(Sprite) { // 0
+Action: function Action(Sprite) { // S0
 		 Sprite.width = 32
 		 Sprite.height = 32
 		 Sprite.widthPrint = 42
@@ -634,7 +646,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) { // 1
+Action: function Action(Sprite) { // S1
      Sprite.width = 64
 	 Sprite.height = 64
 	 Sprite.widthPrint = 84
@@ -665,7 +677,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) { // 2
+Action: function Action(Sprite) { // S2
 	 Sprite.Mode = 1
 	 Sprite.type = 3
      Sprite.width = 32
@@ -703,7 +715,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) { // 3
+Action: function Action(Sprite) { // S3
 
 	},
 Loop: function Loop (Sprite,player1) {
@@ -738,7 +750,7 @@ if(Sprite.IN != undefined){
 },
 },
 {
-Action: function Action(Sprite) { // 4
+Action: function Action(Sprite) { // S4
 	Sprite.Mode = 0
 	Sprite.Up = 1
      Sprite.width = 32
@@ -823,7 +835,7 @@ ctx.drawImage(
 },
 },
 {
-Action: function Action(Sprite) { // 5
+Action: function Action(Sprite) { // S5
 	Sprite.Mode = 0
      Sprite.width = 16
 	 Sprite.height = 32
@@ -864,7 +876,7 @@ ctx.drawImage(
 },
 },
 {
-Action: function Action(Sprite) { // 6
+Action: function Action(Sprite) { // S6
 	Sprite.Mode = 0
      Sprite.width = 64
 	 Sprite.height = 64
@@ -937,7 +949,7 @@ ctx.drawImage(
 },
 },
 {
-Action: function Action(Sprite) { // 7
+Action: function Action(Sprite) { // S7
      Sprite.width = 24
 	 Sprite.height = 24
 	 Sprite.widthPrint = 32
@@ -968,7 +980,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) { // 8
+Action: function Action(Sprite) { // S8
 	 Sprite.height = 32
 	 Sprite.Ydiference_Print = -32
 	 Sprite.heightPrint = 64
@@ -1032,7 +1044,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) { // 9
+Action: function Action(Sprite) { // S9
 
 	},
 Loop: function Loop (Sprite,player1) {
@@ -1056,7 +1068,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) { // 10
+Action: function Action(Sprite) { // S10
 Sprite.Xvelocity = 0
 Sprite.Yvelocity = 0
 Sprite.type = 3
@@ -1113,7 +1125,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 	{
-	Action: function Action(Sprite) { // 11
+	Action: function Action(Sprite) { // S11
 		 Sprite.height = Math.round(0.66 * Sprite.heightPrint)
 		 Sprite.heightGrid = 48
 		 Sprite.widthGrid = 32
@@ -1190,13 +1202,10 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 	},
 {
-Action: function Action(Sprite) { // 12
+Action: function Action(Sprite) { // S12
 	let num = Math.round(0.125 * Sprite.heightPrint)
 	 Sprite.height = Sprite.heightPrint - num
 	 Sprite.Ydiference_Print = num *-1
-	  num = Math.round(0.25 * Sprite.widthPrint)
-	 Sprite.width = 33//Sprite.widthPrint - num
-	 Sprite.Xdiference_Print = num * -0.5
 	},
 Loop: function Loop (Sprite,p1) {
 	Sprite.MoveX = Sprite.Xvelocity
@@ -1230,7 +1239,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) { // 13
+Action: function Action(Sprite) { // S13
     Sprite.angle = 0
 	Sprite.XG = 100
 	Sprite.YG = 260
@@ -1261,7 +1270,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) { // 14
+Action: function Action(Sprite) { // S14
 		 Sprite.width = 33
 		 Sprite.height = 32
 		 Sprite.widthPrint = 42
@@ -1302,7 +1311,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) { // 15
+Action: function Action(Sprite) { // S15
 	Sprite.Ydiference_Print = -4
 	 Sprite.height -= 8
 	},
@@ -1331,7 +1340,7 @@ Loop: function Loop (Sprite,p1) {
  },
 },
 {
-Action: function Action(Sprite) { // 16
+Action: function Action(Sprite) { // S16
 	Sprite.Ydiference_Print = -4
 	 Sprite.height -= 8
 	Sprite.angle = 0
@@ -1365,7 +1374,7 @@ Loop: function Loop (Sprite,p1) {
  },
 },
 {
-Action: function Action(Sprite) { // 17
+Action: function Action(Sprite) { // S17
 	Sprite.typeColision = 3
 	},
 Loop: function Loop (Sprite,p1) {
@@ -1384,7 +1393,7 @@ Loop: function Loop (Sprite,p1) {
  },
 },
 {
-Action: function Action(Sprite) { // 18
+Action: function Action(Sprite) { // S18
 		Sprite.width = 24
 		Sprite.height = 64
 		Sprite.widthPrint = 48
@@ -1417,7 +1426,7 @@ Loop: function Loop (Sprite,player) {
      PreRenderMode(ctx,Sprite)
  },
 },{
- Action: function Action(Sprite) { //19
+ Action: function Action(Sprite) { //S19
 		Sprite.State = 0
 		Sprite.intervald_time = 0
 },
@@ -1476,26 +1485,26 @@ Loop: function Loop (Sprite,Player) {
      PreRenderMode(ctx,Sprite)
  },
 },{
-	Action: function Action(Sprite) { // 20
+	Action: function Action(Sprite) { // S20
 			Sprite.State = 0
 			Sprite.XG = 128
 	},
 	Loop: function Loop (Sprite,Player) {
 	 switch (Sprite.State){
 	case 0:
-		if(Colision(Sprite,Player,0,16,64,512)){
+		if(Colision(Sprite,Player,0,64,64,512)){
 				Sprite.XG = 192
 				Sprite.State = 1
 		}
 	break;
 	case 1:
-		Gravedad(Sprite,1)
+		Gravedad(Sprite,0.5)
 		if(Sprite.Ytouch){
 			Sprite.State = 2	
 		}
 	break;
 	case 2:
-		Gravedad(Sprite,1)
+		Gravedad(Sprite,0.5)
 		if(Clock(Sprite,30)){
 			Sprite.MoveY = 0
 			Sprite.State = 3
@@ -1514,7 +1523,7 @@ Loop: function Loop (Sprite,Player) {
 		 PreRenderMode(ctx,Sprite)
 	},
 },{
-Action: function Action(Sprite) { //21
+Action: function Action(Sprite) { //S21
 		Sprite.Xdiference_Print = -10
 		Sprite.Ydiference_Print = -10
 		Sprite.width = 32
@@ -1527,49 +1536,101 @@ Loop: function Loop (Sprite,player) {
      PreRenderMode(ctx,Sprite)
  },
 },{
-Action: function Action(Sprite) { //22
-		Sprite.Xvelocity = 0
+Action: function Action(Sprite) { //S22
+		Sprite.Xvelocity = -1
+		Sprite.IXR = -1
 		Sprite.Yvelocity = 0
 	},
 Loop: function Loop (Sprite,Player) {
 		if(Sprite.live == 1 ){
-		Emboscade_player_Y(Sprite,Player,Sprite.IYR)
-		Emboscade_player_X(Sprite,Player,Sprite.IXR)
-			if(Sprite.Xtouch){
-				Sprite.Xvelocity = Sprite.Xvelocity *-0.5
-				Sprite.MoveX = Sprite.Xvelocity
-			}
-			if(Sprite.Ytouch){
-				Sprite.Yvelocity = Sprite.Yvelocity *-0.5
-				Sprite.MoveY = Sprite.Yvelocity
-			}
-			let Velocity = 0
-			if(Sprite.MoveX > 0 ){
-				Sprite.Mode = 3
-				}else{
-				Sprite.Mode = 0
-			}
-			if(Clock(Sprite,100)){
-				if(Sprite.Mode == 3){
-				myMiniSprites.push(new Mini_sprite(Sprite.x,Sprite.y+22,Sprite.imgN,0,112,320,0,0,6,0,16,6,2))
-				}else{
-				myMiniSprites.push(new Mini_sprite(Sprite.x,Sprite.y+22,Sprite.imgN,0,96,320,0,0,-6,0,16,6,2))
+			if(Sprite.State != 2){
+				if((Sprite.Xtouch || Sprite.Ytouches == 1) && Sprite.State == 0){
+					if(!Sprite.Xtouch) Sprite.Xvelocity = 0;
+					Sprite.LoopFotogram = 0
+					Sprite.fotogram = 0
+					if(Clock(Sprite,50)){
+						Sprite.Xvelocity = Sprite.IXR*-1
+						Sprite.IXR = Sprite.IXR*-1
+						Sprite.State = 1
+						Sprite.LoopFotogram = 4
+					}
+				}
+				Sprite.MoveX = Sprite.Xvelocity;
+				if(Sprite.Ytouch){Sprite.MoveY = 0;Sprite.Hy = 0}
+				Gravedad(Sprite,1)
+				if(Sprite.State == 1 ){
+					if(Clock(Sprite,10)){
+						Sprite.State = 0
+					}
+				}
+				if(Sprite.IXR > 0 ){
+					Sprite.Mode = 3
+						if(Colision(Sprite,Player,32,0,256,32)){
+							Sprite.State = 2
+							Sprite.Xvelocity = 0
+							Sprite.IXR = 4
+							Sprite.Yvelocity = 0
+							Sprite.YG = 384
+							Sprite.LoopFotogram = 2
+							Sprite.fotogram = 0
+							SoundEffectsCollection[10].currentTime = 0;
+							SoundEffectsCollection[10].play()
+						}
+					}else{
+						Sprite.Mode = 0
+							if(Colision(Sprite,Player,-256,0,256,32)){
+								Sprite.State = 2
+								Sprite.Xvelocity = 0
+								Sprite.IXR = 4
+								Sprite.Yvelocity = 0
+								Sprite.YG = 384
+								Sprite.LoopFotogram = 2
+								Sprite.fotogram = 0
+								SoundEffectsCollection[10].currentTime = 0;
+								SoundEffectsCollection[10].play()
+							}
+						}
+			}else{
+			    Emboscade_player_Y(Sprite,Player,Sprite.IYR)
+			    Emboscade_player_X(Sprite,Player,Sprite.IXR)
+				if(Sprite.Xtouch){
+					Sprite.Xvelocity = Sprite.Xvelocity *-0.5
+					Sprite.MoveX = Sprite.Xvelocity
+				}
+				if(Sprite.Ytouch){
+					Sprite.Yvelocity = Sprite.Yvelocity *-0.5
+					Sprite.MoveY = Sprite.Yvelocity
+				}
+				let Velocity = 0
+				if(Sprite.MoveX > 0 ){
+					Sprite.Mode = 3
+					}else{
+					Sprite.Mode = 0
+				}
+				if(Clock(Sprite,100)){
+					if(Sprite.Mode == 3){
+					myMiniSprites.push(new Mini_sprite(Sprite.x,Sprite.y+22,Sprite.imgN,0,112,320,0,0,6,0,16,6,2))
+					}else{
+					myMiniSprites.push(new Mini_sprite(Sprite.x,Sprite.y+22,Sprite.imgN,0,96,320,0,0,-6,0,16,6,2))
+					}
 				}
 			}
-		if(Sprite.Yplayertouch || Sprite.BulletTouch ){
-			SoundEffectsCollection[4].currentTime = 0;
-			SoundEffectsCollection[4].play()
-			Sprite.live = 0
-			Sprite.MoveY = -8
 			if(Sprite.Yplayertouch){
-			p1.MoveY = -8;p1.BY = 0
-			p1.hits++
-			}
-		}
+					SoundEffectsCollection[4].currentTime = 0;
+					SoundEffectsCollection[4].play()
+					Sprite.live = 0
+					Sprite.MoveY = -8
+					if(Sprite.Yplayertouch){
+					p1.MoveY = -8;p1.BY = 0
+					p1.hits++
+					}
+				}
 		}else{
 			Sprite.Up = 0
 			Sprite.Left = 0
 			Sprite.XG = 72
+			Sprite.YG = 384
+			Sprite.FramesIntervalds = 4
 			Sprite.LoopFotogram = 0
 			Sprite.fotogram = 0
 			Sprite.type = 1
@@ -1582,7 +1643,7 @@ Loop: function Loop (Sprite,Player) {
  },
 },
 {
-Action: function Action(Sprite) { // 23
+Action: function Action(Sprite) { // S23
 
 	},
 Loop: function Loop (Sprite,p1) {
@@ -1598,7 +1659,7 @@ Loop: function Loop (Sprite,p1) {
  },
 },
 {
-Action: function Action(Sprite) { // 24
+Action: function Action(Sprite) { // S24
 	},
 Loop: function Loop (Sprite,player1) {
 		Sprite.angle += 4
@@ -1609,18 +1670,18 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(Sprite) { // 25
+Action: function Action(Sprite) { // S25
 	Sprite.MoveY = -4
 	SoundEffectsCollection[8].currentTime = 0;
 	SoundEffectsCollection[8].play()
 	},
 Loop: function Loop (Sprite,player1) {
 		if(Clock(Sprite,200)){
+			SoundEffectsCollection[9].currentTime = 0;
+			SoundEffectsCollection[9].play()
 			for (i = 0; i < 10; i += 1){
 			myMiniSprites.push(new Mini_sprite(Sprite.x+RandomNumber(-64,64),Sprite.y+RandomNumber(-64,64),11,0,0,0,16,2,0,0,64,64,2,false))
 			Sprite.live = -1
-			SoundEffectsCollection[9].currentTime = 0;
-			SoundEffectsCollection[9].play()
 			}
 		}
 		Gravedad(Sprite,0.5,16)
@@ -1630,12 +1691,42 @@ RenderMode: function RenderMode (ctx,Sprite) {
  },
 },
 {
-Action: function Action(MyElement) { // 26
+Action: function Action(MyElement) { // S26
 	},
 Loop: function Loop (MyElement,player1) {
 		if(Clock(MyElement,200)){
 			 mysprites.push(new Sprite(MyElement.x,MyElement.y,32,32,0,"660010088",2,"08A00",3,3,false))
 			 Scrips_collection[mysprites[mysprites.length -1].script].Action(mysprites[mysprites.length -1])
+		}
+    },
+RenderMode: function RenderMode (ctx,Sprite) {
+	    PreRenderMode(ctx,Sprite)
+ },
+},
+{
+Action: function Action(Sprite) { //S27
+		Sprite.Ydiference_Print = -8
+		Sprite.width = 32
+		Sprite.height = 32
+
+	},
+Loop: function Loop (Sprite,player1) {
+	 PreProgramedMode(Sprite,player1)
+    },
+RenderMode: function RenderMode (ctx,Sprite) {
+	    PreRenderMode(ctx,Sprite)
+ },
+},
+{
+Action: function Action(Sprite) { //S28
+	},
+Loop: function Loop (Sprite,player1) {
+	 PreProgramedMode(Sprite,player1)
+	 if(Clock(Sprite,200)){
+			SoundEffectsCollection[11].currentTime = 0;
+			SoundEffectsCollection[11].play()
+			Sprite.live = -1
+			myMiniSprites.push(new Mini_sprite(Sprite.x-8,Sprite.y-8,2,0,320,96,16,4,0,0,64,64,2,false))
 		}
     },
 RenderMode: function RenderMode (ctx,Sprite) {
