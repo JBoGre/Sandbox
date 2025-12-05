@@ -24,14 +24,14 @@ backgroundImages:[
 //["Backgrounds/Temple.png",2042,448,0.5,0,0,0,true,false,0,0],
 ["Backgrounds/Cloud.png",2048,448,0.4,0,0,0,true,false,0,0],
 ],
-
+LevelEfects:[],
 
 tiles:[
 {
 Name:"Tiles & Objects",
 Images:["texturas/Texturas ASCII_DIY.png","texturas/GradientTexture.png","texturas/Sprites.png","texturas/decoraciones.png",
 "texturas/Monkey.png","texturas/BigMonkey.png","texturas/Goomba.png","texturas/shy guy.png","texturas/3x3 Textures.png",
-"texturas/terrain.png","texturas/terrainShadow.png","texturas/Explosion.png"],
+"texturas/terrain.png","texturas/terrainShadow.png","texturas/Explosion.png","texturas/Grinch.png"],
 SoundEffects:["SoundEfects/Checkpoint.wav","SoundEfects/Collect.wav","SoundEfects/Boing.mp3","SoundEfects/Boing.mp3","SoundEfects/Jump Attack.mp3",
 "SoundEfects/bubble-pop.mp3","SoundEfects/Destroy.wav","SoundEfects/Break.wav","SoundEfects/Fuse.ogg","SoundEfects/ExplosionTNT.ogg"
 ,"SoundEfects/Alert.wav","SoundEfects/bomb.mp3"],
@@ -164,10 +164,10 @@ objects:[
 
 ["Tile","rgba(0,0,0,0)",1,"61111A00"],["Tile","rgba(0,0,0,0)",1,"11611A10"],["Tile","rgba(0,0,0,0)",1,"11161A20"],["Tile","rgba(0,0,0,0)",1,"16111A30"],["Tile","rgba(0,0,0,0)",1,"66661A40"],
 
-["Tile","rgba(0,0,0,0)",2,"99993400",0],
-["Tile","rgba(0,0,0,0)",2,"88883500",0],
+["Tile","rgba(0,0,0,0)",2,"99993400",0],//Chekpoint
+["Tile","rgba(0,0,0,0)",2,"88883500",0],//Finishi
 
-["Tile","rgba(0,0,0,0)",2,"55003606",1],
+["Tile","rgba(0,0,0,0)",2,"55003606",1], // Star
 ["Tile","rgba(0,0,0,0)",2,"31311200",2],
 ["Tile","rgba(0,0,0,0)",2,"13131210",3],
 ["Tile","rgba(0,0,0,0)",2,"33331040",4],
@@ -177,6 +177,8 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"61111A50",7],
 ["Tile","rgba(0,0,0,0)",1,"11611A60",7],
 ["Tile","rgba(0,0,0,0)",1,"11113F00",11],
+["Tile","rgba(0,0,0,0)",1,"221133F0"],
+["Tile","rgba(0,0,0,0)",1,"331134F0"],
 //["Tile","rgba(0,0,0,0)",1,"11111D20",8],
 //["Tile","rgba(0,0,0,0)",1,"11112D20",8],
 //["Tile","rgba(0,0,0,0)",1,"11111420",9],
@@ -197,8 +199,8 @@ objects:[
 ["Object",42,42,14,"661132103",2,"22300", -1,8], // Spike Ball 2
 ["Object",32,32,7,"661132103",5,"2A200", -2,8], // Barrel
 ["Object",32,32,7,"661132103",5,"2A200", 2,8],// Barrel
-["Object",32,32,"#","661132103",1,"08200", 0,8],
-["Object",32,32,"#","111132103",1,"03200", 0,8],
+["Object",32,32,"#","661132103",1,"08200", 0,8], // fire
+["Object",32,32,"#","111132103",1,"03200", 0,8], // Box
 ["Object",32,64,8,"661110000",2,"03343", 0,0], // Fire
 ["Object",16,32,9,"661121163",2,"00823", 1,2], // Fire Whit Legs
 ["Object",64,32,"#","101122200",2,"02200", -2,0],// Left_Right_Platafrom
@@ -206,7 +208,8 @@ objects:[
 ["Object",32,32,10,"661120201",2,"01500", 0,0], // Fly
 ["Object",32,48,11,"160030000",6,"00023",-1,0], // Gomba
 ["Object",32,48,11,"160030000",6,"30023",1,0],  // Gomba
-["Object",32,48,11,"160030000",6,"30223",1,0],  // Gomba
+["Object",32,48,11,"160030000",6,"30223",-1,0],  // Toy
+["Object",32,48,11,"160030000",6,"30223",1,0],  // Toy
 ["Object",32,32,12,"160030000",7,"00023",-1,0], // Shyguy
 ["Object",32,32,12,"160030000",7,"30023",1,0],  // Shyguy
 ["Object",64,64,12,"160030000",7,"00323",-2,0],	// Topo
@@ -240,6 +243,10 @@ objects:[
 ["Object",96,96,24,"661110010",2,"22500", 4,0],
 ["Object",32,40,27,"111132103",2,"0A000", 0,0],
 ["Object",32,32,28,"000032103",2,"0A224", 0,0],
+["Object",32,32,29,"160032103",2,"20700", 0,0],
+["Object",32,32,30,"000000000",2,"0A500", 1,0], // Present
+["Object",32,32,30,"000000000",2,"3A500", -1,0], // Present
+//["Object",92,112,31,"660030000",12,"301D2", -2,0],  Grinch
 //["Object",32,32,25,"000030000",9,"08028", 0,0],
 
 
@@ -420,8 +427,9 @@ Loop: function Loop (Tile) {
 Action: function Action(Tile,p1,side) { // 1
 	SoundEffectsCollection[1].currentTime = 0;
 	SoundEffectsCollection[1].play()
-	Tile.prin = 0
+	Tile.prin = 1
 	Tile.type = 0
+	Tile.fotograms = 0
 	TransfromTile(Tile,Tile.BC,0,"00000000",0)
 },
 Loop: function Loop (Tile) {},
@@ -697,7 +705,7 @@ Loop: function Loop (Sprite,player1) {
 		Sprite.State = 1
 	}
 	if(Sprite.State == 1){
-		(Gravedad(Sprite,1))
+		(Gravedad(Sprite,0.5))
 	}
     },
 RenderMode: function RenderMode (ctx,Sprite) {
@@ -816,7 +824,7 @@ Loop: function Loop (Sprite,player1) {
 		}
 		Sprite.MoveX = Sprite.Xvelocity
 	}else{
-		Gravedad(Sprite,1)
+		Gravedad(Sprite,0.5)
 		console.log(Sprite.MoveY)
 	}
     },
@@ -1154,7 +1162,7 @@ RenderMode: function RenderMode (ctx,Sprite) {
 			Sprite.Up = 0
 			Sprite.Left = 0
 		}	
-		Gravedad(Sprite,1)
+		Gravedad(Sprite,0.5)
 		if(Sprite.live < 1 ){
 			if(Clock(Sprite,32)){
 				Sprite.x = -512
@@ -1225,7 +1233,7 @@ Loop: function Loop (Sprite,p1) {
 	}else{
 		Sprite.Mode = 0
 	}
-	Gravedad(Sprite,1)
+	Gravedad(Sprite,0.5)
 	if(Sprite.live < 1 ){
 		if(Clock(Sprite,32)){
 			Sprite.x = -512
@@ -1403,7 +1411,7 @@ Action: function Action(Sprite) { // S18
 		Sprite.State = 0
 	},
 Loop: function Loop (Sprite,player) {
-	Gravedad(Sprite,1)
+	Gravedad(Sprite,0.5)
 	if(Ax16 == 15){
 		if(Sprite.x +(Sprite.width /2) > (player.x + player.widthHalf)){
 			Sprite.Xvelocity --
@@ -1695,7 +1703,7 @@ Action: function Action(MyElement) { // S26
 	},
 Loop: function Loop (MyElement,player1) {
 		if(Clock(MyElement,200)){
-			 mysprites.push(new Sprite(MyElement.x,MyElement.y,32,32,0,"660010088",2,"08A00",3,3,false))
+			 mysprites.push(new sprite(MyElement.x,MyElement.y,32,32,0,"660010088",2,"08A00",3,3,false))
 			 Scrips_collection[mysprites[mysprites.length -1].script].Action(mysprites[mysprites.length -1])
 		}
     },
@@ -1710,8 +1718,37 @@ Action: function Action(Sprite) { //S27
 		Sprite.height = 32
 
 	},
-Loop: function Loop (Sprite,player1) {
-	 PreProgramedMode(Sprite,player1)
+Loop: function Loop (sprite,player1) {
+	PreProgramedMode(sprite,player1)
+	 if(sprite.live < 1 ){
+		 sprite.XG = 352
+		  if(Clock(sprite,20)){
+			sprite.live = -1 
+		  }
+	}else{
+		if(sprite.Yplayertouch || sprite.BulletTouch ){
+			SoundEffectsCollection[4].currentTime = 0;
+			SoundEffectsCollection[4].play()
+			sprite.live = 0
+			sprite.Up = 0
+			sprite.Left = 0
+			if(!p1.invecybility && AirDash)p1.AplySecondjump = true;
+			p1.MoveY = -8;
+			p1.BY = 0
+			p1.hits++
+			let Aletory = RandomNumber(1,3)
+			if(Aletory == 1){
+			mysprites.push(new sprite_colision(sprite.x,sprite.y,32,48,12,"160030000",6,"30223",-1,0,false))
+			}
+			if(Aletory == 2){
+			mysprites.push(new sprite_colision(sprite.x,sprite.y,32,32,29,"000032103",2,"0A224", 0,0,false))
+			}
+			if(Aletory == 3){
+			mysprites.push(new sprite_colision(sprite.x,sprite.y,32,32,8,"661132103",5,"29200", -2,0,false))
+			}
+			Scrips_collection[mysprites[mysprites.length -1].script].Action(mysprites[mysprites.length -1])
+		}
+	}
     },
 RenderMode: function RenderMode (ctx,Sprite) {
 	    PreRenderMode(ctx,Sprite)
@@ -1729,6 +1766,203 @@ Loop: function Loop (Sprite,player1) {
 			myMiniSprites.push(new Mini_sprite(Sprite.x-8,Sprite.y-8,2,0,320,96,16,4,0,0,64,64,2,false))
 		}
     },
+RenderMode: function RenderMode (ctx,Sprite) {
+	    PreRenderMode(ctx,Sprite)
+ },
+},
+{
+Action: function Action(Sprite) { //S29
+	},
+Loop: function Loop (Sprite,player1) {
+	Sprite.angle += 2
+	 if(Sprite.live < 1 ){
+		Gravedad(Sprite,0.5,16)
+		Sprite.Ytouch = false
+	}else{
+		PreProgramedMode(Sprite,player1)
+		if(Clock(Sprite,100)){
+		Sprite.MoveY = -12
+		}
+		if(Sprite.Yplayertouch || Sprite.BulletTouch ){
+			SoundEffectsCollection[4].currentTime = 0;
+			SoundEffectsCollection[4].play()
+			Sprite.live = 0
+			Sprite.type = 1
+			Sprite.Up = 0
+			Sprite.Left = 0
+			if(!p1.invecybility && AirDash)p1.AplySecondjump = true;
+			p1.MoveY = -8;
+			p1.BY = 0
+			p1.hits++
+		}
+	}
+    },
+RenderMode: function RenderMode (ctx,Sprite) {
+	    PreRenderMode(ctx,Sprite)
+ },
+},
+{
+Action: function Action(Sprite) { //S30
+	},
+Loop: function Loop (sprite,player1) {
+		if(Clock(sprite,100)){
+			let Aletory = RandomNumber(1,3)
+			if(Aletory == 1){
+			mysprites.push(new sprite_colision(sprite.x,sprite.y,32,48,12,"160030000",6,"30223",sprite.Xvelocity,0,false))
+			}
+			if(Aletory == 2){
+			mysprites.push(new sprite_colision(sprite.x,sprite.y,32,32,29,"000032103",2,"0A224", 0,0,false))
+			}
+			if(Aletory == 3){
+			mysprites.push(new sprite_colision(sprite.x,sprite.y,32,32,8,"661132103",5,"29200", sprite.Xvelocity*2,0,false))
+			}
+			Scrips_collection[mysprites[mysprites.length -1].script].Action(mysprites[mysprites.length -1])
+			mysprites[mysprites.length -1].MoveY = -8
+		}
+    },
+RenderMode: function RenderMode (ctx,Sprite) {
+	    PreRenderMode(ctx,Sprite)
+ },
+},
+{
+Action: function Action(Sprite) { //S31
+		Sprite.Xdiference_Print = -16
+		Sprite.Ydiference_Print = -52
+		Sprite.width = 33
+		Sprite.height = 58
+		Sprite.live = 5
+		Sprite.SecondState = 1
+		Sprite.sideX = !Sprite.sideX 
+		backgroundMusic.currentTime = 0;
+		backgroundMusic.src = "Music/You're A Mean One Mr. Grinch.mp3"
+		backgroundMusic.play()
+	},
+Loop: function Loop (Sprite,player1) {
+		switch (Sprite.SecondState){
+		case 2 :
+			Sprite.MoveX =  0
+			Sprite.Up = 6
+			Sprite.Left = 6
+			Sprite.YG = 224
+			Sprite.XG = 0
+			Sprite.FramesIntervalds = 2
+			Sprite.LoopFotogram = 16
+			if(Sprite.intervald_time > 40){
+				if(Sprite.sideX){
+					if(Colision(Sprite,player1,-33,0,32,64)){
+						if(player1.invecybility != true){player1.lives --;player1.Stocked = true}
+					}
+				}else{
+					if(Colision(Sprite,player1,32,0,32,64)){
+						if(player1.invecybility != true){player1.lives --;player1.Stocked = true}
+					}
+				}
+			}
+			if(Clock(Sprite,80)){
+				Sprite.SecondState = 1
+			}
+		break;
+		case 1:
+			Sprite.Up = 1
+			Sprite.Left = 6
+			Sprite.XG = 0
+			Sprite.YG = 112
+			Sprite.FramesIntervalds = 2
+			Sprite.LoopFotogram = 14
+			Sprite.MoveX = Sprite.Xvelocity
+			turn_if_obstacle_X(Sprite)
+			if(Sprite.Ytouches == 1 && Sprite.State == 0){
+				Sprite.Xvelocity = Sprite.Xvelocity*-1
+				Sprite.sideX = !Sprite.sideX 
+				Sprite.State = 1
+			}
+			if(Sprite.State == 1 ){
+				if(Clock(Sprite,10)){
+					Sprite.State = 0
+				}
+			}
+			if(Sprite.sideX){
+				if(Colision(Sprite,player1,-33,0,32,64)){
+					Sprite.SecondState = 2
+					Sprite.fotogram = 0
+				}
+			}else{
+				if(Colision(Sprite,player1,32,0,32,64)){
+					Sprite.SecondState = 2
+					Sprite.fotogram = 0
+				}
+			}
+			if(Sprite.Yplayertouch){
+				SoundEffectsCollection[4].currentTime = 0;
+				SoundEffectsCollection[4].play()
+				Sprite.live --
+				if(Sprite.live == 0){
+					Sprite.SecondState = -1
+				}else{
+					Sprite.SecondState = 0 
+				}
+				Sprite.Up = 0
+				Sprite.Left = 0
+				p1.MoveY = -8;
+				p1.BY = 0
+			}
+		break;
+		case 0 :
+			Sprite.MoveX =  0
+			Sprite.Up = 0
+			Sprite.Left = 0
+			Sprite.YG = 0
+			Sprite.XG = 92
+			Sprite.FramesIntervalds = 0
+			Sprite.LoopFotogram = 0
+			Sprite.fotogram = 0
+			if(Clock(Sprite,60)){
+				Sprite.SecondState = 1
+				if(Sprite.x > player1.x){
+					Sprite.sideX = true
+					Sprite.Xvelocity = -2
+				}else{
+					Sprite.sideX = false
+					Sprite.Xvelocity = 2
+				}
+				
+			}
+		break;
+		case -1 :
+			Sprite.MoveX =  0
+			Sprite.Up = 0
+			Sprite.Left = 0
+			Sprite.YG = 0
+			Sprite.XG = 184
+			Sprite.FramesIntervalds = 0
+			Sprite.LoopFotogram = 0
+			Sprite.fotogram = 0
+			if(Clock(Sprite,60)){
+				Sprite.live = -1
+			}
+		break;
+		}
+		
+		if(Sprite.sideX){
+			Sprite.Xdiference_Print = -49
+			Sprite.Mode = 3
+		}else{
+			Sprite.Xdiference_Print = -16
+			Sprite.Mode = 0
+		}
+		if(Sprite.live == -1){
+			mysprites.push(new sprite(Sprite.x,Sprite.y,32,32,18,"110020011",2,"67062",1,4))
+			Scrips_collection[mysprites[mysprites.length -1].script].Action(mysprites[mysprites.length -1])
+		}
+		/*
+		if(!Sprite.InScreen){
+			backgroundMusic.currentTime = 0;
+			backgroundMusic.src = backgroundMusicSrc
+			//backgroundMusic.play()
+		}
+		*/
+		Gravedad(Sprite,0.5)
+	},
 RenderMode: function RenderMode (ctx,Sprite) {
 	    PreRenderMode(ctx,Sprite)
  },

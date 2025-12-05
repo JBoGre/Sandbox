@@ -47,6 +47,14 @@ let TouchControls = {
   Abuton: false,
   Bbuton: false,
 };
+var WaterTexture = new Texture("texturas/Water.png",0,0,96,96)
+var ShadowTexture = new Texture("texturas/Shadow.png",0,0,96,96)
+var NoTexture = new Texture("texturas/ASCII.png",0,0,30,30)
+var LavaTexture = new Texture("texturas/Lava.png",0,0,96,96)
+var PaleteTexture = new Texture("texturas/character.png",0,0,256,256)
+var Wellcome = new Texture("texturas/Wellcome.png",0,0,80,20)
+var TexturesArray = {WaterTexture, ShadowTexture, NoTexture, LavaTexture, PaleteTexture};
+
 /*
 document.getElementById("LeftButon").addEventListener("touchstart", () => TouchControls.Left = true );
 document.getElementById("LeftButon").addEventListener("touchend", () => TouchControls.Left = false);
@@ -483,6 +491,7 @@ var Tiles = SAVE.tiles
 var color_palete = window.Palete
 var backgroundMusicTrack = SAVE.backgroundMusicTrack
 var LC = SAVE.LevelCol.slice()
+var LevelEfects = []
 var Level_Sprites = SAVE.Levelsprites.slice()
 var BackgroundsInLevel = []
 var backgroundMusicCollection = []
@@ -547,6 +556,14 @@ function chargeLevelNoTiles(){
 	Xsize.value = SAVE.X 
 	Ysize.value = SAVE.Y 
     LC = SAVE.LevelCol.slice()
+	if(SAVE.LevelEfects != undefined){
+		for(let i = 0; i < SAVE.LevelEfects.length ; i++){
+		effe = SAVE.LevelEfects[i]
+		effects_in_game.push(new effect(effe[0],TexturesArray[effe[1]],effe[2],effe[3],effe[4],effe[5],effe[6],effe[7],effe[8],effe[9]))
+		}
+	}else{
+		effects_in_game = []
+	}
 	SpritesInGrid = []
 	createSpritesInGrid ()
 	BackgroundsInLevel = []
@@ -564,6 +581,22 @@ function chargeLevelNoTiles(){
 	change_BlockResolution(BlockResolution)
 	limits_and_alture()
 	buton[1](0)
+}
+function Save_Level_NoTiles(){
+	const {tiles, ... SAVEcopy} = SAVE
+	SAVEcopy.backgroundMusic =[ backgroundMusicSrc]
+	SAVEcopy.StartX = startX
+	SAVEcopy.StartY = startY
+	SAVEcopy.totalPrizes = totalprizes
+	SAVEcopy.StyleBackground = backgroundBase
+	SAVEcopy.LevelCol = LC
+	SAVEcopy.Levelsprites = SpritesInGrid
+	Array_to_JSON(SAVEcopy)
+}
+function Push_effect(type,texture,Width,Height,sideX,altureX,sideY,altureY,growX,growY){
+effects_in_game.push(new effect(type,TexturesArray[texture],Width,Height,sideX,altureX,sideY,altureY,growX,growY))
+if(SAVE.LevelEfects == undefined){SAVE.LevelEfects = []}
+SAVE.LevelEfects.push([type,texture,Width,Height,sideX,altureX,sideY,altureY,growX,growY])
 }
 function limits_and_alture(){
 	if(SAVE.limit_rigth == false){
@@ -643,17 +676,6 @@ margin_screen =  GridHeight - screen_resoltion
 createSpritesInGrid()
 DrawGirdTiles(Grid)
 DrawGirdSprites(GridSprites)
-}
-function Save_Level_NoTiles(){
-	const {tiles, ... SAVEcopy} = SAVE
-	SAVEcopy.backgroundMusic =[ backgroundMusicSrc]
-	SAVEcopy.StartX = startX
-	SAVEcopy.StartY = startY
-	SAVEcopy.totalPrizes = totalprizes
-	SAVEcopy.StyleBackground = backgroundBase
-	SAVEcopy.LevelCol = LC
-	SAVEcopy.Levelsprites = SpritesInGrid
-	Array_to_JSON(SAVEcopy)
 }
 function Array_to_JSON(Array){
 // Convertir el array de objetos a JSON
@@ -1392,7 +1414,7 @@ function Avoid_undefined_in_Azar(){
 		RandomLevelConfiguration[LevelType]()
 	}
 	if(AzarPlus){
-		let Number = RandomNumber(0,10)
+		let Number = RandomNumber(0,11)
 		BackgroundsInLevel = []
 		Azar_Blocks_Skins[Number]()
 		Azar_Back_Sound[Number]()
@@ -1533,8 +1555,18 @@ const Azar_Blocks_Skins = [
 	Azar_SemiSolids =[
 		[8,"rgba(0,0,0,0)","10002960",2,2,0,0], // Fortres SmW
     ]
+	},
+	function(){ // Water Temple 10,
+	Azar_Solids =[
+		[1,"rgba(0,0,0,0)","11111580",0,1,0,0], // WATER TEMPLE
+		[1,"rgba(0,0,0,0)","11111680",0,1,0,0], // WATER TEMPLE
+    ]
+	Azar_SemiSolids =[
+		[1,"rgba(0,0,0,0)","100025A0",0,1,0,0], // WATER TEMPLE
+		[1,"rgba(0,0,0,0)","100026A0",0,1,0,0], // WATER TEMPLE
+    ]
     },
-	function(){ // All_in_one 10
+	function(){ // All_in_one 11
 	
 	Azar_Solids =[
 	[1,"#FFF","11111200",0,1,0,0], //Minimalist Sandbox
@@ -1637,7 +1669,15 @@ BackgroundsInLevel.push(new Background("Backgrounds/Fortres.png",512,432,0.5,0.5
 ChangeMusic ("Music/Super Mario World Fortres (Remix).mp3")
 backgroundBase = 'linear-gradient(rgb(0, 0, 0), rgb(168, 0, 0))'
 },
-function(){ // All_in_one 10
+function(){ // Water Temple 10
+BackgroundsInLevel.push(new Background("Backgrounds/ocean Background.png",1024,208,0.5,0,0.2,0,true,false,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/Falls Background 2.png",1024,256,0.4,0,0,0,true,false,0,208))
+BackgroundsInLevel.push(new Background("Backgrounds/Falls Background.png",1024,976,0.3,0,0,0,true,false,0,-512))
+BackgroundsInLevel.push(new Background("Backgrounds/Falls Background 3.png",1024,256,0.2,0,0,0,true,false,0,208))
+ChangeMusic ("Music/Columns III  Credits theme (Remix).mp3")
+backgroundBase =  "linear-gradient(rgb(188, 255, 255), rgb(200, 255, 255))";
+},
+function(){ // All_in_one 11
 ChangeMusic ("Music/ModernDay.mp3")
 backgroundBase = "linear-gradient(rgb(255, 255, 255), rgb("+RandomNumber(0,256)+","+RandomNumber(0,256)+","+RandomNumber(0,256)+"))"
 },
@@ -2525,7 +2565,7 @@ function localisated_sprites(Sprite_Collection,sprites,cordX,cordY) {
 		if((0 < (SP.X + (SP.width))+cordX && screenWidth > (SP.X + cordX))&&(0 < (SP.Y + (SP.height))+cordY && screenHeigth > (SP.Y + cordY))){
 			if(SP.col != undefined){
 				if(SP.col[4] == "0"){
-			sprites.push(new Sprite(SP.X,SP.Y,SP.width,SP.height,SP.script,SP.col,SP.img,SP.IN,SP.XV,SP.YV))
+			sprites.push(new sprite(SP.X,SP.Y,SP.width,SP.height,SP.script,SP.col,SP.img,SP.IN,SP.XV,SP.YV))
 				}else{
 			sprites.push(new sprite_colision(SP.X,SP.Y,SP.width,SP.height,SP.script,SP.col,SP.img,SP.IN,SP.XV,SP.YV))	
 				}
@@ -2562,7 +2602,7 @@ function deleted_sprites(Sprite_Collection,sprites,cordX,cordY) {
 	sprites.splice(deleted[I], 1)
 	}
 }
-function Sprite(X,Y,width,height,script,comportament,img,RenderMode,Xvelocity,Yvelocity,SAVE) {
+function sprite(X,Y,width,height,script,comportament,img,RenderMode,Xvelocity,Yvelocity,SAVE) {
 	this.InScreen = true
 	this.prin = true
 	this.x = X; this.y = Y;
@@ -2646,12 +2686,12 @@ function sprite_colision(X,Y,width,height,script,comportament,img,RenderMode,Xve
 	this.widthPrint = width; this.heightPrint = height;
 	this.width = width; this.height = height;	
 	this.live = 1
+	this.State = 0
 	if(SAVE == undefined){
 		this.SAVE = true
 	}else{
 		this.SAVE = SAVE
 	}
-	this.State = 0
 	this.water = false
 	this.script = script 
 	if(comportament != undefined){
@@ -3606,7 +3646,7 @@ function Margin (p1) {
 	   if((p1.y + p1.height)  + p1.MoveYLimit >  screenHeigth + p1.height ){
 		   p1.yP = (p1.y + p1.height) +  p1.MoveYLimit - screenHeigth - p1.height
 		   p1.Ytouch = true
-		   if(!p1.invecybility){p1.lives  -- }	
+		   if(!p1.invecybility && p1.GravityTrun){p1.lives  -- }	
 		   return true
 		}	   	
 },
@@ -3642,7 +3682,6 @@ if(this.type == undefined){
 if(Disapear == undefined){
 	this.Disapear = true
 }
-console.log(this.Disapear)
 this.imgN = img;
 this.Mode = RenderMode
 this.XG = XG;this.YG = YG
@@ -3678,7 +3717,7 @@ function(P){
 }, 
 function(P){
 	// 4
-	if(Ax4 == 3){
+	if(Ax3 == 2){
 		P.intervald_frame++
 		if(P.intervald_frame >= P.frame){P.Live = false }
 	}
@@ -3894,7 +3933,10 @@ function TransfromTile(Tile,color,ImageNumber,Colision,Script){
 	Tile.imgN = ImageNumber
 	Tile.col = Colision
 	Tile.script = Script
-	Tile.XG = ( "0x"+ Tile.col[5])*32 ;Tile.YG = ( "0x"+ Tile.col[6])*32
+	Tile.type = (parseInt(Tile.col[4], 32))
+	Tile.XG = (parseInt(Tile.col[5], 32))*32; ;
+	Tile.YG = (parseInt(Tile.col[6], 32))*32;
+	Tile.fotograms = (parseInt(Tile.col[7], 32))
 	var result = TilesCollection.find(TilesCollection => TilesCollection.X === Tile.Xcord && TilesCollection.Y === Tile.Ycord  );
 		result.color = color
 		result.col = Colision
@@ -4080,6 +4122,8 @@ this.XG = 0; this.YG = 0;
 this.side = false; 
 this.sideX = true;
 this.sideY = true;  
+this.GravityTrun = true;
+this.GravityDirection = true
 this.Move = false;this.CameraY = Gird;this.run = false
 this.Movement = Movement; this.water = false; this.AnimationWater = false
 this.UpTouch = false;this.DownTouch = false
@@ -4235,6 +4279,7 @@ function Player_Effects(Player){
 		let effect = effects_in_game[i]
 		let onX = false
 		let onY = false
+		effectAction[effect.type].Reset(Player)
 		if(effect.sideX){
 			if(Player.x + Player.width > effect.VariableAltureX){
 				onX = true
@@ -4256,7 +4301,6 @@ function Player_Effects(Player){
 			}	
 		}
 		if(onX && onY){
-			effectAction[effect.type].Reset(Player)
 			effectAction[effect.type].Action(Player)
 		}
 	}
@@ -4519,7 +4563,6 @@ function Fly(ctr,Player,B,C){
     if(Player.MoveY < Player.velocity*-1 ){Player.MoveY = Player.velocity*-1}
 }
 // Player Var
-var jump_force = -7
 function Bubble(Player,Player2){
 if(Player.ButonBTouch) Player.MaxVelocity = 3;
 	Emboscade_player_X(Player,Player2,Player.MaxVelocity)
@@ -4580,8 +4623,17 @@ function Stocked(Player,Player2){
 	if(Player.MoveX	<= -1){Player.angle += 0.1 }
 	if(Player.MoveX >= 1){Player.angle -= 0.1}
 }
+var PlayerGravity = 0.5
+var jump_force = -7
 function plataformer_Easy(ctr,Player,B,C){
 	/*comprobar si esta en el suelo*/
+	if(Player.GravityTrun){
+        Player.GravityDirection = 1
+		Player.prin = 1
+	}else{
+        Player.GravityDirection = -1
+		Player.prin = 6
+	}
 	if(Player.invecybility){
 		Player.time ++
 			if(Player.time > 30){
@@ -4596,7 +4648,7 @@ function plataformer_Easy(ctr,Player,B,C){
 		Player.sideX = !Player.sideX
 	}
 	if(Player.Ytouch){
-		if(Player.MoveYLimit > 0 ){
+		if((Player.GravityTrun && Player.MoveYLimit > 0 ) || (!Player.GravityTrun && Player.MoveYLimit < 0 )){
 			Player.jumped = true;
 			if(!Player.invecybility)Player.AplySecondjump = true;
 			Player.MoveY = 0;
@@ -4656,13 +4708,18 @@ function plataformer_Easy(ctr,Player,B,C){
 		Player.MaxVelocity = 3
 		Player.jumped = true;
 		Player.jt = 0;
-		if (Player.ButonATouch){Jump(Player,-3,1,1)}
+		if (Player.ButonATouch){Jump(Player,Player.GravityDirection*-3,1,1)}
 
 		Player.InFlor = false
-		Player.MoveY += 0.5
-		if(Player.MoveY == 3){Player.MoveY = 2}
-		if(Player.MoveY > 3){Player.MoveY -= 2}
-		
+		Player.MoveY += Player.GravityDirection*0.5
+		if(Player.GravityTrun){
+			if(Player.MoveY == 3){Player.MoveY = 2}
+			if(Player.MoveY > 3){Player.MoveY -= 2}
+		}else{
+			if(Player.MoveY == -3){Player.MoveY = -2}
+			if(Player.MoveY < -3){Player.MoveY += 2}
+		}
+			
 		Player.water = false
 		Player.AnimationWater = true
 	}else{
@@ -4689,8 +4746,12 @@ function plataformer_Easy(ctr,Player,B,C){
 		if((Player.Xtouch && !Player.InFlor) && !Player.Down){
 			if(tick){
 				Player.InFlor = false
-				Player.MoveY += 1;
-				if(Player.MoveY > 2){Player.MoveY = 2}
+				Player.MoveY += Player.GravityDirection*1;
+				if(Player.GravityTrun){
+					if(Player.MoveY > 2){Player.MoveY = 2}
+				}else{
+					if(Player.MoveY < -2){Player.MoveY = -2}
+				}
 			}
 			Player.Slide = true
 			if(!Player.invecybility)Player.AplySecondjump = true;
@@ -4713,10 +4774,10 @@ function plataformer_Easy(ctr,Player,B,C){
 		}else{
 			if (Player.ButonATouch) {
 				if(Player.jumped && !Player.Down){
-				Jump(Player,jump_force,14,2);
+				Jump(Player,Player.GravityDirection*jump_force,14,2);
 				}else{
 					if(Player.SecondJump && AirDash){
-						if(!Player.Slide)Player.MoveY = -10;
+						if(!Player.Slide)Player.MoveY = Player.GravityDirection*-10;
 						Player.time = 0;
 						Player.AplySecondjump = false
 						Player.SecondJump = false
@@ -4729,7 +4790,7 @@ function plataformer_Easy(ctr,Player,B,C){
 				Player.jumped = false
 				Player.jt = 0
 			}
-			Gravity(Player,16,0.5);
+			Gravity(Player,16,Player.GravityDirection*0.5);
 			Player.InFlor = false	
 			Player.Slide = false
 		}
@@ -4860,9 +4921,9 @@ function animation(P,Con){
 				if(P.XG < Con[3]+Con[2] && Con[4] != 0){
 					P.XG = Con[3]+Con[2];
 				}
-				if(P.XG > (Con[3]+Con[4]+Con[2])){
+				if(P.XG > (Con[3]+Con[4])){
 					if(Con[4] == 0){
-						P.XG = 0
+						P.XG = Con[2]
 					}else{
 					P.XG = Con[3]+Con[2];
 						if(Con[2] == 0){
@@ -4943,7 +5004,7 @@ function animation(P,Con){
 }
 function MouseBlock(){
 	if(mouse){
-	sprites.push(new Sprite((Xmouse - 8) - cordX,(Ymouse - 8) - cordY,16,16,0,"111100000",1,"0000",2,2))
+	sprites.push(new sprite((Xmouse - 8) - cordX,(Ymouse - 8) - cordY,16,16,0,"111100000",1,"0000",2,2))
 			sprites[sprites.length -1].x += cordX
 			sprites[sprites.length -1].y += cordY
     }
@@ -5341,11 +5402,11 @@ Y: function Y (PL) {"nothing"},
 X: function X (PL) {"custom script"},
 Y: function Y (PL) {"custom script"},
 },{  /* + block (2)*/
-X: function X (PL) {if(PL.MoveY - PL.BY > 0 ){PL.BY = -8}else{PL.BY = 8};PL.MoveY = 0;PL.jumped = false},
-Y: function Y (PL) {if(PL.MoveX - PL.BX > 0 ){PL.BX = -8}else{PL.BX = 8};PL.MoveX = 0;PL.jumped = false},
+X: function X (PL) {PL.GravityTrun = true},
+Y: function Y (PL) {PL.GravityTrun = true},
 },{   /* - block (3)*/
-X: function X (PL) {if(PL.MoveY + PL.BY < 0 ){PL.BY = -8}else{PL.BY = 8};},
-Y: function Y (PL) {if(PL.MoveX + PL.BX < 0 ){PL.BX = -8}else{PL.BX = 8};},
+X: function X (PL) {PL.GravityTrun = false},
+Y: function Y (PL) {PL.GravityTrun = false},
 },{   /* water (4)*/
 X: function X (PL) {PL.water = true;},
 Y: function Y (PL) {PL.water = true;},
@@ -5539,7 +5600,7 @@ let YnextPosition = MoveY
 
 if(Ymargin[SAVE.Margin](Player)){
 	crash = true
-	if(Player.Ytouch && Player.MoveYLimit > 0 ){
+	if(Player.Ytouch && ((Player.GravityTrun && Player.MoveYLimit > 0 ) || (!Player.GravityTrun && Player.MoveYLimit < 0 )) ){
 			 Player.InFlor = true
 		 }
 }
@@ -5557,7 +5618,7 @@ if(Player.Colision){
 	Player.MoveYLimit += Player.Hy 
 	MiniSpritePlayerColision(Player,MiniSprites)
 	if(CompleteTilesColisionY(Player,tiles)){
-		if(Player.Ytouch && Player.MoveYLimit > 0 ){
+		if(Player.Ytouch && ((Player.GravityTrun && Player.MoveYLimit > 0 ) || (!Player.GravityTrun && Player.MoveYLimit < 0 )) ){
 				 Player.InFlor = true
 			 }
 		crash = true
@@ -5647,39 +5708,44 @@ function MiniSprites_Vx_VY(){
     }
 }
 const prin = [
-function (Player) {
+function (Player) {//0
 	
 },
-function(Player,ctx,X,Y){
+function(Player,ctx,X,Y){// 1
 ctx.drawImage(Player.imC,X * Player.XG,Y * Player.YG , X, Y,Player.Xnegative + Player.x  ,Player.Ynegative + Player.y , X  , Y );
 },
-function(Player,canvas,X,Y){
+function(Player,ctx,X,Y){// 2
 ctx.save();
 ctx.translate(Player.x -32 / -2, Player.y - 32 / -2);
 ctx.rotate(Player.angle);
 ctx.drawImage(HudTEXTURES,32 ,0 , X, Y,32 / -2, 32 / -2, X  , Y ,);
 ctx.restore();
 },
-function(Player,canvas,N){
+function(Player,canvas,N){// 3
 ctx = canvas.getContext("2d");
 ctx.beginPath();
 ctx.lineWidth = 8;
 ctx.arc(Player.x + (Player.width/2), Player.y + (Player.height/2),N, 0, 2 * Math.PI);
 ctx.stroke();
 },
-function(Player){
+function(Player){// 4
 ctx = canvas.getContext("2d");
 ctx.fillStyle = colision_colors[Player.colision];
 ctx.fillRect(Player.x, Player.y, Player.width, Player.height)
 ctx.fillStyle = Player.BC
 ctx.fillRect(Player.x -0.5, Player.y -0.5 , Player.width -1, Player.height -1)
 },
-function(Player,X,Y){
-ctx = Player.canvas.getContext("2d");
+function(Player,ctx,X,Y){// 5
 ctx.save();
 ctx.translate(Player.x -Player.width / -2, Player.y - Player.height / -2);
-ctx.rotate(Player.angle);
+ctx.rotate(5*Math.PI);
 ctx.drawImage(Player.imC,X * Player.XG,Y * Player.YG , X, Y,Player.width / -2, Player.height / -2, X  , Y ,);
+ctx.restore();
+},
+function(Player,ctx,X,Y){// 6
+ctx.save();
+ctx.transform(1, 0, 0, -1, 0, screenHeigth);
+ctx.drawImage(Player.imC,X * Player.XG,Y * Player.YG , X, Y,Player.Xnegative + Player.x  ,(screenHeigth-Y+Player.Ynegative) -(Player.Ynegative + Player.y) , X  , Y );
 ctx.restore();
 },
 ]
@@ -5872,7 +5938,7 @@ function drawLight(canvas,p1,sprites) {
 	  Shadow -= 0.02
 	  if(Shadow <= 0){
 		Shadow = 0
-		//DrawShadow = false
+		DrawShadow = false
 	}
   }
   ctx.fillRect(0, 0, screenWidth, screenHeigth);
@@ -5906,40 +5972,93 @@ if(Position.length > Number){
 	Position.shift()
 }
 }
-function effect (type,texture,Width,Height,sideX,altureX,sideY,altureY,growX,growY){
-if(type === "string"){
-   switch(type){
-	   case "Water" :
-	       this.type = 1
-        break 
-       case "Lava" || "Death" :
-	       this.type = 2
-        break	
-        case "Shadow" :
-	       this.type = 3
-        break		
-		default:
-		this.type = 0
-		break 
-	   
-   }
-   
-}
+class  effect {
+	constructor (type,texture,Width,Height,sideX,altureX,sideY,altureY,growX,growY){
+	this.texture = texture
+	this.growX = growX
+	this.growY = growY
+	this.sideX = sideX
+	this.altureX = altureX
+	this.sideY = sideY
+	this.altureY = altureY
+	this.VariableAltureX = 0
+	this.VariableAltureY = 0
+	this.PrintX = 0
+	this.PrintY = 0
+	this.Width = Width
+	this.Height = Height
+	this.rectW = screenWidth
+	this.rectH = screenHeigth
+	this.TWidth = this.Width/3
+	this.THeight = this.Height/3
+	this.img = new Image();
+	this.img.src = this.texture
+	if(type === "string"){
+	   switch(type){
+		   case "Water" :
+			   this.type = 1
+			break 
+		   case "Lava" || "Death" :
+			   this.type = 2
+			break	
+			case "Shadow" :
+			   this.type = 3
+			break		
+			default:
+			this.type = 0
+			break 
+		   
+	   } 
+	}
+	if(typeof type === "number"){
+		this.type = type
+	}
+	this.patterns = []
+	this.img.onload = () => {
+		for (let fila = 0; fila < 3; fila++) {
+				for (let col = 0; col < 3; col++) {
 
-if(typeof type === "number"){
-	this.type = type
+					// Canvas temporal para una sola parte
+					var temp = document.createElement("canvas");
+					var tctx = temp.getContext("2d");
+					temp.width = this.TWidth;
+					temp.height = this.THeight;
+					// Recortar la parte correspondiente
+					tctx.drawImage(
+						this.img,
+						col * this.TWidth,
+						fila * this.THeight,   // parte origen (x,y)
+						this.TWidth, this.THeight,                // tamaño de recorte
+						0, 0,                  // destino (canvas temp)
+						this.TWidth, this.THeight
+					);
+
+					// Crear patrón individual
+					let NumberPatron = fila*3+col
+					
+					var pattern = ctx.createPattern(temp, "repeat");
+					this.patterns.push(pattern);
+				}
+			}
+		}
+	}
+	DrawEfect(canva){	
+		   DrawPatron(
+		   canva,
+		   this.texture,
+		   0,
+		   this.VariableAltureY,
+		   this.sideX,
+		   this.sideY,
+		   this.Width,
+		   this.Height
+		   )
+	}
 }
-this.texture = texture
-this.growX = growX
-this.growY = growY
-this.sideX = sideX
-this.altureX = altureX
-this.sideY = sideY
-this.altureY = altureY
-this.VariableAltureX = 0
-this.VariableAltureY = 0
-this.Width = Width
-this.Height = Height
+function DrawEfects(canva){
+		for(let i = 0; i < effects_in_game.length ;i++){
+			effects_in_game[i].DrawEfect(canva)
+		}
 }
 
 function Texture(Img,X,Y,Width,Height){
@@ -5973,70 +6092,77 @@ Texture.Height,
 function DrawPatron(Canva,Texture,x,y,sideX,sideY,Width,Height){
 	let WidthImg = 0
 	let HeightImg = 0
-if(Width == undefined){
-    WidthImg = Texture.Width
-}else{
-    WidthImg = Width
-}
-if(Height == undefined){
-    HeightImg = Texture.Height
-}else{
-    HeightImg = Height
-}
-let PatronY = 0
-let PatronX = 0
-if(sideY){
-PatronY = Math.round(((screenHeigth - y) / HeightImg) + 0.5)
-}else{
-PatronY = Math.ceil(y /HeightImg)
-}
-if(sideX){
-PatronX = Math.round(((screenWidth - x) / WidthImg) + 0.5)
-}else{
-PatronX = Math.ceil(y / WidthImg)
-}
-
-
-let X = x
-let Y = y
-let Xdiference = WidthImg
-let Ydiference = HeightImg
-if(!sideX){
-	X -= WidthImg
-	Xdiference = Xdiference *-1
-}
-if(!sideY){
-	Y -= HeightImg
-	Ydiference = Ydiference *-1
-}
-let InicialY = Y
-let ctx = Canva.getContext("2d")
-for(let i = 0; i < PatronX ;i++){
-	for(let i = 0; i < PatronY ;i++){
-		ctx.drawImage(
-        Texture.Img,
-		Texture.X,
-		Texture.Y,
-		Texture.Width,
-		Texture.Height,
-		X,
-		Y,
-		WidthImg,
-		HeightImg,
-    )
-	Y += Ydiference
-    }
-	X += Xdiference
-	Y = InicialY
-  }
-}
-
-function DrawEfects(canva){
-	for(let i = 0; i < effects_in_game.length ;i++){
-		let efect = effects_in_game[i]
-       DrawPatron(canva,efect.texture,efect.VariableAltureX,efect.VariableAltureY,efect.sideX,efect.sideY,efect.Width,efect.Height)
+	if(Width == undefined){
+		WidthImg = Texture.Width/3
+	}else{
+		WidthImg = Width/3
 	}
+	if(Height == undefined){
+		HeightImg = Texture.Height/3
+	}else{
+		HeightImg = Height/3
+	}
+	let PatronY = 0
+	let PatronX = 0
+	if(sideY){
+		PatronY = Math.round(((screenHeigth - y) / HeightImg) + 0.5)
+	}else{
+		PatronY = Math.ceil(y /HeightImg)
+	}
+	if(sideX){
+		PatronX = Math.round(((screenWidth - x) / WidthImg) + 0.5)
+	}else{
+		PatronX = Math.ceil(y / WidthImg)
+	}
+
+
+	let X = x
+	let Y = y
+	let Xdiference = WidthImg
+	let Ydiference = HeightImg
+	if(!sideX){
+		X -= WidthImg
+		Xdiference = Xdiference *-1
+	}
+	if(!sideY){
+		Y -= HeightImg
+		Ydiference = Ydiference *-1
+	}
+	let TextureYG = 0
+	let TextureXG = 0
+	let InicialY = Y
+	let ctx = Canva.getContext("2d")
+	for(let ix = 0; ix < PatronX ;ix++){
+		if(ix == 0){
+				TextureXG = 0
+			}else{
+				TextureXG = WidthImg
+			}
+		for(let iy = 0; iy < PatronY ;iy++){
+			if(iy == 0){
+				TextureYG = 0
+				if(!sideY){TextureYG = HeightImg*2}
+			}else{
+				TextureYG = HeightImg
+			}
+				ctx.drawImage(
+				Texture.Img,
+				TextureXG,
+				TextureYG,
+				WidthImg,
+				HeightImg,
+				X,
+				Y,
+				WidthImg,
+				HeightImg,
+				)
+			Y += Ydiference
+		}
+		X += Xdiference
+		Y = InicialY
+	  }
 }
+
 
 function DrawPatren(Canva,Texture){
 	let ctx = Canva.getContext("2d")
@@ -6044,12 +6170,6 @@ let pattern = ctx.createPattern(Texture.Img, "repeat");
   ctx.fillStyle = pattern;
   ctx.fillRect(0, 128, screenWidth, screenHeigth);
 }
-var WaterTexture = new Texture("texturas/Water.png",0,0,256,256)
-var ShadowTexture = new Texture("texturas/Shadow.png",0,0,256,256)
-var NoTexture = new Texture("texturas/ASCII.png",0,0,30,30)
-var LavaTexture = new Texture("texturas/Lava.jpg",0,0,250,250)
-var PaleteTexture = new Texture("texturas/character.png",0,0,256,256)
-var Wellcome = new Texture("texturas/Wellcome.png",0,0,80,20)
 Wellcome.Img.addEventListener("load", (e) => {
 	DrawTexture(S0,Wellcome)
 	
@@ -6194,7 +6314,6 @@ Ax4 = 0
 Ax6 = 0
 Ax8 = 0
 Ax16 = 0
-
 for(let i = 0; i < BackgroundsInLevel.length ;i++){
 	BackgroundsInLevel[i].x = BackgroundsInLevel[i].stx 
 	BackgroundsInLevel[i].y = BackgroundsInLevel[i].sty 
@@ -6263,6 +6382,7 @@ reset_game = false
 TextFinishGame = []
 inputX = 0
 inputY = 0
+backgroundMusic.src = backgroundMusicSrc
 backgroundMusic.play();
 /*de aqui para abajo todo lo de esto corchetes se va Player hacer cada frame*/
 function Frames(){
@@ -6497,10 +6617,12 @@ PrinAllTilesBlur(game,2)
 //PrinAllTilesColor(game)
 for(let i = 0; i < sprites.length ;i++){
 	if(sprites[i].prin){
-		//ctx.fillStyle = "#FF0"
-		//ctx.fillRect(sprites[i].x+sprites[i].Xdiference_Print,sprites[i].y+sprites[i].Ydiference_Print,sprites[i].widthPrint,sprites[i].heightPrint)
-		//ctx.fillStyle = "#F00"
-		//ctx.fillRect(sprites[i].x,sprites[i].y,sprites[i].width,sprites[i].height)
+		if(HITBOX){
+		ctx.fillStyle = "#FF0"
+		ctx.fillRect(sprites[i].x+sprites[i].Xdiference_Print,sprites[i].y+sprites[i].Ydiference_Print,sprites[i].widthPrint,sprites[i].heightPrint)
+		ctx.fillStyle = "#F00"
+		ctx.fillRect(sprites[i].x,sprites[i].y,sprites[i].width,sprites[i].height)
+		}
 		draw_sprite[sprites[i].Mode](sprites[i],game)
 	}
 }
@@ -6539,7 +6661,7 @@ if(Multiplayer){
 	}
 	ctx.drawImage(HudTEXTURES,80,96,16, 16,p2.x +p2.widthHalf -8,p2.y -16, 16  , 16);
 	animation(p2,p2.CameraY)
-	prin[1](p2,ctx,p2.CameraY[0],p2.CameraY[1]);
+	prin[p2.prin](p2,ctx,p2.CameraY[0],p2.CameraY[1]);
 
 	if(!p1.Colision){
 		ctx.drawImage(HudTEXTURES,0,96,64, 64,p1.x - (96-p1.width - p1.Xnegative*0.5 )*0.5  ,p1.y - (96-p1.height - p1.Ynegative*0.5 )*0.5 ,96,96);
@@ -6570,16 +6692,20 @@ var TESTSCREEN = false
 var AZAR = false
 var Multiplayer = false
 var AirDash = false
+var HITBOX = false
 function Boregito(Value){
 		   switch(Value){
 			   case "MULTIPLAYER":
 			    Multiplayer = true
 			   break 
+			   case "HITBOX":
+			    HITBOX = true
+			   break 
 			   case "WATER":
-			    effects_in_game.push(new effect(1,WaterTexture,512,512,true,0,true,512,0,0))
+			    effects_in_game.push(new effect(1,WaterTexture,96,96,true,0,true,256,0,0))
 			   break 
 			   case "LAVA":
-			   effects_in_game.push(new effect(2,LavaTexture,32,32,true,0,true,0,0,-1))
+			   effects_in_game.push(new effect(2,LavaTexture,96,96,true,0,true,0,0,-1))
 			   break
 			   case "SHADOW":
 			   effects_in_game.push(new effect(3,NoTexture,32,32,true,0,false,0,0,0))
