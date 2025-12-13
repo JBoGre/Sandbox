@@ -237,6 +237,7 @@ objects:[
 ["Object",32,32,23,"161122200",1,"09000", -1,1],
 ["Object",32,32,23,"161122503",1,"09200", -2,1],
 ["Object",32,32,23,"161120201",1,"09300", 0,-4],
+["Object",32,32,23,"161120022",1,"09300", 2,2],
 ["Object",96,96,24,"661110000",2,"22500", 0,0], // Cierra Circular
 ["Object",96,96,24,"661110001",2,"22500", 0,-4],
 ["Object",96,96,24,"661110001",2,"22500", 0,4],
@@ -430,6 +431,7 @@ Action: function Action(Tile,p1,side) { // 1
 	Tile.prin = 1
 	Tile.type = 0
 	Tile.fotograms = 0
+	Tile.animation = 0
 	TransfromTile(Tile,Tile.BC,0,"00000000",0)
 },
 Loop: function Loop (Tile) {},
@@ -578,7 +580,7 @@ Loop: function Loop (Tile) {
 Action: function Action(Tile,p1,side) { // 9
 	if(side) {
 	p1.InMove = false
-	establecing_starcords(Tile.iA+8,Tile.iL+8,p1)
+	establecing_starcords(Tile.Xcord,Tile.Ycord,p1)
 reset_game = true
 pre_finish = true
 	}
@@ -699,8 +701,8 @@ Action: function Action(Sprite) { // S2
 	 Sprite.widthGrid = 84
 	 Sprite.heightGrid = 84
 	},
-Loop: function Loop (Sprite,player1) {
-	if(Colision(Sprite,player1,0,0,32,512)){
+Loop: function Loop (Sprite,player1,player2) {
+	if(Colision(Sprite,player1,player2,0,0,32,512)){
 		
 		Sprite.State = 1
 	}
@@ -777,7 +779,7 @@ Action: function Action(Sprite) { // S4
 	 Sprite.tick = 0
 	 Sprite.live = 1
 	},
-Loop: function Loop (Sprite,player1) {
+Loop: function Loop (Sprite,player1,player2) {
 	if(Sprite.Yplayertouch){
 		Sprite.type = 1
 		Sprite.typeColision = 1
@@ -810,13 +812,13 @@ Loop: function Loop (Sprite,player1) {
 		Sprite.YG = 0
 		if(!Sprite.sideX){
 			Sprite.YG = 32
-		if(Colision(Sprite,player1,-48,0,32,48)){
+		if(Colision(Sprite,player1,player2,-48,0,32,48)){
 			if(Sprite.jumped){Sprite.MoveY += -10
 			Sprite.jumped = false;
 			}
 		}
 		}else{
-			if(Colision(Sprite,player1,32,0,32,48)){
+			if(Colision(Sprite,player1,player2,32,0,32,48)){
 			if(Sprite.jumped){Sprite.MoveY += -10
 			Sprite.jumped = false;
 			}		
@@ -1259,8 +1261,8 @@ Action: function Action(Sprite) { // S13
 	Sprite.heightPrint = 24
 	Sprite.Mode = 2
 	},
-Loop: function Loop (Sprite,p1) {
-	if(Colision(Sprite,p1,-132,-132,288,288)){
+Loop: function Loop (Sprite,p1,p2) {
+	if(Colision(Sprite,p1,p2,-132,-132,288,288)){
 		Sprite.XG = 132
 	Sprite.angle = Math.atan2(p1.y - Sprite.y,p1.x - Sprite.x ) + Math.tan(1)
 	Sprite.MoveX = Sprite.Xvelocity * Math.sin(Sprite.angle)
@@ -1438,9 +1440,9 @@ Loop: function Loop (Sprite,player) {
 		Sprite.State = 0
 		Sprite.intervald_time = 0
 },
-Loop: function Loop (Sprite,Player) {
+Loop: function Loop (Sprite,Player,player2) {
 	//if(Sprite.water){
-		if(Colision(Sprite,p1,-132,-132,288,288)){
+		if(Colision(Sprite,Player,player2,-132,-132,288,288)){
 			Sprite.intervald_time = 0
 			Sprite.State = 1
 		}
@@ -1497,10 +1499,10 @@ Loop: function Loop (Sprite,Player) {
 			Sprite.State = 0
 			Sprite.XG = 128
 	},
-	Loop: function Loop (Sprite,Player) {
+	Loop: function Loop (Sprite,Player,player2) {
 	 switch (Sprite.State){
 	case 0:
-		if(Colision(Sprite,Player,0,64,64,512)){
+		if(Colision(Sprite,Player,player2,0,64,64,512)){
 				Sprite.XG = 192
 				Sprite.State = 1
 		}
@@ -1549,7 +1551,7 @@ Action: function Action(Sprite) { //S22
 		Sprite.IXR = -1
 		Sprite.Yvelocity = 0
 	},
-Loop: function Loop (Sprite,Player) {
+Loop: function Loop (Sprite,Player,player2) {
 		if(Sprite.live == 1 ){
 			if(Sprite.State != 2){
 				if((Sprite.Xtouch || Sprite.Ytouches == 1) && Sprite.State == 0){
@@ -1573,7 +1575,7 @@ Loop: function Loop (Sprite,Player) {
 				}
 				if(Sprite.IXR > 0 ){
 					Sprite.Mode = 3
-						if(Colision(Sprite,Player,32,0,256,32)){
+						if(Colision(Sprite,Player,player2,32,0,256,32)){
 							Sprite.State = 2
 							Sprite.Xvelocity = 0
 							Sprite.IXR = 4
@@ -1586,7 +1588,7 @@ Loop: function Loop (Sprite,Player) {
 						}
 					}else{
 						Sprite.Mode = 0
-							if(Colision(Sprite,Player,-256,0,256,32)){
+							if(Colision(Sprite,Player,player2,-256,0,256,32)){
 								Sprite.State = 2
 								Sprite.Xvelocity = 0
 								Sprite.IXR = 4
@@ -1837,7 +1839,7 @@ Action: function Action(Sprite) { //S31
 		backgroundMusic.src = "Music/You're A Mean One Mr. Grinch.mp3"
 		backgroundMusic.play()
 	},
-Loop: function Loop (Sprite,player1) {
+Loop: function Loop (Sprite,player1,player2) {
 		switch (Sprite.SecondState){
 		case 2 :
 			Sprite.MoveX =  0
@@ -1849,11 +1851,11 @@ Loop: function Loop (Sprite,player1) {
 			Sprite.LoopFotogram = 16
 			if(Sprite.intervald_time > 40){
 				if(Sprite.sideX){
-					if(Colision(Sprite,player1,-33,0,32,64)){
+					if(Colision(Sprite,player1,player2,-33,0,32,64)){
 						if(player1.invecybility != true){player1.lives --;player1.Stocked = true}
 					}
 				}else{
-					if(Colision(Sprite,player1,32,0,32,64)){
+					if(Colision(Sprite,player1,player2,32,0,32,64)){
 						if(player1.invecybility != true){player1.lives --;player1.Stocked = true}
 					}
 				}
@@ -1882,12 +1884,12 @@ Loop: function Loop (Sprite,player1) {
 				}
 			}
 			if(Sprite.sideX){
-				if(Colision(Sprite,player1,-33,0,32,64)){
+				if(Colision(Sprite,player1,player2,-33,0,32,64)){
 					Sprite.SecondState = 2
 					Sprite.fotogram = 0
 				}
 			}else{
-				if(Colision(Sprite,player1,32,0,32,64)){
+				if(Colision(Sprite,player1,player2,32,0,32,64)){
 					Sprite.SecondState = 2
 					Sprite.fotogram = 0
 				}
