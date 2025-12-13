@@ -1,0 +1,340 @@
+
+<!doctype html>
+<html>
+ <head>
+   <title>SANDBOX</title>
+    <link rel="icon" type="image/png" href="Sandbox.png">
+    <style>
+    *{
+    font-size:2px;
+    }
+    #game{
+    width:256em;
+    height:256em;
+    background-image: linear-gradient(rgba(0,255,255),rgb(0,0,255) );
+    }
+    #sprites{
+    width:256em;
+    height:256em;
+    background-color:rgba(0,0,0,0);
+    }   
+    #screen{
+    width:256em;
+    height:256em;
+	margin:8em  ;
+    background-image: linear-gradient(rgb(0,255,255),rgb(0,0,255) );
+	float:left;
+	border: 8em outset rgb(0,0,0);
+    }
+    .a{
+    width:6em;
+    height:6em;
+    background-color:rgba(0  ,0,0,0);
+	border: 1em solid rgb(255,255,255);
+    float:left;
+    }   
+    .canvas{
+    width:14em;
+    height:14em;
+    background-color:rgb(255,255,255);
+	border: 1em solid rgb(255,255,255);
+    float:left;
+    }
+    #b{
+    width:16em;
+    height:16em;
+    background-color:rgb(255,255,255);
+    float:left;
+    border-width:0em;
+    } 
+    #b:hover{
+    background-color:rgb(128,128,128);
+    }
+	#controladores{
+	margin:8em  ;
+	width:128em;
+    height:256em;
+	float:left;
+	}
+	#controladores2{
+	margin-top:0em;
+	margin-right:48em;
+	width:128em;
+    height:256em;
+	float:right;
+	}
+	#palet{
+    width:128em;
+	height:64em;
+	background-color:rgb(100,176,255);
+	}
+	MBLOCK{
+	width:8em;
+	height:8em;
+	float:left;
+	}
+	#eraser{
+	width:32em;
+	height:32em;
+	margin:4em 16em 5em;
+	float:left;
+	background: rgb(0,0,0) url("eraser.png") no-repeat left bottom;
+	background-size: cover;
+	}
+    #gotita{
+	width:32em;
+	height:32em;
+	margin:4em 16em 5em;
+	float:left;
+	background: rgb(0,0,0) url("gotero.png") no-repeat left bottom;
+	background-size: cover;
+	}
+	#depot{
+	width:16em;
+	height:16em;
+	margin:4em 16em 20em ;
+	float:left;
+	background-color:rgb(0,0,0);
+	}
+    .style{
+	width:24em;
+	height:24em;
+	background-color:rgb(256,256,256);
+	float:left;
+	border:4em rgb(128,128,128) solid ; 
+	}
+	MB{
+	width:1em;
+	height:1em;
+	float:left;
+	}
+	#blockC1{
+    width:32em;
+    height:32em;
+	margin:4em 12em;
+	border:4em rgb(0,0,0) dotted ; 
+    background-color:rgb(10,10,10);
+    float:left;
+	}
+	#blockC2{
+    width:32em;
+    height:32em;
+	margin:4em 12em;
+    border:4em rgb(246,246,246) dotted ; 	
+    background-color:rgb(256,256,256);
+    float:left;
+	}
+	#blockC3{
+    width:32em;
+    height:32em;
+	margin:4em 44em;
+    border:4em rgb(128,128,128) solid ; 	
+    background-color:rgb(10,10,10);
+    float:left;
+	}
+	#blockC4{
+    width:32em;
+    height:32em;
+    border:4em rgb(128,128,128) solid ; 	
+    background-color:rgb(255,0,0);
+    float:left;
+	background-image:url("alto.png");
+	background-size: cover;
+	}
+	#gamest{
+	width:64em;
+	height:32em;
+	float:left;
+	background-color:rgb(224,224,224);
+	}
+	#gamest:hover{
+	width:60em;
+	height:28em;
+	border:2em rgb(0,0,0) solid ; 
+	}
+	#start{
+	font-size:32px;
+	text-align:center ;
+	width:4em;
+	height:2em;
+	float:left;
+	background-color:rgb(224,224,224);
+	}
+	#p{
+	font-size:32px;
+	text-align:center ;
+	width:4em;
+	height:2em;
+	float:left;
+	background-color:rgb(224,224,224);
+	}
+	#start:hover{
+	width:3.2em;
+	height:1.2em;
+	border:0.4em rgb(0,0,0) solid ; 
+	}
+	#saved{
+	width:96em;
+	height:32em;
+	margin:8em 16em;
+	float:left;
+	background-color:rgb(224,224,224);
+	}
+	#saved:hover{
+	width:92em;
+	height:28em;
+	border:2em rgb(0,0,0) solid ; 
+	}
+	#S0{
+	width:48em;
+	height:48em;
+	border:8em rgb(128,128,128) solid ;
+	}
+	#selector-imagen{
+	font-size:16px;
+	}
+	#colide0{
+    background-color: rgb(0,0,0);
+	}
+	#colide2{
+    background-color: rgb(0,0,255);
+	}
+	#colide3{
+    background-color: rgb(255,0,0);
+	}
+	#colide4{
+    background-color: rgb(255,255,0);
+	}
+	#colide5{
+    background-color: rgb(172,172,172);
+	}
+	#colide6{
+    background-color: rgb(0,255,0);
+	}
+	#colide7{
+    background-color: rgb(255,128,0);
+	}
+	.flecha{
+	width:32em;
+	height:32em;
+	float:left;
+	background-color: rgb(240,240,240);
+	}
+	#up{
+	background-image:url("flechaUP.png");
+	background-size: cover;
+	margin:1em 48em;
+	}
+	#derecha{
+	background-image:url("flechaDE.png");
+	background-size: cover;
+	margin:4em 2em 4em 10em;
+	}
+	#izquierda{
+	background-image:url("flechaIZ.png");
+	background-size: cover;
+	margin:4em 10em 4em 2em;
+	}
+	#down{
+	background-image:url("flechaDW.png");
+	background-size: cover;
+	margin:1em 48em;
+	}
+	#r4{
+	font-size:16px;
+	}
+	#load{
+	background-color:rgb(224,224,224);
+	float:left;
+	font-size:32px;
+	width:3em;
+	height:1em;
+	margin: 0em 0.25em;
+	border:0em  rgb(0,0,0) solid;
+	}
+	#load:hover{
+	width:2.5em;
+    margin: 0em;
+	border-left-width:0.5em ;
+	border-right-width:0.5em ;
+	}
+	#save{
+	background-color:rgb(224,224,224);
+	float:left;
+	font-size:32px;
+	width:3em;
+	height:1em;
+	margin: 0em 0.25em;
+	border:0em  rgb(0,0,0) solid;
+	}
+	#save:hover{
+	width:2.5em;
+    margin: 0em;
+	border-left-width:0.5em ;
+	border-right-width:0.5em ;
+	}
+	#Namec{
+	font-size:16px;
+	border:0em rgb(128,128,128) solid
+	width:12em;
+	}
+	#selection{
+	text-align:center ;
+	font-size:16px;
+	background-color:rgb(240,240,240);
+	width:14em;
+	height: 4em;
+	float:left;
+	margin: 0em 1em;
+	}
+    </style>
+    <script src="./java.js" defer></script>
+ </head>
+ <body>
+  <header>   </header>
+   <section>
+     <div id ="controladores">
+	  <div id="palet"> </div>
+          <div id="functions" >
+	  <div id="eraser"> </div>
+          <div id="gotita"> </div>
+          </div>
+	  	<canvas class=style id=S0></canvas>
+        <div id="start" >start</div>
+		<div id = "p" >Time</div>
+		<div id= "selection">
+		  <div class = "select" id="load" >load</div>
+		   <div class = "select" id="save" >save</div>
+		   <input id="Namec" type="text">
+		</div>
+	 </div>
+     <div id="screen">
+     </div>
+	 <div id ="controladores2">
+	 <canvas class=style id="colide0"> </canvas>
+     <canvas class=style id="colide1"> </canvas>
+	 <canvas class=style id="colide2"> </canvas>
+	 <canvas class=style id="colide3"> </canvas>
+	 <canvas class=style id="colide4"> </canvas>
+	 <canvas class=style id="colide5"> </canvas>
+	 <canvas class=style id="colide6"> </canvas>
+	 <canvas class=style id="colide7"> </canvas>
+	 
+	  <div id="blockC1"> </div>
+	  <div id="blockC2"> </div>
+	  <input type="file" id="selector-imagen" accept=".jpg, .jpeg, .png">
+	  <div id="blockC3"> </div>
+	  <div class="flecha" id="up"></div>
+	  <div class="flecha" id="derecha"></div>
+	  <div id="blockC4"> </div>
+	  <div class="flecha" id="izquierda"></div>
+	  <div class="flecha" id="down"></div>
+	     <label style = "font-size:8em;"for="r4">solid margin </label>
+         <input class = "chek" id="r4" type="radio" value = "0">
+		 <label style = "font-size:8em;"for="r5">teleport margin </label>
+         <input class = "chek"id="r5" type="radio" value = "1">
+	 </div>
+   </section>
+  <footer></footer>
+ </body>
+</html>

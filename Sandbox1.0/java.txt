@@ -1,0 +1,285 @@
+const table = document.getElementById("screen")
+const but1 = document.getElementById("eraser")
+const but2 = document.getElementById("saved")
+const palet = document.getElementById("palet")
+const depot = document.getElementById("depot")
+const controladores = document.getElementById("controladores")
+const ancho = table.style.width
+const largo = table.style.height
+let k1 = "rgba(0,0,0,256)";
+let k2 = "rgba(255,255,255,256)";
+let cord = 0
+let selector ="rgba(0,0,0,0)"
+let mode = 0 ;
+let draw_mode= "";
+const celd = [];
+but1.addEventListener("click",() =>{
+mode = 0;
+selector ="rgba(0,0,0,0)" ;
+})
+but2.addEventListener("click",() =>{
+save_u();
+})
+function Action(num){
+console.log("clik on b"+num)
+}
+
+for(let i = 0; i < 256 ; i++){ 
+let name = cord;
+table.innerHTML += "<canvas id=b"+ cord +" onclik=Action("+ cord +")></canvas>";
+cord = cord + 1 ;
+};
+const jN =document.querySelectorAll("canvas");
+function print (x,p,c){
+a = p/2
+const dcN = [ "rgba("+ p+",0,0,256)",
+              "rgba(0,"+ p +",0,256)",
+              "rgba(0,0," +p+ ",256)",
+              "rgba("+p+","+p+",0,256)",
+              "rgba("+p+",0,"+p+",256)",
+              "rgba(0,"+p+","+p+",256)",
+              "rgba("+p+","+p+","+p+",256)",
+			  "rgba("+p+","+a+",0,256)",
+			  "rgba("+p+","+p+","+p+",0)",
+            ]
+x.style.backgroundColor = dcN[c];
+}
+function AEL (cor,ton,c) {
+let cord = document.getElementById("b" + cor  )
+let to = ton * 16 ;
+print (cord,to,c)
+};
+function palete(){
+for(let i = 0; i < 16 ; i++){ 
+AEL (i,i,0)}
+let color = 1;
+for(let i = 16; i < 32 ; i++){ 
+AEL (i,color,1)
+color++}
+color = 1;
+for(let i = 32; i < 48 ; i++){ 
+AEL (i,color,2)
+color++}
+color = 1;
+for(let i = 48; i < 64 ; i++){ 
+AEL (i,color,3)
+color++}
+color = 1;
+for(let i = 64; i < 80 ; i++){ 
+AEL (i,color,4)
+color++}
+color = 1;
+for(let i = 80; i < 96 ; i++){ 
+AEL (i,color,5)
+color++}
+color = 1;
+for(let i = 96; i < 112 ; i++){ 
+AEL (i,color,6)
+color++}
+color = 1;
+for(let i = 112; i < 128 ; i++){ 
+AEL (i,color,7)
+color++}
+}
+
+for(let i = 0; i < 256; i++){ 
+AEL (i,16,8)
+}
+const bck = table.querySelectorAll("canvas");
+bck.forEach(canvas => {
+    canvas.addEventListener('click', () => {
+	 if (mode == 1){
+	ctxV[draw_mode].fun(canvas)
+    }else{
+    canvas.style.backgroundColor =selector;
+    }
+    });
+});
+
+function save (){
+for(let i = 0; i < 256 ; i++){ 
+celd.shift();}
+for(let i = 0; i < 256 ; i++){ 
+let x = document.getElementById("b"+ i);
+celd.push({cordenada:"b"+i,BC: x.style.backgroundColor,});
+}
+}
+function save_u (){
+for(let i = 0; i < 256 ; i++){ 
+celd.shift();}
+for(let i = 0; i < 256 ; i++){ 
+let x = document.getElementById("b"+ i);
+celd.push({cordenada:"b"+i,BC: x.style.backgroundColor,});
+}
+let b = document.getElementById("S0");
+ctxV[6].fun(b);
+ctxV[0].fun(b);
+}
+
+function load (){
+for(let i = 0; i < 256 ; i++){ 
+let x = document.getElementById("b"+i)
+x.style.backgroundColor = celd[i].BC;
+}
+}
+function l () {
+for(let i = 0; i < 128 ; i++){ 
+palet.innerHTML += "<MBLOCK  id="+i+"p></MBLOCK>";
+let x = document.getElementById(i+"p")
+x.style.backgroundColor = celd[i].BC;
+};
+O()
+}
+function O () {
+const pale = document.querySelectorAll('MBLOCK');
+pale.forEach(MBLOCK => {
+    MBLOCK.addEventListener('click', () => {
+	    mode = 0 ;
+        selector = MBLOCK.style.backgroundColor; 
+		console.log(mode)
+    });
+});
+}	
+const ctxV =[
+  {
+  fun: function fun (b) {
+    let X = 0;
+    let Y = 0;
+    let Q = 0;
+    let ctxZ = b.getContext("2d");
+    for(let I = 0; I < 16 ; I++){ 
+    for(let i = 0; i < 16 ; i++){ 
+    ctxZ.fillStyle =celd[Q].BC ;
+    ctxZ.fillRect(X,Y,18.75,9.375);
+    X = X + 18.75;
+    Q++
+    }
+	Y=Y + 9.375
+    X= 0 ;
+    }
+  }},
+  {
+  fun: function fun (b) {
+  let ctx = b.getContext("2d");
+  let grd = ctx.createLinearGradient(0, 0, 300, 0);
+  grd.addColorStop(0, k1);
+  grd.addColorStop(1, k2);
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, 300, 150);
+  }},
+  {
+  fun: function fun (B) {
+  let ctx = B.getContext("2d");
+  let grd = ctx.createLinearGradient(0, 0, 0, 150);
+  grd.addColorStop(0, k1);
+  grd.addColorStop(1, k2);
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, 300, 150);
+  }},
+  {
+  fun: function fun (b) {
+  let ctx = b.getContext("2d");
+  ctx.moveTo(0,0);
+  ctx.lineTo(300,150);
+  ctx.stroke();
+  }},
+  {
+  fun: function fun (B) {
+  let ctx = B.getContext("2d");
+  let grd = ctx.createLinearGradient(0, 0, 300, 0);
+  grd.addColorStop(0, k1);
+  grd.addColorStop(0.5, k2);
+  grd.addColorStop(1, k1);
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, 300, 150);
+  }},
+  {
+  fun: function fun (B) {
+  let ctx = B.getContext("2d");
+  let grd = ctx.createLinearGradient(0, 0, 0, 150);
+  grd.addColorStop(0, k1);
+  grd.addColorStop(0.5, k2);
+  grd.addColorStop(1, k1);
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, 300, 150);
+  }},
+  {
+  fun: function fun (b) {
+	
+  }},
+];
+function q (){
+for(let i = 0; i < ctxV.length ; i++){ 
+let b = document.getElementById("S"+i);
+ctxV[i].fun(b);
+b.addEventListener('click', () => {
+        mode = 1;
+		draw_mode = i ;
+    });
+}};
+
+function reset (){
+for(let i = 0; i < 256 ; i++){ 
+let x = document.getElementById("b"+i)
+x.style.backgroundColor = "rgba(0,0,0,0)"};
+}
+function load_k (){
+let Z = document.getElementById("S"+9);
+let X = 0;
+let Y = 0;
+let Q = 0;
+let ctxZ = Z.getContext("2d");
+for(let I = 0; I < 16 ; I++){ 
+   for(let i = 0; i < 16 ; i++){ 
+   ctxZ.fillStyle =celd[Q].BC ;
+   ctxZ.fillRect(X,Y,37.5,18.75);
+   X = X + 18.75;
+   Q++
+   }
+Y=Y + 9.375
+X= 0 ;
+}
+}
+const k1B = document.getElementById("blockC1");
+k1B.addEventListener('click', () => {
+        k1 = selector;
+		k1B.style.backgroundColor = selector;
+    });
+
+const k2B = document.getElementById("blockC2");
+k2B.addEventListener('click', () => {
+        k2 = selector;
+		k2B.style.backgroundColor = selector;
+    });
+
+palete();
+save();
+l();
+reset();
+q();
+
+function startGame() {
+    myGameArea.start();
+	component(30, 30, "red", 10, 120);
+}
+
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+        this.canvas.width = 1000;
+        this.canvas.height = 1000;
+		this.canvas.class = "style";
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+}}
+   function component(width, height, color, x, y) {
+   this.width = width;
+   this.height = height;
+   this.x = x;
+   this.y = y;
+   ctx = myGameArea.context;
+   ctx.fillStyle = color;
+   ctx.fillRect(this.x, this.y, this.width, this.height);
+}
+
+startGame()
