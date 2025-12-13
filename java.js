@@ -6844,6 +6844,11 @@ var AirDash = false
 var HITBOX = false
 function Boregito(Value){
 		   switch(Value){
+			   case "SANDBOX" :
+				if (confirm("Do you want to visit the old game?")) {
+					window.location.href = "Sandbox1.0/sandbox.html";
+				}
+			   break 
 			   case "MULTIPLAYER":
 			    Multiplayer = true
 			   break 
