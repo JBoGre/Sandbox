@@ -18539,5 +18539,19 @@
   ],
   "StartX": 3,
   "StartY": 18,
-  "totalPrizes": 3
+  "totalPrizes": 3,
+  "LevelEfects": [
+    [
+      1,
+      "WaterTexture",
+      96,
+      96,
+      true,
+      0,
+      true,
+      512,
+      0,
+      0
+    ]
+  ]
 }
