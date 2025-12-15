@@ -4685,15 +4685,9 @@ function Bubble(Player,Player2){
 var PlayerTrun = true
 function CameraBodyMovement(Body,Player1,Player2){
 //if(Player1.ButonBTouch || Player2.ButonBTouch){ Body.MaxVelocity = 3;}
-	Body.MaxVelocity = 3
-	if(Ax16 == 15){PlayerTrun = !PlayerTrun}
-	if(PlayerTrun){
+	Body.MaxVelocity = 2
 		Emboscade_player_X(Body,Player1,Body.MaxVelocity)
 		Emboscade_player_Y(Body,Player1,Body.MaxVelocity)
-	}else{
-		Emboscade_player_X(Body,Player2,Body.MaxVelocity)
-		Emboscade_player_Y(Body,Player2,Body.MaxVelocity)
-	}
 	/*
 	if(tick){
 	Go_to_player_X(Body,Player1,Body.MaxVelocity)
@@ -6060,6 +6054,9 @@ function drawLight(canvas,p1,sprites) {
 	Z += (screenWidth*(1-Shadow))
   }
   ctx.arc(p1.x+p1.widthHalf, p1.y+p1.heightHalf, Z, 0, Math.PI * 2, true);
+  if(Multiplayer){
+  ctx.arc(p2.x+p2.widthHalf, p2.y+p2.heightHalf, Z, 0, Math.PI * 2, true);
+  }
 let width = 0
 let height = 0
   for(let i = 0; i < sprites.length ;i++){	
@@ -6809,7 +6806,6 @@ function Frames(){
 			ctx.drawImage(HudTEXTURES,0,96,64, 64,p1.x - (96-p1.width - p1.Xnegative*0.5 )*0.5  ,p1.y - (96-p1.height - p1.Ynegative*0.5 )*0.5 ,96,96);
 		}
 		ctx.drawImage(HudTEXTURES,64,96,16, 16,p1.x +p1.widthHalf -8,p1.y -16, 16  , 16);
-		prin[CameraBody.prin](CameraBody,ctx,CameraBody.CameraY[0],CameraBody.CameraY[1]);
 	}
 	animation(p1,p1.CameraY)
 	prin[p1.prin](p1,ctx,p1.CameraY[0],p1.CameraY[1]);
