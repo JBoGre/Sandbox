@@ -556,13 +556,12 @@ function chargeLevelNoTiles(){
 	Xsize.value = SAVE.X 
 	Ysize.value = SAVE.Y 
     LC = SAVE.LevelCol.slice()
+	effects_in_game = []
 	if(SAVE.LevelEfects != undefined){
 		for(let i = 0; i < SAVE.LevelEfects.length ; i++){
 		effe = SAVE.LevelEfects[i]
 		effects_in_game.push(new effect(effe[0],TexturesArray[effe[1]],effe[2],effe[3],effe[4],effe[5],effe[6],effe[7],effe[8],effe[9]))
 		}
-	}else{
-		effects_in_game = []
 	}
 	SpritesInGrid = []
 	createSpritesInGrid ()
