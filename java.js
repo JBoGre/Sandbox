@@ -499,6 +499,7 @@ var TilesCollection = []
 var ColorSelected = "#FFF"
 var Tileselect = 0
 var image_collection = []
+var image_collection_offSet = []
 var imageCords = [0]
 var SoundEffectsCollection = []
 var SoundEffectsCords = []
@@ -524,6 +525,7 @@ document.addEventListener('mousemove', (event) => {
   
 reset_functions_and_scrips()
 function chargeLevelNoTiles(){
+	DegenerateValue = 128
 	AZAR = false
 	backgroundMusic.pause();       // Pausa el audio
     backgroundMusic.currentTime = 0; // Reinicia al inicio
@@ -863,11 +865,11 @@ function fillblock(X,Y,Xcoordinate,Ycoordinate,color,colision,ImageNumber,Script
 		Xp = InicialXp
 	}
 }
-function fillblockImg_3x3(X,Y,Xcoordinate,Ycoordinate,Img,color,colision,XGirdLimit,YGirdLimit,animation,Script) {
+function fillblockImg_3x3(X,Y,Xcoordinate,Ycoordinate,Img,color,colision,XGirdLimit,YGirdLimit,Script) {
 	let Xp = Xcoordinate
 	let Yp = Ycoordinate
 	let StarYp = Yp
-	
+	let animation = colision[7]
 	var XG = parseInt(colision[5], 32)
 	let XLimit = XGirdLimit + XG
 	
@@ -890,6 +892,7 @@ function fillblockImg_3x3(X,Y,Xcoordinate,Ycoordinate,Img,color,colision,XGirdLi
 		replaceTilePriority(Xp,Yp,type,alture,col + XG.toString(32) +YG.toString(32)+animation,color,Img,Script)
 		Yp--
 		YG++
+		if(YGirdLimit == 0 && !type){return true;}
 		if(YG > YLimit){YG = YLimit}
 		for(let i = 0; i < Y-1 ; i++){
 		    replaceTilePriority(Xp,Yp,type,alture,downCol + XG.toString(32) +YG.toString(32)+animation,color,Img,Script)
@@ -898,13 +901,14 @@ function fillblockImg_3x3(X,Y,Xcoordinate,Ycoordinate,Img,color,colision,XGirdLi
 		YG ++
 		if(YG > YLimit){YG = YLimit}
 		replaceTilePriority(Xp,Yp,type,alture,downCol + XG.toString(32) +YG.toString(32)+animation,color,Img,Script)
-		Xp ++
 	}
 		Yblocks()
+		Xp ++
 		XG++
 		if(XG > XLimit){XG = XLimit}
 	for(let i = 0; i < X-2 ; i++){
 		Yblocks()
+		Xp ++
 	}
 	    XG++
 		if(XG > XLimit){XG = XLimit}
@@ -1016,42 +1020,42 @@ return true
 function createSprites_No_in_solid(Number,x,y,Xcoordinate,Ycoordinate,width,height,script,col,img,RenderMode,XV,YV){
 let No_a_block = false
 for(let i = 0; i < Number ; i++){
-	 No_a_block = false
-for(let i = 0; i < 2 ; i++){
-X = RandomNumber(Xcoordinate,Xcoordinate+x)
-Y = RandomNumber(Ycoordinate,Ycoordinate+y)
- result = LC.find(LC => LC.X == X && LC.Y == Y -1  );
-	   if(result == undefined){
-		    No_a_block = true
-			i = 12
-	   }else{
-		   if(result.col[4] != 1){
-			No_a_block = true
-			i = 12   
-		   }
-	   }
-	   
-}
-if(No_a_block){
- X = X*32
- Y = Y*-32 + 512
-	SpritesInGrid.push({
-		X:X,
-		Y:Y,
-		xPrint:X/scale_sprites,
-		yPrint:(Y/scale_sprites)+margin_screen,
-		width:width,
-		height:height,
-		widthPrint:width/scale_sprites,
-		heightPrint:height/scale_sprites ,
-		script:script,
-		col:col,
-		img:img,
-		IN:RenderMode,
-		XV:XV,
-		YV:YV,
-		})
-}
+		 No_a_block = false
+	for(let I = 0; I < 2 ; I++){
+		X = RandomNumber(Xcoordinate,Xcoordinate+x)
+		Y = RandomNumber(Ycoordinate,Ycoordinate+y)
+		 result = LC.find(LC => LC.X == X && LC.Y == Y -1  );
+			   if(result == undefined){
+					No_a_block = true
+					I = 12
+			   }else{
+				   if(result.col[4] != 1){
+					No_a_block = true
+					I = 12   
+				   }
+			   }
+			   
+	}
+	if(No_a_block){
+	 X = X*32
+	 Y = Y*-32 + 512
+		SpritesInGrid.push({
+			X:X,
+			Y:Y,
+			xPrint:X/scale_sprites,
+			yPrint:(Y/scale_sprites)+margin_screen,
+			width:width,
+			height:height,
+			widthPrint:width/scale_sprites,
+			heightPrint:height/scale_sprites ,
+			script:script,
+			col:col,
+			img:img,
+			IN:RenderMode,
+			XV:XV,
+			YV:YV,
+			})
+	}
 }
 }
 function extratNumbers(text) {
@@ -1100,6 +1104,42 @@ function replaceTilePriority(lastXcord,lastYcord,type,maxALture,col,color,IN,scr
 			   script :script,
 			   alt:maxALture,
 			   })
+	   }else{
+		   if(type){
+			   if(result.col[4] != 1 || (maxALture >= result.alt)){
+          result.script = script
+		  result.col =  col
+		  result.IN = IN
+		  result.color = color
+		  result.alt = maxALture
+				}					
+		   }else{
+			   if(maxALture <= result.alt && result.col[4] != 1 ){  
+          result.script = script
+		  result.col =  col
+		  result.IN = IN
+		  result.color = color
+		  result.alt = maxALture
+		   }
+	   }  
+	}
+}
+function replaceTilePriorityInGame(lastXcord,lastYcord,type,maxALture,col,color,IN,script){  
+	  let result = undefined
+	 result = TilesCollection.find(TilesCollection => TilesCollection.X == lastXcord && TilesCollection.Y == lastYcord );
+	   if(result == undefined){
+		   var newTile = {
+			   X: lastXcord ,
+			   Y: lastYcord,
+			   col:col,
+			   color:color,
+			   IN: IN,
+			   script :script,
+			   alt:maxALture,
+		   };
+		   LC.push(newTile)
+		   TilesCollection.push(newTile)
+			tileMap.set(`${newTile.X},${newTile.Y}`, newTile);
 	   }else{
 		   if(type){
 			   if(result.col[4] != 1 || (maxALture >= result.alt)){
@@ -1413,7 +1453,7 @@ function Avoid_undefined_in_Azar(){
 		RandomLevelConfiguration[LevelType]()
 	}
 	if(AzarPlus){
-		let Number = RandomNumber(0,11)
+		let Number = RandomNumber(0,14)
 		BackgroundsInLevel = []
 		Azar_Blocks_Skins[Number]()
 		Azar_Back_Sound[Number]()
@@ -1565,10 +1605,39 @@ const Azar_Blocks_Skins = [
 		[1,"rgba(0,0,0,0)","100026A0",0,1,0,0], // WATER TEMPLE
     ]
     },
-	function(){ // All_in_one 11
+	function(){ // Metal City 11,
+	Azar_Solids =[
+		[1,"rgba(0,0,0,0)","111119A0",0,2,0,0], // Metal City
+    ]
+	Azar_SemiSolids =[
+		[1,"rgba(0,0,0,0)","10002AA0",2,1,0,0], // Metal City
+    ]
+    },
+	function(){ // Monarch 12,
+	Azar_Solids =[
+		[1,"rgba(0,0,0,0)","111115F8",0,0,0,0], // Monarch 
+    ]
+	Azar_SemiSolids =[
+		[1,"rgba(0,0,0,0)","100026F8",0,0,0,0], // Monarch 
+    ]
+    },
+	function(){ // INICIAL 13,
+	Azar_Solids =[
+		[1,"rgba(0,0,0,0)","11111700",0,1,0,0], // INICIAL
+    ]
+	Azar_SemiSolids =[
+		[1,"rgba(0,0,0,0)","11002160",0,1,0,0], // INICIAL
+		[1,"rgba(0,0,0,0)","10002800",0,1,0,0], // INICIAL
+    ]
+    },
+	function(){ // All_in_one 14
 	
 	Azar_Solids =[
 	[1,"#FFF","11111200",0,1,0,0], //Minimalist Sandbox
+	[1,"rgba(0,0,0,0)","11111580",0,1,0,0], // WATER TEMPLE
+	[1,"rgba(0,0,0,0)","11111680",0,1,0,0], // WATER TEMPLE
+	[1,"rgba(0,0,0,0)","111119A0",0,2,0,0], // Metal City
+	[1,"rgba(0,0,0,0)","111115F8",0,0,0,0], // Monarch 
 	
 	[8,"rgb(192,112,32)","11111000",2,2,0,0], // Ground Smb1
 	[8,"rgb(8,57,123)","11111300",2,2,0,0],// UnderGround Smb1
@@ -1595,6 +1664,10 @@ const Azar_Blocks_Skins = [
     ]
 	Azar_SemiSolids =[
 	[1,"#FFF","10002220",0,1,0,0], //Minimalist Sandbox
+	[1,"rgba(0,0,0,0)","100025A0",0,1,0,0], // WATER TEMPLE
+	[1,"rgba(0,0,0,0)","100026A0",0,1,0,0], // WATER TEMPLE
+	[1,"rgba(0,0,0,0)","10002AA0",2,1,0,0], // Metal City
+	[1,"rgba(0,0,0,0)","100026F8",0,0,0,0], // Monarch 
 	
 	[8,"rgba(0,0,0,0)","10002C00",2,2,0,0], // Ground Smb1
 	[8,"rgba(0,0,0,0)","10002F00",2,2,0,0], // Bones Smb1
@@ -1676,7 +1749,30 @@ BackgroundsInLevel.push(new Background("Backgrounds/Falls Background 3.png",1024
 ChangeMusic ("Music/Columns III  Credits theme (Remix).mp3")
 backgroundBase =  "linear-gradient(rgb(188, 255, 255), rgb(200, 255, 255))";
 },
-function(){ // All_in_one 11
+function(){ // Metal City  11
+BackgroundsInLevel.push(new Background("Backgrounds/Sky City Background 4.png",1024,512,0.2,0,0.1,0,true,false,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/Sky City Background 5.png",1024,512,0.3,0,0,0,true,false,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/Sky City Background.png",1024,128,0.5,0,0.4,0,true,false,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/Sky City Background 2.png",1024,512,0.4,0,0.3,0,true,false,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/Sky City Background 3.png",1024,512,0.3,0,0.2,0,true,false,0,0))
+ChangeMusic ("Music/Sonic 3D Blast The Final Fight (Remix).mp3")
+backgroundBase =   "linear-gradient(45deg, rgb(138, 0, 0), rgb(51, 0, 0))";
+},
+function(){ // Monarch 12
+BackgroundsInLevel.push(new Background("Backgrounds/Monarch Background.png",512,512,0.5,0.5,2,8,true,true,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/Monarch Background2.png",64,64,0.5,0.5,0.5,0.5,true,true,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/Monarch Background3.png",512,256,0,0,8,0,true,true,0,0))
+ChangeMusic ("Music/Sonic Mania Titanic Monarch (Remix) .mp3")
+backgroundBase =  "linear-gradient(45deg, rgb(0, 0, 0), rgb(0, 0, 0))";
+},
+function(){ // INICIAL 13
+BackgroundsInLevel.push(new Background("Backgrounds/Inicial Background.png",2080,480,0.5,0,0,0,true,false,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/FlorClouds.png",2042,128,0.6,0,0,0,true,false,0,0))
+BackgroundsInLevel.push(new Background("Backgrounds/Cloud.png",2048,448,0.4,0,0,0,true,false,0,0))
+ChangeMusic ("Music/Joakim Karud - Clouds.mp3")
+backgroundBase =  "linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255))";
+},
+function(){ // All_in_one 14
 ChangeMusic ("Music/ModernDay.mp3")
 backgroundBase = "linear-gradient(rgb(255, 255, 255), rgb("+RandomNumber(0,256)+","+RandomNumber(0,256)+","+RandomNumber(0,256)+"))"
 },
@@ -1791,6 +1887,8 @@ function Create_images() {
 		for(let i = 0; i < SAVE.tiles[I].Images.length ; i++){
 	    image_collection.push(new Image())
 	    image_collection[image_collection.length  -1].src = SAVE.tiles[I].Images[i]
+		image_collection_offSet.push(new Image())
+	    image_collection_offSet[image_collection_offSet.length  -1].src = SAVE.tiles[I].Images3D[i]
 	   }
 	   Cords += SAVE.tiles[I].Images.length
 	   imageCords.push(Cords)
@@ -2393,20 +2491,32 @@ table.style.overflow = "auto"
 var NolimitX = false
 var NolimitY = false
 var CameraBody = null
+var tileMap = new Map();
+function createMapTiles (Array){
+	
+	tileMap = new Map();
+	
+	for (var tile of TilesCollection) {
+	  tileMap.set(`${tile.X},${tile.Y}`, tile);
+	}
+}
+var player1Deaths = 0
+var player2Deaths = 0
 const buton = [
 function(b) {
 Selection.classList.toggle('active');
-
+player1Deaths = 0
+player2Deaths = 0
 but4.innerText = "edit"
 audioPlayer.pause();
 audioPlayer.muted = true
 prizes = 0
-
 let p1InF = characters[Skins_for_players[0].characterSelect]
 let p2InF = characters[Skins_for_players[1].characterSelect]
 activate_custom_songs(p1InF)
 establecing_starcords(startX,startY,p1InF)
-TilesCollection = structuredClone(LC);
+TilesCollection = structuredClone(LC); // copia todos los tiles
+createMapTiles(TilesCollection) // crea un mapa para los tiles con nombre :tileMap:
 CreateSpritesTolevel()
 table.innerHTML = "<canvas id=game></canvas>";
 table.style.overflow = "hidden"
@@ -2416,7 +2526,6 @@ game_area.style.width = screenWidth + "px"
 game_area.style.height = screenHeigth + "px"
 charge(game_area,SAVE.X,SAVE.Y,0,0,StarX,StarY);
 StarPosition()
-
 p1 = new player(p1InF.width,p1InF.height,p1InF.Img[Skins_for_players[0].SkinSelect],p1InF.Grid,PositionX,PositionY,1,"0031",p1InF.WNEGA,p1InF.HNEGA,p1InF.DeathSound)
 p2 = new player(p2InF.width,p2InF.height,p2InF.Img[Skins_for_players[1].SkinSelect],p2InF.Grid,PositionX,PositionY,1,"0031",p2InF.WNEGA,p2InF.HNEGA,p2InF.DeathSound)
 CameraBody = new player(32,32,p1InF.Img[Skins_for_players[0].SkinSelect],p1InF.Grid,PositionX,PositionY,1,"0000",p1InF.WNEGA,p1InF.HNEGA,p1InF.DeathSound)
@@ -2525,6 +2634,12 @@ function DrawText(Text,ctx){
   ctx.font = Text.font;
   ctx.textAlign = Text.textAlign;
   ctx.fillText(Text.text, Text.Xposition, Text.Yposition);	
+}
+function DrawTextTest(text,X,Y,Color,font,textAlign){
+  ctx.fillStyle = Color;
+  ctx.font = font;
+  ctx.textAlign = textAlign;
+  ctx.fillText(text,X,Y);	
 }
 function Gblock(Canvas,X,Y,color,ImgN,col){
 this.x = X;this.y = Y;
@@ -2797,45 +2912,52 @@ function PreRenderMode (ctx,Sprite){
 	)
 	ctx.restore();
 }
-function Simple_Tiles_ColisionY(Sprite,tiles){
-	Sprite.yP = 0
-	Sprite.Ytouch = false
-	for (i = 0; i < tiles.length; i += 1){
-	var TL = tiles[i]
-		if(TL.type != 0 && TL.type != 3 ){
-			if((Sprite.x < TL.x + (32) && (Sprite.x + (Sprite.width)) > TL.x) && (Sprite.y < TL.y + (32))  && Sprite.y + (Sprite.height) > TL.y){
-				if( (Sprite.y + (Sprite.height)) < (TL.y + 32)){
-					
-					Sprite.yP =(Sprite.y + Sprite.height) - TL.y 
-
-				
-					}else{
-					Sprite.yP = Sprite.y - (TL.y + 32)
-
+function Perfect_Tiles_ColisionY(Sprite,tiles){
+	let prevY = Sprite.y; // guarda la ultima posicion
+	Sprite.y += Sprite.MoveY; // suma el moviento a la direcion
+	Sprite.Ytouch = false; // restea si lo an golpeado 
+	Sprite.yP = Sprite.MoveY; // guarda el movimiento 
+	for (let i = 0; i < tiles.length; i++) {
+		let TL = tiles[i];
+		if (TL.type != 0 && TL.type != 3) {
+		// evita los cubos no solidos (0) o Semisolidos (3)
+			if (Sprite.x < TL.x + 32 && Sprite.x + Sprite.width > TL.x &&Sprite.y < TL.y + 32 && Sprite.y + Sprite.height > TL.y) {
+				// Arriba
+				if (prevY + Sprite.height <= TL.y) { 
+					Sprite.y = TL.y - Sprite.height;
 				}
-				//Sprite.y += Sprite.yP*-1;
-				Sprite.Ytouch = true
-				return true;
+				// Abajo
+				if (prevY >= TL.y + 32) {
+					Sprite.y = TL.y + 32;
+				}
+				Sprite.yP = (prevY + Sprite.MoveY) - Sprite.y 
+				//el yP lo da en decimal pero los demas objetos del juego no estan preparados para tener decimales tan complejos
+				Sprite.Ytouch = true;
 			}
 		}
 	}
 }
-function Simple_Tiles_ColisionX(Sprite,tiles){
-	Sprite.xP = 0
-	Sprite.Xtouch = false
-	for (i = 0; i < tiles.length; i += 1){
-	var TL = tiles[i]
-		if(TL.type != 0 && TL.type != 3){
-			if((Sprite.x < TL.x + (32) && (Sprite.x + (Sprite.width)) > TL.x) && (Sprite.y < TL.y + (32))  && Sprite.y + (Sprite.height) > TL.y){
-				if( (Sprite.x + (Sprite.width)) < (TL.x + 32)){
-					Sprite.xP =(Sprite.x + Sprite.width) - TL.x; 
-					}else{
-					Sprite.xP =  Sprite.x - (TL.x + 32); 
-
+function Perfect_Tiles_ColisionX(Sprite,tiles){
+	let prevX = Sprite.x; // guarda la ultima posicion
+	Sprite.x += Sprite.MoveX; // suma el moviento a la direcion
+	Sprite.Xtouch = false;  // restea si lo an golpeado 
+	Sprite.xP = Sprite.MoveX; // guarda el movimiento 
+	for (let i = 0; i < tiles.length; i++) {
+		let TL = tiles[i];
+		if (TL.type != 0 && TL.type != 3) {
+		// evita los cubos no solidos (0) o Semisolidos (3)
+			if (Sprite.x < TL.x + 32 && Sprite.x + Sprite.width > TL.x && Sprite.y < TL.y + 32 && Sprite.y + Sprite.height > TL.y) {
+				//  izquierda
+				if (prevX + Sprite.width <= TL.x) {
+					Sprite.x = TL.x - Sprite.width;
 				}
-				//Sprite.x += Sprite.xP*-1;
-				Sprite.Xtouch = true
-				return true;
+				// derecha
+				if (prevX >= TL.x + 32) {
+					Sprite.x = TL.x + 32;
+				}
+				Sprite.xP = (prevX + Sprite.MoveX) - Sprite.x 
+				//el xP lo da en decimal pero los demas objetos del juego no estan preparados para tener decimales tan complejos
+				Sprite.Xtouch = true;
 			}
 		}
 	}
@@ -2863,7 +2985,8 @@ function(Sprite,player1,player2,tiles){
 if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
 (0  < (Sprite.y + (Sprite.height)) && screenHeigth  > (Sprite.y))){
 	Sprite.InScreen = true
-	
+
+Sprites_Effects(Sprite)
 Sprite.yP = Sprite.MoveY;
 	if(Sprite.yP > positveLimit){Sprite.yP = positveLimit}
 	if(Sprite.yP < negativeLimit){Sprite.yP = negativeLimit}
@@ -2880,9 +3003,10 @@ for (i = 0; i < tiles.length; i += 1){
 			if( (Sprite.y + (Sprite.height)) < (TL.y + 32)){
 				
 				Sprite.yP =(Sprite.y + Sprite.height) - TL.y 
-			
+				//Sprite.y = TL.y - Sprite.height; // Modo experimental sin necesidad de sumas
 				}else{
 				Sprite.yP = Sprite.y - (TL.y + 32)
+				//Sprite.y = TL.y + 32;// Modo experimental sin necesidad de sumas
 			}
 			Sprite.y += Sprite.yP*-1;
 			Sprite.yP = Sprite.MoveY + Sprite.yP*-1
@@ -2908,8 +3032,10 @@ for (i = 0; i < tiles.length; i += 1){
 		if((Sprite.x < TL.x + (32) && (Sprite.x + (Sprite.width)) > TL.x) && (Sprite.y < TL.y + (32))  && Sprite.y + (Sprite.height) > TL.y){
 			if( (Sprite.x + (Sprite.width)) < (TL.x + 32)){
 				Sprite.xP =(Sprite.x + Sprite.width) - TL.x; 
+				//Sprite.x = TL.x - Sprite.width; // Modo experimental sin necesidad de sumas
 				}else{
 		        Sprite.xP =  Sprite.x - (TL.x + 32); 
+				//Sprite.x = TL.x + 32; // Modo experimental sin necesidad de sumas
 			}
 			Sprite.x += Sprite.xP*-1;
 			Sprite.xP = Sprite.MoveX + Sprite.xP*-1
@@ -2920,8 +3046,6 @@ for (i = 0; i < tiles.length; i += 1){
 }
 Sprite.sideUX = Sprite.sideX
 Sprite.UPX = Sprite.x
-
-Sprites_Effects(Sprite)
 MiniSpriteColision(Sprite,myMiniSprites)
 
 }else{
@@ -3009,7 +3133,7 @@ if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
 	Sprite.xP = XnextPosition
 	 //00//
 	*/
-	
+	Sprites_Effects(Sprite)
 	if(tick){
 	if(Sprite.BY <= -1){Sprite.BY += 1}
 	if(Sprite.BY >= 1){Sprite.BY += -1}
@@ -3059,7 +3183,6 @@ if((0  < (Sprite.x + (Sprite.width)) && screenWidth  > (Sprite.x))&&
 	Sprite.UPX = Sprite.x
 
 	MiniSpriteColision(Sprite,myMiniSprites)
-	Sprites_Effects(Sprite)
 	
 }else{
 	Sprite.InScreen = false
@@ -3092,8 +3215,8 @@ X: function X (Sprites,A) {
 		}else{
 	Sprites.MoveX -= 1		
 		}
-	if(Sprites.Yvelocity < 0){
-	if(Sprites.Xvelocity  > Sprites.MoveX	|| Sprites.MoveX  > Sprites.Xvelocity*-1){Sprites.sideX = !Sprites.sideX}; 
+	if(Sprites.Xvelocity < 0){
+	if(Sprites.Xvelocity  > Sprites.MoveX	|| Sprites.MoveX > Sprites.Xvelocity*-1){Sprites.sideX = !Sprites.sideX}; 
 	}else{
 	if(Sprites.Xvelocity  < Sprites.MoveX	|| Sprites.MoveX < Sprites.Xvelocity*-1){Sprites.sideX = !Sprites.sideX}; 
 	}
@@ -3826,17 +3949,20 @@ if(P.intervald_frame >= P.frame){
 	}
 	}
 },
-function(P){
+function(Sprite){
 	//6
-	if(Simple_Tiles_ColisionX(P,myTiles)){
-		 P.MoveX = P.MoveX *-1
-	}else{
-		if(Simple_Tiles_ColisionY(P,myTiles)){
-			P.MoveY = P.MoveY *-1
-		}
+	Perfect_Tiles_ColisionY(Sprite,myTiles)
+	Perfect_Tiles_ColisionX(Sprite,myTiles)
+
+	
+	if(Ax3 == 2){
+		Sprite.intervald_frame++
+		if(Sprite.intervald_frame >= 180){Sprite.Live = false }
 	}
-	//if(P.Xtouch){ P.MoveX = P.MoveX *-1}
-	//if(P.Ytouch){ P.MoveY = P.MoveY *-1;}
+	
+	if(Sprite.Ytouch){ Sprite.MoveY = Sprite.MoveY *-1}
+	if(Sprite.Xtouch){ Sprite.MoveX = Sprite.MoveX *-1}
+
 },
 function(P,player){
 	//7
@@ -3965,6 +4091,39 @@ class tile {
 			   this.x += Xmargin
 		}
 	},
+	() => {
+		let SX = SAVE.X;
+		let	SY = SAVE.Y;
+		let Degenerate = DegenerateValue + RandomNumber(-1,1)
+		let rX = limitX +Xplus + Math.round(this.Xcord / Degenerate)
+		let rY = limitY +Yplus + Math.round(this.Ycord / Degenerate)
+		let Xmargin = limitTilesX +XplusPixels ;
+		let Ymargin = limitTilesY +YplusPixels; 
+		if(limitX -2 >= SX ){rX = 1}
+		if(limitY -2 >= SY ){rY = 1}
+		if(this.y < YplusPixels *-1  ){
+				this.Ycord = (this.Ycord - rY) % SY
+				if(this.Ycord < 0 ){this.Ycord = this.Ycord + SY  }
+			   this.Swich_tile()
+			   this.y += Ymargin 
+			   }
+		if(this.y > limitTilesY){
+			this.Ycord = (this.Ycord + rY ) % SY ;
+			this.Swich_tile()
+			this.y += Ymargin *-1
+		}
+		if(this.x > limitTilesX){
+			this.Xcord = (this.Xcord - rX ) % SX ;
+			if(this.Xcord < 0 ){this.Xcord = this.Xcord + SX  }
+			this.Swich_tile()
+			this.x += Xmargin  *-1
+		}
+		if(this.x < XplusPixels *-1){
+			   this.Xcord = (this.Xcord + rX  ) % SX ;
+			   this.Swich_tile()
+			   this.x += Xmargin
+		}
+	},
 	]
 	Swich_tile (){
 		let Xcord = this.Xcord
@@ -3973,7 +4132,10 @@ class tile {
 		let Ycord = this.Ycord
 		if(this.Ycord < 0) Ycord = 0; 
 		if(this.Ycord > limitYGird-1) Ycord = limitYGird-1; 
-	let result = TilesCollection.find(Tile => Tile.X == Xcord && Tile.Y == Ycord  );
+
+		// luego:
+		let result = tileMap.get(`${Xcord},${Ycord}`);
+	//let result = TilesCollection.find(Tile => Tile.X == Xcord && Tile.Y == Ycord  );
 	   if(result == undefined){
 		   this.col = "00000000";
 		   this.script = 0  ;
@@ -4031,7 +4193,27 @@ function TransfromTile(Tile,color,ImageNumber,Colision,Script){
 	Tile.XG = (parseInt(Tile.col[5], 32))*32; ;
 	Tile.YG = (parseInt(Tile.col[6], 32))*32;
 	Tile.fotograms = (parseInt(Tile.col[7], 32))
-	var result = TilesCollection.find(TilesCollection => TilesCollection.X === Tile.Xcord && TilesCollection.Y === Tile.Ycord  );
+	let result = tileMap.get(`${Tile.Xcord},${Tile.Ycord}`);
+		result.color = color
+		result.col = Colision
+		result.IN = ImageNumber
+		result.script = Script
+}
+function TransfromTileForver(Tile,color,ImageNumber,Colision,Script){
+	Tile.BC = color
+	Tile.imgN = ImageNumber
+	Tile.col = Colision
+	Tile.script = Script
+	Tile.type = (parseInt(Tile.col[4], 32))
+	Tile.XG = (parseInt(Tile.col[5], 32))*32; ;
+	Tile.YG = (parseInt(Tile.col[6], 32))*32;
+	Tile.fotograms = (parseInt(Tile.col[7], 32))
+	let result = tileMap.get(`${Tile.Xcord},${Tile.Ycord}`);
+		result.color = color
+		result.col = Colision
+		result.IN = ImageNumber
+		result.script = Script
+	result = LC.find(LC => LC.X === Tile.Xcord && LC.Y === Tile.Ycord  );
 		result.color = color
 		result.col = Colision
 		result.IN = ImageNumber
@@ -4160,11 +4342,11 @@ ctx.globalAlpha = Alpha
 
 
 }
-function rotate (b,Player) {
+function rotate (b,angle) {
 ctx = b.getContext("2d");
 ctx.save();
 ctx.translate(screenWidthHalf,screenHeigthHalf)
-ctx.rotate(Player * Math.PI / 180);
+ctx.rotate(angle * Math.PI / 180);
 ctx.translate(0 - b.width / 2,0 - b.height / 2)
 }
 function restore (b) {
@@ -4218,13 +4400,14 @@ this.sideX = true;
 this.sideY = true;  
 this.GravityTrun = true;
 this.GravityDirection = true
-this.Move = false;this.CameraY = Gird;this.run = false
+this.Move = false;this.gird = Gird;this.run = false
 this.Movement = Movement; this.water = false; this.AnimationWater = false
 this.UpTouch = false;this.DownTouch = false
 this.LeftTouch = false;this.RightTouch = false
 this.ButonBTouch = false;this.ButonATouch = false
 this.Xteleport = 0; this.Yteleport = 0;
 this.InFlor = false
+this.JumpANIMATION = false
 this.Action = false
 this.angle = 0;
 this.FristTouch = false
@@ -4318,7 +4501,7 @@ if(player.lives > 0 ){
 		 PlayerTrigers(player,controls)
 	 }
 		 player.Colision = true
-		 plataformer_Easy(controls,player)
+		 ControlTypes[ControlType].Script(controls,player)
 		 player.songEnd = false
 		 GameOverMusicEnd = false
     }else{
@@ -4347,6 +4530,7 @@ if(player.lives > 0 ){
 		if(!player.songEnd){
 			player.deathMusic.play()
 		}
+		if(TankGame) return true;
 		if(!GameOverMusicEnd ){
 			if(player2.lives < 1 && Multiplayer ){
 			GameOverMusic.play()
@@ -4367,7 +4551,8 @@ if(player.lives > 0 ){
 const controlls =[
 {up:38,down:40,left:37,right:39,Jump:90,Run:88 },
 {up:38,down:40,left:37,right:39,Jump:79,Run:80 },
-{up:87,down:83,left:65,right:68,Jump:86,Run:66 },]
+{up:87,down:83,left:65,right:68,Jump:86,Run:66 },
+]
 function Player_Effects(Player){
 	for(let i = 0; i < effects_in_game.length ;i++){
 		let effect = effects_in_game[i]
@@ -4473,6 +4658,88 @@ const effectAction =  [
 	},
 },
 ]
+var chains =  []
+function chain(x,y,width,height,color){
+this.x = x
+this.y = y
+this.width = width
+this.height = height
+this.color = color
+}
+function chainColision(FarChain,LowChain,Trop){
+	//if( (PL.x < (object.x + 32) - PL.MoveXLimit && (PL.x + (PL.width)) > (object.x - PL.MoveXLimit)) && (PL.y < object.y + (32)  && PL.y + (PL.height) > object.y) ){
+		if(FarChain.x + FarChain.width - Trop < LowChain.x){
+			LowChain.x = FarChain.x + FarChain.width - Trop 
+		}
+		if(FarChain.x + Trop > LowChain.x + LowChain.width){
+			LowChain.x = FarChain.x - FarChain.width + Trop
+		}
+		if(FarChain.y + FarChain.height - Trop  < LowChain.y){
+			LowChain.y = FarChain.y + FarChain.height - Trop 
+		}
+		if(FarChain.y + Trop  > LowChain.y + LowChain.height){
+			LowChain.y = FarChain.y - FarChain.height + Trop 
+		}
+}
+function Snake(ctr,Player,B,C){
+	SAVE.CameraX_frese = 1
+	SAVE.CameraY_frese = 1
+	if(frisFotogram){
+		Player.prin = 0
+		Player.width = 32
+		Player.height = 32
+		Player.widthHalf = 16
+		Player.heightHalf = 16
+		for (i = 1; i < 10; i += 1){
+		chains.push(new chain(Player.x,Player.y,Player.width,Player.height,"#EEE"))
+		}
+	}
+		chainColision(Player,chains[0],16)
+		if(chains.length != 0){
+			for (i = 1; i < chains.length; i += 1){ 
+				chainColision(chains[i-1],chains[i],16)
+			}
+		}
+		for (i = 0; i < chains.length; i += 1){
+			let CH = chains[i]
+			PrinT(
+			game,
+			CH.x,
+			CH.y,
+			CH.width,
+			CH.height,
+			CH.color
+			)
+		}
+		PrinT(
+		game,
+		Player.x,
+		Player.y,
+		Player.width,
+		Player.height,
+		"#FFF"
+		)
+	Player.MoveX = 0
+	Player.MoveY = 0
+	if (Player.keys && Player.keys[controlls[ctr].left]) {
+		Player.MoveX = -2
+		Player.side = true
+		Player.sideX = true; 
+	}
+	if (Player.keys && Player.keys[controlls[ctr].right]) {
+		Player.MoveX = 2
+		Player.side = false
+		Player.sideX = false; 
+	}
+	if (Player.keys && Player.keys[controlls[ctr].up]) {
+		Player.MoveY = -2
+		Player.sideY = true; 
+	}
+	if (Player.keys && Player.keys[controlls[ctr].down]) {
+		Player.MoveY = 2
+		Player.sideY = false; 
+	}
+}
 function PacMan(ctr,Player,B,C){
 	if(frisFotogram){
 	CameraX_frese = 1
@@ -4509,7 +4776,11 @@ function PacMan(ctr,Player,B,C){
 	if(Player.MoveY != 0){Player.InFlor = false}
 }
 function Tank(ctr,Player,B,C){
-
+	 Player.prin = 2
+	 Player.width = 32
+	 Player.height = 32
+	 Player.widthHalf = 16
+	 Player.heightHalf = 16
 	 if(Player.Xtouch){
 		 Player.MoveX = 0
 		 Player.delay ++
@@ -4544,19 +4815,56 @@ function Tank(ctr,Player,B,C){
 			if(Player.velocity < -4){Player.velocity = -4};
 		}
 		
-		Player.MoveX = Player.velocity * Math.cos(Player.angle)
-		Player.MoveY = Player.velocity * Math.sin(Player.angle)
+		Player.MoveX = Math.round(Player.velocity * Math.cos(Player.angle))
+		Player.MoveY = Math.round(Player.velocity * Math.sin(Player.angle))
 		if(Player.velocity >= 0.5){Player.velocity -= 0.5}
 		if(Player.velocity <= -0.5){Player.velocity += 0.5}
 		if(Player.shotdelay > 0 ){
 			Player.shotdelay += 1;
 			if(Player.shotdelay > 8){Player.shotdelay = 0}
 		}
+		/*
+		PrinT(
+		game,
+		Player.x,
+		Player.y,
+		32,
+		32,
+		"#FF0"
+		)
+		*/
+		PrinT(
+		game,
+		Player.x+(Player.widthHalf/2) + (34  * Math.cos(Player.angle)),
+		Player.y+(Player.heightHalf/2) + (34   * Math.sin(Player.angle)),
+		16,
+		16,
+		"#F00"
+		)
+		
 		if (Player.ButonBTouch){
+			Player.MoveX = 0
+			Player.MoveY = 0
 			
 			if(Player.shotdelay == 0){Player.shotdelay += 1
 			
-			 myMiniSprites.push(new Mini_sprite(Player.x+(Player.widthHalf/2),Player.y+(Player.heightHalf/2),2,0,64,96,0,6,Math.cos(Player.angle) * 5,Math.sin(Player.angle) * 5,16,16,0))
+			 myMiniSprites.push(
+			 new Mini_sprite(
+			 Player.x+(Player.widthHalf/2) + (34  * Math.cos(Player.angle)),
+			 Player.y+(Player.heightHalf/2) + (34   * Math.sin(Player.angle)),
+			 2,
+			 0,
+			 64,
+			 96,
+			 0,
+			 6,
+			 Math.cos(Player.angle) * 2 ,
+			 Math.sin(Player.angle) * 2 ,
+			 16,
+			 16,
+			 2
+			 )
+			 )
 			 }
 		}
 		
@@ -4600,7 +4908,8 @@ function TankMouse(ctr,Player,B,C){
 			 myMiniSprites.push(new Mini_sprite(Player.x+(Player.widthHalf/2),Player.y+(Player.heightHalf/2),2,0,64,96,0,0,Math.cos(Player.angle) * 10,Math.sin(Player.angle) * 10))
 			 }
 		}
-		
+		if(Player.MoveX  >= 1){ Player.side = false }
+		if(Player.MoveX  <= -1){ Player.side = true }
 }
 function Fly(ctr,Player,B,C){
 	if(frisFotogram){
@@ -4735,6 +5044,50 @@ function Stocked(Player,Player2){
 }
 var PlayerGravity = 0.5
 var jump_force = -7
+var ControlType = 0
+const ControlTypes = [
+	{
+		Script: function Script(ctr,Player,B,C) { // 0
+			plataformer_Easy(ctr,Player,B,C)
+		}
+	},
+	{
+		Script: function Script(ctr,Player,B,C) { // 1
+			 plataformer_Gravity(ctr,Player,B,C)
+		}
+	},
+	{
+		Script: function Script(ctr,Player,B,C) { // 2
+			plataformer_Angle(ctr,Player,B,C)
+		}
+	},
+	{
+		Script: function Script(ctr,Player,B,C) { // 3
+			TankMouse(ctr,Player,B,C)
+		}
+	},
+	{
+		Script: function Script(ctr,Player,B,C) { // 4
+			Tank(ctr,Player,B,C)
+		}
+	},
+	{
+		Script: function Script(ctr,Player,B,C) { // 5
+			PacMan(ctr,Player,B,C)
+		}
+	},
+	{
+		Script: function Script(ctr,Player,B,C) { // 6
+			 Snake(ctr,Player,B,C)
+		}
+	},
+	{
+		Script: function Script(ctr,Player,B,C) { // 7
+			 Fly(ctr,Player,B,C)
+		}
+	},
+] 
+	
 function plataformer_Easy(ctr,Player,B,C){
 	/*comprobar si esta en el suelo*/
 	if(Player.GravityTrun){
@@ -4752,7 +5105,6 @@ function plataformer_Easy(ctr,Player,B,C){
 			}
 	}
 	 if(Player.Xtouch){
-		Player.Xvelocity = Player.Xvelocity*-1;
 		Player.MoveX = 0;
 		Player.Hx = 0;
 		Player.sideX = !Player.sideX
@@ -4911,6 +5263,222 @@ ShoterType[shoterMode](ctr,Player)
 
  
 }
+function plataformer_Gravity(ctr,Player,B,C){
+	/*comprobar si esta en el suelo*/
+	if(Player.invecybility){
+		Player.time ++
+			if(Player.time > 30){
+				Player.time = 0
+				Player.invecybility = false
+			}
+	}
+	 if(Player.Xtouch){
+		Player.MoveX = 0;
+		Player.Hx = 0;
+		Player.sideX = !Player.sideX
+	}
+	if(Player.Ytouch){
+		if((Player.GravityTrun && Player.MoveYLimit > 0 ) || (!Player.GravityTrun && Player.MoveYLimit < 0 )){
+			Player.jumped = true;
+			if(!Player.invecybility)Player.AplySecondjump = true;
+			Player.MoveY = 0;
+			Player.jt = 0;
+			Player.InFlor = true;
+			}else{
+				Player.MoveY = 0;
+				Player.jumped = false
+				}
+	}
+
+	if(Player.delay > 0 ){Player.delay += 1;if(Player.delay > 8){Player.delay = 0}}
+	/*inputs en el aire*/
+	Player.Up = false
+	if (Player.UpTouch) {
+		Player.Up = true
+	}
+	Player.Down = false
+	if (Player.DownTouch) {
+		Player.Down = true
+	}
+	if(Player.water ){
+		if (Player.ButonBTouch && !Player.crouched){Player.MaxVelocity = 6;}
+		if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
+			if (Player.LeftTouch) {
+				if(Player.jumped) Player.side = true ;
+				Player.velocity --;
+				if(Player.velocity < Player.MaxVelocity*-1 )Player.velocity = Player.MaxVelocity*-1;
+			}else{
+				if (Player.RightTouch) {
+					if(Player.jumped) Player.side = false;
+					Player.velocity ++;
+					if(Player.velocity > Player.MaxVelocity )Player.velocity = Player.MaxVelocity;
+				}
+			}
+		}
+		if(Ax4 == 3){
+		if(Player.velocity <= -1){Player.velocity ++}
+		if(Player.velocity >= 1){Player.velocity --}
+		}
+		Player.MoveX = Player.velocity
+		Player.MaxVelocity = 3
+		Player.jumped = true;
+		Player.jt = 0;
+		if (Player.ButonATouch){Jump(Player,Player.GravityDirection*-3,1,1)}
+
+		Player.InFlor = false
+		Player.MoveY += Player.GravityDirection*0.5
+		if(Player.GravityTrun){
+			if(Player.MoveY == 3){Player.MoveY = 2}
+			if(Player.MoveY > 3){Player.MoveY -= 2}
+		}else{
+			if(Player.MoveY == -3){Player.MoveY = -2}
+			if(Player.MoveY < -3){Player.MoveY += 2}
+		}
+			
+		Player.water = false
+		Player.AnimationWater = true
+	}else{
+		/*En tierra*/
+		if (Player.ButonBTouch && !Player.crouched){Player.MaxVelocity = 8;}
+		if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
+			if (Player.LeftTouch) {
+				if(Player.jumped) Player.side = true ;
+				Player.velocity --;
+				if(Player.velocity < Player.MaxVelocity*-1 )Player.velocity = Player.MaxVelocity*-1;
+			}else{
+				if (Player.RightTouch) {
+					if(Player.jumped) Player.side = false;
+					Player.velocity ++;
+					if(Player.velocity > Player.MaxVelocity )Player.velocity = Player.MaxVelocity;
+				}
+			}
+		}
+		if(Ax4 == 3){
+		if(Player.velocity <= -1){Player.velocity ++}
+		if(Player.velocity >= 1){Player.velocity --}
+		}
+		
+			if (Player.ButonATouch) {
+				if(Player.jumped && !Player.Down){
+					Player.GravityTrun = !Player.GravityTrun
+					Player.jumped = false
+					Player.jt = 0
+				}
+			}else{
+				Player.jumped = false
+				Player.jt = 0
+			}
+			if(Player.GravityTrun){
+				Player.GravityDirection = 1
+				Player.prin = 1
+			}else{
+				Player.GravityDirection = -1
+				Player.prin = 6
+			}
+			Gravity(Player,16,Player.GravityDirection*0.5);
+			Player.InFlor = false	
+			Player.Slide = false
+		Player.MoveX = Player.velocity
+		Player.MaxVelocity = 4
+}
+ShoterType[shoterMode](ctr,Player)
+}
+function plataformer_Angle(ctr,Player,B,C){
+	Player.width = 32
+	Player.height = 32
+    Player.JumpANIMATION = true
+	Player.prin = 2
+	// CameraAngle control
+	if (Player.UpTouch) {
+		CameraAngle += 2
+		Player.side = false;
+	}
+	if (Player.DownTouch) {
+		CameraAngle -= 2
+		Player.side = true ;
+	}
+	if(CameraAngle >= 360){CameraAngle = 0}
+	if(CameraAngle < 0){CameraAngle = 360 + CameraAngle}
+	let angle = CameraAngle * Math.PI / 180
+	Player.angle = angle*-1 + (90 * Player.GravityDirection) * Math.PI / 180
+	if( ( (CameraAngle < 45) || (CameraAngle > 315) ) ||  ( (CameraAngle > 135) && (CameraAngle < 225) ) ){
+		if(Player.Xtouch){	
+			Player.velocity = 0
+		}
+		if(Player.Ytouch){	
+			if(Player.Yvelocity > 0){
+				Player.jumped = true;
+				Player.jt = 0
+				Player.Yvelocity = 0
+			}else{
+				Player.jumped = false;
+				Player.jt = 0
+				Player.Yvelocity = 2;
+			}
+		}
+	}else{
+		if(Player.Xtouch){
+			if(Player.Yvelocity > 0){
+				Player.jumped = true;
+				Player.jt = 0
+				Player.Yvelocity = 0
+			}else{
+				Player.jumped = false;
+				Player.jt = 0
+				Player.Yvelocity = 2
+			}
+		}
+		if(Player.Ytouch){	
+			Player.velocity = 0
+		}
+	}
+	// JUMP
+	if(Player.ButonATouch){ 
+		 if(Player.jumped && Player.jt <= 16){
+		 Player.jt += 1
+		 Player.Yvelocity = -8
+		}else{
+			Player.jumped = false
+			Player.jt = 0
+		}
+	}else{
+		Player.jumped = false
+		Player.jt = 0
+	}
+	// LEFT RIGHT
+	if (Player.ButonBTouch && !Player.crouched){Player.MaxVelocity = 8;}
+		if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
+			if (Player.LeftTouch) {
+				if(Player.jumped) Player.side = true ;
+				Player.velocity --;
+				if(Player.velocity < Player.MaxVelocity*-1 )Player.velocity = Player.MaxVelocity*-1;
+			}else{
+				if (Player.RightTouch) {
+					if(Player.jumped) Player.side = false;
+					Player.velocity ++;
+					if(Player.velocity > Player.MaxVelocity )Player.velocity = Player.MaxVelocity;
+				}
+			}
+		}
+		// Desend velocity
+		if(Ax4 == 3){
+		if(Player.velocity <= -1){Player.velocity ++}
+		if(Player.velocity >= 1){Player.velocity --}
+		}
+	Player.MaxVelocity = 4
+	//Gravity
+	Player.Yvelocity ++
+	if(Player.Yvelocity	> 16){Player.Yvelocity = 16} 
+	
+	let gravityVector = {
+    x: Math.sin(angle) * Player.Yvelocity + Math.cos(angle) * Player.velocity,
+    y: Math.cos(angle) * Player.Yvelocity - Math.sin(angle) * Player.velocity
+	};
+	
+	
+	Player.MoveX = Math.round(gravityVector.x);
+    Player.MoveY = Math.round(gravityVector.y);
+}
 function Jump (Player,Number,JumpsIntervals,PlayerJump) {
 	//Player.jumped = true // Fly
 	 if(Player.jumped && Player.jt <= JumpsIntervals){
@@ -5016,7 +5584,7 @@ function animation(P,Con){
 		return;
 	}
 	/*comprobar si no esta en el aire*/
-	if(P.InFlor ){
+	if(P.InFlor && !P.JumpANIMATION){
 		/*comprobra si esta corriendo o no*/
 		if((P.MoveX + P.BX) > 6  || (P.MoveX + P.BX) < -6){
 			P.run = true
@@ -5120,8 +5688,8 @@ function MouseBlock(){
     }
 }
 
-function Gravity (P,N,CameraY) {
-    P.MoveY += CameraY;
+function Gravity (P,N,AngleY) {
+    P.MoveY += AngleY;
   }
 
 function MiniSpriteColision(Sprite,MiniSprites){
@@ -5176,13 +5744,14 @@ if(Player.y >= 576){death = true
 }return death},
 ]
 const calculate =[
-{ 
+{ // 0
 X :	function nothing () {return false},
 Y :	function nothing () {return false},
 },{ 
-X :	function cube (PL,object) {let crash = false
+X :	function cube (PL,object) {
+	let crash = false
 //revisa si el jugador esta dentro del objeto
-if((PL.x < (object.x + 32) - PL.MoveXLimit && (PL.x + (PL.width)) > (object.x - PL.MoveXLimit)) && (PL.y < (object.y + 32))  && PL.y + (PL.height) > object.y){
+if( (PL.x < (object.x + 32) - PL.MoveXLimit && (PL.x + (PL.width)) > (object.x - PL.MoveXLimit)) && (PL.y < object.y + (32)  && PL.y + (PL.height) > object.y) ){
 	if( (PL.x + (PL.width)) > (object.x + 32)){ // revisa de donde esta chocando
 		if(object.col[3] != 0){ // cero es que no hay colision
 			if(PL.FristTouch){
@@ -5212,7 +5781,7 @@ if((PL.x < (object.x + 32) - PL.MoveXLimit && (PL.x + (PL.width)) > (object.x - 
 };return crash},
 Y :	function cube (PL,object) {
 	let crash = false
-if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (object.y + 32) - PL.MoveYLimit)  && (PL.y + (PL.height) > ((object.y) - (PL.MoveYLimit)))){
+if( (PL.x < object.x + (32) && (PL.x + (PL.width) ) > object.x) && (PL.y <  (object.y + 32) - PL.MoveYLimit)  && (PL.y + (PL.height) > (object.y - PL.MoveYLimit))){
 	if((PL.y <  (object.y + 32) - PL.MoveYLimit)){
 		if( (PL.y + (PL.height)) > (object.y + 32)){
 			if(object.col[2] != 0){
@@ -5271,17 +5840,17 @@ if((PL.x < object.x + (32) && (PL.x + (PL.width)) > object.x) && (PL.y <  (objec
 },{
 	X :	function cube_whit_not_solid (PL,B) {
 		if((PL.x < (B.x+8) + (32 - 8) && (PL.x + (PL.width)) > (B.x+8)) && (PL.y < (B.y+8) + (32 - 8))  && PL.y + (PL.height) > (B.y+8)){
-			if(B.col[1] != 0  && PL.priority != undefined){colM[B.col[1]].X(PL,B)
-			functions_collection[B.script].Action(B,PL,false)
-			;
+			if(B.col[1] != 0){
+			colM[( "0x" + B.col[1])*1].X(PL,B)
+			functions_collection[B.script].Action(B,PL,false);
 			}
 		}
 	},
 	Y :	function cube_whit_not_solid (PL,B) {
 		if((PL.x < (B.x+8) + (32 - 8) && (PL.x + (PL.width)) > (B.x+8)) && (PL.y < (B.y+8) + (32 - 8))  && PL.y + (PL.height) > (B.y+8)){
-			if(B.col[1] != 0  && PL.priority != undefined){colM[B.col[0]].Y(PL,B)
-			functions_collection[B.script].Action(B,PL,false)
-			;
+			if(B.col[1] != 0){
+			colM[( "0x" + B.col[0])*1].Y(PL,B)
+			functions_collection[B.script].Action(B,PL,false);
 			}
 		}
 	},
@@ -5411,10 +5980,13 @@ function SemiSolidMovingColision(PL,B){
 let crash = false
 let extraUp = 0 // se le suma a la colision para hacer mas aplicar el movimiento del objeto
 let tileVy = (PL.MoveY + PL.BY) // el movimiento siguiente del jugador
+let Ybody = -1
+if(B.Left != 0 ){Ybody = B.height}
 if(B.yP > 0){extraUp = (B.yP*-1)-2 };    // dependiendo de a que lado va sera la velocidad que se aplique
 if(B.yP < 0){extraUp = B.yP }
-if((PL.x < (B.x-PL.Hx) + (B.width) && (PL.x + (PL.width)) > (B.x-PL.Hx)) && (PL.y <  ((B.y-1)-tileVy)  && (PL.y + (PL.height) > ((B.y+extraUp) - tileVy)))){
-	if(B.Up != 0){ // al jugador se le aplica el movimient del objeto
+//if((PL.x < B.x + (B.width) && (PL.x + (PL.width)) > B.x) && (PL.y <  (B.y + B.height) - tileVy)  && (PL.y + (PL.height) > ((B.y) - (tileVy)))){
+if((PL.x < (B.x-PL.Hx) + (B.width) && (PL.x + (PL.width)) > (B.x-PL.Hx)) && (PL.y <  ((B.y + Ybody )-tileVy)  && (PL.y + (PL.height) > ((B.y+extraUp) - tileVy)))){
+	if(B.Up != 0 || B.Left != 0 ){ // al jugador se le aplica el movimient del objeto
 	   PL.Hx +=  B.xP
 	   PL.Hy =  B.yP
 	}
@@ -5435,7 +6007,7 @@ return crash
 }
 function SemiSolidMovingColision_X(PL,B){
 let tileVx = (PL.MoveX + PL.BX) 
-if(PL.invecybility){ 
+if(PL.invecybility){
 	if((PL.x-8 < (B.x + B.width ) - tileVx && (PL.x+8 + (PL.width)) > (B.x - tileVx)) && (PL.y-8 < (B.y + B.height ))  && PL.y+8 + (PL.height) > (B.y)){
 		B.BulletTouch = true;PL.time = 0
 	}
@@ -5521,21 +6093,30 @@ Y: function Y (PL) {PL.GravityTrun = false},
 X: function X (PL) {PL.water = true;},
 Y: function Y (PL) {PL.water = true;},
 },{    /* prizes (5)*/
-X: function X (PL,B) {prizes += 1;B.col = "00000000";},
-Y: function Y (PL,B) {prizes += 1;B.col = "00000000";},
+X: function X (PL,B) {if(PL.priority != undefined){prizes += 1;B.col = "00000000";}},
+Y: function Y (PL,B) {if(PL.priority != undefined){prizes += 1;B.col = "00000000";}},
 },{  /* death (6)*/
 X: function X (PL,B) {if(PL.invecybility != true){PL.lives --;PL.Stocked = true}},
 Y: function Y (PL,B) {if(PL.invecybility != true){PL.lives --;PL.Stocked = true}},
 },{  /* no use (7)*/
-X: function X (PL) {if(PL.invecybility != true){PL.lives += 1;PL.invecybility = true}},
-Y: function Y (PL) {if(PL.invecybility != true){PL.lives += 1;PL.invecybility = true}},
+X: function X (PL) {PL.water = true;PL.BY = 2},
+Y: function Y (PL) {PL.water = true;PL.BY = 2},
+//X: function X (PL) {if(PL.invecybility != true){PL.lives += 1;PL.invecybility = true}},
+//Y: function Y (PL) {if(PL.invecybility != true){PL.lives += 1;PL.invecybility = true}},
 },{ /*8 Win */
-X: function X (PL,B) {PL.Win = true;PL.InMove = false},
-Y: function Y (PL,B) {PL.Win = true;PL.InMove = false},
+X: function X (PL,B) {if(PL.priority != undefined){PL.Win = true;PL.InMove = false}},
+Y: function Y (PL,B) {if(PL.priority != undefined){PL.Win = true;PL.InMove = false}},
 },{ /*9 checkpoint */
-X: function X (PL,B) {establecing_starcords(B.Xcord,B.Ycord,PL);B.col = "00000000"},
-Y: function Y (PL,B) {establecing_starcords(B.Xcord,B.Ycord,PL);B.col = "00000000"},
-}
+X: function X (PL,B) {if(PL.priority != undefined){establecing_starcords(B.Xcord,B.Ycord,PL);B.col = "00000000"}},
+Y: function Y (PL,B) {if(PL.priority != undefined){establecing_starcords(B.Xcord,B.Ycord,PL);B.col = "00000000"}},
+},{  /* Water (A)*/
+X: function X (PL) {PL.water = true;PL.BX = 2},
+Y: function Y (PL) {PL.water = true;PL.BX = 2},
+},
+{  /* Water (B)*/
+X: function X (PL) {PL.water = true;PL.BX = -2},
+Y: function Y (PL) {PL.water = true;PL.BX = -2},
+},
 ]
 function stopX(p1,p2,tiles){
 let GoTo = 0
@@ -5813,7 +6394,7 @@ function MiniSprites_Vx_VY(){
 	myMiniSprites[i].y += myMiniSprites[i].MoveY
     }
 }
-const prin = [
+const prin_player = [
 function (Player) {//0
 	
 },
@@ -5824,7 +6405,7 @@ function(Player,ctx,X,Y){// 2
 ctx.save();
 ctx.translate(Player.x -32 / -2, Player.y - 32 / -2);
 ctx.rotate(Player.angle);
-ctx.drawImage(HudTEXTURES,32 ,0 , X, Y,32 / -2, 32 / -2, X  , Y ,);
+ctx.drawImage(HudTEXTURES,32 ,0 , 32, 32,32 / -2, 32 / -2, 32  , 32 ,);
 ctx.restore();
 },
 function(Player,canvas,N){// 3
@@ -5937,12 +6518,12 @@ for (i = (myTiles.length -1); i > -1; i += -1) {
 }
 
 
-function PrinAllTilesColor(canvas){
+function PrinAllTiles3D(canvas,Number){
 let Tile;
-let Tile_whit = 1
+let Tile_whit = 32 * Number
 let offscreen = document.createElement("canvas");
-offscreen.width = screenWidth*2;
-offscreen.height = screenHeigth*2;
+offscreen.width = screenWidth*Number;
+offscreen.height = screenHeigth*Number;
 let octx = offscreen.getContext("2d");
 
 
@@ -5950,27 +6531,115 @@ for (i = (myTiles.length -1); i > -1; i += -1) {
 	if(myTiles[i].prin != 0){
 	Tile = myTiles[i]
 	octx.fillStyle = Tile.BC
-    octx.fillRect(Tile.x*2,Tile.y*2,64,64)
+    octx.fillRect(Tile.x*Number,(Tile.y-8)*Number,Tile_whit,Tile_whit)
 	}
 }
 ctx.drawImage(offscreen, 0, 0, offscreen.width , offscreen.height, 0, 0, screenWidth, screenHeigth);
 
+/*
 for (i = (myTiles.length -1); i > -1; i += -1) {
 	if(myTiles[i].prin != 0){
 		Tile = myTiles[i]
+		if(Tile.type == 0){
+		}else{
 		 ctx.drawImage(
-		image_collection[Tile.imgN],
-		Tile.XG+16, 
-		((Tile.animation*Tile.heg) + Tile.YG)+16, 
-		Tile_whit, 
-		Tile_whit, 
-		Tile.x + Tile.Xplus, 
-		Tile.y + Tile.Yplus, 
+		image_collection_offSet[Tile.imgN],
+		Tile.XG, 
+		((Tile.animation*Tile.heg) + Tile.YG), 
 		Tile.Wid, 
-		Tile.heg, 
+		Tile.heg-16, 
+		Tile.x + Tile.Xplus, 
+		Tile.y + Tile.Yplus-8, 
+		Tile.Wid, 
+		Tile.heg-16, 
 		)
 		}
+	}
+}
+*/
+//for (i = (myTiles.length -1); i > -1; i += -1) {
+for(let i = 0; i < myTiles.length ;i++){
+	if(myTiles[i].prin != 0){
+		Tile = myTiles[i]	
+		if(Tile.type == 0 || Tile.type == 2){
+			ctx.drawImage(
+			image_collection[Tile.imgN],
+			Tile.XG, 
+			((Tile.animation*Tile.heg) + Tile.YG), 
+			Tile.Wid, 
+			Tile.heg, 
+			Tile.x + Tile.Xplus, 
+			Tile.y + Tile.Yplus-8, 
+			Tile.Wid, 
+			Tile.heg, 
+			)
+			if(Tile.type == 2){
+				ctx.drawImage(
+				image_collection_offSet[Tile.imgN],
+				Tile.XG, 
+				((Tile.animation*Tile.heg) + Tile.YG), 
+				Tile.Wid, 
+				Tile.heg, 
+				Tile.x + Tile.Xplus, 
+				Tile.y + Tile.Yplus-8, 
+				Tile.Wid, 
+				Tile.heg, 
+			)
+			}
+			ctx.drawImage(
+			image_collection_offSet[Tile.imgN],
+			Tile.XG, 
+			((Tile.animation*Tile.heg) + Tile.YG), 
+			Tile.Wid, 
+			Tile.heg, 
+			Tile.x + Tile.Xplus, 
+			Tile.y + Tile.Yplus-24, 
+			Tile.Wid, 
+			Tile.heg, 
+			)
+		}else{
+			
+			 ctx.drawImage(
+			image_collection[Tile.imgN],
+			Tile.XG, 
+			((Tile.animation*Tile.heg) + Tile.YG), 
+			Tile.Wid, 
+			Tile.heg, 
+			Tile.x + Tile.Xplus, 
+			Tile.y + Tile.Yplus+8, 
+			Tile.Wid, 
+			Tile.heg, 
+			)
+			
+			ctx.drawImage(
+			image_collection_offSet[Tile.imgN],
+			Tile.XG, 
+			((Tile.animation*Tile.heg) + Tile.YG), 
+			Tile.Wid, 
+			Tile.heg, 
+			Tile.x + Tile.Xplus, 
+			Tile.y + Tile.Yplus-8, 
+			Tile.Wid, 
+			Tile.heg, 
+			)
+			ctx.drawImage(
+			image_collection_offSet[Tile.imgN],
+			Tile.XG, 
+			((Tile.animation*Tile.heg) + Tile.YG), 
+			Tile.Wid, 
+			Tile.heg, 
+			Tile.x + Tile.Xplus, 
+			Tile.y + Tile.Yplus-24, 
+			Tile.Wid, 
+			Tile.heg, 
+			)
+		
+		}
+		
+		
+		}
     }
+	
 }
 
 function draw_background(Player,canvas){
@@ -6322,6 +6991,9 @@ var song_end = false
 var frisFotogram = true
 var effects_in_game = []
 var Kills = 0
+var Pause = false
+var Waithed = true
+var TextInGame = []
 var Player_CRT = {
 	Player1:  1,
 	Player2:  2,
@@ -6408,7 +7080,14 @@ corection = -1;
 clok_number = 0
 Kills = 0
 p1.priority = false
+CameraAngle = 0
 CameraBody.Colision = false
+if(TankGame){
+	Multiplayer = true
+	ControlType = 4
+	p2.x += 33*32
+	p2.y -= 14*32
+}
 if(Multiplayer){
 	p1.modeX = 1
 	p1.modeY = 1
@@ -6435,6 +7114,8 @@ pre_finish = false
 Pre_star = true
 frisFotogram = true
 reset_game = false
+Pause = false
+Waithed = true
 TextFinishGame = []
 inputX = 0
 inputY = 0
@@ -6507,21 +7188,38 @@ function Frames(){
 		document.removeEventListener('keydown',  keydownHandlerP2)
 		document.removeEventListener('keyup', keyupHandlerP2)
 		}
+			if(p1.keys && p1.keys[13]){
+				if(Waithed){
+					ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+					ctx.fillRect(0, 0,screenWidth, screenHeigth);
+					DrawTextTest("Pause",screenWidthHalf,screenHeigthHalf,'white','32px Arial','center')
+					Pause = !Pause
+					Waithed = false
+				}
+			}else{
+				Waithed = true
+			}
 			if(Frame(p1,p2,tiles,sprites,mini_sprites)){
 					requestAnimationFrame(Frames)
 			}else{
 			   if(reset_game){
+				
+				if(TankGame){
+					BackgroundsInLevel = []
+					Azar_Back_Sound[RandomNumber(0,13)]()
+					game_area.style.backgroundImage =  backgroundBase
+				}
 			   buton[2](0)
 			   }else{
-				on_game = false
-				backgroundMusic.pause();  // Pausa el audio
-				backgroundMusic.currentTime = 0; // Reinicia al inicio
-				Win_or_lose_Manager()	  
-				document.removeEventListener('keydown',  keydownHandlerP1)
-				document.removeEventListener('keyup', keyupHandlerP1)
-				document.removeEventListener('keydown',  keydownHandlerP2)
-				document.removeEventListener('keyup', keyupHandlerP2)
-				Textdraw()
+					on_game = false
+					backgroundMusic.pause();  // Pausa el audio
+					backgroundMusic.currentTime = 0; // Reinicia al inicio
+					Win_or_lose_Manager()	  
+					document.removeEventListener('keydown',  keydownHandlerP1)
+					document.removeEventListener('keyup', keyupHandlerP1)
+					document.removeEventListener('keydown',  keydownHandlerP2)
+					document.removeEventListener('keyup', keyupHandlerP2)
+					Textdraw()
 			   }
 			}
 	  }
@@ -6541,7 +7239,10 @@ function Frames(){
 	}
 	}
 
-	function Frame (p1,p2,tiles,sprites,mini_sprites){
+function Frame (p1,p2,tiles,sprites,mini_sprites){
+	
+	if(Pause)return on_game;
+	
 		gamepads = navigator.getGamepads();
 		for (var gp of gamepads) {
 		  if (gp) {
@@ -6566,7 +7267,7 @@ function Frames(){
 	Ax6 += 1;if(Ax6 >= 6){Ax6 = 0}
 	Ax8 += 1;if(Ax8 >= 8){Ax8 = 0}
 	Ax16 += 1;if(Ax16 >= 16){Ax16 = 0;}
-	if(Ax3 == 2){
+	if(Ax6 == 5){
 	for(let i = 0; i < fotograms.length ;i++){
 		fG_action[i] += 1
 		if(fG_action[i] >= fotograms[i]){
@@ -6577,7 +7278,7 @@ function Frames(){
 	 /*rotar o darle algun efecto ala pantalla*/
 	//restore(game);
 	clear(game);/*Este es el que refresca la pantalla cada frame*/
-	//rotate(game,0)
+	rotate(game,CameraAngle)
 	if(UpSide){UpSideDown(game)}
 	cameraX = 0;
 	cameraY = 0;
@@ -6587,14 +7288,17 @@ function Frames(){
 
 	Player_Effects(p2)
 		if(PlayerAction(p2,p1,Player_CRT.Player2,Multiplayer)){
-			//pre_finish = true
-		   //reset_game = true
+			if(!pre_finish) player2Deaths ++;
+			pre_finish = true
+		   if(TankGame)reset_game = true;
 		} 
 	}
 	Player_Effects(p1)
 	if(PlayerAction(p1,p2,Player_CRT.Player1,Multiplayer)){
+		if(!pre_finish) player1Deaths ++;
 		pre_finish = true
 		if(!AZAR){reset_game = true}
+		if(TankGame)reset_game = true;
 
 	}
 	if(p1.Win || p2.Win){
@@ -6612,7 +7316,7 @@ function Frames(){
 	if(Multiplayer){
 	PlayerMovementManagerY(CameraBody,tiles,sprites,mini_sprites)
 		if(CameraBody.modeY == 1){
-		cameraModeY[CameraBody.camY](CameraBody,tiles)
+		 if(!TankGame){cameraModeY[CameraBody.camY](CameraBody,tiles)}
 		 }else{
 		cordY += cameraY 
 		if(!NolimitY)stopY(CameraBody,p2,tiles);
@@ -6650,7 +7354,7 @@ function Frames(){
 	if(Multiplayer){
 	PlayerMovementManagerX(CameraBody,tiles,sprites)
 		if(CameraBody.modeX == 1){
-	   cameraModeX[CameraBody.camX](CameraBody)
+	   if(!TankGame){cameraModeX[CameraBody.camX](CameraBody)}
 	   }else{	   
 		  cordX += cameraX
 		  if(!NolimitX)stopX(CameraBody,p2,tiles);
@@ -6700,13 +7404,14 @@ function Frames(){
 
 	/*Mueve Player los minisprites*/
 	MiniSprites_Vx_VY()
-
+	/*
 	if(p1.keys && p1.keys[67]){
 		console.log(
 		 "cameraX:"+cameraX +" // cameraY:"+cameraY+
 		 "cordX:"+cordX+" // cordY :"+ cordY 
 		)
 	}
+	*/
 
 
 	if(Pre_star){
@@ -6735,9 +7440,9 @@ function Frames(){
 					 }
 	}
 	if(!frisFotogram){
-	for(let i = 0; i < BackgroundsInLevel.length ;i++){
-	BG_movement(BackgroundsInLevel[i])
-	}
+		for(let i = 0; i < BackgroundsInLevel.length ;i++){
+		BG_movement(BackgroundsInLevel[i])
+		}
 	}
 	SavePositions(p1,16)
 
@@ -6747,12 +7452,9 @@ function Frames(){
 	   tiles[i].Update_tile()
 	}
 	if(DrawShadow){drawLight(game,p1,sprites)}
-	//0.015625
-	//0.03125
-	//0.0625
-	//0.125
+
 	PrinAllTilesBlur(game,2)
-	//PrinAllTilesColor(game)
+	//PrinAllTiles3D(game,2)
 	for(let i = 0; i < sprites.length ;i++){
 		if(sprites[i].prin){
 			if(HITBOX){
@@ -6774,14 +7476,14 @@ function Frames(){
 		ctx.globalAlpha += Alpha * 0.125 
 		ctx.drawImage(
 		p1.imC,
-		p1.CameraY[0] * Position[i].XG,
-		p1.CameraY[1] * Position[i].YG ,
-		p1.CameraY[0],
-		p1.CameraY[1],
+		p1.gird[0] * Position[i].XG,
+		p1.gird[1] * Position[i].YG ,
+		p1.gird[0],
+		p1.gird[1],
 		p1.Xnegative + Position[i].X ,
 		p1.Ynegative + Position[i].Y ,
-		p1.CameraY[0],
-		p1.CameraY[1],
+		p1.gird[0],
+		p1.gird[1],
 		);
 	}
 	ctx.globalAlpha = Alpha
@@ -6798,16 +7500,16 @@ function Frames(){
 			ctx.drawImage(HudTEXTURES,0,96,64, 64,p2.x - (96-p2.width - p2.Xnegative*0.5 )*0.5  ,p2.y - (96-p2.height - p2.Ynegative*0.5 )*0.5 ,96,96);
 		}
 		ctx.drawImage(HudTEXTURES,80,96,16, 16,p2.x +p2.widthHalf -8,p2.y -16, 16  , 16);
-		animation(p2,p2.CameraY)
-		prin[p2.prin](p2,ctx,p2.CameraY[0],p2.CameraY[1]);
+		animation(p2,p2.gird)
+		prin_player[p2.prin](p2,ctx,p2.gird[0],p2.gird[1]);
 
 		if(!p1.Colision){
 			ctx.drawImage(HudTEXTURES,0,96,64, 64,p1.x - (96-p1.width - p1.Xnegative*0.5 )*0.5  ,p1.y - (96-p1.height - p1.Ynegative*0.5 )*0.5 ,96,96);
 		}
 		ctx.drawImage(HudTEXTURES,64,96,16, 16,p1.x +p1.widthHalf -8,p1.y -16, 16  , 16);
 	}
-	animation(p1,p1.CameraY)
-	prin[p1.prin](p1,ctx,p1.CameraY[0],p1.CameraY[1]);
+	animation(p1,p1.gird)
+	prin_player[p1.prin](p1,ctx,p1.gird[0],p1.gird[1]);
 
 
 
@@ -6817,6 +7519,8 @@ function Frames(){
 	for(let i = 0; i < BackgroundsInLevel.length ;i++){
 	draw_background(BackgroundsInLevel[i],game);
 	}
+	
+	if(TankGame){DrawTextTest("p1/"+player2Deaths+" p2/"+player1Deaths,screenWidth/2,32,'Blue','32px Arial','center')}
 	//PrinT(game,Xmouse - 16,Ymouse - 16,16,16,"#F00")
 	/*
 	PrinT(game,0,0,1,screenHeigth,"#F00")
@@ -6837,6 +7541,9 @@ var AZAR = false
 var Multiplayer = false
 var AirDash = false
 var HITBOX = false
+var SecondRound = true
+var TankGame = false
+var DegenerateValue = 128
 function Boregito(Value){
 		   switch(Value){
 			   case "SANDBOX" :
@@ -6971,10 +7678,25 @@ function Boregito(Value){
 			   break 
 			   case "LOOPTILES":
 			   LoopTiles = true
-			   TileTeleportType = 1
+			   TileTeleportType = 2
 			   NolimitX = true
 			   NolimitY = true
 			   break 
+			   case "TankGame":
+			   TankGame = true
+			   break
+			   case "GRAVITY":
+				ControlType = 1
+			   break
+			   case "ANGLE":
+				ControlType = 2
+			   break
+			   case "MOUSE":
+				ControlType = 3
+			   break
+			   case "PACMAN":
+				ControlType = 5
+			   break
 			   default:
 			   console.log("No code")
 			   break 

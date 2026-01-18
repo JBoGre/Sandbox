@@ -35,6 +35,9 @@ Images:["texturas/Texturas ASCII_DIY.png","texturas/GradientTexture.png","textur
 SoundEffects:["SoundEfects/Checkpoint.wav","SoundEfects/Collect.wav","SoundEfects/Boing.mp3","SoundEfects/Boing.mp3","SoundEfects/Jump Attack.mp3",
 "SoundEfects/bubble-pop.mp3","SoundEfects/Destroy.wav","SoundEfects/Break.wav","SoundEfects/Fuse.ogg","SoundEfects/ExplosionTNT.ogg"
 ,"SoundEfects/Alert.wav","SoundEfects/bomb.mp3"],
+Images3D:["texturas/Texturas ASCII_DIY.png","texturas/GradientTextureoffset.png","texturas/Sprites.png","texturas/decoraciones.png",
+"texturas/Monkey.png","texturas/BigMonkey.png","texturas/Goomba.png","texturas/shy guy.png","texturas/3x3 Textures.png",
+"texturas/terrain.png","texturas/terrainShadow.png","texturas/Explosion.png","texturas/Grinch.png"],
 objects:[
 // Print Blocks 
 ["Tile","rgba(0,0,0,0)",0,"00000000"],
@@ -104,8 +107,13 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"000005B0"],
 ["Tile","rgba(0,0,0,0)",1,"100026A0"],
 ["Tile","rgba(0,0,0,0)",1,"000006B0"],
-["Tile","rgba(0,0,0,0)",1,"000000F8"],
-["Tile","rgba(0,0,0,0)",1,"000002F8"],
+["Tile","rgba(0,0,0,0)",1,"111116C0"],
+["Tile","rgba(0,0,0,0)",1,"111115C0"],
+["Tile","rgba(0,0,0,0)",1,"666614B0"],
+["Tile","rgba(0,0,0,0)",1,"777730F8"],
+["Tile","rgba(0,0,0,0)",1,"AAAA31F8"],
+["Tile","rgba(0,0,0,0)",1,"BBBB32F8"],
+
 
 // MAYA Temple
 ["Tile","rgba(0,0,0,0)",1,"11111840"],
@@ -132,7 +140,20 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"11002B80"],
 ["Tile","rgba(0,0,0,0)",1,"11111A90"],
 ["Tile","rgba(0,0,0,0)",1,"00000B90"],
-
+// Metal City
+["Tile","rgba(0,0,0,0)",1,"111119A0"],
+["Tile","rgba(0,0,0,0)",1,"111119B0"],
+["Tile","rgba(0,0,0,0)",1,"111119C0"],
+["Tile","rgba(0,0,0,0)",1,"111119D0"],
+["Tile","rgba(0,0,0,0)",1,"111118C0"],
+["Tile","rgba(0,0,0,0)",1,"10002AA0"],
+["Tile","rgba(0,0,0,0)",1,"10002BA0"],
+["Tile","rgba(0,0,0,0)",1,"10002CA0"],
+["Tile","rgba(0,0,0,0)",1,"10002AB0"],
+["Tile","rgba(0,0,0,0)",1,"10002BB0"],
+// Monarch
+["Tile","rgba(0,0,0,0)",1,"111115F8"],
+["Tile","rgba(0,0,0,0)",1,"100026F8"],
 // Others
 ["Tile","rgba(0,0,0,0)",1,"00000340"],["Tile","rgba(0,0,0,0)",1,"00000130"],
 // Weird Textures
@@ -181,7 +202,20 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"331134F0"],
 //["Tile","rgba(0,0,0,0)",1,"11111D20",8],
 //["Tile","rgba(0,0,0,0)",1,"11112D20",8],
-//["Tile","rgba(0,0,0,0)",1,"11111420",9],
+["Tile","rgba(0,0,0,0)",1,"11111420",9],
+// Special Stage
+["Tile","rgba(0,0,0,0)",1,"11111FC0"],
+["Tile","rgba(0,0,0,0)",1,"11111FD0"],
+["Tile","rgba(0,0,0,0)",1,"11111FE0"],
+["Tile","rgba(0,0,0,0)",1,"11111FF0"],
+["Tile","rgba(0,0,0,0)",1,"11111FC4"],
+["Tile","rgba(0,0,0,0)",1,"11111FD4"],
+["Tile","rgba(0,0,0,0)",1,"11111FE4"],
+["Tile","rgba(0,0,0,0)",1,"11111FF4"],
+["Tile","rgba(0,0,0,0)",1,"111110E0",13],
+["Tile","rgba(0,0,0,0)",1,"111111E0",13],
+["Tile","rgba(0,0,0,0)",1,"111112E0",13],
+["Tile","rgba(0,0,0,0)",1,"111113E0",13],
 
 
 ["Object",128,128,"#","000000000",3,"10000", 0,0],["Object",128,128,"#","000000000",3,"11000", 0,0],
@@ -247,6 +281,11 @@ objects:[
 ["Object",32,32,29,"160032103",2,"20700", 0,0],
 ["Object",32,32,30,"000000000",2,"0A500", 1,0], // Present
 ["Object",32,32,30,"000000000",2,"3A500", -1,0], // Present
+["Object",96,96,"#","040010000",2,"03500", 0,0], // Water Bubble
+["Object",96,96,"#","040010001",2,"03500", 0,-4], // Water Bubble
+["Object",96,96,"#","040010001",2,"03500", 0,4], // Water Bubble
+["Object",96,96,"#","040010010",2,"03500", 4,0], // Water Bubble
+["Object",96,96,"#","040010010",2,"03500", -4,0], // Water Bubble
 //["Object",92,112,31,"660030000",12,"301D2", -2,0],  Grinch
 //["Object",32,32,25,"000030000",9,"08028", 0,0],
 
@@ -408,12 +447,14 @@ objects:[
 TileScripts:[
 {
 Action: function Action(Tile,p1,side) { // 0
+	if(p1.priority != undefined){
     Tile.action = true
 	SoundEffectsCollection[0].play()
 	Tile.Up = 0
 	Tile.Down = 0
 	Tile.Left = 0
 	Tile.Right  = 0
+	}
 },
 Loop: function Loop (Tile) {
 	if(Tile.heg >= 64){
@@ -426,6 +467,7 @@ Loop: function Loop (Tile) {
 },
 {
 Action: function Action(Tile,p1,side) { // 1
+	if(p1.priority != undefined){
 	SoundEffectsCollection[1].currentTime = 0;
 	SoundEffectsCollection[1].play()
 	Tile.prin = 1
@@ -433,6 +475,7 @@ Action: function Action(Tile,p1,side) { // 1
 	Tile.fotograms = 0
 	Tile.animation = 0
 	TransfromTile(Tile,Tile.BC,0,"00000000",0)
+	}
 },
 Loop: function Loop (Tile) {},
 },
@@ -579,8 +622,16 @@ Loop: function Loop (Tile) {
 {
 Action: function Action(Tile,p1,side) { // 9
 	if(side) {
+	SoundEffectsCollection[0].currentTime = 0;
+	SoundEffectsCollection[0].play()
+	//createSprites_No_in_solid(1,3,3,startX,startY,32,32,18,"110010011",2,"67062",4,1); 
+	replaceTilePriorityInGame(startX,startY,true,startY,"88883500","rgba(0,0,0,0)",2,1)
 	p1.InMove = false
+	startX = Tile.Xcord
+	startY = Tile.Ycord+1
+	DegenerateValue = DegenerateValue / 2
 	establecing_starcords(Tile.Xcord,Tile.Ycord,p1)
+	TransfromTileForver(Tile,Tile.BC,Tile.imgN,"111114A0",0)
 reset_game = true
 pre_finish = true
 	}
@@ -620,6 +671,46 @@ Loop: function Loop (Tile) {
 	Tile.action = false
 	}
 	
+},
+},
+{
+Action: function Action(Tile,p1,side) { // 12
+	Tile.action = true
+	Tile.In = true
+},
+Loop: function Loop (Tile) {
+	if(!Tile.In){
+		Tile.XG -= 32
+		Tile.action = false
+		if(Tile.XG < 0){
+			Tile.type = 0
+			Tile.imgN = 0
+			Tile.XG = 0
+			Tile.YG = 0
+		} 
+	}
+	Tile.In = false
+},
+},
+{
+Action: function Action(Tile,p1,side) { // 13
+	if(!Tile.action){Tile.In = true}
+	Tile.action = true
+},
+Loop: function Loop (Tile) {
+	if(Tile.In){
+		Tile.XG -= 32
+		Tile.In = false
+		if(Tile.XG < 0){
+			Tile.type = 0
+			Tile.imgN = 0
+			Tile.XG = 0
+			Tile.YG = 0
+		} 
+	}
+	if(Clock(Tile,10)){
+		Tile.action = false 
+	}
 },
 },
 ],
@@ -1388,8 +1479,7 @@ Action: function Action(Sprite) { // S17
 	Sprite.typeColision = 3
 	},
 Loop: function Loop (Sprite,p1) {
-	PreProgramedMode(Sprite,p1)
-	if(Sprite.Xplayertouch || Sprite.Yplayertouch){
+	if(Sprite.Xplayertouch || (Sprite.Yplayertouch || Sprite.BulletTouch)){
 		Sprite.Up = 0
 		Sprite.Left = 0
 		Sprite.live = -1
@@ -1397,6 +1487,7 @@ Loop: function Loop (Sprite,p1) {
 		p1.Win = true
 		p1.InMove = false
 	}
+	PreProgramedMode(Sprite,p1)
     },
  RenderMode: function RenderMode (ctx,Sprite) {
      PreRenderMode(ctx,Sprite)
@@ -1436,12 +1527,12 @@ Loop: function Loop (Sprite,player) {
      PreRenderMode(ctx,Sprite)
  },
 },{
- Action: function Action(Sprite) { //S19
+ Action: function Action(Sprite,player) { //S19
 		Sprite.State = 0
 		Sprite.intervald_time = 0
 },
 Loop: function Loop (Sprite,Player,player2) {
-	//if(Sprite.water){
+	if(Sprite.water){
 		if(Colision(Sprite,Player,player2,-132,-132,288,288)){
 			Sprite.intervald_time = 0
 			Sprite.State = 1
@@ -1451,9 +1542,9 @@ Loop: function Loop (Sprite,Player,player2) {
 			Sprite.FramesIntervalds = 4
 			Emboscade_player_Y(Sprite,Player,3)
 			Emboscade_player_X(Sprite,Player,3)
-			if(Sprite.y  + Sprite.MoveY < Sprite.waterAlture){
-				Sprite.MoveY =  Sprite.waterAlture - Sprite.y
-			}
+			//if(Sprite.y  + Sprite.MoveY < Sprite.waterAlture){
+			//	Sprite.MoveY =  Sprite.waterAlture - Sprite.y
+			//}
 			if(Sprite.Xtouch){
 				Sprite.Xvelocity = Sprite.Xvelocity *-1
 				Sprite.MoveX = Sprite.Xvelocity
@@ -1474,7 +1565,7 @@ Loop: function Loop (Sprite,Player,player2) {
 			if(Sprite.Xvelocity <= -1){Sprite.Xvelocity ++}
 			Sprite.MoveX = Sprite.Xvelocity
 		}
-	/*
+	
 	}else{
 		Sprite.XG = 192
 		Sprite.FramesIntervalds = 4
@@ -1484,12 +1575,16 @@ Loop: function Loop (Sprite,Player,player2) {
 		if(Sprite.Xvelocity <= -1){Sprite.Xvelocity ++}
 		if(Sprite.DownTriger){
 			Sprite.MoveY += -4
-			if(randomBoolean()){Sprite.MoveX = 2}else{Sprite.MoveX = -2}
+			if(Sprite.x +(Sprite.width /2) > (Player.x + Player.widthHalf)){
+				Sprite.MoveX = -2
+			}else{
+				Sprite.MoveX = 2
+			}
 		}
 	}
-	*/
-	if(Sprite.MoveX > 0 ){Sprite.Mode = 3}else{Sprite.Mode = 0}
 	
+	if(Sprite.MoveX > 0 ){Sprite.Mode = 3}
+	if(Sprite.MoveX < 0 ){Sprite.Mode = 0}
  },
  RenderMode: function RenderMode (ctx,Sprite) {
      PreRenderMode(ctx,Sprite)
@@ -1601,8 +1696,13 @@ Loop: function Loop (Sprite,Player,player2) {
 							}
 						}
 			}else{
+				if(!Sprite.water){
 			    Emboscade_player_Y(Sprite,Player,Sprite.IYR)
 			    Emboscade_player_X(Sprite,Player,Sprite.IXR)
+				}else{
+				Emboscade_player_Y(Sprite,Player,Sprite.IYR/2)
+			    Emboscade_player_X(Sprite,Player,Sprite.IXR/2)
+				}
 				if(Sprite.Xtouch){
 					Sprite.Xvelocity = Sprite.Xvelocity *-0.5
 					Sprite.MoveX = Sprite.Xvelocity
