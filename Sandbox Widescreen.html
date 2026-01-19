@@ -562,49 +562,8 @@
 	  <button id="button-toggle" onclick="toggleTopMenu()">☰ Top Menu</button>
 	 <div style = "" id= "Up_bar">
 	  <div id="start" >start</div>
-     	<div id="Level-selector" style="
-	 width:128em;  
-	 height:32em; 
-	 float:left; 
-	">
-	<fieldset disabled>
-	<input type="text" id="Level_name" class="Text"  style=" width:240px;  " value="Level Name" >
-	</fieldset>
-    <input type="file" id="archivoJson" accept=".json" class="select">
-    <button id="cargarJson" class="select">Cargar Nivel</button>
-	
-	 </div>
-	 
-	 <div id="Character-selector" style="
-	 width:128em;  
-	 height:32em; 
-	 float:left; 
-	"> 
-	
-		 <div class="arrow" id="arrowRight"></div>
-		 <canvas  id="characters"  ></canvas>
-		 	 <div class="arrow" id="arrowLeft"></div>
-		<div id="Skin-selector" style="
-	 width:64em;  
-	 height:32em; 
-	 float:left
-	 ;" >
-		
-     </div>
-		
-    </div>
-		<div id="Character-selector2" style="
-	 width:128em;  
-	 height:32em; 
-	 float:left; 
-	"> 
-	 <button onclick="Star_Multiplayer()"style="font-size:32px;">Multiplayer</button>
-	
-		
-    </div>
-		<a class="Text"  href="index.html">Editor</a>
-				<div id="BlockResolution_Selector" style="
-	 width:52em;  
+	<div id="BlockResolution_Selector" style="
+	 width:80em;  
 	 height:64em;
      margin: 0em 0em;	 
 	 float:left; 
@@ -631,9 +590,50 @@
 	<option class="Text" value='Niveles JSON/Chrimas Level.json'>Extra 7</option>
 	<option class="Text" value='Niveles JSON/TempleUnfinished.json'>Extra 8</option>
 	<option class="Text" value='Niveles JSON/Minecraft.json'>Extra 9</option>
-  </select>
-  <input type="button" class="Text"  style=" width:150px;  " value="change" onclick="cargarJSON(LevelSelected)">
-  </div>
+    </select>
+    <input type="button" class="Text"  style=" width:150px;  " value="change" onclick="cargarJSON(LevelSelected)">
+    </div>
+	<a class="Text"  href="index.html">Editor</a>
+	 <div id="Character-selector" style="
+	 width:128em;  
+	 height:32em; 
+	 float:left; 
+	"> 
+	
+		 <div class="arrow" id="arrowRight"></div>
+		 <canvas  id="characters"  ></canvas>
+		 	 <div class="arrow" id="arrowLeft"></div>
+		<div id="Skin-selector" style="
+	 width:64em;  
+	 height:32em; 
+	 float:left
+	 ;" >
+		
+     </div>
+		
+    </div>
+		<div id="Character-selector2" style="
+	 width:128em;  
+	 height:32em; 
+	 float:left; 
+	"> 
+	
+	 <button onclick="Star_Multiplayer()"style="font-size:32px;">Multiplayer</button>
+	 </div>
+    <div id="Level-selector" style="
+	 width:128em;  
+	 height:32em; 
+	 float:left; 
+	">
+	<fieldset disabled>
+	<input type="text" id="Level_name" class="Text"  style=" width:240px;  " value="Level Name" >
+	</fieldset>
+    <input type="file" id="archivoJson" accept=".json" class="select">
+    <button id="cargarJson" class="select">Cargar Nivel</button>
+	
+	 </div>
+		
+ 
   </div>
 </div>
 	<button id="Abuton" class="TouchButon">A</button>
