@@ -409,6 +409,45 @@
     user-select: text;
 	border:0em rgb(128,128,128) solid;
 	}
+	#LeftButon {
+	 position: fixed;
+		bottom: 20px;
+		right: 75px;
+	}
+	#RightButon {
+	 position: fixed;
+		bottom: 20px;
+		right: 20px;
+	}
+	#Abuton {
+	 position: fixed;
+		bottom: 20px;
+		left: 20px;
+	}
+	#Bbuton {
+	 position: fixed;
+		bottom: 20px;
+		left: 75px;
+	}
+	.TouchButon {
+	 display: none;
+	 z-index : 100;
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+    border-radius: 12px;
+    border: none;
+    background: #4CAF50;
+    color: white;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    }
+
+    .TouchButon:active {
+     transform: scale(0.95);
+     background: #3e8e41;
+    }
 	
     </style>
 	<meta charset="UTF-8">
@@ -443,6 +482,11 @@
 	 </div>
      <div id="screen">
      </div>
+	 <button id="Abuton" class="TouchButon">A</button>
+	<button id="Bbuton" class="TouchButon">B</button>
+
+	<button id="LeftButon" class="TouchButon">L</button>
+	<button id="RightButon" class="TouchButon">R</button>
 
 	 <div id ="controladores2">
 	 <div class="Text"  style=" width:256px;  " >Change the Background</div>
@@ -551,6 +595,5 @@
   <audio id="audioPlayer" controls>
    <audio id="myAudio" src="Music/Super Mario World Athletic.mp3" controls></audio>
 		 </div>
-
  </body>
 </html>

@@ -55,19 +55,39 @@ var PaleteTexture = new Texture("texturas/character.png",0,0,256,256)
 var Wellcome = new Texture("texturas/Wellcome.png",0,0,80,20)
 var TexturesArray = {WaterTexture, ShadowTexture, NoTexture, LavaTexture, PaleteTexture};
 
-/*
-document.getElementById("LeftButon").addEventListener("touchstart", () => TouchControls.Left = true );
-document.getElementById("LeftButon").addEventListener("touchend", () => TouchControls.Left = false);
+const isTouchDevice =
+  'ontouchstart' in window ||
+  navigator.maxTouchPoints > 0;
 
-document.getElementById("RightButon").addEventListener("touchstart", () => TouchControls.Right = true);
-document.getElementById("RightButon").addEventListener("touchend", () => TouchControls.Right = false);
+var LeftButon = undefined
+var RightButon = undefined
+var Abuton = undefined
+var Bbuton = undefined
+ function createTouchButtons(){
+	if(isTouchDevice){
+		var LeftButon = document.getElementById("LeftButon")
+		var RightButon = document.getElementById("RightButon")
+		var Abuton = document.getElementById("Abuton")
+		var Bbuton = document.getElementById("Bbuton")
+		
+	LeftButon.style.display = "block";
+	LeftButon.addEventListener("touchstart", () => TouchControls.Left = true );
+	LeftButon.addEventListener("touchend", () => TouchControls.Left = false);
+	
+	RightButon.style.display = "block";
+	RightButon.addEventListener("touchstart", () => TouchControls.Right = true );
+	RightButon.addEventListener("touchend", () => TouchControls.Right = false);
+	
+	Abuton.style.display = "block";
+	Abuton.addEventListener("touchstart", () => TouchControls.Abuton = true );
+	Abuton.addEventListener("touchend", () => TouchControls.Abuton = false);
 
-document.getElementById("Abuton").addEventListener("touchstart", () => TouchControls.Abuton = true);
-document.getElementById("Abuton").addEventListener("touchend", () => TouchControls.Abuton = false);
+	Bbuton.style.display = "block";
+	Bbuton.addEventListener("touchstart", () => TouchControls.Bbuton = true );
+	Bbuton.addEventListener("touchend", () => TouchControls.Bbuton = false);
+	}
+ }
 
-document.getElementById("Bbuton").addEventListener("touchstart", () => TouchControls.Bbuton = true);
-document.getElementById("Bbuton").addEventListener("touchend", () => TouchControls.Bbuton = false);
-*/
 const Selection = document.getElementById('selection')
 function toggleTopMenu() {
 	Selection.classList.toggle('active');
@@ -1787,6 +1807,7 @@ var ctx = null
  var  ctxSprites = null
  var PounterCTX = null
  CreatreGrid()
+ createTouchButtons()
  function CreatreGrid(){
 	table.innerHTML = "<canvas id=GridSprites class=Grid></canvas><canvas id=Grid class=Grid></canvas><canvas id=Pounter class=Grid></canvas><canvas id=BackgroundGrid class=Grid></canvas>";	
 	Grid = document.getElementById("Grid");
@@ -4459,11 +4480,14 @@ function nullTrigers(player){
 }
 function PlayerTrigers(Player,ctr){
 	nullTrigers(Player)
-	
-	if ((Player.keys && Player.keys[controlls[ctr].Jump]) || TouchControls.Abuton) Player.ButonATouch = true;
-	if ((Player.keys && Player.keys[controlls[ctr].Run]) || TouchControls.Bbuton) Player.ButonBTouch = true;
-	if ((Player.keys && Player.keys[controlls[ctr].left]) || TouchControls.Left) Player.LeftTouch = true;
-	if ((Player.keys && Player.keys[controlls[ctr].right]) || TouchControls.Right) Player.RightTouch = true;
+	if (TouchControls.Abuton) Player.ButonATouch = true;
+	if (TouchControls.Bbuton) Player.ButonBTouch = true;
+	if (TouchControls.Left)  Player.LeftTouch = true;
+	if (TouchControls.Right) Player.RightTouch = true;
+	if (Player.keys && Player.keys[controlls[ctr].Jump]) Player.ButonATouch = true;
+	if (Player.keys && Player.keys[controlls[ctr].Run]) Player.ButonBTouch = true;
+	if (Player.keys && Player.keys[controlls[ctr].left]) Player.LeftTouch = true;
+	if (Player.keys && Player.keys[controlls[ctr].right]) Player.RightTouch = true;
 	if (Player.keys && Player.keys[controlls[ctr].up]) Player.UpTouch = true;
 	if (Player.keys && Player.keys[controlls[ctr].down]) Player.DownTouch = true;
 	
