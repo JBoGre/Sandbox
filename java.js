@@ -417,8 +417,6 @@ Draw_star()
 
   
 const tablestyle =  getComputedStyle(table)
-var BlockResolution = 16
-var BlockResolutionState = 2
 var PLUSRight = document.getElementById("PLUSRight")
 var PLUSLeft = document.getElementById("PLUSLeft")
 
@@ -489,6 +487,9 @@ function CreateHeight(){
 	}
 	return screenView;
 }
+var BlockInGame = 32
+var BlockResolution = 16
+var BlockResolutionState = 2
  var screenWidth =  CreateWidth()
  var screenHeigth =  CreateHeight()
 var GridWidth = (SAVE.X * BlockResolution) 
@@ -504,8 +505,6 @@ const limitY = Math.round((screenHeigth / 32)+1.4)
 const limitXHalf = Math.round((limitX / 2)+0)
 const limitYHalf = Math.round((limitY / 2)-0.4)
 var margin_screen =  GridHeight - screen_resoltion 
-//Create_Grid()
-//create_table();
 var SAVE = window.SAVE
 var Tiles = SAVE.tiles
 var color_palete = window.Palete
@@ -6005,7 +6004,7 @@ let crash = false
 let extraUp = 0 // se le suma a la colision para hacer mas aplicar el movimiento del objeto
 let tileVy = (PL.MoveY + PL.BY) // el movimiento siguiente del jugador
 let Ybody = -1
-if(B.Left != 0 ){Ybody = B.height}
+if(B.Up == 0 && B.Left != 0 ){Ybody = B.height}
 if(B.yP > 0){extraUp = (B.yP*-1)-2 };    // dependiendo de a que lado va sera la velocidad que se aplique
 if(B.yP < 0){extraUp = B.yP }
 //if((PL.x < B.x + (B.width) && (PL.x + (PL.width)) > B.x) && (PL.y <  (B.y + B.height) - tileVy)  && (PL.y + (PL.height) > ((B.y) - (tileVy)))){
