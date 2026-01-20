@@ -16,6 +16,19 @@
   "backgroundMusicTrack": 0,
   "backgroundImages": [
     [
+      "Backgrounds/Snow Hill.png",
+      2400,
+      448,
+      0.5,
+      0,
+      0,
+      0,
+      true,
+      false,
+      0,
+      0
+    ],
+    [
       "Backgrounds/Cloud.png",
       2048,
       448,
