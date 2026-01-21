@@ -2,12 +2,12 @@
 <html lang="en">
  <head>
    <title>SANDBOX</title>
-  <link rel="icon" type="image/png" href="Sandbox.png">
+   <link rel="icon" type="image/png" href="Sandbox.png">
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <style>
-    body {
+	body {
 	font-size: 2px;
 	}
     *{
@@ -18,8 +18,8 @@
 	font-size: inherit;
 	}
     #game{
-    width:512px;
-    height:512px;
+    width:256em;
+    height:256em;
     background-image: linear-gradient(rgba(0,255,255),rgb(0,0,255) );
 	background-size: cover;
     }
@@ -28,114 +28,66 @@
     height:256em;
     background-color:rgba(0,0,0,0);
     }   
-	 #screen{
+    #screen{
 	 position: absolute;
-      top: 0px;
-      left: 0px;
-	width:100vw;
-    height:100vh;
+      top: 16px;
+      left: 368px;
+	width:256em;
+    height:256em;
 	display: grid;
     grid-template-columns: repeat(auto-fill, 32px);
     grid-template-rows: repeat(auto-fill, 32px);
-     background-image: url('texturas/Mising.png');
+    background-image: url('texturas/Mising.png');
 	background-size: cover;
 	float:left;
+	border: 8em outset rgb(0,0,0);
     }
 	#controladores{
 	position: absolute;
-      top: 0px;
-      left: 0px;
-	width:100vw;
-    height:100vh;
+      top: 16px;
+      left: 56px;
+	width:128em;
+    height:256em;
 
 	}
 	#controladores2{
 	position: absolute;
-      top: 0px;
-      left: 0px;
-	width:100vw;
-    height:100vh;
+      top: 16px;
+      left: 968px;
+	width:128em;
+    height:256em;
 	}
-	#button-toggle {
-	font-size:16px;
-      position: absolute;
-	  top: 64px;
-      left: 0;
-       border: 4px outset rgb(0,0,0);
-      cursor: pointer;
-      z-index: 1000;
-    }
 	#selection{
-	 position: fixed;
-      top: 0;
-      left: 0;
-	   right: 0;
 	text-align:center ;
-	font-size:16px;
+	font-size:16px !important;
 	background-color:rgb(240,240,240);
-	width:100vw;
-	min-width:1024px;
-	height: 4em;
+	width:16em;
+	height: 6em;
 	float:left;
-	transform: translateY(-100%);
-      transition: transform 0.4s ease;
-	 z-index: 999;
 	}
-	#selection.active {
-      transform: translateY(0);
-    }
-	#Up_bar{
-	text-align:center ;
-	font-size:16px;
-	background-color:rgb(240,240,240);
-	width:2048px;
-	min-width:2048px;
-	height: 4em;
-	float:left;
-	 z-index: 999;
-
-	}
-	.select{
-	font-size:10px;
-	}
-	#start{
-	 cursor: pointer;
-	font-size:32px;
-	text-align:center ;
-	width:4em;
-	height:2em;
-	float:left;
-	background-color:rgb(224,224,224);
-	z-index:20;
-	}
-	#start:hover{
-	width:3.2em;
-	height:1.2em;
-	border:0.4em rgb(0,0,0) solid ; 
+    .select{
+	font-size:10px !important;
 	}
 	.Grid{
     position: absolute;
 	float:left;
 	}
-	#GridSprites{
-	position: absolute;
-	float:left;
-	}
     .range{
+	float:left;
 	height:8em;
     background-color:rgba(0,0,0,0);
     }  
     .MBLOCK{
-	width:16em;
-	height:16em;
+	width:8em;
+	height:8em;
 	float:left;
 	border: 0em solid rgb(255,255,255);
 	background-color: rgba(0,0,0,0);
 	}	
 	.MBLOCK:hover{
-	width:12em;
-	height:12em;
-    border: 2em outset rgb(0,0,0);
+	width:6em;
+	height:6em;
+    border: 1em outset rgb(0,0,0);
 	}
     .TBLOCK{
 	width:32px;
@@ -156,6 +108,52 @@
 	border:4em rgb(0,0,0) outset; 
 	float:left;
 	}
+	#Character-selector{
+	font-size:2px;
+	 width:128em;  
+	 height:84em; 
+	 float:left; 
+	}
+	#characters{
+	font-size:2px;
+	width:48em;
+    height:48em;
+	margin:0em 0em;
+	border:4em rgb(0,0,0) outset; 
+	float:left;
+	}
+	.Skins{
+	font-size:2px;
+	width:14em;
+    height:14em;
+	margin:0em 0em;
+	border:1em rgb(0,0,0) outset; 
+	float:left;
+	}
+	.Skins:hover{
+	border:1em rgb(128,0,0) outset; 
+	}
+	.arrow{
+	font-size:2px;
+	background-color:#FFF;
+	background-size: cover;
+	float:left;
+	margin:12em  2em ;
+    width: 32em;              
+    height: 32em;
+    background-image: url('texturas/HudTextures.png');
+    background-size: 256em, 256em;     /* O ajusta si necesitas escalar la imagen */
+    background-repeat: no-repeat;
+	}
+	.arrow:hover{
+	background-color:#F44;
+	}
+	#arrowRight{
+	   background-position: 0px -32em;  /* Coordenadas del recorte dentro de la imagen */ 
+	}
+	#arrowLeft{
+	background-position: -32em 0px;  /* Coordenadas del recorte dentro de la imagen */
+	}
 	.DRAWING{
 	width:16em;
     height:16em;
@@ -171,55 +169,39 @@
     background-color:rgb(10,10,10);
     float:left;
 	}
-	#characters{
-	width:24em;
-    height:24em;
-	margin:0em 0em;
-	border:2em rgb(0,0,0) outset; 
-	float:left;
-	}
-	#characters2{
-	width:24em;
-    height:24em;
-	margin:0em 0em;
-	border:2em rgb(0,0,0) outset; 
-	float:left;
-	}
-	.Skins{
-	width:12em;
-    height:12em;
-	margin:0em 0em;
-	border:2em rgb(0,0,0) outset; 
-	float:left;
-	}
-	.Skins:hover{
-	border:2em rgb(128,0,0) outset; 
-	}
-	.arrow{
+	.PLUS{
 	background-color:#FFF;
 	background-size: cover;
 	float:left;
-	margin:6em  1em ;
-    width: 16em;              
-    height: 16em;
+	margin:10em  2em ;
+    width: 8em;              
+    height: 8em;
     background-image: url('texturas/HudTextures.png');
-    background-size: 128em, 128em;     /* O ajusta si necesitas escalar la imagen */
+    background-size: 64em, 64em;     /* O ajusta si necesitas escalar la imagen */
     background-repeat: no-repeat;
 	}
-	.arrow:hover{
+	.PLUS:hover{
 	background-color:#F44;
 	}
-	#arrowRight{
-	   background-position: 0px -16em;  /* Coordenadas del recorte dentro de la imagen */ 
+	#PLUSRight{
+	   background-position: -80px -16px;  /* Coordenadas del recorte dentro de la imagen */ 
 	}
-	#arrowLeft{
-	background-position: -16em 0px;  /* Coordenadas del recorte dentro de la imagen */
+	#PLUSLeft{
+	background-position: -96px -16px;  /* Coordenadas del recorte dentro de la imagen */
 	}
-	#arrowRight2{
-	   background-position: 0px -16em;  /* Coordenadas del recorte dentro de la imagen */ 
-	}
-	#arrowLeft2{
-	background-position: -16em 0px;  /* Coordenadas del recorte dentro de la imagen */
+	#Lupa{
+	background-color:#FFF;
+	background-size: cover;
+	float:left;
+	margin:0em  0em ;
+    width: 24em;              
+    height: 24em;
+	border: 2em outset rgb(0,0,0);
+    background-image: url('texturas/HudTextures.png');
+    background-size: 192em, 192em;     /* O ajusta si necesitas escalar la imagen */
+	background-position: -240px 0px;  /* Coordenadas del recorte dentro de la imagen */
+	
+    background-repeat: no-repeat;
 	}
 	::-webkit-scrollbar {
     width: 8px;
@@ -235,7 +217,7 @@
 	#colors{
 	float:left;
     width:137em;
-	height:64em;
+	height:48em;
 	background-color:rgb(244,244,244);
 	overflow: auto;
 	 overflow-x: hidden;
@@ -244,7 +226,7 @@
 	#tiles{
 	float:left;
     width:137em;
-	height:64em;
+	height:80em;
 	background-color:rgb(244,244,244);
 	overflow: auto;
 	 overflow-x: hidden;
@@ -257,7 +239,7 @@
 	}
 	#hand{
 	float:left;
-	background: rgb(0,0,0) url("hand.png") no-repeat left bottom;
+	background: rgb(0,0,0) url("Hand.png") no-repeat left bottom;
 	background-size: cover;
 	}
 	#gotita{
@@ -280,14 +262,6 @@
 	}
 	#0p{
 	background: rgb(0,0,0) url("win.png") no-repeat left bottom;
-	background-size: cover;
-	}
-    #gotita{
-	width:32em;
-	height:32em;
-	margin:4em 16em 5em;
-	float:left;
-	background: rgb(0,0,0) url("gotero.png") no-repeat left bottom;
 	background-size: cover;
 	}
 	#depot{
@@ -337,16 +311,27 @@
 	height:28em;
 	border:2em rgb(0,0,0) solid ; 
 	}
-	
-	#p{
-	font-size:32px;
+	#start{
+	font-size:32px !important;
 	text-align:center ;
 	width:4em;
 	height:2em;
 	float:left;
 	background-color:rgb(224,224,224);
 	}
-	
+	#p{
+	font-size:32px !important;
+	text-align:center ;
+	width:4em;
+	height:2em;
+	float:left;
+	background-color:rgb(224,224,224);
+	}
+	#start:hover{
+	width:3.2em;
+	height:1.2em;
+	border:0.4em rgb(0,0,0) solid ; 
+	}
 	#saved{
 	width:96em;
 	height:32em;
@@ -365,10 +350,10 @@
 	border:8em rgb(128,128,128) solid ;
 	}
 	#selector-imagen{
-	font-size:16px;
+	font-size:16px !important;
 	}
 	#selector-nivel{
-	font-size:16px;
+	font-size:16px !important;
 	}
 	#colide6{
     background-color: rgb(0,255,0);
@@ -410,19 +395,19 @@
 	height:8em;
 	}
 	#Namec{
-	font-size:16px;
+	font-size:16px !important;
 	border:0em rgb(128,128,128) solid
 	width:12em;
 	}
+	
 	.styled{
-	font-size:16px;
+	font-size:16px !important;
 	}
-	#songSelector{
-	width:128px
-	}
+	
 	.Text{
 	 text-align: center;
-	font-size:16px;
+
+	font-size:16px !important;
 	float:left; 
 	}
 	#Level_name{
@@ -433,12 +418,12 @@
 	#LeftButon {
 	 position: fixed;
 		bottom: 20px;
-		right: 95px;
+		right: 75px;
 	}
 	#RightButon {
 	 position: fixed;
 		bottom: 20px;
-		right: 40px;
+		right: 20px;
 	}
 	#Abuton {
 	 position: fixed;
@@ -455,7 +440,7 @@
 	 z-index : 100;
     width: 45px;
     height: 45px;
-    font-size: 20px;
+    font-size: 16px !important;
     border-radius: 12px;
     border: none;
     background: #4CAF50;
@@ -469,6 +454,9 @@
      transform: scale(0.95);
      background: #3e8e41;
     }
+	#songSelector{
+	width:256px
+	}
 	
     </style>
 	<meta charset="UTF-8">
@@ -484,9 +472,14 @@
   <header>   </header>
      <div id ="controladores">
 	  	<canvas class=style id=S0></canvas>
-			<div id = "p" >Time</div>
-    <button id="SalvarJson" class="select">Salvar Nivel</button>
-		
+        <div id="start" >start</div>
+		<div id = "p" >Time</div>
+		<div id= "selection">
+	<input type="text" id="Level_name" class="Text"  style=" width:256px;  " value="Level Name" >
+    <button id="SalvarJson" class="select">Save Level</button>
+    <input type="file" id="archivoJson" accept=".json" class="select">
+    <button id="cargarJson" class="select">Charge Level</button>
+		</div>
 		 <div id="functions" >
 		 <div id="banderin"class="hover"> </div>
 	      <div id="eraser"class="hover"> </div>
@@ -495,8 +488,16 @@
           </div>
 		<div id="colors"> </div>
 		<div id="tiles"> </div>
-		  </div>
-<div id ="controladores2">
+	 </div>
+     <div id="screen">
+     </div>
+	 <button id="Abuton" class="TouchButon">A</button>
+	<button id="Bbuton" class="TouchButon">B</button>
+
+	<button id="LeftButon" class="TouchButon">L</button>
+	<button id="RightButon" class="TouchButon">R</button>
+
+	 <div id ="controladores2">
 	 <div class="Text"  style=" width:256px;  " >Change the Background</div>
 	  <div id="Backgorund-selector" style="
 	 width:150em;  
@@ -522,8 +523,19 @@
 	 <input class="range" id="color3" min="0"max="255" type="range" onchange="CS(this,2)">
 	 <input class="styled" type="button" value="addBackground" onclick="DRAWS[drawNum](Grid);backgroundBase = Grid.style.backgroundImage" />
 	 </div>
-    
-	 
+     <div id="Character-selector"> 
+	
+		 <div class="arrow" id="arrowRight"></div>
+		 <canvas  id="characters"  ></canvas>
+		 	 <div class="arrow" id="arrowLeft"></div>
+		<div id="Skin-selector" style="
+	 width:128em;  
+	 height:16em; 
+	 float:left
+	 ;" >
+		
+		</div>
+	 </div>
 	 <div id="Size-selector" style="
 	 width:128em;  
 	 height:36em; 
@@ -534,45 +546,23 @@
 	 <div class="Text"  >Y size</div><input type="number" id="Ysize" class="Text" min="20" max="300" value="60">
 	<input type="button" class="Text"  style=" width:256px;  " value="change" onclick="change_Size(Xsize.value,Ysize.value)">
 		</div> 
-	<div class="PLUS" id="PLUSRight"></div>
-		 <canvas  id="Lupa"  ></canvas>
-		 	 <div class="PLUS" id="PLUSLeft"></div>
-	</div>
-	
-		</div>
-		
-		<div id="Song-selector" style="
-		position: absolute;
-      top: 32px;
-      left: 32px;
-	 width:128em;  
-	 height:36em; 
-	 float:left; 
-	">
-	
-	
-		<div class="Text"  style=" width:256px;  " >Change the Song of the level</div>
-	     <select id="songSelector" class="Text">
-    <option class="Text" value=""> Change The Song</option>
-	<audio id="audioPlayer" controls>
-  </select>
-  	
-		 </div>
-     <div id="screen">
-	 
-     </div>
-	 <div style = "" id= "selection">
-	  <button id="button-toggle" onclick="toggleTopMenu()">☰ Top Menu</button>
-	 <div style = "" id= "Up_bar">
-	  <div id="start" >start</div>
-	<div id="BlockResolution_Selector" style="
-	 width:160px;  
-	 height:128px;
+			<div id="BlockResolution_Selector" style="
+	 width:52em;  
+	 height:64em;
      margin: 0em 0em;	 
 	 float:left; 
 	">
-		
+	
+	<div class="PLUS" id="PLUSRight"></div>
+		 <canvas  id="Lupa"  ></canvas>
+		 	 <div class="PLUS" id="PLUSLeft"></div>
+	<div style="  text-align: center; font-size:16px;   "  >Zoom</div>
+	</div>
+	
+	<a class="Text"  href="index.html">InicialPage</a>
+	
 	 <select id="LevelSelector" class="Text" style=" width:150px;  ">
+	<option class="Text" value='Niveles JSON/LEVELNULL.json'>Level Null</option>
 	<option class="Text" value='Niveles JSON/Inicial Level.json'>Inicial</option>
     <option class="Text" value='Niveles JSON/Level 1.json'>Level 1</option>
 	<option class="Text" value='Niveles JSON/Level 2.json'>Level 2</option>
@@ -594,61 +584,27 @@
 	<option class="Text" value='Niveles JSON/LEVEL Pixel Art 2.json'>Pixel art 2</option>
 	<option class="Text" value='Niveles JSON/Minecraft.json'>Minecraft</option>
 	<option class="Text" value='Niveles JSON/BioLevel.json'>BioLevel</option>
-    </select>
-    <input type="button" class="Text"  style=" width:150px;  " value="change" onclick="cargarJSON(LevelSelected)">
-    </div>
-	<a class="Text"  href="editor.html">Editor</a>
-	 <div id="Character-selector" style="
-	 font-size:2px;
-	 width:128em;  
-	 height:32em; 
-	 float:left; 
-	"> 
+  </select>
+  <input type="button" class="Text"  style=" width:150px;  " value="change" onclick="cargarJSON(LevelSelected)">
 	
-		 <div class="arrow" id="arrowRight"></div>
-		 <canvas  id="characters"  ></canvas>
-		 	 <div class="arrow" id="arrowLeft"></div>
-		<div id="Skin-selector" style="
-	 width:64em;  
-	 height:32em; 
-	 float:left
-	 ;" >
+		</div>
 		
-     </div>
-		
-    </div>
-		<div id="Character-selector2" style="
-		font-size:2px;
+		<div id="Song-selector" style="
+		position: absolute;
+      top: 480px;
+      left: 936px;
 	 width:128em;  
-	 height:32em; 
-	 float:left; 
-	"> 
-	
-	 <button onclick="Star_Multiplayer()"style="font-size:32px;">Multiplayer</button>
-	 </div>
-    <div id="Level-selector" style="
-	font-size:2px;
-	 width:128em;  
-	 height:32em; 
+	 height:36em; 
 	 float:left; 
 	">
-	<fieldset disabled>
-	<input type="text" id="Level_name" class="Text"  style=" width:240px;  " value="Level Name" >
-	</fieldset>
-    <input type="file" id="archivoJson" accept=".json" class="select">
-    <button id="cargarJson" class="select">Cargar Nivel</button>
 	
-	 </div>
-		
- 
-  </div>
-</div>
-	<button id="Abuton" class="TouchButon">A</button>
-	<button id="Bbuton" class="TouchButon">B</button>
+		<div class="Text"  style=" width:256px;  " >Change the Song of the level</div>
+	     <select id="songSelector" class="Text">
+    <option class="Text" value=""> Change The Song</option>
+  </select>
 
-	<button id="LeftButon" class="TouchButon">L</button>
-	<button id="RightButon" class="TouchButon">R</button>
-	
-  <footer></footer>
+  <audio id="audioPlayer" controls>
+   <audio id="myAudio" src="Music/Super Mario World Athletic.mp3" controls></audio>
+		 </div>
  </body>
 </html>
