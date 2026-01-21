@@ -7115,6 +7115,8 @@ Kills = 0
 p1.priority = false
 CameraAngle = 0
 CameraBody.Colision = false
+p1.invecybility = true
+p2.invecybility = true
 if(TankGame){
 	Multiplayer = true
 	ControlType = 4
