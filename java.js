@@ -543,8 +543,14 @@ document.addEventListener('mousemove', (event) => {
   });
   
 reset_functions_and_scrips()
+var LevelScript = undefined
 function chargeLevelNoTiles(){
+	if(LevelScript != undefined){
+		AntiBoregito(LevelScript)
+		LevelScript = undefined
+	}
 	DegenerateValue = 128
+	TileTeleportType = SAVE.scroll_configuration
 	AZAR = false
 	backgroundMusic.pause();       // Pausa el audio
     backgroundMusic.currentTime = 0; // Reinicia al inicio
@@ -601,6 +607,10 @@ function chargeLevelNoTiles(){
 	change_BlockResolution(BlockResolution)
 	limits_and_alture()
 	buton[1](0)
+	if(SAVE.Script != undefined){
+	Boregito(SAVE.Script)
+	LevelScript = SAVE.Script
+	}
 }
 function Save_Level_NoTiles(){
 	const {tiles, ... SAVEcopy} = SAVE
@@ -2615,11 +2625,11 @@ function StarPosition(){
 	if(!NolimitY){
 		if(Limit_Up !== false && Limit_Up < (cordY + screenHeigth) ){
 			PositionY +=  Limit_Up - (cordY + screenHeigth)
-			console.log(Limit_Up)
+	
 		}else{
 			if(Limit_Down !== false && Limit_Down > cordY ){
 				PositionY += Limit_Down  - cordY
-				console.log(Limit_Down)
+				
 			}
 		}
 	}
@@ -7065,7 +7075,7 @@ function Win_or_lose_Manager(){
 					if(Win_or_lose){
 					  if(AZAR){
 						  TextFinishGame.push(new Text("Passed level "+ Azar_floor,'#8F8','48px Arial','center',screenWidth/2,screenWidth/2,0.1,0,screenHeigth/4,0.1))
-						  TextFinishGame.push(new Text("If you wish to continue, insert the code again.",'white','24px Arial','center',screenWidth/2,screenWidth/2,0.1,screenHeigth,screenHeigth/2+screenHeigth/4,0.05))  
+						  TextFinishGame.push(new Text("If you wish to continue, charge the level again.",'white','24px Arial','center',screenWidth/2,screenWidth/2,0.1,screenHeigth,screenHeigth/2+screenHeigth/4,0.05))  
 						  Azar_floor++
 						  Azar_floor_dificult (Azar_floor)
 						  AZAR = false
@@ -7701,7 +7711,7 @@ function Boregito(Value){
 			   break 
 			   case "LOOPTILES":
 			   LoopTiles = true
-			   TileTeleportType = 2
+			   TileTeleportType = 1
 			   NolimitX = true
 			   NolimitY = true
 			   break 
@@ -7721,10 +7731,68 @@ function Boregito(Value){
 				ControlType = 5
 			   break
 			   default:
-			   console.log("No code")
+			   //console.log("No code")
 			   break 
 		   }
-		   console.log(Value)
+		   //console.log(Value)
 	   }
-	   
+function AntiBoregito(Value){
+		   switch(Value){
+			   case "MULTIPLAYER":
+			    Multiplayer = false
+			   break 
+			   case "HITBOX":
+			    HITBOX = false
+			   break 
+			   case "SHOTERMODE","POUNTERSHOT ":
+			   shoterMode = 0
+			   break ;
+			   case "AZAR","AZARHARD":
+			   AZAR = false
+			   AirDash = false
+			   break
+			   case "AZAR+":
+			   AZAR = false
+			   AirDash = false
+			   AzarPlus = false
+			   break
+			   case "AIRDASH" :
+			   AirDash = false
+			   break 
+			   case "STELAR":
+			   Stelar = false
+			   break 
+			   case "DINNERBONE":
+			   UpSide = false
+			   break
+			   case "INVENCYBILITY":
+			   invecybility = false
+			   break 
+			   case "TESTSCREEN":
+			   TESTSCREEN = false
+			   break 
+			   case "SLOWDEATH":
+			   FastDeath = true
+			   break 
+			   case "NOLIMITS":
+			   NolimitX = false
+			   NolimitY = false
+			   break 
+			   case "LOOPTILES":
+			   LoopTiles = false
+			   TileTeleportType = 0
+			   NolimitX = false
+			   NolimitY = false
+			   break 
+			   case "TankGame":
+			   TankGame = false
+			   break
+			   case "GRAVITY","ANGLE","MOUSE","PACMAN":
+				ControlType = 0
+			   break
+			   default:
+
+			   break 
+		   }
+	   }
 /*  (-< = */
