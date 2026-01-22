@@ -230,6 +230,7 @@ objects:[
 ["Object",42,42,0,"661132103",2,"22300", -1,8], // Spike Ball
 ["Object",84,84,1,"661132103",2,"21100", -1,8], // Big Spike Ball
 ["Object",42,42,2,"661132103",2,"22300", -1,8], // Fall Spike Ball
+["Object",42,42,0,"661120000",2,"22300", 0,0], // Fall Spike Ball
 ["Object",42,42,14,"661132103",2,"22300", -1,8], // Spike Ball 2
 ["Object",32,32,7,"661132103",5,"2A200", -2,8], // Barrel
 ["Object",32,32,7,"661132103",5,"2A200", 2,8],// Barrel
@@ -239,6 +240,8 @@ objects:[
 ["Object",16,32,9,"661121163",2,"00823", 1,2], // Fire Whit Legs
 ["Object",64,32,"#","101122200",2,"02200", -2,0],// Left_Right_Platafrom
 ["Object",64,32,"#","101122200",2,"02200", 0,2], // Up_Down_Platafrom
+["Object",64,32,"#","101110010",2,"02200", -4,0],// Left_Right_Platafrom
+["Object",64,32,"#","101110001",2,"02200", 0,4], // Up_Down_Platafrom
 ["Object",32,32,10,"661120201",2,"01500", 0,0], // Fly
 ["Object",32,48,11,"160030000",6,"00023",-1,0], // Gomba
 ["Object",32,48,11,"160030000",6,"30023",1,0],  // Gomba
@@ -286,7 +289,7 @@ objects:[
 ["Object",96,96,"#","040010001",2,"03500", 0,4], // Water Bubble
 ["Object",96,96,"#","040010010",2,"03500", 4,0], // Water Bubble
 ["Object",96,96,"#","040010010",2,"03500", -4,0], // Water Bubble
-//["Object",92,112,31,"660030000",12,"301D2", -2,0],  Grinch
+["Object",92,112,31,"660030000",12,"301D2", -2,0]//  Grinch
 //["Object",32,32,25,"000030000",9,"08028", 0,0],
 
 
@@ -2053,7 +2056,7 @@ Loop: function Loop (Sprite,player1,player2) {
 			Sprite.Mode = 0
 		}
 		if(Sprite.live == -1){
-			mysprites.push(new sprite(Sprite.x,Sprite.y,32,32,18,"110020011",2,"67062",1,4))
+			mysprites.push(new sprite(Sprite.x,Sprite.y,32,32,18,"110020011",2,"67062",1,2,true))
 			Scrips_collection[mysprites[mysprites.length -1].script].Action(mysprites[mysprites.length -1])
 		}
 		/*
