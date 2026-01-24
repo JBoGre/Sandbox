@@ -33,8 +33,8 @@ Images:["texturas/Texturas ASCII_DIY.png","texturas/GradientTexture.png","textur
 "texturas/Monkey.png","texturas/BigMonkey.png","texturas/Goomba.png","texturas/shy guy.png","texturas/3x3 Textures.png",
 "texturas/terrain.png","texturas/terrainShadow.png","texturas/Explosion.png","texturas/Grinch.png"],
 SoundEffects:["SoundEfects/Checkpoint.wav","SoundEfects/Collect.wav","SoundEfects/Boing.mp3","SoundEfects/Boing.mp3","SoundEfects/Jump Attack.mp3",
-"SoundEfects/bubble-pop.mp3","SoundEfects/Destroy.wav","SoundEfects/Break.wav","SoundEfects/Fuse.ogg","SoundEfects/ExplosionTNT.ogg"
-,"SoundEfects/Alert.wav","SoundEfects/bomb.mp3"],
+"SoundEfects/bubble-pop.mp3","SoundEfects/water.wav","SoundEfects/Break.wav","SoundEfects/Fuse.ogg","SoundEfects/ExplosionTNT.ogg"
+,"SoundEfects/Alert.wav","SoundEfects/bomb.mp3","SoundEfects/Cloud.wav"],
 Images3D:["texturas/Texturas ASCII_DIY.png","texturas/GradientTextureoffset.png","texturas/Sprites.png","texturas/decoraciones.png",
 "texturas/Monkey.png","texturas/BigMonkey.png","texturas/Goomba.png","texturas/shy guy.png","texturas/3x3 Textures.png",
 "texturas/terrain.png","texturas/terrainShadow.png","texturas/Explosion.png","texturas/Grinch.png"],
@@ -149,8 +149,8 @@ objects:[
 ["Tile","rgba(0,0,0,0)",1,"10002AA0"],
 ["Tile","rgba(0,0,0,0)",1,"10002BA0"],
 ["Tile","rgba(0,0,0,0)",1,"10002CA0"],
-["Tile","rgba(0,0,0,0)",1,"10002AB0"],
-["Tile","rgba(0,0,0,0)",1,"10002BB0"],
+["Tile","rgba(0,0,0,0)",1,"00000AB0"],
+["Tile","rgba(0,0,0,0)",1,"00000BB0"],
 // Monarch
 ["Tile","rgba(0,0,0,0)",1,"111115F8"],
 ["Tile","rgba(0,0,0,0)",1,"100026F8"],
@@ -289,7 +289,11 @@ objects:[
 ["Object",96,96,"#","040010001",2,"03500", 0,4], // Water Bubble
 ["Object",96,96,"#","040010010",2,"03500", 4,0], // Water Bubble
 ["Object",96,96,"#","040010010",2,"03500", -4,0], // Water Bubble
-["Object",92,112,31,"660030000",12,"301D2", -2,0]//  Grinch
+["Object",64,32,32, "100010000",2,"06800", 0,0], // 
+["Object",64,32,32, "100010010",2,"06800", 4,0], 
+["Object",64,32,32, "100010010",2,"06800", -4,0], 
+["Object",64,32,32, "100010001",2,"06800", 0,4], 
+//["Object",92,112,31,"660030000",12,"301D2", -2,0]//  Grinch
 //["Object",32,32,25,"000030000",9,"08028", 0,0],
 
 
@@ -2068,6 +2072,29 @@ Loop: function Loop (Sprite,player1,player2) {
 		*/
 		Gravedad(Sprite,0.5)
 	},
+RenderMode: function RenderMode (ctx,Sprite) {
+	    PreRenderMode(ctx,Sprite)
+ },
+},
+{
+Action: function Action(Sprite) { //S32
+		Sprite.Ydiference_Print = -8
+		Sprite.height = 24
+	},
+Loop: function Loop (sprite,player1) {
+		PreProgramedMode(sprite,player1)
+		if(sprite.Yplayertouch){
+			SoundEffectsCollection[12].currentTime = 0;
+			SoundEffectsCollection[12].play()
+			sprite.intervald_time = 0
+			sprite.XG = 320
+			p1.MoveY = -12;
+			p1.BY = 0
+		}
+		if(sprite.XG == 320){	
+			if(Clock(sprite,10))sprite.XG = 384;
+		}
+    },
 RenderMode: function RenderMode (ctx,Sprite) {
 	    PreRenderMode(ctx,Sprite)
  },

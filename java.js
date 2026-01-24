@@ -4474,6 +4474,7 @@ this.deathMusic = DeathSound
 this.Up = false
 this.Down = false
 this.PlayerJumps = 0
+this.INwater = true
 if(this.deathMusic == undefined){
 this.deathMusic = new Audio("SoundEfects/DeathSound.mp3")
 }else{
@@ -5181,6 +5182,12 @@ function plataformer_Easy(ctr,Player,B,C){
 		
 	}*/
 	if(Player.water ){
+		if(!Player.INwater){
+			SoundEffectsCollection[6].currentTime = 0;
+			SoundEffectsCollection[6].play()
+			console.log("yes")
+		}
+		Player.INwater = true
 		if (Player.ButonBTouch && !Player.crouched){Player.MaxVelocity = 6;}
 		if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
 			if (Player.LeftTouch) {
@@ -5218,6 +5225,7 @@ function plataformer_Easy(ctr,Player,B,C){
 		Player.water = false
 		Player.AnimationWater = true
 	}else{
+		Player.INwater = false
 		/*En tierra*/
 		if (Player.ButonBTouch && !Player.crouched){Player.MaxVelocity = 8;}
 		if(Player.delay == 0 && (!Player.crouched || !Player.jumped)  ){
@@ -5656,7 +5664,11 @@ function animation(P,Con){
 				P.YG = 7
 			    P.XG = 1
 				}else{
-				P.XG = 0
+				if(Ax8 == 7){
+				P.XG += 1;
+					if(P.XG >= Con[2]){
+					P.XG = 0}
+					}
 				}
 			}
 		}
@@ -7115,6 +7127,8 @@ Kills = 0
 p1.priority = false
 CameraAngle = 0
 CameraBody.Colision = false
+p1.invecybility = true
+p2.invecybility = true
 if(TankGame){
 	Multiplayer = true
 	ControlType = 4
@@ -7723,6 +7737,8 @@ function Boregito(Value){
 			   break
 			   case "ANGLE":
 				ControlType = 2
+				NolimitX = true
+			   NolimitY = true
 			   break
 			   case "MOUSE":
 				ControlType = 3
@@ -7787,13 +7803,17 @@ function AntiBoregito(Value){
 			   case "TankGame":
 			   TankGame = false
 			   break
-			   case "GRAVITY","ANGLE","MOUSE","PACMAN":
+			   case "GRAVITY","MOUSE","PACMAN":
 				ControlType = 0
 			   break
+			   case "ANGLE":
+			   ControlType = 0
+			   NolimitX = false
+			   NolimitY = false
+			   break 
 			   default:
 
 			   break 
 		   }
 	   }
-
 /*  (-< = */
