@@ -2695,13 +2695,14 @@ this.repetTheBackgroundY = 1
 }
 this.repeatY = repeatY
 this.x = Xleft
+this.y = Yup
 this.mX = movementX; this.mY = movementY;
 this.AX = autoX; this.AY = autoY;
 this.height = height
 this.width = width
 this.y = (screenHeigth  - this.height) + Yup *-1
 this.stx = this.x + Xleft
-this.sty = this.y
+this.sty = this.y 
 }
 
 function localisated_sprites(Sprite_Collection,sprites,cordX,cordY) {
@@ -7169,7 +7170,7 @@ inputY = 0
 for(let i = 0; i < BackgroundsInLevel.length ;i++){
 	BackgroundsInLevel[i].x = BackgroundsInLevel[i].stx 
 	BackgroundsInLevel[i].y = BackgroundsInLevel[i].sty 
-	if((SAVE.limit_down   > cordY) == false){
+	if((SAVE.limit_down > cordY) == false){
 	BackgroundsInLevel[i].y += (cordY * BackgroundsInLevel[i].mY)
 	}
 }
@@ -7302,7 +7303,7 @@ function Frame (p1,p2,tiles,sprites,mini_sprites){
 		  }
 		}
 	if(frisFotogram){
-		if(!invecybility){
+		if(!invecybility && !AZAR){
 		p1.invecybility = false
 		p2.invecybility = false
 		}
