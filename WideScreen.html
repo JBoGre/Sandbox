@@ -7,18 +7,8 @@
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <style>
-	body.fade {
-    opacity: 0;
-    }
     body {
 	font-size: 2px;
-    margin: 0;
-	min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-	background: linear-gradient(rgb(255, 255, 255), rgb(95, 255, 255));
-	transition: opacity 0.8s ease, background 1s ease;
 	}
     *{
 	font-family: "Pixelify Sans", sans-serif;
@@ -38,23 +28,20 @@
     height:256em;
     background-color:rgba(0,0,0,0);
     }   
-	#screen{
-	position: absolute;
-	width: 100vw;
-    max-width: 256em;
-	aspect-ratio: 1 / 1;
+	 #screen{
+	 position: absolute;
+      top: 0px;
+      left: 0px;
+	width:100vw;
+    height:100vh;
 	display: grid;
     grid-template-columns: repeat(auto-fill, 32px);
     grid-template-rows: repeat(auto-fill, 32px);
-    background-image: url('texturas/Mising.png');
+     background-image: url('texturas/Mising.png');
 	background-size: cover;
 	float:left;
-	left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
     }
 	#controladores{
-	display: none;
 	position: absolute;
       top: 0px;
       left: 0px;
@@ -63,7 +50,6 @@
 
 	}
 	#controladores2{
-	display: none;
 	position: absolute;
       top: 0px;
       left: 0px;
@@ -483,7 +469,6 @@
      transform: scale(0.95);
      background: #3e8e41;
     }
-	
     </style>
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -494,7 +479,7 @@
     <script   src="./java.js" defer></script>
 	<script   src="./Shotter.js" defer></script>
  </head>
- <body data-page="UniversalScreen">
+ <body data-page="WideScreen">
   <header>   </header>
      <div id ="controladores">
 	  	<canvas class=style id=S0></canvas>
@@ -556,7 +541,6 @@
 		</div>
 		
 		<div id="Song-selector" style="
-		display: none;
 		position: absolute;
       top: 32px;
       left: 32px;
@@ -614,13 +598,15 @@
 	<option class="Text" value='Niveles JSON/AZAR.json'>AZAR MODE</option>
     </select>
     <input type="button" class="Text"  style=" width:150px;  " value="change" onclick="cargarJSON(LevelSelected)">
-    </div><div id="Page-selector" style="
+    </div>
+	<div id="Page-selector" style="
 	 float:left; 
 	"> 
 	<a class="Text"  href="editor.html">Editor</a>
 	<br>
-	<a class="Text"  href="WideScreen.html">AddapScreen</a>
+	<a class="Text"  href="index.html">InicialPage</a>
 	</div>
+	
 	 <div id="Character-selector" style="
 	 font-size:2px;
 	 width:128em;  
