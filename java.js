@@ -1,3 +1,4 @@
+const TypePage = document.body.dataset.page;
 const table = document.getElementById("screen")
 const eraser = document.getElementById("eraser")
 const hand = document.getElementById("hand")
@@ -471,6 +472,7 @@ function (){
 
 function CreateWidth(){
 	let screenView = 0
+	
 	if(100 >= (extratNumbers(tablestyle.width))*1 || 1000 <= (extratNumbers(tablestyle.width))*1){
 		screenView = window.innerWidth
 	}else{
@@ -480,6 +482,7 @@ function CreateWidth(){
 }
 function CreateHeight(){
 	let screenView = 0
+	
 	if(100 >= (extratNumbers(tablestyle.height))*1 || 1000 <= (extratNumbers(tablestyle.height))*1){
 		screenView = window.innerHeight
 	}else{
@@ -490,8 +493,17 @@ function CreateHeight(){
 var BlockInGame = 32
 var BlockResolution = 16
 var BlockResolutionState = 2
- var screenWidth =  CreateWidth()
- var screenHeigth =  CreateHeight()
+if(TypePage === 'UniversalScreen'){
+	var screenWidth = 512
+	var screenHeigth = 512
+	var ShowScreenWidth = (extratNumbers(tablestyle.width))*1
+	var ShowScreenHeigth = (extratNumbers(tablestyle.height))*1
+}else{
+	var screenWidth = CreateWidth()
+	var screenHeigth = CreateHeight()
+	var ShowScreenWidth = screenWidth
+	var ShowScreenHeigth = screenHeigth
+}
 var GridWidth = (SAVE.X * BlockResolution) 
 var GridHeight = (SAVE.Y * BlockResolution) 
 const screenWidthHalf = Math.round(screenWidth/2)
@@ -537,6 +549,14 @@ var startY = SAVE.StartY
 
 var topScreen = (extratNumbers(tablestyle.top))*1
 var leftScreen = (extratNumbers(tablestyle.left))*1
+
+// cambia de tamaño la pagina
+if(TypePage === 'UniversalScreen'){
+	window.addEventListener("resize", () => {
+	  ShowScreenWidth = (extratNumbers(tablestyle.width))*1
+	  ShowScreenHeigth = (extratNumbers(tablestyle.height))*1
+	});
+}
 document.addEventListener('mousemove', (event) => {
      Xmouse = event.clientX - leftScreen
      Ymouse = event.clientY - topScreen
@@ -561,6 +581,7 @@ function chargeLevelNoTiles(){
 	}else{
 	backgroundBase = 'linear-gradient(0deg, rgb(0, 0, 255), rgb(0, 255, 255))'	
 	}
+	changeBackground(backgroundBase)
     color_palete = window.Palete
 	backgroundMusicTrack = SAVE.backgroundMusicTrack
 	if(SAVE.totalPrizes != null){
@@ -1088,7 +1109,7 @@ for(let i = 0; i < Number ; i++){
 }
 }
 function extratNumbers(text) {
-  return text.replace(/[^0-9]/g, '');
+  return text.replace(/[^0-9.]/g, '');
 }
 function replaceTile (lastXcord,lastYcord){  
 	  let result = undefined
@@ -1486,6 +1507,7 @@ function Avoid_undefined_in_Azar(){
 		BackgroundsInLevel = []
 		Azar_Blocks_Skins[Number]()
 		Azar_Back_Sound[Number]()
+		changeBackground(backgroundBase)
 	}
 }	
 function Azar_Create_Sprites(){
@@ -2431,9 +2453,11 @@ let lastY = 0
 let lastXcord = 0
 let lastYcord = 0
 var isDrawing = false
-var DrawMode = 0
-	
-
+if(TypePage === 'Editor'){
+	var DrawMode = 0
+}else{
+	var DrawMode = 3
+}
 
 SAVE.Inicial_Script()
 function Create_sprites() {
@@ -2517,7 +2541,11 @@ function AnalizerAudio(audio){
         x += barWidth + 1;
       }
     }
+if(TypePage !== 'UniversalScreen'){
 table.style.overflow = "auto"
+}else{
+table.style.overflow = "hidden"
+}
 var NolimitX = false
 var NolimitY = false
 var CameraBody = null
@@ -2532,6 +2560,20 @@ function createMapTiles (Array){
 }
 var player1Deaths = 0
 var player2Deaths = 0
+function changeBackground(backgroundBase) {
+if(TypePage === 'UniversalScreen'){
+	  document.body.classList.add('fade');
+
+	  setTimeout(() => {
+		document.body.style.background = backgroundBase;
+		document.body.classList.remove('fade');
+	  }, 400);
+}
+}
+var type_but = 0
+but4.addEventListener("click",() =>{
+buton[type_but](0)
+})
 const buton = [
 function(b) {
 Selection.classList.toggle('active');
@@ -2552,8 +2594,8 @@ table.innerHTML = "<canvas id=game></canvas>";
 table.style.overflow = "hidden"
 game_area = document.getElementById("game");
 game_area.style.backgroundImage =  backgroundBase
-game_area.style.width = screenWidth + "px"
-game_area.style.height = screenHeigth + "px"
+game_area.style.width = ShowScreenWidth + "px"
+game_area.style.height = ShowScreenHeigth + "px"
 charge(game_area,SAVE.X,SAVE.Y,0,0,StarX,StarY);
 StarPosition()
 p1 = new player(p1InF.width,p1InF.height,p1InF.Img[Skins_for_players[0].SkinSelect],p1InF.Grid,PositionX,PositionY,1,"0031",p1InF.WNEGA,p1InF.HNEGA,p1InF.DeathSound)
@@ -2572,7 +2614,9 @@ finishMusic.pause();       // Pausa el audio
 finishMusic.currentTime = 0; // Reinicia al inicio
 GameOverMusic.pause();       // Pausa el audio
 GameOverMusic.currentTime = 0; // Reinicia al inicio
+if(TypePage !== 'UniversalScreen'){
 table.style.overflow = "auto"
+}
 myTiles = [];
 mysprites = [];
 myMiniSprites = [];
@@ -2605,10 +2649,6 @@ gametest(game,100000,p1,p2,myTiles,mysprites,myMiniSprites,myHits)
 type_but = 1
 },
 ]
-var type_but = 0
-but4.addEventListener("click",() =>{
-buton[type_but](0)
-})
 function StarPosition(){
 	PositionX = screenWidth/2
 	if(!NolimitX){
