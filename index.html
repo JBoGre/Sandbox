@@ -40,8 +40,8 @@
     }   
 	#screen{
 	position: absolute;
-	width: 100vw;
-    max-width: 256em;
+	width: min(100vmin, 256em);
+    height: min(100vmin, 256em);
 	aspect-ratio: 1 / 1;
 	display: grid;
     grid-template-columns: repeat(auto-fill, 32px);
