@@ -5067,8 +5067,8 @@ function Bubble(Player,Player2){
 }
 var PlayerTrun = true
 function CameraBodyMovement(Body,Player1,Player2){
-//if(Player1.ButonBTouch || Player2.ButonBTouch){ Body.MaxVelocity = 3;}
-	Body.MaxVelocity = 2
+if(Player1.ButonBTouch || Player2.ButonBTouch){ Body.MaxVelocity = 4;}
+	Body.MaxVelocity = 3
 		Emboscade_player_X(Body,Player1,Body.MaxVelocity)
 		Emboscade_player_Y(Body,Player1,Body.MaxVelocity)
 	/*
@@ -7079,6 +7079,7 @@ var effects_in_game = []
 var Kills = 0
 var Pause = false
 var Waithed = true
+var ScreenStop = false
 var TextInGame = []
 var Player_CRT = {
 	Player1:  1,
@@ -7204,6 +7205,7 @@ frisFotogram = true
 reset_game = false
 Pause = false
 Waithed = true
+ScreenStop = false
 TextFinishGame = []
 inputX = 0
 inputY = 0
@@ -7412,7 +7414,7 @@ function Frame (p1,p2,tiles,sprites,mini_sprites){
 	}else{
 	PlayerMovementManagerY(p1,tiles,sprites,mini_sprites)
 		if(p1.modeY == 1){
-		cameraModeY[p1.camY](p1,tiles)
+		if(!ScreenStop)cameraModeY[p1.camY](p1,tiles);
 		 }else{
 		cordY += cameraY 
 		if(!NolimitY)stopY(p1,p2,tiles);
@@ -7450,7 +7452,7 @@ function Frame (p1,p2,tiles,sprites,mini_sprites){
 	}else{
 	PlayerMovementManagerX(p1,tiles,sprites)
 		if(p1.modeX == 1){
-	   cameraModeX[p1.camX](p1)
+		if(!ScreenStop)cameraModeX[p1.camX](p1);
 	   }else{	   
 		  cordX += cameraX
 		  if(!NolimitX)stopX(p1,p2,tiles);

@@ -1945,6 +1945,7 @@ Action: function Action(Sprite) { //S31
 		backgroundMusic.currentTime = 0;
 		backgroundMusic.src = "Music/You're A Mean One Mr. Grinch.mp3"
 		backgroundMusic.play()
+		ScreenStop = true
 	},
 Loop: function Loop (Sprite,player1,player2) {
 		switch (Sprite.SecondState){
@@ -2063,13 +2064,14 @@ Loop: function Loop (Sprite,player1,player2) {
 			mysprites.push(new sprite(Sprite.x,Sprite.y,32,32,18,"110020011",2,"67062",1,2,true))
 			Scrips_collection[mysprites[mysprites.length -1].script].Action(mysprites[mysprites.length -1])
 		}
-		/*
+		
 		if(!Sprite.InScreen){
 			backgroundMusic.currentTime = 0;
 			backgroundMusic.src = backgroundMusicSrc
-			//backgroundMusic.play()
+			backgroundMusic.play()
+			ScreenStop = false
 		}
-		*/
+		
 		Gravedad(Sprite,0.5)
 	},
 RenderMode: function RenderMode (ctx,Sprite) {
