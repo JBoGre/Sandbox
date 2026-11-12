@@ -12,6 +12,10 @@ const CutF = document.getElementById("colideF")
 const RC1 = document.getElementById("color1")
 const RC2 = document.getElementById("color2")
 const RC3 = document.getElementById("color3")
+const TC1 = document.getElementById("color1TX")
+const TC2 = document.getElementById("color2TX")
+const TC3 = document.getElementById("color3TX")
+const BGSelector = document.getElementById("BGSelector")
 const loadbut = document.getElementById("load")
 const savebut = document.getElementById("save")
 const chekbox = document.querySelectorAll(".chek") 
@@ -287,7 +291,9 @@ var CBC = [[255,255,255],[0,0,0]]
 RC1.value = CBC[1][0]
 RC2.value = CBC[1][1]
 RC3.value = CBC[1][2]
-
+TC1.value = CBC[1][0]
+TC2.value = CBC[1][1]
+TC3.value = CBC[1][2]
 
 let PT = document.getElementById("sprites")
 let SelectCB = 1
@@ -304,6 +310,9 @@ for(let i = 0; i < ALLCB.length ; i++){
 		 RC1.value = CBC[i][0]
 		 RC2.value = CBC[i][1]
 		 RC3.value = CBC[i][2]
+		 TC1.value = CBC[i][0]
+		 TC2.value = CBC[i][1]
+		 TC3.value = CBC[i][2]
     });
 };
 ALLCB[0].style.backgroundColor = "#FFF"
@@ -313,6 +322,26 @@ var drawNum = 0
 function CS (range,N){
  	CBC[SelectCB][N] = range.value
    ALLCB[SelectCB].style.backgroundColor = "rgb("+  CBC[SelectCB][0] +","+ CBC[SelectCB][1] +","+ CBC[SelectCB][2] +")"
+	TC1.value = CBC[SelectCB][0]
+	TC2.value = CBC[SelectCB][1]
+	TC3.value = CBC[SelectCB][2]
+   DRAWS[drawNum](PT)
+}
+function TS (range,N){
+	let rangeV = range.value
+	if(rangeV < 0){
+		rangeV = 0
+		range.value = rangeV
+	}
+	if(rangeV > 255){
+		rangeV = 255
+		range.value = rangeV
+	}
+ 	CBC[SelectCB][N] = rangeV
+   ALLCB[SelectCB].style.backgroundColor = "rgb("+  CBC[SelectCB][0] +","+ CBC[SelectCB][1] +","+ CBC[SelectCB][2] +")"
+	RC1.value = CBC[SelectCB][0]
+	RC2.value = CBC[SelectCB][1]
+	RC3.value = CBC[SelectCB][2]
    DRAWS[drawNum](PT)
 }
 const DRAWS = [
@@ -356,6 +385,176 @@ x.addEventListener("click", () =>{
 }
 DRAWS[0](PT)
 
+function BGSelected(){
+	BackgroundsInLevel = [];
+	BackgroundsSAVE = [];
+	ActiveBG[BGSelector.value]();
+	
+	if(BackgroundsInLevel.length != 0){
+	ImageTo = BackgroundsInLevel[BackgroundsInLevel.length-1].imC
+	}else{
+	ImageTo = undefined
+	DrawGirdBG(BackgroundGrid);
+	}
+	ImageTo.addEventListener("load", (e) => {
+		DrawGirdBG(BackgroundGrid);
+	})
+}
+const ActiveBG = [
+	function  (){
+		// 0
+     },
+	function  (){    
+		// 1	
+     	BackgroundsInLevel.push(new Background("Backgrounds/Normal Font 2.png",1024,576,0.5,0.5,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 2	
+     	BackgroundsInLevel.push(new Background("Backgrounds/Normal Font 3.png",1200,460,0.5,0.2,0,0,true,false,0,0))
+	},
+	function  (){  
+		// 3
+     	BackgroundsInLevel.push(new Background("Backgrounds/Tree Font.png",688,600,0.5,0.5,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("BACKGROUNDS/CLOUDS TRANSPARENT.PNG",880,512,0.4,0.4,0.1,0,true,false,0,128))
+		BackgroundsInLevel.push(new Background("Backgrounds/Tree Font Transparent.png",573,500,0.2,0.2,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 4
+     	BackgroundsInLevel.push(new Background("Backgrounds/FlorClouds.png",2042,128,0.6,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Cloud.png",2048,448,0.4,0,0,0,true,false,0,0))
+	},
+	function  (){  
+		// 5
+     	BackgroundsInLevel.push(new Background("BACKGROUNDS/CLOUDS TRANSPARENT.PNG",880,512,0.4,0.4,0.1,0,true,true,0,0))
+	},
+	function  (){  
+		// 6
+		BackgroundsInLevel.push(new Background("Backgrounds/Sky City Background 4 - copia.png",1024,512,0.2,0,0.1,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Sky City Background - copia.png",1024,128,0.5,0,0.4,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Sky City Background 2 - copia.png",1024,512,0.4,0,0.3,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Sky City Background 3 - copia.png",1024,512,0.3,0,0.2,0,true,false,0,0))
+	},
+	function  (){  
+		// 7
+     	BackgroundsInLevel.push(new Background("Backgrounds/FlorClouds.png",2042,128,0.6,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Temple.png",2042,448,0.5,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Cloud.png",2048,448,0.4,0,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 8	
+		BackgroundsInLevel.push(new Background("Backgrounds/ocean Background.png",1024,208,0.5,0,0.2,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Falls Background 2.png",1024,256,0.4,0,0,0,true,false,0,208))
+		BackgroundsInLevel.push(new Background("Backgrounds/Falls Background.png",1024,976,0.3,0,0,0,true,false,0,-512))
+		BackgroundsInLevel.push(new Background("Backgrounds/Falls Background 3.png",1024,256,0.2,0,0,0,true,false,0,208))
+	},
+	function  (){ 
+		// 9		
+		BackgroundsInLevel.push(new Background("Backgrounds/Bramble.png",512,512,0.5,0.5,0,0,true,true,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Bramble Clouds.png",512,512,0.5,0.5,1,0,true,true,0,0))
+	},
+	function  (){ 
+		// 10
+		BackgroundsInLevel.push(new Background("Backgrounds/onlyClouds.png",1024,864,0.5,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/mountains3_noClouds.png",1024,864,0.3,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/backMountains.png",1024,864,0.1,0,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 11
+		BackgroundsInLevel.push(new Background("Backgrounds/Ground.png",1024,1024,0.5,0.1,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 12
+		BackgroundsInLevel.push(new Background("Backgrounds/Snow Hill.png",2400,448,0.5,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Cloud.png",2048,448,0.4,0,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 13
+		BackgroundsInLevel.push(new Background("Backgrounds/Sarasaland.png",2048,448,0.5,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Cloud.png",2048,448,0.3,0,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 14
+		BackgroundsInLevel.push(new Background("Backgrounds/Forest.png",1024,864,0.5,0.1,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 15
+		BackgroundsInLevel.push(new Background("Backgrounds/Forest 8bit.png",1024,864,0.5,0.1,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 16
+		BackgroundsInLevel.push(new Background("Backgrounds/forests1.png",512,128,0.5,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/hills1.png",2048,512,0.4,0,0,0,true,false,0,96))
+		BackgroundsInLevel.push(new Background("Backgrounds/Cloud.png",2048,448,0.2,0,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 17
+		BackgroundsInLevel.push(new Background("Backgrounds/Clasic.png",1024,764,0.5,0.1,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 18
+		BackgroundsInLevel.push(new Background("Backgrounds/hills3.png",1024,480,0.5,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/hills3_Back.png",1024,480,0.4,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/hills3_MoreBack.png",1024,480,0.3,0,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 19
+		BackgroundsInLevel.push(new Background("Backgrounds/Background4.png",1152,648,0.5,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Background3.png",1152,648,0.4,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Background2.png",1152,648,0.3,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Background1.png",1152,648,0.1,0,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 20
+		BackgroundsInLevel.push(new Background("Backgrounds/LandScape1.png",1152,648,0.4,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/LandScape2.png",1152,648,0.3,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/LandScape3.png",1152,648,0.1,0,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 21
+		BackgroundsInLevel.push(new Background("Backgrounds/FlorClouds.png",2042,128,0.6,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Inicial Background.png",2080,480,0.5,0,0,0,true,false,0,40))
+		BackgroundsInLevel.push(new Background("Backgrounds/Cloud.png",2048,448,0.4,0,0,0,true,false,0,0))
+	},
+	function  (){ 
+		// 22
+		BackgroundsInLevel.push(new Background("Backgrounds/Underground Clasic.png",1024,384,0.5,0.5,0,0,true,true,0,0))
+	},
+	function  (){ 
+		// 23
+		BackgroundsInLevel.push(new Background("Backgrounds/Labyrinth Zone Background.png",1024,512,0.5,0.5,0,0,true,true,0,0))
+	},
+	function  (){ 
+		// 24
+		BackgroundsInLevel.push(new Background("Backgrounds/Move Clouds.png",1024,256,0.5,0.5,0.2,0,true,true,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Pipes.png",512,512,0.2,0.2,0,0,true,true,0,0))
+		
+	},
+	function  (){ 
+		// 25
+		BackgroundsInLevel.push(new Background("Backgrounds/WaterFall1.png",512,448,0.5,0.5,0,0,true,true,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/WaterFallefect.png",32,32,0.5,0.5,0,0.2,true,true,0,0))
+	},
+	function  (){ 
+		// 26
+		BackgroundsInLevel.push(new Background("Backgrounds/Tatoine Pixel1.png",512,210,0.5,0,0,0,true,false,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/Tatoine Pixel2.png",512,36,0.3,0,0,0,true,false,0,210))
+		BackgroundsInLevel.push(new Background("Backgrounds/Tatoine Pixel3.png",512,270,0,0,0,0,true,false,0,246))
+	},
+	function  (){ 
+		// 27
+		BackgroundsInLevel.push(new Background("Backgrounds/DeathStar.png",228,244,0.05,0.05,0,0,false,false,64,256))
+		BackgroundsInLevel.push(new Background("Backgrounds/DeathStarBackground.png",512,512,0.01,0.01,0,0,true,true,0,0))
+	},
+	function  (){ 
+		// 28
+		BackgroundsInLevel.push(new Background("Backgrounds/InfiniteFont.png",512,512,0.5,0.5,0,0,true,true,0,0))
+		BackgroundsInLevel.push(new Background("Backgrounds/InfiniteFont2.png",256,256,0.2,0.2,0,0,true,true,0,0))
+	},
+	function  (){ 
+		// 29
+		BackgroundsInLevel.push(new Background("Backgrounds/Mar.png",2048,1096,0.1,0,-0.1,0,true,false,0,-384))
+	},
+]
  const songSelector = document.getElementById("songSelector");
 		 
         MusicList.forEach(opcion => {
@@ -525,6 +724,7 @@ var LC = SAVE.LevelCol.slice()
 var LevelEfects = []
 var Level_Sprites = SAVE.Levelsprites.slice()
 var BackgroundsInLevel = []
+var BackgroundsSAVE = []
 var backgroundMusicCollection = []
 var TilesCollection = []
 var ColorSelected = "#FFF"
@@ -564,6 +764,7 @@ document.addEventListener('mousemove', (event) => {
   
 reset_functions_and_scrips()
 var LevelScript = undefined
+var ImageTo = undefined
 function chargeLevelNoTiles(){
 	if(LevelScript != undefined){
 		AntiBoregito(LevelScript)
@@ -584,11 +785,33 @@ function chargeLevelNoTiles(){
 	changeBackground(backgroundBase)
     color_palete = window.Palete
 	backgroundMusicTrack = SAVE.backgroundMusicTrack
+	BackgroundsInLevel = []
+	BackgroundsSAVE = []
+    backgroundMusicCollection = []
+	for(let i = 0; i < SAVE.backgroundMusic.length ; i++){
+	backgroundMusicCollection.push(new Audio(SAVE.backgroundMusic[i]))
+	}
+	
+	backgroundMusicSrc = SAVE.backgroundMusic[0]
+	backgroundMusic = backgroundMusicCollection[backgroundMusicTrack]
+    backgroundMusic.loop = true; // Activar reproducción en bucle
+	for(let i = 0; i < SAVE.backgroundImages.length ; i++){
+	BCC = SAVE.backgroundImages[i]
+	BackgroundsInLevel.push(new Background(BCC[0],BCC[1],BCC[2],BCC[3],BCC[4],BCC[5],BCC[6],BCC[7],BCC[8],BCC[9],BCC[10]))
+	}
+	
+	if(BackgroundsInLevel.length != 0){
+	ImageTo = BackgroundsInLevel[BackgroundsInLevel.length-1].imC
+	}else{
+	ImageTo = undefined
+	}
+	
 	if(SAVE.totalPrizes != null){
 	totalprizes = SAVE.totalPrizes
     }else{
 	totalprizes = 0
 	}
+	
 	if(SAVE.StartX != undefined){
 	startX = SAVE.StartX
     }else{
@@ -612,30 +835,23 @@ function chargeLevelNoTiles(){
 		}
 	}
 	SpritesInGrid = []
-	createSpritesInGrid ()
-	BackgroundsInLevel = []
-    backgroundMusicCollection = []
-	for(let i = 0; i < SAVE.backgroundMusic.length ; i++){
-	backgroundMusicCollection.push(new Audio(SAVE.backgroundMusic[i]))
-	}
-	backgroundMusicSrc = SAVE.backgroundMusic[0]
-	backgroundMusic = backgroundMusicCollection[backgroundMusicTrack]
-    backgroundMusic.loop = true; // Activar reproducción en bucle
-	for(let i = 0; i < SAVE.backgroundImages.length ; i++){
-	BCC = SAVE.backgroundImages[i]
-	BackgroundsInLevel.push(new Background(BCC[0],BCC[1],BCC[2],BCC[3],BCC[4],BCC[5],BCC[6],BCC[7],BCC[8],BCC[9],BCC[10]))
-	}
+	createSpritesInGrid()
+	
 	change_BlockResolution(BlockResolution)
 	limits_and_alture()
-	buton[1](0)
-	if(SAVE.Script != undefined){
-	Boregito(SAVE.Script)
-	LevelScript = SAVE.Script
-	}
+	ImageTo.addEventListener("load", (e) => {
+		buton[1](0)
+		if(SAVE.Script != undefined){
+		Boregito(SAVE.Script)
+		LevelScript = SAVE.Script
+		}
+	})
+	
 }
 function Save_Level_NoTiles(){
 	const {tiles, ... SAVEcopy} = SAVE
 	SAVEcopy.backgroundMusic =[ backgroundMusicSrc]
+	SAVEcopy.backgroundImages = BackgroundsSAVE
 	SAVEcopy.StartX = startX
 	SAVEcopy.StartY = startY
 	SAVEcopy.totalPrizes = totalprizes
@@ -726,6 +942,7 @@ screen_resoltion = 16 * BlockResolution
 margin_screen =  GridHeight - screen_resoltion
 createSpritesInGrid()
 DrawGirdTiles(Grid)
+DrawGirdBG(BackgroundGrid)
 DrawGirdSprites(GridSprites)
 }
 function Array_to_JSON(Array){
@@ -1494,7 +1711,13 @@ function Azar_Level(){
 	createSprites_No_in_solid(Azar_Stars,SAVE.X-16,3,16,SAVE.Y-2,32,32,18,"110020011",2,"67062",4,1)
 	effects_in_game = []
 	effects_in_game.push(new effect(2,LavaTexture,32,32,true,0,true,LavaVelocity*32,0,LavaVelocity))
-	change_BlockResolution(BlockResolution);
+	if(ImageTo != undefined){
+		ImageTo.addEventListener("load", (e) => {
+		change_BlockResolution(BlockResolution);
+		})
+	}else{
+		change_BlockResolution(BlockResolution);
+	}
 }	
 function Avoid_undefined_in_Azar(){
 	if(LevelType == undefined){
@@ -1505,8 +1728,14 @@ function Avoid_undefined_in_Azar(){
 	if(AzarPlus){
 		let Number = RandomNumber(0,14)
 		BackgroundsInLevel = []
+		BackgroundsSAVE = []
 		Azar_Blocks_Skins[Number]()
 		Azar_Back_Sound[Number]()
+		if(BackgroundsInLevel.length != 0){
+			ImageTo = BackgroundsInLevel[BackgroundsInLevel.length-1].imC
+		}else{
+			ImageTo = undefined
+		}
 		changeBackground(backgroundBase)
 	}
 }	
@@ -1835,7 +2064,8 @@ backgroundBase = "linear-gradient(rgb(255, 255, 255), rgb("+RandomNumber(0,256)+
  S0.width = 256
  S0.height = 256
 var ctx = null
- var  ctxSprites = null
+var ctxBackground = null
+ var ctxSprites = null
  var PounterCTX = null
  CreatreGrid()
  createTouchButtons()
@@ -1855,6 +2085,7 @@ var ctx = null
 	GridSprites.height = GridHeight;GridSprites.width = GridWidth
 	Pounter.height = GridHeight;Pounter.width = GridWidth
 	ctx = Grid.getContext("2d");
+	ctxBackground = BackgroundGrid.getContext("2d");
     ctxSprites = GridSprites.getContext("2d");
 	PounterCTX = Pounter.getContext("2d");
 	Pounter.addEventListener('mousedown', startDrawing);
@@ -1929,6 +2160,7 @@ for(let I = 0; I < SAVE.tiles.length ; I++){
 }
 function Create_images() {
 	BackgroundsInLevel = []
+	BackgroundsSAVE = []
 	var BCC = []
 	for(let i = 0; i < SAVE.backgroundImages.length ; i++){
 	BCC = SAVE.backgroundImages[i]
@@ -1964,10 +2196,12 @@ function Create_images() {
 	HudTEXTURES.src = "texturas/HudTextures.png"
 	Tornado = new Image()
 	Tornado.src = "texturas/Tornado.png"
+	
 image_collection[image_collection.length -1].addEventListener("load", (e) => {
 DrawGirdTiles(Grid)
+DrawGirdBG(BackgroundGrid)
 DrawGirdSprites(GridSprites)
-  CreateTiles()
+CreateTiles()
 });
 }
 Create_images()
@@ -2014,6 +2248,8 @@ let diference = GridHeight - BlockResolution
 	Pounter.height = GridHeight;Pounter.width = GridWidth;
 	BackgroundGrid.height = GridHeight;BackgroundGrid.width = GridWidth;
 	BackgroundGrid.style.backgroundImage = backgroundBase
+
+//Tiles
 ctx.clearRect(0,0,GridWidth,GridHeight)
 for(let i = 0; i < LC.length ; i++){
 	var XG = (parseInt(LC[i].col[5], 32))*32
@@ -2021,6 +2257,44 @@ for(let i = 0; i < LC.length ; i++){
 	ctx.fillStyle = LC[i].color
 	ctx.fillRect(LC[i].X*BlockResolution,diference-(LC[i].Y*BlockResolution),BlockResolution,BlockResolution)
 	ctx.drawImage(image_collection[LC[i].IN],XG,YG,32,32, LC[i].X*BlockResolution,diference-(LC[i].Y*BlockResolution),BlockResolution,BlockResolution)
+}
+}
+function DrawGirdBG (Canvas){
+	
+//Backgrounds	
+let heightBG = 0
+let widthBG = 0
+let XBG = 0 
+let YBG = 0 
+let Xrepeat = 1
+let Yrepeat = 1
+let diferenceBG = 0
+ctxBackground.clearRect(0,0,GridWidth,GridHeight)	
+for(let i = BackgroundsInLevel.length-1; i > -1; i--){
+	
+	heightBG = BackgroundsInLevel[i].height/scale_sprites
+	widthBG = BackgroundsInLevel[i].width/scale_sprites
+	XBG = BackgroundsInLevel[i].Xleft
+	YBG = BackgroundsInLevel[i].Yup
+	Xrepeat = 1
+	Yrepeat = 1
+	if(BackgroundsInLevel[i].repeatX){
+		Xrepeat = Math.round((GridWidth/widthBG)+1)
+	}
+	if(BackgroundsInLevel[i].repeatY){
+		Yrepeat = Math.round((GridHeight/heightBG)+1)
+	}
+	diferenceBG = GridHeight - heightBG
+	YBG = diferenceBG - BackgroundsInLevel[i].Yup/scale_sprites
+	for(let X = 1; X <= Xrepeat ; X++){
+		YBG = diferenceBG - BackgroundsInLevel[i].Yup/scale_sprites
+		for(let Y = 1; Y <= Yrepeat ; Y++){
+			ctxBackground.drawImage(BackgroundsInLevel[i].imC,XBG,YBG,widthBG,heightBG)
+			YBG -= heightBG
+		}
+		XBG += widthBG
+	}
+	
 }
 }
 function DrawGirdSprites (Canvas,CanvasSprites){
@@ -2620,9 +2894,9 @@ table.style.overflow = "auto"
 myTiles = [];
 mysprites = [];
 myMiniSprites = [];
-ctx = Grid.getContext("2d")
   CreatreGrid()
 DrawGirdTiles(Grid)
+DrawGirdBG(BackgroundGrid)
 DrawGirdSprites(GridSprites)
 if(AZAR){
 	GridSprites.style.zIndex = 20
@@ -2734,15 +3008,18 @@ this.repetTheBackgroundY = Math.round((screenWidth / height)+0.4)+1
 this.repetTheBackgroundY = 1
 }
 this.repeatY = repeatY
-this.x = Xleft
-this.y = Yup
+this.Xleft = Xleft
+this.Yup = Yup
 this.mX = movementX; this.mY = movementY;
 this.AX = autoX; this.AY = autoY;
 this.height = height
 this.width = width
+this.x = Xleft
 this.y = (screenHeigth  - this.height) + Yup *-1
 this.stx = this.x + Xleft
 this.sty = this.y 
+
+BackgroundsSAVE.push([Img,width,height,movementX,movementY,autoX,autoY,repeatX,repeatY,Xleft,Yup])
 }
 
 function localisated_sprites(Sprite_Collection,sprites,cordX,cordY) {
@@ -2964,11 +3241,13 @@ function PreRenderMode (ctx,Sprite){
 		}
 	let Xposition = Sprite.xPrint
 	let Yposition = Sprite.yPrint
+	
 	if(Sprite.IN[0] == 3){
 		ctx.translate(Sprite.xPrint + Sprite.widthPrint,Sprite.yPrint);
-		ctx.scale(-1, 1); // Invierte verticalmente
 		 Xposition = 0
 		 Yposition = 0
+		DrawDirection(ctx,Sprite,Xposition-Sprite.widthPrint,Yposition)
+		ctx.scale(-1, 1); // Invierte verticalmente
 	}
 	ctx.drawImage(
 	image_collection[Sprite.img],
@@ -2982,7 +3261,60 @@ function PreRenderMode (ctx,Sprite){
 	Sprite.heightPrint,
 	)
 	ctx.restore();
+	if(Sprite.IN[0] != 3){
+		DrawDirection(ctx,Sprite,Xposition,Yposition)
+	}
 }
+function DrawDirection(ctx,Sprite,Xposition,Yposition){
+
+if(Sprite.XV == 0 && Sprite.YV == 0 ){return}
+
+var XG = 0
+var YG = 0
+var Extra = BlockResolution*-1
+
+if(Sprite.YV != 0){
+	if(Sprite.YV > 0){
+	XG = 32
+	YG = 32
+	Extra = BlockResolution
+	}
+	ctx.drawImage(
+		HudTEXTURES,
+		XG,
+		YG,
+		32,
+		32, 
+		Xposition,
+		Yposition+Extra,
+		BlockResolution,
+		BlockResolution,
+		)
+}
+if(Sprite.XV != 0){
+	if(Sprite.XV < 0){
+	XG = 0
+	YG = 32
+	Extra = BlockResolution*-1
+	}else{
+	XG = 32
+	YG = 0
+	Extra = BlockResolution
+	}
+	ctx.drawImage(
+		HudTEXTURES,
+		XG,
+		YG,
+		32,
+		32, 
+		Xposition+Extra,
+		Yposition,
+		BlockResolution,
+		BlockResolution,
+		)
+}
+}
+
 function Perfect_Tiles_ColisionY(Sprite,tiles){
 	let prevY = Sprite.y; // guarda la ultima posicion
 	Sprite.y += Sprite.MoveY; // suma el moviento a la direcion
@@ -3596,7 +3928,6 @@ function Go_to_player_X(Sprites,player,aument){
 			if((Sprites.x+Sprites.MoveX) <= player.x ){
 			//Sprites.MoveX = ((Sprites.x+Sprites.MoveX)+(Sprites.width /2)) - (player.x + player.widthHalf)
 			Sprites.MoveX = Sprites.x - player.x +Sprites.MoveX
-			console.log(Sprites.MoveX)
 			}
 	}else{
 		Sprites.MoveX = aument
@@ -3604,7 +3935,6 @@ function Go_to_player_X(Sprites,player,aument){
 		if((Sprites.x+Sprites.MoveX) >= player.x ){
 			//Sprites.MoveX = (Sprites.x+Sprites.MoveX) - (player.x + player.widthHalf)
 			Sprites.MoveX = Sprites.x - player.x +Sprites.MoveX
-			console.log(Sprites.MoveX)
 		}
 	}
 	/*
@@ -3631,7 +3961,7 @@ function Go_to_player_Y(Sprites,player,aument){
 		if((Sprites.y+Sprites.MoveY) <= player.y ){
 			//Sprites.MoveY = ((Sprites.height /2) + (Sprites.y+Sprites.MoveY)) - (player.y + player.heightHalf)
 			Sprites.MoveY = Sprites.y - player.y +Sprites.MoveY
-			console.log(Sprites.MoveY)
+
 		}
 	}else{
 		Sprites.MoveY = aument
@@ -3639,7 +3969,7 @@ function Go_to_player_Y(Sprites,player,aument){
 		if((Sprites.y+Sprites.MoveY) >= player.y ){
 			//Sprites.MoveY = (Sprites.y+Sprites.MoveY) - (player.y + player.heightHalf)
 			Sprites.MoveY = Sprites.y - player.y +Sprites.MoveY 
-			console.log(Sprites.MoveY)
+	
 		}
 	}
 	/*
@@ -5067,19 +5397,112 @@ function Bubble(Player,Player2){
 }
 var PlayerTrun = true
 function CameraBodyMovement(Body,Player1,Player2){
-if(Player1.ButonBTouch || Player2.ButonBTouch){ Body.MaxVelocity = 4;}
-	Body.MaxVelocity = 3
-		Emboscade_player_X(Body,Player1,Body.MaxVelocity)
-		Emboscade_player_Y(Body,Player1,Body.MaxVelocity)
-	/*
-	if(tick){
-	Go_to_player_X(Body,Player1,Body.MaxVelocity)
-	Go_to_player_Y(Body,Player1,Body.MaxVelocity)
-	}else{
-	Go_to_player_X(Body,Player2,Body.MaxVelocity)
-	Go_to_player_Y(Body,Player2,Body.MaxVelocity)
-	}
-	*/
+if(Player1.ButonBTouch || Player2.ButonBTouch){ Body.MaxVelocity = 3;}
+	Body.MaxVelocity = 2
+
+		var distanceXCenterP1 = Player1.x - screenWidthHalf;
+		var distanceYCenterP1 = Player1.y - screenHeigthHalf;
+		var distanceXCenterP2 = Player2.x - screenWidthHalf;
+		var distanceYCenterP2 = Player2.y - screenHeigthHalf;
+		var distanceXCamera = Player1.x - Body.x;
+		var distanceYCamera = Player1.y - Body.y;
+		
+		
+		if(distanceXCenterP1 < 0){
+			distanceXCenterP1 = distanceXCenterP1*-1;
+		}
+		if(distanceYCenterP1 < 0){
+			distanceYCenterP1 = distanceYCenterP1*-1;
+		}
+		if(distanceXCenterP2 < 0){
+			distanceXCenterP2 = distanceXCenterP2*-1;
+		}
+		if(distanceYCenterP2 < 0){
+			distanceYCenterP2 = distanceYCenterP2*-1;
+		}
+		
+		
+		
+		
+		if(!Player1.Colision || !Player2.Colision){
+			if(!Player1.Colision){
+				console.log(distanceYCenterP2)
+				if( (distanceXCenterP2 <= 30)){
+					Body.MoveX = Player2.MoveX
+					Body.x = Player2.x
+				}else{
+					Go_to_player_X(Body,Player2,Body.MaxVelocity)
+				}
+				if( (distanceYCenterP2 <= 30)){
+					Body.MoveY = Player2.MoveY
+				if(tick)Body.MoveY -=1 ;
+					Body.Y = Player2.x
+				}else{
+					Go_to_player_Y(Body,Player2,Body.MaxVelocity)
+				}
+			}else{
+				if( (distanceXCenterP1 <= 30)){
+					Body.MoveX = Player1.MoveX
+					Body.x = Player1.x
+				}else{
+					Go_to_player_X(Body,Player1,Body.MaxVelocity)
+				}
+				if( (distanceYCenterP1 <= 30)){
+					Body.MoveY = Player1.MoveY
+				if(tick)Body.MoveY -=1 ;
+					Body.Y = Player1.x
+				}else{
+					Go_to_player_Y(Body,Player1,Body.MaxVelocity)
+				}
+			}
+		}else{
+			if(distanceXCenterP1 < distanceXCenterP2){
+			//	Emboscade_player_X(Body,Player2,1)
+				Body.MoveX = Player1.MoveX
+				Body.x = Player1.x
+			}else{
+			//	Emboscade_player_X(Body,Player1,1)
+				Body.MoveX = Player2.MoveX
+				Body.x = Player2.x
+			}
+			if(distanceYCenterP1 < distanceYCenterP2){
+	
+				Body.MoveY = Player1.MoveY
+			if(tick)Body.MoveY -=1 ;
+				Body.y = Player1.y
+			}else{
+			
+				Body.MoveY = Player2.MoveY
+			if(tick)Body.MoveY -=1 ;
+				Body.y = Player2.y
+			}
+		}
+		
+		/*
+		var distanceXCamera = Player1.x - Body.x;
+		var distanceYCamera = Player1.y - Body.y;
+		
+		
+		if((distanceX < 50 && distanceX > -50)){
+			if((distanceXCamera < 30 && distanceXCamera > -30)){
+			Body.MoveX = distanceXCamera;
+			}else{
+			Go_to_player_X(Body,Player2,Body.MaxVelocity)
+			}
+		}else{
+			Emboscade_player_X(Body,Player2,Body.MaxVelocity)	
+		}
+		if((distanceY < 50 && distanceY > -50)){
+			if( (distanceYCamera < 30 && distanceYCamera > -30)){
+			Body.MoveY = distanceYCamera;
+			}else{
+			Go_to_player_Y(Body,Player2,Body.MaxVelocity)
+			}
+		}else{
+			Emboscade_player_Y(Body,Player2,Body.MaxVelocity)	
+		}
+		*/
+
 }
 function Stocked(Player,Player2){
 	Player.velocity = 0
@@ -5707,9 +6130,9 @@ function animation(P,Con){
 				}else{
 				if(Ax8 == 7){
 				P.XG += 1;
-					if(P.XG >= Con[2]){
-					P.XG = 0}
 					}
+				if(P.XG >= Con[2]){
+					P.XG = 0}
 				}
 			}
 		}
@@ -7296,6 +7719,7 @@ function Frames(){
 				
 				if(TankGame){
 					BackgroundsInLevel = []
+					BackgroundsSAVE = []
 					Azar_Back_Sound[RandomNumber(0,13)]()
 					game_area.style.backgroundImage =  backgroundBase
 				}
@@ -7374,8 +7798,8 @@ function Frame (p1,p2,tiles,sprites,mini_sprites){
 	cameraY = 0;
 	/*Estos dos hacen los input de los jugadores y determinan si estan muertos*/
 	if(Multiplayer){
-	CameraBodyMovement(CameraBody,p1,p2)
 
+	// 
 	Player_Effects(p2)
 		if(PlayerAction(p2,p1,Player_CRT.Player2,Multiplayer)){
 			if(!pre_finish) player2Deaths ++;
@@ -7391,11 +7815,27 @@ function Frame (p1,p2,tiles,sprites,mini_sprites){
 		if(TankGame)reset_game = true;
 
 	}
+	
+	
+	
+	if(Multiplayer){
+		p1.y += MovementYPlayer(p1,tiles,mysprites,mini_sprites);
+		p2.y += MovementYPlayer(p2,tiles,mysprites,mini_sprites);	
+		p1.x += MovementXPlayer(p1,tiles,mysprites,mini_sprites);
+		p2.x += MovementXPlayer(p2,tiles,mysprites,mini_sprites);
+	}
+	
+	CameraBodyMovement(CameraBody,p1,p2)
+	
+	
+	// aqui da la señal para poner la pantalla de ganastes
 	if(p1.Win || p2.Win){
 		Win_or_lose = true
 		pre_finish = true
+
 	}
 
+	
 	MiniSpriteManager(mini_sprites)
 
 	for(let i = 0; i < sprites.length ;i++){
@@ -7421,8 +7861,6 @@ function Frame (p1,p2,tiles,sprites,mini_sprites){
 		}
 	}
 
-
-
 	MoveExtras_in_Y()
 	inputY += cameraY
 
@@ -7434,10 +7872,8 @@ function Frame (p1,p2,tiles,sprites,mini_sprites){
 	};
 	/*Move player 2*/
 	if(Multiplayer){
-		if(!frisFotogram)p1.y += cameraY
-		p1.y += MovementYPlayer(p1,tiles,mysprites,mini_sprites);
-		if(!frisFotogram)p2.y += cameraY
-		p2.y += MovementYPlayer(p2,tiles,mysprites,mini_sprites);
+		if(!frisFotogram)p1.y += cameraY;
+		if(!frisFotogram)p2.y += cameraY;
 	}
 
 	/*camera X*/
@@ -7467,6 +7903,12 @@ function Frame (p1,p2,tiles,sprites,mini_sprites){
 		localisated_sprites(Sprite_Collection,sprites,cordX,cordY)
 		deleted_sprites(Sprite_Collection,sprites,cordX,cordY)
 	};
+	
+	
+	if(Multiplayer){
+		if(!frisFotogram)p1.x += cameraX;
+		if(!frisFotogram)p2.x += cameraX;
+	}
 	/*All sprites scpripts*/
 	for(let i = 0; i < sprites.length ;i++){
 		Scrips_collection[sprites[i].script].Loop(sprites[i],p1,p2,tiles)
@@ -7485,12 +7927,9 @@ function Frame (p1,p2,tiles,sprites,mini_sprites){
 		sprites[i].prin  = false
 		}
 	}
-	if(Multiplayer){
-		if(!frisFotogram)p1.x += cameraX
-		p1.x += MovementXPlayer(p1,tiles,mysprites,mini_sprites);
-		if(!frisFotogram)p2.x += cameraX
-		p2.x += MovementXPlayer(p2,tiles,mysprites,0);
-	}
+	
+	
+
 
 	/*Mueve Player los minisprites*/
 	MiniSprites_Vx_VY()
@@ -7623,7 +8062,7 @@ function Frame (p1,p2,tiles,sprites,mini_sprites){
 	return on_game;
 }
 
-var Stelar = false
+var Stelar = false  
 var invecybility = false
 var UpSide = false
 var TESTSCREEN = false
@@ -7634,6 +8073,9 @@ var HITBOX = false
 var SecondRound = true
 var TankGame = false
 var DegenerateValue = 128
+
+
+//This is the code for all the secret codes in the edit menu.
 function Boregito(Value){
 		   switch(Value){
 			   case "SANDBOX" :
@@ -7695,6 +8137,7 @@ function Boregito(Value){
 			   AZAR = true
 			   AirDash = true
 			   BackgroundsInLevel = []
+			   BackgroundsSAVE = []
 			   Azar_Blocks_Skins[2]()
 			   Azar_Back_Sound[2]()
 			   GridSprites.style.zIndex = 20
@@ -7711,6 +8154,7 @@ function Boregito(Value){
 			   AirDash = true
 			   AzarPlus = true
 			   BackgroundsInLevel = []
+			   BackgroundsSAVE = []
 			   GridSprites.style.zIndex = 20
 			   Azar_floor_dificult (Azar_floor)
 			   Azar_Level()
@@ -7722,6 +8166,7 @@ function Boregito(Value){
 			   Azar_Back_Sound[9]()
 			   GridSprites.style.zIndex = 20
 			   BackgroundsInLevel = []
+			   BackgroundsSAVE = []
 			   Azar_Sprites =
 				[
 					[32,32,17,"160010000",2,"25800",2,2]
@@ -7736,6 +8181,7 @@ function Boregito(Value){
 			   break
 			    case "BACKGROUND":
 				BackgroundsInLevel = []
+				BackgroundsSAVE = []
 			   BackgroundsInLevel.push(new Background("Backgrounds/onlyClouds.png",1024,864,0.5,0,0,0,true,false,0,0))
 			   BackgroundsInLevel.push(new Background("Backgrounds/mountains3_noClouds.png",1024,864,0.3,0,0,0,true,false,0,0))
 			   BackgroundsInLevel.push(new Background("Backgrounds/backMountains.png",1024,864,0.1,0,0,0,true,false,0,0))
@@ -7795,6 +8241,7 @@ function Boregito(Value){
 		   }
 		   //console.log(Value)
 	   }
+// to anulate codes
 function AntiBoregito(Value){
 		   switch(Value){
 			   case "MULTIPLAYER":
