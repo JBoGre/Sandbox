@@ -73,10 +73,19 @@
 	float:left;
 	}
     .range{
+	font-size: 16px;
 	float:left;
-	height:8em;
+	height:1em;
+	width:5em;
     background-color:rgba(0,0,0,0);
     }  
+	.rangeText{
+	font-size: 16px;
+	float:left;
+	height:1em;
+	width:3em;
+    background-color:rgba(0,0,0,0);
+    } 
     .MBLOCK{
 	width:8em;
 	height:8em;
@@ -519,10 +528,46 @@
 	  <div class="colorR" id="blockC1" > </div>
 	  </div>
 	 <input class="range" id="color1" min="0"max="255" type="range" onchange="CS(this,0)">
+	 <input class="rangeText" id="color1TX" type="number" id="numero" min="0" max="255" step="1" maxlength="3" onchange="TS(this,0)">
 	 <input class="range" id="color2" min="0"max="255" type="range" onchange="CS(this,1)">
+	 <input class="rangeText" id="color2TX" type="number" id="numero" min="0" max="255" step="1" maxlength="3" onchange="TS(this,1)">
 	 <input class="range" id="color3" min="0"max="255" type="range" onchange="CS(this,2)">
-	 <input class="styled" type="button" value="addBackground" onclick="DRAWS[drawNum](Grid);backgroundBase = Grid.style.backgroundImage" />
-	 </div>
+	 <input class="rangeText" id="color3TX" type="number" id="numero" min="0" max="255" step="1" maxlength="3" onchange="TS(this,2)">
+	 <input class="styled" type="button" value="addBackground" onclick="DRAWS[drawNum](BackgroundGrid);DrawGirdBG(BackgroundGrid);backgroundBase = BackgroundGrid.style.backgroundImage" />
+	<select id="BGSelector" class="styled" style=" width:140px" onchange="BGSelected()">
+		<option class="Text" value='0'>Change BG</option>	
+		<option class="Text" value='1'>Minimalist 1</option>	
+		<option class="Text" value='2'>Minimalist 2</option>	
+		<option class="Text" value='3'>Trees</option>	
+		<option class="Text" value='4'>Clouds 1</option>
+		<option class="Text" value='5'>Clouds 2</option>
+		<option class="Text" value='6'>Clouds 3</option>
+		<option class="Text" value='7'>Sky Temple</option>
+		<option class="Text" value='8'>Water Temple</option>
+		<option class="Text" value='9'>Bramble</option>
+		<option class="Text" value="10">Mountains 1</option>
+		<option class="Text" value="11">Mountains 2</option>
+		<option class="Text" value="12">Mountains 3</option>
+		<option class="Text" value="13">Jungle</option>
+		<option class="Text" value="14">Forest 1</option>
+		<option class="Text" value="15">Forest 2</option>
+		<option class="Text" value="16">Forest 3</option>
+		<option class="Text" value="17">Clasic 1</option>
+		<option class="Text" value="18">Clasic 2</option>
+		<option class="Text" value="19">landscape 1</option>
+		<option class="Text" value="20">landscape 2</option>
+		<option class="Text" value="21">landscape 3</option>
+		<option class="Text" value="22">UnderGround</option>
+		<option class="Text" value="23">Laberint</option>
+		<option class="Text" value="24">Pipelines</option>
+		<option class="Text" value="25">WaterFall</option>
+		<option class="Text" value="26">Tatoine</option>
+		<option class="Text" value="27">Death Star</option>
+		<option class="Text" value="28">Abstratc 1</option>
+		<option class="Text" value="29">Abstratc 2</option>
+	 </select>
+	</div>
+	 
      <div id="Character-selector"> 
 	
 		 <div class="arrow" id="arrowRight"></div>
