@@ -517,9 +517,13 @@
 	  <div class="colorR" id="blockC1" > </div>
 	  </div>
 	 <input class="range" id="color1" min="0"max="255" type="range" onchange="CS(this,0)">
+	 <input class="rangeText" id="color1TX" type="number" id="numero" min="0" max="255" step="1" maxlength="3" onchange="TS(this,0)">
 	 <input class="range" id="color2" min="0"max="255" type="range" onchange="CS(this,1)">
+	 <input class="rangeText" id="color2TX" type="number" id="numero" min="0" max="255" step="1" maxlength="3" onchange="TS(this,1)">
 	 <input class="range" id="color3" min="0"max="255" type="range" onchange="CS(this,2)">
-	 <input class="styled" type="button" value="addBackground" onclick="DRAWS[drawNum](Grid);backgroundBase = Grid.style.backgroundImage" />
+	 <input class="rangeText" id="color3TX" type="number" id="numero" min="0" max="255" step="1" maxlength="3" onchange="TS(this,2)">
+	 <input class="styled" type="button" value="addBackground" onclick="DRAWS[drawNum](BackgroundGrid);DrawGirdBG(BackgroundGrid);backgroundBase = BackgroundGrid.style.backgroundImage" />
+
 	 </div>
     
 	 
